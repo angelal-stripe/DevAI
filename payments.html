@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lovable — Payments</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --lovable-bg: #0a0a0a;
+      --lovable-surface: #141414;
+      --lovable-surface-2: #1e1e1e;
+      --lovable-border: #2a2a2a;
+      --lovable-text: #e5e5e5;
+      --lovable-text-muted: #737373;
+      --lovable-accent: #7c3aed;
+      --lovable-accent-hover: #6d28d9;
+      --lovable-green: #22c55e;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--lovable-bg);
+      color: var(--lovable-text);
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .topbar {
+      height: 48px;
+      background: var(--lovable-surface);
+      border-bottom: 1px solid var(--lovable-border);
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      gap: 12px;
+      z-index: 100;
+    }
+
+    .topbar-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      font-size: 15px;
+      color: #fff;
+    }
+
+    .topbar-logo svg { width: 22px; height: 22px; }
+
+    .topbar-divider {
+      width: 1px;
+      height: 24px;
+      background: var(--lovable-border);
+    }
+
+    .topbar-project {
+      font-size: 13px;
+      color: var(--lovable-text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .topbar-project span {
+      color: var(--lovable-text);
+      font-weight: 500;
+    }
+
+    .topbar-actions {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .topbar-btn {
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      border: 1px solid var(--lovable-border);
+      background: transparent;
+      color: var(--lovable-text);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: background 0.15s;
+    }
+
+    .topbar-btn:hover { background: var(--lovable-surface-2); }
+
+    .topbar-btn.primary {
+      background: var(--lovable-accent);
+      border-color: var(--lovable-accent);
+      color: #fff;
+    }
+
+    .topbar-btn.primary:hover { background: var(--lovable-accent-hover); }
+
+    .topbar-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #f472b6, #a78bfa);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .main-layout {
+      display: flex;
+      height: calc(100vh - 48px);
+    }
+
+    /* Chat panel */
+    .chat-panel {
+      width: 420px;
+      min-width: 420px;
+      background: var(--lovable-surface);
+      border-right: 1px solid var(--lovable-border);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-header {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--lovable-border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .chat-tab {
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      color: var(--lovable-text-muted);
+      transition: all 0.15s;
+    }
+
+    .chat-tab.active {
+      background: var(--lovable-surface-2);
+      color: var(--lovable-text);
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .chat-messages::-webkit-scrollbar { width: 4px; }
+    .chat-messages::-webkit-scrollbar-track { background: transparent; }
+    .chat-messages::-webkit-scrollbar-thumb { background: var(--lovable-border); border-radius: 2px; }
+
+    .msg {
+      display: flex;
+      gap: 10px;
+      max-width: 100%;
+    }
+
+    .msg-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .msg-avatar.ai {
+      background: var(--lovable-accent);
+      color: #fff;
+    }
+
+    .msg-content { flex: 1; min-width: 0; }
+
+    .msg-name {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .msg-text {
+      font-size: 13px;
+      line-height: 1.6;
+      color: #d4d4d4;
+    }
+
+    .chat-input-area {
+      padding: 12px 16px;
+      border-top: 1px solid var(--lovable-border);
+    }
+
+    .chat-input-box {
+      background: var(--lovable-surface-2);
+      border: 1px solid var(--lovable-border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+    }
+
+    .chat-input {
+      flex: 1;
+      background: none;
+      border: none;
+      color: var(--lovable-text);
+      font-size: 13px;
+      font-family: inherit;
+      resize: none;
+      outline: none;
+      min-height: 20px;
+    }
+
+    .chat-input::placeholder { color: var(--lovable-text-muted); }
+
+    .chat-send {
+      width: 30px;
+      height: 30px;
+      border-radius: 6px;
+      background: var(--lovable-accent);
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* Preview panel */
+    .preview-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: var(--lovable-bg);
+    }
+
+    .preview-toolbar {
+      height: 40px;
+      background: var(--lovable-surface);
+      border-bottom: 1px solid var(--lovable-border);
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      gap: 8px;
+    }
+
+    .preview-tab-group {
+      display: flex;
+      background: var(--lovable-surface-2);
+      border-radius: 6px;
+      padding: 2px;
+      gap: 1px;
+    }
+
+    .preview-tab {
+      padding: 4px 14px;
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      color: var(--lovable-text-muted);
+      border: none;
+      background: none;
+      transition: all 0.15s;
+      text-decoration: none;
+    }
+
+    .preview-tab.active {
+      background: var(--lovable-surface);
+      color: var(--lovable-text);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    }
+
+    .preview-url {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--lovable-surface-2);
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 12px;
+      color: var(--lovable-text-muted);
+      margin-left: 8px;
+    }
+
+    .preview-url .lock { color: var(--lovable-green); }
+
+    .preview-device-btns {
+      display: flex;
+      gap: 2px;
+      margin-left: auto;
+    }
+
+    .device-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 5px;
+      background: none;
+      border: none;
+      color: var(--lovable-text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .device-btn.active { color: var(--lovable-text); background: var(--lovable-surface-2); }
+
+    /* Payments content area */
+    .payments-content {
+      flex: 1;
+      overflow-y: auto;
+      background: var(--lovable-bg);
+    }
+
+    .payments-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--lovable-border);
+    }
+
+    .payments-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--lovable-text);
+    }
+
+    .payments-close {
+      font-size: 13px;
+      color: var(--lovable-text-muted);
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: inherit;
+    }
+
+    .payments-close:hover { color: var(--lovable-text); }
+
+    .payments-body {
+      padding: 24px;
+      max-width: 960px;
+    }
+
+    /* Sandbox / Live toggle */
+    .mode-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      background: var(--lovable-surface-2);
+      border-radius: 8px;
+      padding: 3px;
+      width: fit-content;
+      margin-bottom: 8px;
+    }
+
+    .mode-btn {
+      padding: 6px 18px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      color: var(--lovable-text-muted);
+      background: none;
+      font-family: inherit;
+    }
+
+    .mode-btn.active {
+      background: var(--lovable-surface);
+      color: var(--lovable-text);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+
+    .sandbox-link {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      margin-bottom: 24px;
+    }
+
+    .sandbox-link a {
+      font-size: 13px;
+      color: var(--lovable-text-muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      border: 1px solid var(--lovable-border);
+      padding: 6px 14px;
+      border-radius: 6px;
+    }
+
+    .sandbox-link a:hover { background: var(--lovable-surface-2); }
+
+    .top-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+
+    /* Go live section */
+    .go-live-label {
+      font-size: 14px;
+      font-weight: 700;
+      color: #f59e0b;
+      margin-bottom: 16px;
+      display: inline-block;
+      border-bottom: 2px solid #f59e0b;
+      padding-bottom: 2px;
+    }
+
+    .go-live-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-bottom: 32px;
+    }
+
+    .step {
+      display: flex;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--lovable-border);
+    }
+
+    .step:last-child { border-bottom: none; }
+
+    .step-number {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+      margin-right: 14px;
+      flex-shrink: 0;
+    }
+
+    .step-number.active {
+      background: var(--lovable-accent);
+      color: #fff;
+    }
+
+    .step-number.locked {
+      background: var(--lovable-surface-2);
+      color: var(--lovable-text-muted);
+    }
+
+    .step-label {
+      font-size: 14px;
+      font-weight: 500;
+      flex: 1;
+    }
+
+    .step-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 4px;
+      margin-left: 8px;
+    }
+
+    .badge-action {
+      background: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+    }
+
+    .step-btn {
+      font-size: 12px;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 6px;
+      border: 1px solid var(--lovable-border);
+      background: var(--lovable-surface-2);
+      color: var(--lovable-text);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-left: 8px;
+    }
+
+    .step-btn:hover { background: var(--lovable-surface); }
+
+    .step-lock {
+      font-size: 12px;
+      color: var(--lovable-text-muted);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-left: auto;
+    }
+
+    /* Analytics */
+    .analytics-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .analytics-title {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .analytics-period {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--lovable-text-muted);
+      border: 1px solid var(--lovable-border);
+      padding: 5px 12px;
+      border-radius: 6px;
+      background: var(--lovable-surface-2);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .analytics-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .analytics-card {
+      background: var(--lovable-surface);
+      border: 1px solid var(--lovable-border);
+      border-radius: 10px;
+      padding: 20px;
+    }
+
+    .analytics-card-label {
+      font-size: 12px;
+      color: var(--lovable-text-muted);
+      margin-bottom: 8px;
+    }
+
+    .analytics-card-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--lovable-text);
+    }
+
+    .analytics-card-sub {
+      font-size: 12px;
+      color: var(--lovable-text-muted);
+      margin-top: 4px;
+    }
+
+    /* Chart cards */
+    .chart-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .chart-card {
+      background: var(--lovable-surface);
+      border: 1px solid var(--lovable-border);
+      border-radius: 10px;
+      padding: 20px;
+    }
+
+    .chart-card-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .chart-area {
+      height: 140px;
+      position: relative;
+    }
+
+    .chart-y-labels {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--lovable-text-muted);
+      width: 28px;
+    }
+
+    .chart-x-labels {
+      position: absolute;
+      bottom: 0;
+      left: 28px;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--lovable-text-muted);
+    }
+
+    .chart-grid {
+      position: absolute;
+      top: 0;
+      left: 32px;
+      right: 0;
+      bottom: 24px;
+    }
+
+    .chart-grid-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--lovable-border);
+    }
+
+    .chart-line {
+      position: absolute;
+      bottom: 24px;
+      left: 32px;
+      right: 0;
+      height: 2px;
+    }
+
+    .chart-line-green {
+      background: var(--lovable-green);
+      border-radius: 1px;
+    }
+
+    .chart-line-blue {
+      background: #3b82f6;
+      border-radius: 1px;
+    }
+
+    /* Recent transactions */
+    .recent-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .txn-tabs {
+      display: flex;
+      gap: 0;
+      margin-bottom: 16px;
+    }
+
+    .txn-tab {
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 500;
+      border: 1px solid var(--lovable-border);
+      background: none;
+      color: var(--lovable-text-muted);
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .txn-tab:first-child { border-radius: 6px 0 0 6px; }
+    .txn-tab:last-child { border-radius: 0 6px 6px 0; }
+    .txn-tab + .txn-tab { border-left: none; }
+
+    .txn-tab.active {
+      background: var(--lovable-accent);
+      border-color: var(--lovable-accent);
+      color: #fff;
+    }
+
+    .status-filter {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      margin-bottom: 12px;
+    }
+
+    .status-filter select {
+      font-size: 12px;
+      padding: 5px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--lovable-border);
+      background: var(--lovable-surface-2);
+      color: var(--lovable-text-muted);
+      font-family: inherit;
+    }
+
+    .txn-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .txn-table th {
+      text-align: left;
+      font-weight: 500;
+      color: var(--lovable-text-muted);
+      padding: 10px 0;
+      border-bottom: 1px solid var(--lovable-border);
+      font-size: 12px;
+    }
+
+    .txn-table td {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--lovable-border);
+    }
+
+    .txn-amount {
+      font-weight: 600;
+    }
+
+    .txn-status {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--lovable-green);
+    }
+
+    .txn-payment-method {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--lovable-text-muted);
+    }
+
+    .visa-badge {
+      background: #1a1f71;
+      color: #fff;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 5px;
+      border-radius: 3px;
+      letter-spacing: 0.5px;
+    }
+
+    .txn-footer {
+      font-size: 12px;
+      color: var(--lovable-text-muted);
+      padding: 12px 0;
+    }
+
+    /* Your business section */
+    .biz-section {
+      margin-top: 40px;
+      padding-top: 32px;
+      border-top: 1px solid var(--lovable-border);
+    }
+
+    .biz-section-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .biz-revenue {
+      background: #111;
+      border: 1px solid #2a2a2a;
+      border-radius: 10px;
+      padding: 18px;
+      margin-bottom: 20px;
+    }
+
+    .biz-revenue-label {
+      font-size: 12px;
+      color: #9ca3af;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .biz-revenue-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .biz-revenue-period {
+      font-size: 12px;
+      color: #6b7280;
+      margin-left: 6px;
+      font-weight: 400;
+    }
+
+    .biz-insight {
+      background: #111;
+      border: 1px solid #2a2a2a;
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+
+    .biz-insight-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .biz-insight-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #635bff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .biz-insight-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #a78bfa;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .biz-insight-text {
+      font-size: 13px;
+      color: #d1d5db;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    .biz-insight-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 14px;
+      background: #635bff;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+
+    .biz-insight-btn:hover { opacity: 0.9; }
+  </style>
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <div class="topbar">
+    <div class="topbar-logo">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#7c3aed"/>
+      </svg>
+      lovable
+    </div>
+    <div class="topbar-divider"></div>
+    <div class="topbar-project">
+      Project / <span>sarah-lens-photography</span>
+    </div>
+    <div class="topbar-actions">
+      <button class="topbar-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+        Share
+      </button>
+      <button class="topbar-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Settings
+      </button>
+      <button class="topbar-btn primary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
+        Deploy
+      </button>
+      <div class="topbar-avatar">SL</div>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="main-layout">
+
+    <!-- Chat Panel -->
+    <div class="chat-panel">
+      <div class="chat-header">
+        <div class="chat-tab active">Chat</div>
+        <div class="chat-tab">History</div>
+      </div>
+
+      <div class="chat-messages">
+        <div class="msg">
+          <div class="msg-avatar ai">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#fff"/></svg>
+          </div>
+          <div class="msg-content">
+            <div class="msg-name">Lovable</div>
+            <div class="msg-text">Your Stripe payments dashboard is ready. You're currently in sandbox mode — connect your account to go live and start accepting real payments.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-input-area">
+        <div class="chat-input-box">
+          <textarea class="chat-input" rows="1" placeholder="Ask Lovable to build something"></textarea>
+          <button class="chat-send">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Preview Panel -->
+    <div class="preview-panel">
+      <div class="preview-toolbar">
+        <div class="preview-tab-group">
+          <a href="index.html" class="preview-tab" style="text-decoration:none;">Preview</a>
+          <a href="index.html" class="preview-tab" style="text-decoration:none;">Code</a>
+          <button class="preview-tab active">Payments</button>
+        </div>
+        <div class="preview-url">
+          <svg class="lock" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          sarah-lens-photography.lovable.app
+        </div>
+        <div class="preview-device-btns">
+          <button class="device-btn active" title="Desktop">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </button>
+          <button class="device-btn" title="Tablet">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+          </button>
+          <button class="device-btn" title="Mobile">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Payments content -->
+      <div class="payments-content">
+        <div class="payments-header">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <!-- Icon toolbar -->
+            <div style="display:flex; gap:4px;">
+              <button style="width:32px; height:32px; border-radius:6px; border:1px solid var(--lovable-border); background:none; color:var(--lovable-text-muted); cursor:pointer; display:flex; align-items:center; justify-content:center;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              </button>
+              <button style="width:32px; height:32px; border-radius:6px; border:1px solid var(--lovable-border); background:none; color:var(--lovable-text-muted); cursor:pointer; display:flex; align-items:center; justify-content:center;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </button>
+              <button style="width:32px; height:32px; border-radius:6px; border:1px solid var(--lovable-border); background:none; color:var(--lovable-text-muted); cursor:pointer; display:flex; align-items:center; justify-content:center;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+              </button>
+              <button style="width:32px; height:32px; border-radius:6px; border:1px solid var(--lovable-border); background:none; color:var(--lovable-text-muted); cursor:pointer; display:flex; align-items:center; justify-content:center;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              </button>
+              <button style="width:32px; height:32px; border-radius:6px; border:1px solid var(--lovable-border); background:none; color:var(--lovable-text-muted); cursor:pointer; display:flex; align-items:center; justify-content:center;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>
+              </button>
+            </div>
+            <div style="background:var(--lovable-accent); color:#fff; font-size:12px; font-weight:600; padding:5px 16px; border-radius:6px; display:flex; align-items:center; gap:4px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+              Payments
+            </div>
+            <button style="width:32px; height:32px; border-radius:6px; border:1px solid var(--lovable-border); background:none; color:var(--lovable-text-muted); cursor:pointer; display:flex; align-items:center; justify-content:center;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+            </button>
+          </div>
+          <div style="display:flex; align-items:center; gap:16px;">
+            <span class="payments-title">Payments</span>
+          </div>
+          <button class="payments-close" onclick="window.location.href='index.html'">Close</button>
+        </div>
+
+        <div class="payments-body">
+          <!-- Sandbox / Live toggle + dashboard link -->
+          <div class="top-row">
+            <div class="mode-toggle">
+              <button class="mode-btn active">Sandbox</button>
+              <button class="mode-btn">Live</button>
+            </div>
+            <div class="sandbox-link">
+              <a href="home.html">Stripe sandbox dashboard <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+            </div>
+          </div>
+
+          <!-- Go live -->
+          <div class="go-live-label">Go live</div>
+          <div class="go-live-steps">
+            <div class="step">
+              <div class="step-number active">1</div>
+              <span class="step-label">Claim your Stripe account</span>
+              <span class="step-badge badge-action">Action required</span>
+              <button class="step-btn">Claim account <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+            </div>
+            <div class="step">
+              <div class="step-number locked">2</div>
+              <span class="step-label">Readiness check</span>
+              <span class="step-lock">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                Locked
+              </span>
+            </div>
+            <div class="step">
+              <div class="step-number locked">3</div>
+              <span class="step-label">Verification</span>
+              <span class="step-lock">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                Locked
+              </span>
+            </div>
+          </div>
+
+          <!-- Analytics -->
+          <div class="analytics-header">
+            <span class="analytics-title">Analytics</span>
+            <button class="analytics-period">Last 7 days <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+          </div>
+
+          <div class="analytics-cards">
+            <div class="analytics-card">
+              <div class="analytics-card-label">Total revenue</div>
+              <div class="analytics-card-value">$0</div>
+              <div class="analytics-card-sub">From 0 transactions</div>
+            </div>
+            <div class="analytics-card">
+              <div class="analytics-card-label">Active subscriptions</div>
+              <div class="analytics-card-value">0</div>
+              <div class="analytics-card-sub">0 total customers</div>
+            </div>
+          </div>
+
+          <div class="chart-cards">
+            <div class="chart-card">
+              <div class="chart-card-title">Revenue</div>
+              <div class="chart-area">
+                <div class="chart-y-labels">
+                  <span>$0</span>
+                  <span>$0</span>
+                  <span>$0</span>
+                  <span>$0</span>
+                </div>
+                <div class="chart-grid">
+                  <div class="chart-grid-line" style="top: 0;"></div>
+                  <div class="chart-grid-line" style="top: 33%;"></div>
+                  <div class="chart-grid-line" style="top: 66%;"></div>
+                  <div class="chart-grid-line" style="top: 100%;"></div>
+                </div>
+                <div class="chart-line chart-line-green" style="height: 2px; bottom: 24px;"></div>
+                <div class="chart-x-labels">
+                  <span>2026-02-25</span>
+                  <span>2026-02-27</span>
+                  <span>2026-03-01</span>
+                  <span>2026-03-03</span>
+                </div>
+              </div>
+            </div>
+            <div class="chart-card">
+              <div class="chart-card-title">Paid transactions</div>
+              <div class="chart-area">
+                <div class="chart-y-labels">
+                  <span>3</span>
+                  <span>2</span>
+                  <span>1</span>
+                  <span>0</span>
+                </div>
+                <div class="chart-grid">
+                  <div class="chart-grid-line" style="top: 0;"></div>
+                  <div class="chart-grid-line" style="top: 33%;"></div>
+                  <div class="chart-grid-line" style="top: 66%;"></div>
+                  <div class="chart-grid-line" style="top: 100%;"></div>
+                </div>
+                <div class="chart-line chart-line-blue" style="height: 2px; bottom: 24px;"></div>
+                <div class="chart-x-labels">
+                  <span>2026-02-25</span>
+                  <span>2026-02-27</span>
+                  <span>2026-03-01</span>
+                  <span>2026-03-03</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent transactions -->
+          <div class="recent-title">Recent transactions</div>
+          <div class="txn-tabs">
+            <button class="txn-tab active">All</button>
+            <button class="txn-tab">Payments collected</button>
+            <button class="txn-tab">Payouts</button>
+            <button class="txn-tab">Collected fees</button>
+          </div>
+
+          <div class="status-filter">
+            <select>
+              <option>Status (5/7)</option>
+            </select>
+          </div>
+
+          <table class="txn-table">
+            <thead>
+              <tr>
+                <th>Amount</th>
+                <th>Payment method</th>
+                <th>Description</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <span class="txn-amount">$65.00</span> <span style="color:var(--lovable-text-muted); font-size:12px;">USD</span>
+                  <span class="txn-status" style="margin-left:8px;">Succeeded</span>
+                </td>
+                <td>
+                  <span class="txn-payment-method">
+                    <span class="visa-badge">VISA</span>
+                    ···· 7421
+                  </span>
+                </td>
+                <td>Lovable website payment — @artfan42</td>
+                <td style="color:var(--lovable-text-muted);">Mar 3, 10:29 AM</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="txn-footer">Viewing 1 of 1 item</div>
+
+          <!-- Your business section -->
+          <div class="biz-section">
+            <div class="biz-section-title">Your business</div>
+
+            <div class="biz-revenue">
+              <div class="biz-revenue-label">Your Website Revenue</div>
+              <div class="biz-revenue-value">$65.00 <span class="biz-revenue-period">today</span></div>
+              <a href="home.html" target="_blank" style="
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                margin-top: 14px;
+                padding: 7px 14px;
+                background: #635bff;
+                color: #fff;
+                border: none;
+                border-radius: 6px;
+                font-size: 12px;
+                font-weight: 500;
+                font-family: inherit;
+                text-decoration: none;
+                transition: opacity 0.15s;
+              " onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                See all your payments in Stripe
+              </a>
+            </div>
+
+            <div class="biz-insight">
+              <div class="biz-insight-header">
+                <div class="biz-insight-icon">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                </div>
+                <div class="biz-insight-label">Insight</div>
+              </div>
+              <div class="biz-insight-text">
+                Your booking page is getting 3x more traffic than your gallery page. Want me to make the gallery link more prominent in the nav?
+              </div>
+              <button class="biz-insight-btn">Yes</button>
+            </div>
+
+            <div class="biz-insight">
+              <div class="biz-insight-header">
+                <div class="biz-insight-icon">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                </div>
+                <div class="biz-insight-label">Insight</div>
+              </div>
+              <div class="biz-insight-text">
+                You connected 17hats last week. I can add a Contracts and Pricing page to your site that links to your 17hats workflow. Want me to build that?
+              </div>
+              <button class="biz-insight-btn">Yes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

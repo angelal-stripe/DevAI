@@ -1831,10 +1831,10 @@
             <div class="msg-text">
               All your tools are connected! I've created a business dashboard where you can see your revenue, connected services, and get insights about your site.
             </div>
-            <button class="your-biz-btn" id="openBizBtn">
+            <a href="payments.html" class="your-biz-btn" id="openBizBtn" style="text-decoration:none;">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
               Your business
-            </button>
+            </a>
             <div class="status-badge success" style="margin-top: 8px;">
               <div class="pulse"></div>
               Dashboard ready
@@ -1859,6 +1859,7 @@
         <div class="preview-tab-group">
           <button class="preview-tab active">Preview</button>
           <button class="preview-tab" id="codeToggle">Code</button>
+          <a href="payments.html" class="preview-tab" style="text-decoration:none;">Payments</a>
         </div>
         <div class="preview-url">
           <svg class="lock" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
@@ -2099,6 +2100,85 @@
 
           <div class="stripe-alt-link">
             <a href="#" id="stripeCancelPerms">Cancel</a>
+          </div>
+        </div>
+
+        <!-- Step 3: Let's get started (account link) -->
+        <div class="stripe-step step-hidden" id="stripeStep3">
+          <div style="font-size: 26px; font-weight: 800; color: #1a1a1a; margin-bottom: 6px;">Let's get started</div>
+          <div style="font-size: 14px; color: #6b7280; margin-bottom: 32px; line-height: 1.5;">Have a Stripe account? You can use the same email.</div>
+
+          <div class="stripe-field">
+            <label style="font-weight: 600; font-size: 14px;">Email address</label>
+            <input type="email" value="sarah@example.com" style="font-size: 15px; padding: 12px 14px;">
+          </div>
+
+          <div style="margin-top: 24px;">
+            <button class="stripe-submit" id="stripeStep3Btn" style="background: #7c3aed; border-radius: 8px; font-size: 15px; padding: 14px;">Continue</button>
+          </div>
+
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 32px; font-size: 12px; color: #9ca3af;">
+            <span>Powered by <strong style="color: #1a1a1a; font-weight: 700;">stripe</strong></span>
+            <span style="display: flex; gap: 12px;">
+              <a href="#" style="color: #6b7280; text-decoration: none;">Privacy</a>
+              <a href="#" style="color: #6b7280; text-decoration: none;">Terms</a>
+              <a href="#" style="color: #6b7280; text-decoration: none;">Contact</a>
+            </span>
+          </div>
+        </div>
+
+        <!-- Step 4: Review and submit -->
+        <div class="stripe-step step-hidden" id="stripeStep4">
+          <div style="font-size: 26px; font-weight: 800; color: #1a1a1a; margin-bottom: 6px;">Review and submit</div>
+          <div style="font-size: 14px; color: #6b7280; margin-bottom: 24px; line-height: 1.5;">Take a moment to review your information</div>
+
+          <div style="font-weight: 600; font-size: 14px; margin-bottom: 10px; color: #1a1a1a;">Personal details</div>
+          <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; margin-bottom: 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+              <div style="font-weight: 600; font-size: 14px; color: #1a1a1a;">Sarah Lens</div>
+              <a href="#" style="font-size: 13px; color: #635bff; text-decoration: none; font-weight: 500;">Edit</a>
+            </div>
+            <div style="font-size: 12px; color: #9ca3af; margin-bottom: 2px;">Address</div>
+            <div style="font-size: 14px; color: #1a1a1a; margin-bottom: 2px;">354 Oyster Point Blvd</div>
+            <div style="font-size: 14px; color: #1a1a1a; margin-bottom: 12px;">South San Francisco, CA 94080 US</div>
+            <div style="font-size: 12px; color: #9ca3af; margin-bottom: 2px;">Phone</div>
+            <div style="font-size: 14px; color: #1a1a1a; margin-bottom: 12px;">(626) 213-4567</div>
+            <div style="font-size: 12px; color: #9ca3af; margin-bottom: 2px;">Other information provided</div>
+            <div style="font-size: 14px; color: #1a1a1a;">Product description</div>
+          </div>
+
+          <div style="font-weight: 600; font-size: 14px; margin-bottom: 10px; color: #1a1a1a;">Payout details</div>
+          <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+              <div style="width: 36px; height: 36px; background: #c41230; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 9px; color: #ffd700; letter-spacing: 0.5px; line-height: 1;">WF</div>
+              <div style="flex: 1;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span style="font-weight: 600; font-size: 14px; color: #1a1a1a;">Wells Fargo</span>
+                  <span style="font-size: 11px; color: #6b7280; border: 1px solid #e5e7eb; border-radius: 4px; padding: 1px 6px;">Default</span>
+                </div>
+              </div>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+            </div>
+            <div style="font-size: 13px; color: #6b7280; margin-bottom: 2px;">
+              <span style="letter-spacing: 1px;">⏣</span> 110000000 &nbsp; <span style="letter-spacing: 1px;">⏣</span> ····1234
+            </div>
+            <div style="font-size: 13px; color: #6b7280;">USD, Instant-eligible</div>
+          </div>
+
+          <button style="width: 100%; padding: 10px; background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 13px; font-weight: 600; color: #1a1a1a; cursor: pointer; font-family: inherit; margin-bottom: 8px;">Add bank account</button>
+          <button style="width: 100%; padding: 10px; background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 13px; font-weight: 600; color: #1a1a1a; cursor: pointer; font-family: inherit; margin-bottom: 16px;">Add debit card</button>
+
+          <div style="font-size: 12px; color: #6b7280; margin-bottom: 16px; line-height: 1.5;">By confirming, you agree that the information provided is complete and correct.</div>
+
+          <button class="stripe-submit" id="stripeStep4Btn" style="background: #7c3aed; border-radius: 8px; font-size: 15px; padding: 14px;">Agree and submit</button>
+
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 24px; font-size: 12px; color: #9ca3af;">
+            <span>Powered by <strong style="color: #1a1a1a; font-weight: 700;">stripe</strong></span>
+            <span style="display: flex; gap: 12px;">
+              <a href="#" style="color: #6b7280; text-decoration: none;">Privacy</a>
+              <a href="#" style="color: #6b7280; text-decoration: none;">Terms</a>
+              <a href="#" style="color: #6b7280; text-decoration: none;">Contact</a>
+            </span>
           </div>
         </div>
       </div>
@@ -2560,9 +2640,57 @@
     const aiMsg3 = document.getElementById('aiMsg3');
     const aiMsg4 = document.getElementById('aiMsg4');
 
+    const stripeStep3 = document.getElementById('stripeStep3');
+    const stripeStep4 = document.getElementById('stripeStep4');
+    const stripeStep3Btn = document.getElementById('stripeStep3Btn');
+    const stripeStep4Btn = document.getElementById('stripeStep4Btn');
+
     stripeConfirmBtn.addEventListener('click', (e) => {
       e.preventDefault();
+      stripeStep2.style.opacity = '0';
+      stripeStep2.style.transform = 'translateX(-20px)';
+      setTimeout(() => {
+        stripeStep2.classList.add('step-hidden');
+        stripeStep4.classList.remove('step-hidden');
+        stripeStep4.classList.add('step-entering');
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            stripeStep4.style.opacity = '1';
+            stripeStep4.style.transform = 'translateX(0)';
+            stripeStep4.classList.remove('step-entering');
+          });
+        });
+      }, 250);
+    });
+
+    stripeStep3Btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      stripeStep3.style.opacity = '0';
+      stripeStep3.style.transform = 'translateX(-20px)';
+      setTimeout(() => {
+        stripeStep3.classList.add('step-hidden');
+        stripeStep4.classList.remove('step-hidden');
+        stripeStep4.classList.add('step-entering');
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            stripeStep4.style.opacity = '1';
+            stripeStep4.style.transform = 'translateX(0)';
+            stripeStep4.classList.remove('step-entering');
+          });
+        });
+      }, 250);
+    });
+
+    stripeStep4Btn.addEventListener('click', (e) => {
+      e.preventDefault();
       stripeOverlay.classList.remove('visible');
+
+      setTimeout(() => {
+        stripeStep4.classList.add('step-hidden');
+        stripeStep1.classList.remove('step-hidden');
+        stripeStep1.style.opacity = '1';
+        stripeStep1.style.transform = 'translateX(0)';
+      }, 300);
 
       setTimeout(() => {
         aiMsg3.classList.remove('hidden');
