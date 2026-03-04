@@ -403,7 +403,7 @@
 
     .site-preview {
       flex: 1;
-      background: #fff;
+      background: var(--lovable-surface);
       overflow-y: auto;
     }
 
@@ -2585,6 +2585,7 @@
         chatMessages.scrollTop = chatMessages.scrollHeight;
 
         document.getElementById('photoSite').style.display = '';
+        document.getElementById('sitePreview').style.background = '#fff';
         document.getElementById('codePanel').style.display = '';
 
         setTimeout(() => {
