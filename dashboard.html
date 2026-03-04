@@ -623,5 +623,45 @@
     </div>
   </div>
 
+  <style>
+    .proto-switcher {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 16px 20px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      z-index: 9999;
+      font-family: 'Inter', -apple-system, sans-serif;
+    }
+    .proto-switcher-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 12px;
+    }
+    .proto-switcher label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: #1a1a1a;
+      cursor: pointer;
+      padding: 4px 0;
+    }
+    .proto-switcher input[type="radio"] {
+      accent-color: #635bff;
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+  </style>
+  <div class="proto-switcher">
+    <div class="proto-switcher-title">Prototype options</div>
+    <label><input type="radio" name="proto" value="sarah" checked onchange="if(this.checked) window.location.href='home.html'"> Sarah's photography</label>
+    <label><input type="radio" name="proto" value="lovable" onchange="if(this.checked) window.location.href='lovable-network.html'"> Lovable</label>
+  </div>
 </body>
 </html>

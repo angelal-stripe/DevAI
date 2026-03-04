@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sarah's Photography – Lovable – Stripe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #fff;
+      color: #1a1a1a;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 220px;
+      background: #fff;
+      border-right: 1px solid #e5e7eb;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      flex-shrink: 0;
+    }
+
+    .sidebar-brand {
+      padding: 20px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .sidebar-brand-logo {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #f97316, #ec4899);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .sidebar-brand-logo svg { width: 14px; height: 14px; }
+
+    .sidebar-nav { padding: 16px 0; flex: 1; overflow-y: auto; }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 9px 20px;
+      font-size: 13.5px;
+      font-weight: 400;
+      color: #4b5563;
+      cursor: pointer;
+      transition: all 0.1s;
+      text-decoration: none;
+    }
+
+    .nav-item:hover { color: #1a1a1a; background: #f9fafb; }
+    .nav-item.active { color: #635bff; font-weight: 500; }
+    .nav-item svg { width: 18px; height: 18px; flex-shrink: 0; opacity: 0.7; }
+
+    .nav-section {
+      padding: 20px 20px 8px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #9ca3af;
+      letter-spacing: 0.2px;
+    }
+
+    .nav-item-chevron { margin-left: auto; color: #d1d5db; }
+    .sidebar-footer { padding: 12px 0; }
+
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+    .topbar {
+      height: 56px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      gap: 16px;
+    }
+
+    .search-bar {
+      flex: 1;
+      max-width: 480px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 8px 12px;
+      cursor: text;
+    }
+
+    .search-bar svg { color: #9ca3af; flex-shrink: 0; }
+    .search-bar span { font-size: 13px; color: #9ca3af; }
+
+    .topbar-icons { margin-left: auto; display: flex; align-items: center; gap: 4px; }
+
+    .topbar-icon {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: #6b7280; transition: background 0.1s;
+    }
+
+    .topbar-icon:hover { background: #f3f4f6; }
+    .topbar-icon svg { width: 18px; height: 18px; }
+    .topbar-icon.create { background: #635bff; color: #fff; width: 32px; height: 32px; }
+    .topbar-icon.create:hover { background: #4f46e5; }
+
+    .content { flex: 1; overflow-y: auto; padding: 32px 40px; }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      font-size: 13px;
+      color: #635bff;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .breadcrumb a { color: #635bff; text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .breadcrumb span { color: #9ca3af; }
+
+    /* Page header */
+    .account-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .account-header-left h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+    }
+
+    .account-header-left .email {
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    /* Stat cards row */
+    .stat-cards {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .stat-card {
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 14px 18px;
+      min-width: 140px;
+    }
+
+    .stat-card-label {
+      font-size: 12px;
+      color: #6b7280;
+      margin-bottom: 8px;
+    }
+
+    .stat-card-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1a1a1a;
+    }
+
+    .stat-card-inline {
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 10px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .stat-card-inline-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+    }
+
+    .stat-card-inline-row .label { color: #6b7280; }
+    .stat-card-inline-row .value { font-weight: 600; color: #1a1a1a; }
+
+    /* Action buttons */
+    .action-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 24px;
+      margin-top: 16px;
+    }
+
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 7px 14px;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #1a1a1a;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .action-btn:hover { background: #f9fafb; }
+
+    .action-btn.primary {
+      background: #635bff;
+      color: #fff;
+      border-color: #635bff;
+    }
+
+    .action-btn.primary:hover { background: #4f46e5; }
+
+    .action-btn svg { width: 14px; height: 14px; }
+
+    .action-btn-icon {
+      width: 32px; height: 32px;
+      border: 1px solid #e5e7eb; border-radius: 6px;
+      background: #fff;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: #6b7280;
+    }
+
+    /* Tabs */
+    .detail-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid #e5e7eb;
+      margin-bottom: 24px;
+    }
+
+    .detail-tab {
+      padding: 10px 2px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #6b7280;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-right: 24px;
+    }
+
+    .detail-tab.active { color: #1a1a1a; border-bottom-color: #1a1a1a; }
+
+    /* Layout: main + right sidebar */
+    .detail-layout {
+      display: grid;
+      grid-template-columns: 1fr 260px;
+      gap: 32px;
+    }
+
+    /* Balances section */
+    .section-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .section-title .amount {
+      font-weight: 700;
+    }
+
+    .section-title .info-icon { color: #9ca3af; cursor: pointer; }
+
+    .balance-card {
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+
+    .balance-row {
+      display: flex;
+      align-items: center;
+      padding: 14px 16px;
+      border-bottom: 1px solid #f3f4f6;
+    }
+
+    .balance-row:last-child { border-bottom: none; }
+
+    .balance-row-icon {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: #f3f4f6;
+      display: flex; align-items: center; justify-content: center;
+      margin-right: 12px;
+      color: #6b7280;
+      flex-shrink: 0;
+    }
+
+    .balance-row-icon svg { width: 16px; height: 16px; }
+
+    .balance-row-info { flex: 1; }
+
+    .balance-row-info .name {
+      font-size: 13px;
+      font-weight: 500;
+      color: #1a1a1a;
+    }
+
+    .balance-row-info .sub {
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    .balance-row-value {
+      font-size: 14px;
+      font-weight: 500;
+      color: #1a1a1a;
+      margin-right: 12px;
+    }
+
+    .balance-row-extra {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    .mini-bars {
+      display: flex;
+      gap: 2px;
+      align-items: flex-end;
+      height: 20px;
+    }
+
+    .mini-bars div {
+      width: 6px;
+      border-radius: 1px;
+    }
+
+    .balance-row .dots {
+      color: #9ca3af;
+      font-size: 18px;
+      cursor: pointer;
+      padding: 0 4px;
+    }
+
+    .balance-row-blue {
+      background: #eff6ff;
+    }
+
+    .balance-row-blue .balance-row-icon {
+      background: #dbeafe;
+      color: #3b82f6;
+    }
+
+    /* Tooltip */
+    .tooltip-box {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 12px;
+      color: #6b7280;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      position: absolute;
+    }
+
+    /* Payout info */
+    .payout-section { margin-bottom: 24px; }
+
+    .payout-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .payout-title .edit-link {
+      font-size: 12px;
+      color: #6b7280;
+      border: 1px solid #e5e7eb;
+      border-radius: 4px;
+      padding: 4px 10px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .payout-grid {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 8px 16px;
+      font-size: 13px;
+      margin-bottom: 16px;
+    }
+
+    .payout-grid .label { color: #6b7280; }
+    .payout-grid .value { color: #1a1a1a; font-weight: 500; }
+
+    .payout-note {
+      font-size: 12px;
+      color: #6b7280;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      padding: 8px 12px;
+      margin-bottom: 16px;
+    }
+
+    /* External accounts */
+    .ext-accounts-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .ext-accounts-header .title {
+      font-size: 14px;
+      font-weight: 500;
+      color: #6b7280;
+    }
+
+    .ext-accounts-header .add-link {
+      font-size: 13px;
+      color: #6b7280;
+      text-decoration: none;
+    }
+
+    .ext-account {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 0;
+    }
+
+    .ext-account-toggle {
+      color: #9ca3af;
+      cursor: pointer;
+    }
+
+    .ext-account-logo {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #dc2626;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .ext-account-info {
+      flex: 1;
+    }
+
+    .ext-account-info .name {
+      font-size: 13px;
+      font-weight: 500;
+      color: #1a1a1a;
+    }
+
+    .ext-account-info .sub {
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    .ext-account .dots {
+      color: #9ca3af;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    /* Recent transactions */
+    .transactions-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      margin-top: 24px;
+    }
+
+    .transactions-header h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .transactions-header a {
+      font-size: 13px;
+      color: #635bff;
+      text-decoration: none;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .txn-filters {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .txn-filter {
+      padding: 4px 10px;
+      border-radius: 14px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #374151;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .txn-filter.active {
+      background: #635bff;
+      color: #fff;
+      border-color: #635bff;
+    }
+
+    .txn-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .txn-table th {
+      text-align: left;
+      font-size: 12px;
+      font-weight: 500;
+      color: #6b7280;
+      padding: 8px 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .txn-table td {
+      padding: 10px 0;
+      font-size: 13px;
+      color: #374151;
+      border-bottom: 1px solid #f3f4f6;
+      vertical-align: middle;
+    }
+
+    .txn-amount { font-weight: 600; color: #1a1a1a; }
+
+    .txn-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 600;
+      background: #dcfce7;
+      color: #16a34a;
+    }
+
+    .txn-card {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .txn-card-icon {
+      width: 24px;
+      height: 16px;
+      background: #3b82f6;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8px;
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .txn-viewing {
+      font-size: 12px;
+      color: #6b7280;
+      padding: 10px 0;
+    }
+
+    /* Right sidebar */
+    .detail-right h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .detail-right h3 .edit-link {
+      font-size: 12px;
+      color: #6b7280;
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    .detail-field {
+      margin-bottom: 14px;
+    }
+
+    .detail-field .label {
+      font-size: 12px;
+      color: #6b7280;
+      margin-bottom: 2px;
+    }
+
+    .detail-field .value {
+      font-size: 13px;
+      color: #1a1a1a;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .detail-field .value .copy-icon {
+      color: #9ca3af;
+      cursor: pointer;
+    }
+
+    .flag-icon {
+      display: inline-block;
+      width: 16px;
+      height: 12px;
+      background: #3b82f6;
+      border-radius: 2px;
+      margin-right: 4px;
+      font-size: 9px;
+      color: #fff;
+      text-align: center;
+      line-height: 12px;
+    }
+
+    .detail-right .notice {
+      font-size: 12px;
+      color: #6b7280;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      padding: 8px 12px;
+      margin-bottom: 20px;
+    }
+
+    /* Proto switcher */
+    .proto-switcher {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 16px 20px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      z-index: 9999;
+    }
+    .proto-switcher-title { font-size: 14px; font-weight: 600; color: #1a1a1a; margin-bottom: 12px; }
+    .proto-switcher label { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #1a1a1a; cursor: pointer; padding: 4px 0; }
+    .proto-switcher input[type="radio"] { accent-color: #635bff; width: 16px; height: 16px; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-brand-logo">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#fff"/></svg>
+      </div>
+      Lovable
+    </div>
+    <div class="sidebar-nav">
+      <a class="nav-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V10.5z"/><path d="M9 21V14h6v7"/></svg> Home</a>
+      <a class="nav-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="10" x2="16" y2="10"/><line x1="4" y1="14" x2="20" y2="14"/><line x1="4" y1="18" x2="12" y2="18"/></svg> Balances</a>
+      <a class="nav-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg> Transactions</a>
+      <a class="nav-item active" href="lovable-network.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Network</a>
+      <a class="nav-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> Product catalog</a>
+      <div class="nav-section">Products</div>
+      <a class="nav-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M21 21v-2a4 4 0 0 0-3-3.87"/></svg> Connect <svg class="nav-item-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></a>
+      <a class="nav-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg> Payments <svg class="nav-item-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></a>
+      <a class="nav-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 2h16v20l-3-2-2 2-3-2-3 2-2-2-3 2V2z"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="12" y2="15"/></svg> Billing <svg class="nav-item-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></a>
+      <a class="nav-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="12" width="4" height="8" rx="0.5"/><rect x="10" y="6" width="4" height="14" rx="0.5"/><rect x="16" y="9" width="4" height="11" rx="0.5"/></svg> Reporting <svg class="nav-item-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></a>
+      <a class="nav-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="5" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.5" fill="currentColor" stroke="none"/></svg> More <svg class="nav-item-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></a>
+    </div>
+    <div class="sidebar-footer">
+      <a class="nav-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="3" width="20" height="18" rx="2"/><polyline points="7 10 10 13 7 16"/><line x1="13" y1="16" x2="17" y2="16"/></svg> Developers</a>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="search-bar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span>Search</span>
+      </div>
+      <div class="topbar-icons">
+        <div class="topbar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <div class="topbar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
+        <div class="topbar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div>
+        <div class="topbar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+        <div class="topbar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg></div>
+        <div class="topbar-icon create"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="breadcrumb">
+        <a href="lovable-network.html">Network</a>
+        <span>&rsaquo;</span>
+      </div>
+
+      <div class="account-header">
+        <div class="account-header-left">
+          <h1>Sarah's Photography</h1>
+          <div class="email">sarah@sarahsphotography.com</div>
+        </div>
+        <div class="stat-cards">
+          <div class="stat-card">
+            <div class="stat-card-label">Total balance</div>
+            <div class="stat-card-value">$65.00</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-label">Lifetime total volume</div>
+            <div class="stat-card-value">$65.00</div>
+          </div>
+          <div class="stat-card-inline">
+            <div class="stat-card-inline-row"><span class="label">Payments</span> <span class="value">Active</span></div>
+            <div class="stat-card-inline-row"><span class="label">Payouts</span> <span class="value">Daily</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="action-bar">
+        <button class="action-btn primary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Create
+        </button>
+        <button class="action-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+          Move money
+        </button>
+        <button class="action-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          View profile
+        </button>
+        <div class="action-btn-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09"/></svg>
+        </div>
+        <div class="action-btn-icon">···</div>
+      </div>
+
+      <div class="detail-tabs">
+        <div class="detail-tab active">Financial overview</div>
+        <div class="detail-tab">Your business</div>
+        <div class="detail-tab">Sarah's Photography business</div>
+      </div>
+
+      <div class="detail-layout">
+        <div class="detail-main">
+          <div class="section-title">Balances <span class="amount">$65.00</span> <span class="info-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></span></div>
+
+          <div class="balance-card">
+            <div class="balance-row">
+              <div class="balance-row-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/></svg>
+              </div>
+              <div class="balance-row-info">
+                <div class="name">Incoming earnings</div>
+              </div>
+              <div class="balance-row-value">$0.00</div>
+              <div class="balance-row-extra">
+                <span style="font-size:11px; color:#9ca3af;">$0.00 available instantly</span>
+                <div class="mini-bars">
+                  <div style="height:14px; background:#3b82f6;"></div>
+                  <div style="height:10px; background:#3b82f6;"></div>
+                  <div style="height:6px; background:#e5e7eb;"></div>
+                  <div style="height:6px; background:#e5e7eb;"></div>
+                  <div style="height:6px; background:#e5e7eb;"></div>
+                  <div style="height:6px; background:#e5e7eb;"></div>
+                  <div style="height:6px; background:#e5e7eb;"></div>
+                </div>
+              </div>
+            </div>
+            <div class="balance-row">
+              <div class="balance-row-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </div>
+              <div class="balance-row-info">
+                <div class="name">Held in reserve</div>
+              </div>
+              <div class="balance-row-value">$0.00</div>
+              <span class="dots">···</span>
+            </div>
+            <div class="balance-row balance-row-blue">
+              <div class="balance-row-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+              </div>
+              <div class="balance-row-info">
+                <div class="name">Financial account</div>
+                <div class="sub">1 active</div>
+              </div>
+              <div class="balance-row-value">$65.00</div>
+              <div class="balance-row-extra">
+                <span style="font-size:11px; color:#6b7280;">$0.00 in transit to bank</span>
+                <span style="font-size:11px; color:#6b7280;">↻ Daily transfers</span>
+                <span class="dots">···</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="payout-note">You cannot edit payout schedule</div>
+
+          <div class="payout-section">
+            <div class="payout-title">
+              Payout information
+              <span class="edit-link">Edit payout schedule</span>
+            </div>
+            <div class="payout-grid">
+              <div class="label">Payout schedule</div>
+              <div class="value">Daily - 2 day rolling basis</div>
+              <div class="label">Default currency</div>
+              <div class="value">USD</div>
+              <div class="label">Payout statement descriptor</div>
+              <div class="value">TBOX</div>
+            </div>
+            <div class="payout-note">You cannot add external accounts</div>
+          </div>
+
+          <div class="ext-accounts-header">
+            <span class="title">External accounts</span>
+            <a href="#" class="add-link">Add</a>
+          </div>
+          <div class="ext-account">
+            <span class="ext-account-toggle">▾</span>
+            <div class="ext-account-logo">WF</div>
+            <div class="ext-account-info">
+              <div class="name">Wells Fargo Bank ···1234</div>
+              <div class="sub">USD</div>
+            </div>
+            <span class="dots">···</span>
+          </div>
+
+          <div class="transactions-header">
+            <h3>Recent transactions</h3>
+            <a href="#">View all &rsaquo;</a>
+          </div>
+          <div class="txn-filters">
+            <button class="txn-filter active">All</button>
+            <button class="txn-filter">Payments collected</button>
+            <button class="txn-filter">Payouts</button>
+            <button class="txn-filter">Collected fees</button>
+          </div>
+          <table class="txn-table">
+            <thead>
+              <tr>
+                <th>Amount</th>
+                <th>Payment method</th>
+                <th>Description</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <span class="txn-amount">$128.60</span> <span style="color:#6b7280; font-size:12px;">USD</span>
+                  <span class="txn-status" style="margin-left: 8px;">Succeeded</span>
+                </td>
+                <td>
+                  <span class="txn-card">
+                    <span class="txn-card-icon">VISA</span>
+                    ···· 7421
+                  </span>
+                </td>
+                <td>Basic plan</td>
+                <td>Jan 9, 10:29 AM</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="txn-viewing">Viewing 1 of 1 item</div>
+        </div>
+
+        <div class="detail-right">
+          <div class="notice">You cannot edit details for this account</div>
+
+          <h3>Details <a href="#" class="edit-link">Edit</a></h3>
+          <div class="detail-field">
+            <div class="label">Account ID</div>
+            <div class="value">acct_Ly5pN5pGDWgtpa <span class="copy-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></span></div>
+          </div>
+          <div class="detail-field">
+            <div class="label">Created</div>
+            <div class="value">Mar 2, 2026</div>
+          </div>
+          <div class="detail-field">
+            <div class="label">Country</div>
+            <div class="value"><span class="flag-icon">🇺🇸</span> United States</div>
+          </div>
+          <div class="detail-field">
+            <div class="label">Configurations</div>
+            <div class="value">Merchant</div>
+          </div>
+
+          <h3 style="margin-top: 24px;">Metadata <a href="#" class="edit-link">Edit</a></h3>
+          <div class="detail-field">
+            <div class="label">Internal ID</div>
+            <div class="value">184098480804</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="proto-switcher">
+    <div class="proto-switcher-title">Prototype options</div>
+    <label><input type="radio" name="proto" value="sarah" onchange="if(this.checked) window.location.href='home.html'"> Sarah's photography</label>
+    <label><input type="radio" name="proto" value="lovable" checked onchange="if(this.checked) window.location.href='lovable-network.html'"> Lovable</label>
+  </div>
+
+</body>
+</html>
