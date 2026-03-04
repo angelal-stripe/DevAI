@@ -1,0 +1,2827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lovable — Sarah's Photography Business</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --lovable-bg: #0a0a0a;
+      --lovable-surface: #141414;
+      --lovable-surface-2: #1e1e1e;
+      --lovable-border: #2a2a2a;
+      --lovable-text: #e5e5e5;
+      --lovable-text-muted: #737373;
+      --lovable-accent: #7c3aed;
+      --lovable-accent-hover: #6d28d9;
+      --lovable-green: #22c55e;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--lovable-bg);
+      color: var(--lovable-text);
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Top bar */
+    .topbar {
+      height: 48px;
+      background: var(--lovable-surface);
+      border-bottom: 1px solid var(--lovable-border);
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      gap: 12px;
+      z-index: 100;
+    }
+
+    .topbar-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      font-size: 15px;
+      color: #fff;
+    }
+
+    .topbar-logo svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .topbar-divider {
+      width: 1px;
+      height: 24px;
+      background: var(--lovable-border);
+    }
+
+    .topbar-project {
+      font-size: 13px;
+      color: var(--lovable-text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .topbar-project span {
+      color: var(--lovable-text);
+      font-weight: 500;
+    }
+
+    .topbar-actions {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .topbar-btn {
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      border: 1px solid var(--lovable-border);
+      background: transparent;
+      color: var(--lovable-text);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: background 0.15s;
+    }
+
+    .topbar-btn:hover { background: var(--lovable-surface-2); }
+
+    .topbar-btn.primary {
+      background: var(--lovable-accent);
+      border-color: var(--lovable-accent);
+      color: #fff;
+    }
+
+    .topbar-btn.primary:hover { background: var(--lovable-accent-hover); }
+
+    .topbar-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #f472b6, #a78bfa);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    /* Main layout */
+    .main-layout {
+      display: flex;
+      height: calc(100vh - 48px);
+    }
+
+    /* Chat panel */
+    .chat-panel {
+      width: 420px;
+      min-width: 420px;
+      background: var(--lovable-surface);
+      border-right: 1px solid var(--lovable-border);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-header {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--lovable-border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .chat-tab {
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      color: var(--lovable-text-muted);
+      transition: all 0.15s;
+    }
+
+    .chat-tab.active {
+      background: var(--lovable-surface-2);
+      color: var(--lovable-text);
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .chat-messages::-webkit-scrollbar { width: 4px; }
+    .chat-messages::-webkit-scrollbar-track { background: transparent; }
+    .chat-messages::-webkit-scrollbar-thumb { background: var(--lovable-border); border-radius: 2px; }
+
+    .msg {
+      display: flex;
+      gap: 10px;
+      max-width: 100%;
+    }
+
+    .msg-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .msg-avatar.user {
+      background: linear-gradient(135deg, #f472b6, #a78bfa);
+      color: #fff;
+    }
+
+    .msg-avatar.ai {
+      background: var(--lovable-accent);
+      color: #fff;
+    }
+
+    .msg-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .msg-name {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .msg-name .timestamp {
+      font-weight: 400;
+      color: var(--lovable-text-muted);
+      font-size: 11px;
+      margin-left: 8px;
+    }
+
+    .msg-text {
+      font-size: 13px;
+      line-height: 1.6;
+      color: #d4d4d4;
+    }
+
+    .msg-text code {
+      background: var(--lovable-surface-2);
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      color: #a78bfa;
+    }
+
+    .msg-files {
+      margin-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .msg-file {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--lovable-accent);
+      padding: 4px 8px;
+      background: rgba(124, 58, 237, 0.08);
+      border-radius: 4px;
+      border: 1px solid rgba(124, 58, 237, 0.15);
+      width: fit-content;
+    }
+
+    .msg-file svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+    .chat-input-area {
+      padding: 12px 16px;
+      border-top: 1px solid var(--lovable-border);
+    }
+
+    .chat-input-box {
+      background: var(--lovable-surface-2);
+      border: 1px solid var(--lovable-border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      transition: border-color 0.15s;
+    }
+
+    .chat-input-box:focus-within {
+      border-color: var(--lovable-accent);
+    }
+
+    .chat-input {
+      flex: 1;
+      background: none;
+      border: none;
+      color: var(--lovable-text);
+      font-size: 13px;
+      font-family: inherit;
+      resize: none;
+      outline: none;
+      min-height: 20px;
+      max-height: 120px;
+    }
+
+    .chat-input::placeholder { color: var(--lovable-text-muted); }
+
+    .chat-send {
+      width: 30px;
+      height: 30px;
+      border-radius: 6px;
+      background: var(--lovable-accent);
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.15s;
+    }
+
+    .chat-send:hover { background: var(--lovable-accent-hover); }
+
+    /* Preview panel */
+    .preview-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: var(--lovable-bg);
+    }
+
+    .preview-toolbar {
+      height: 40px;
+      background: var(--lovable-surface);
+      border-bottom: 1px solid var(--lovable-border);
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      gap: 8px;
+    }
+
+    .preview-tab-group {
+      display: flex;
+      background: var(--lovable-surface-2);
+      border-radius: 6px;
+      padding: 2px;
+      gap: 1px;
+    }
+
+    .preview-tab {
+      padding: 4px 14px;
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      color: var(--lovable-text-muted);
+      border: none;
+      background: none;
+      transition: all 0.15s;
+    }
+
+    .preview-tab.active {
+      background: var(--lovable-surface);
+      color: var(--lovable-text);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    }
+
+    .preview-url {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--lovable-surface-2);
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 12px;
+      color: var(--lovable-text-muted);
+      margin-left: 8px;
+    }
+
+    .preview-url .lock { color: var(--lovable-green); }
+
+    .preview-device-btns {
+      display: flex;
+      gap: 2px;
+      margin-left: auto;
+    }
+
+    .device-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 5px;
+      background: none;
+      border: none;
+      color: var(--lovable-text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+
+    .device-btn.active { color: var(--lovable-text); background: var(--lovable-surface-2); }
+
+    .preview-content {
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+    }
+
+    /* The actual site preview and code panel */
+    .split-view {
+      display: flex;
+      flex: 1;
+    }
+
+    .site-preview {
+      flex: 1;
+      background: #fff;
+      overflow-y: auto;
+    }
+
+    .code-panel {
+      width: 480px;
+      background: #1a1a2e;
+      border-left: 1px solid var(--lovable-border);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .code-tabs {
+      display: flex;
+      background: #12121f;
+      border-bottom: 1px solid var(--lovable-border);
+      overflow-x: auto;
+    }
+
+    .code-tab {
+      padding: 8px 16px;
+      font-size: 12px;
+      color: var(--lovable-text-muted);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s;
+    }
+
+    .code-tab.active {
+      color: var(--lovable-text);
+      border-bottom-color: var(--lovable-accent);
+    }
+
+    .code-tab .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    .dot.tsx { background: #3b82f6; }
+    .dot.css { background: #ec4899; }
+    .dot.ts { background: #22c55e; }
+
+    .code-content {
+      flex: 1;
+      overflow: auto;
+      padding: 16px;
+      font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+      font-size: 12px;
+      line-height: 1.7;
+      color: #d4d4d8;
+    }
+
+    .code-content::-webkit-scrollbar { width: 6px; }
+    .code-content::-webkit-scrollbar-track { background: transparent; }
+    .code-content::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+
+    .line {
+      display: flex;
+      min-height: 20px;
+    }
+
+    .line-num {
+      width: 36px;
+      text-align: right;
+      padding-right: 12px;
+      color: #4a4a5a;
+      user-select: none;
+      flex-shrink: 0;
+    }
+
+    .line-code { flex: 1; white-space: pre; }
+
+    .kw { color: #c678dd; }
+    .fn { color: #61afef; }
+    .str { color: #98c379; }
+    .cmp { color: #e5c07b; }
+    .tag { color: #e06c75; }
+    .attr { color: #d19a66; }
+    .cmt { color: #5c6370; font-style: italic; }
+    .num { color: #d19a66; }
+    .op { color: #abb2bf; }
+    .type { color: #61afef; }
+    .prop { color: #e06c75; }
+    .val { color: #98c379; }
+
+    /* Photography site preview styles */
+    .photo-site {
+      font-family: 'Inter', sans-serif;
+      color: #1a1a1a;
+    }
+
+    .photo-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 40px;
+      background: #fff;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .photo-nav-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.5px;
+      color: #1a1a1a;
+    }
+
+    .photo-nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .photo-nav-links li {
+      font-size: 13px;
+      font-weight: 500;
+      color: #666;
+      cursor: pointer;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .photo-nav-links li.active { color: #1a1a1a; }
+
+    .photo-nav-cta {
+      padding: 8px 20px;
+      background: #1a1a1a;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    .photo-hero {
+      position: relative;
+      height: 480px;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .photo-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 30% 50%, rgba(244, 114, 182, 0.12) 0%, transparent 60%),
+        radial-gradient(ellipse at 70% 30%, rgba(167, 139, 250, 0.1) 0%, transparent 50%);
+    }
+
+    .photo-hero-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 8px;
+      position: absolute;
+      inset: 20px;
+      opacity: 0.2;
+    }
+
+    .photo-hero-grid div {
+      border-radius: 8px;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .photo-hero-grid div:nth-child(1) {
+      grid-row: span 2;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    .photo-hero-grid div:nth-child(2) {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    }
+    .photo-hero-grid div:nth-child(3) {
+      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    }
+    .photo-hero-grid div:nth-child(4) {
+      background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    }
+    .photo-hero-grid div:nth-child(5) {
+      background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    }
+
+    .photo-hero-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      color: #fff;
+    }
+
+    .photo-hero-content h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 48px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      letter-spacing: -1px;
+    }
+
+    .photo-hero-content p {
+      font-size: 16px;
+      color: rgba(255,255,255,0.7);
+      font-weight: 300;
+      margin-bottom: 28px;
+    }
+
+    .photo-hero-btns {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .photo-hero-btns button {
+      padding: 12px 28px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      transition: all 0.2s;
+    }
+
+    .photo-btn-primary {
+      background: #fff;
+      color: #1a1a1a;
+      border: none;
+    }
+
+    .photo-btn-secondary {
+      background: transparent;
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    .photo-gallery {
+      padding: 60px 40px;
+      background: #fafafa;
+    }
+
+    .photo-gallery h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      text-align: center;
+      margin-bottom: 8px;
+      color: #1a1a1a;
+    }
+
+    .photo-gallery .subtitle {
+      text-align: center;
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 36px;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .gallery-item {
+      aspect-ratio: 4/3;
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .gallery-item:nth-child(1) { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); grid-row: span 2; aspect-ratio: auto; }
+    .gallery-item:nth-child(2) { background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%); }
+    .gallery-item:nth-child(3) { background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%); }
+    .gallery-item:nth-child(4) { background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%); }
+    .gallery-item:nth-child(5) { background: linear-gradient(135deg, #fdcbf1 0%, #e6dee9 100%); }
+
+    .gallery-item-label {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      padding: 4px 10px;
+      background: rgba(0,0,0,0.5);
+      color: #fff;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      backdrop-filter: blur(4px);
+    }
+
+    .photo-services {
+      padding: 60px 40px;
+      background: #fff;
+    }
+
+    .photo-services h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .service-card {
+      padding: 28px 24px;
+      border: 1px solid #eee;
+      border-radius: 10px;
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    .service-card:hover {
+      border-color: #ddd;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    }
+
+    .service-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      margin: 0 auto 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .service-card h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .service-card p {
+      font-size: 13px;
+      color: #888;
+      line-height: 1.5;
+    }
+
+    .service-card .price {
+      margin-top: 16px;
+      font-size: 20px;
+      font-weight: 700;
+      color: #1a1a1a;
+    }
+
+    .service-card .price span {
+      font-size: 13px;
+      font-weight: 400;
+      color: #888;
+    }
+
+    .photo-footer {
+      padding: 32px 40px;
+      background: #1a1a1a;
+      color: rgba(255,255,255,0.5);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+    }
+
+    .photo-footer-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      color: #fff;
+    }
+
+    /* Typing animation */
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .typing-cursor {
+      display: inline-block;
+      width: 2px;
+      height: 14px;
+      background: var(--lovable-accent);
+      margin-left: 2px;
+      animation: blink 1s infinite;
+      vertical-align: text-bottom;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 500;
+      margin-top: 8px;
+    }
+
+    .status-badge.success {
+      background: rgba(34, 197, 94, 0.1);
+      color: var(--lovable-green);
+    }
+
+    .status-badge .pulse {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--lovable-green);
+    }
+
+    /* Stripe modal overlay */
+    .stripe-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      backdrop-filter: blur(4px);
+    }
+
+    .stripe-overlay.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .stripe-modal {
+      width: 460px;
+      background: #fff;
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+      transform: scale(0.95) translateY(10px);
+      transition: transform 0.3s ease;
+      font-family: 'Inter', -apple-system, sans-serif;
+      color: #1a1a1a;
+    }
+
+    .stripe-overlay.visible .stripe-modal {
+      transform: scale(1) translateY(0);
+    }
+
+    .stripe-modal-header {
+      padding: 28px 36px 0;
+    }
+
+    .stripe-logo {
+      font-size: 28px;
+      font-weight: 700;
+      color: #635bff;
+      letter-spacing: -0.5px;
+      margin-bottom: 28px;
+    }
+
+    .stripe-modal-body {
+      padding: 0 36px 28px;
+    }
+
+    .stripe-modal-title {
+      font-size: 22px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 8px;
+    }
+
+    .stripe-modal-subtitle {
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 24px;
+      padding: 10px 14px;
+      background: #f9fafb;
+      border-radius: 6px;
+      border: 1px solid #f0f0f0;
+    }
+
+    .stripe-google-btn {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      background: #fff;
+      font-size: 14px;
+      font-weight: 500;
+      color: #1a1a1a;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background 0.15s, border-color 0.15s;
+      font-family: inherit;
+    }
+
+    .stripe-google-btn:hover {
+      background: #f9fafb;
+      border-color: #d1d5db;
+    }
+
+    .stripe-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 20px 0;
+      font-size: 12px;
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .stripe-divider::before,
+    .stripe-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #e5e7eb;
+    }
+
+    .stripe-field {
+      margin-bottom: 16px;
+    }
+
+    .stripe-field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: #374151;
+      margin-bottom: 6px;
+    }
+
+    .stripe-field input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      font-size: 14px;
+      font-family: inherit;
+      color: #1a1a1a;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      background: #fff;
+    }
+
+    .stripe-field input:focus {
+      border-color: #635bff;
+      box-shadow: 0 0 0 3px rgba(99, 91, 255, 0.12);
+    }
+
+    .stripe-field input::placeholder {
+      color: #9ca3af;
+    }
+
+    .stripe-submit {
+      width: 100%;
+      padding: 11px;
+      border: none;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #635bff 0%, #a855f7 50%, #ec4899 100%);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      margin-top: 4px;
+      transition: opacity 0.15s;
+    }
+
+    .stripe-submit:hover { opacity: 0.92; }
+
+    .stripe-alt-link {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    .stripe-alt-link a {
+      color: #635bff;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .stripe-alt-link a:hover { text-decoration: underline; }
+
+    .stripe-modal-footer {
+      padding: 16px 36px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #9ca3af;
+      border-top: 1px solid #f3f4f6;
+    }
+
+    .stripe-modal-footer a {
+      color: #9ca3af;
+      text-decoration: none;
+    }
+
+    .stripe-modal-footer a:hover { color: #6b7280; }
+
+    .stripe-gradient-bl {
+      position: absolute;
+      bottom: -30px;
+      left: -30px;
+      width: 140px;
+      height: 140px;
+      background: linear-gradient(135deg, #fbbf24, #f59e0b, #ec4899, #a855f7);
+      border-radius: 50%;
+      opacity: 0.3;
+      filter: blur(30px);
+      pointer-events: none;
+    }
+
+    .stripe-gradient-br {
+      position: absolute;
+      bottom: -20px;
+      right: -20px;
+      width: 120px;
+      height: 120px;
+      background: linear-gradient(135deg, #ec4899, #8b5cf6, #3b82f6);
+      border-radius: 50%;
+      opacity: 0.3;
+      filter: blur(25px);
+      pointer-events: none;
+    }
+
+    .stripe-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: none;
+      background: #f3f4f6;
+      color: #6b7280;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      transition: background 0.15s;
+      z-index: 2;
+    }
+
+    .stripe-close:hover { background: #e5e7eb; }
+
+    /* Stripe step transitions */
+    .stripe-step {
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    .stripe-step.step-hidden {
+      display: none;
+    }
+
+    .stripe-step.step-entering {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+
+    /* Permissions step styles */
+    .perm-account-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      background: #f9fafb;
+      border: 1px solid #f0f0f0;
+      border-radius: 8px;
+      margin-bottom: 24px;
+    }
+
+    .perm-account-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #f472b6, #a78bfa);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .perm-account-info {
+      flex: 1;
+    }
+
+    .perm-account-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .perm-account-email {
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    .perm-check-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #22c55e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .perm-section-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+    }
+
+    .perm-services {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .perm-service-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: #f3f0ff;
+      border: 1px solid #e0d7ff;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #5b21b6;
+    }
+
+    .perm-service-badge .svc-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .perm-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-bottom: 16px;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .perm-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      background: #fff;
+      border-bottom: 1px solid #f3f4f6;
+    }
+
+    .perm-item:last-child {
+      border-bottom: none;
+    }
+
+    .perm-item-checkbox {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+      background: #635bff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .perm-item-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 16px;
+    }
+
+    .perm-item-text {
+      flex: 1;
+    }
+
+    .perm-item-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: #1a1a1a;
+    }
+
+    .perm-item-desc {
+      font-size: 12px;
+      color: #6b7280;
+      margin-top: 1px;
+    }
+
+    .perm-read-badge {
+      padding: 3px 8px;
+      background: #ecfdf5;
+      color: #059669;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      flex-shrink: 0;
+    }
+
+    .perm-notice {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 12px 14px;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 12px;
+      line-height: 1.5;
+      color: #166534;
+    }
+
+    .perm-notice-icon {
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .perm-item-checkbox.denied {
+      background: #e5e7eb;
+    }
+
+    .perm-item.denied {
+      opacity: 0.55;
+    }
+
+    .perm-denied-badge {
+      padding: 3px 8px;
+      background: #fef2f2;
+      color: #dc2626;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      flex-shrink: 0;
+    }
+
+    .perm-allowed-badge {
+      padding: 3px 8px;
+      background: #ecfdf5;
+      color: #059669;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      flex-shrink: 0;
+    }
+
+    .svc-connect-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: var(--lovable-surface-2);
+      color: var(--lovable-text);
+      border: 1px solid var(--lovable-border);
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.15s;
+      width: fit-content;
+    }
+
+    .svc-connect-btn:hover { background: #252525; }
+
+    .svc-connect-btn.connected {
+      opacity: 0.5;
+      pointer-events: none;
+      text-decoration: line-through;
+    }
+
+    /* Your Business overlay */
+    .biz-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.25s;
+    }
+
+    .biz-overlay.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .biz-panel {
+      width: 520px;
+      max-height: 85vh;
+      overflow-y: auto;
+      background: #1a1a1a;
+      border-radius: 14px;
+      border: 1px solid #2a2a2a;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+      padding: 28px;
+      color: #e5e7eb;
+      font-family: 'Inter', -apple-system, sans-serif;
+    }
+
+    .biz-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+
+    .biz-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .biz-close {
+      background: none;
+      border: none;
+      color: #6b7280;
+      font-size: 22px;
+      cursor: pointer;
+      padding: 4px;
+      line-height: 1;
+    }
+
+    .biz-close:hover { color: #fff; }
+
+    .biz-revenue {
+      background: #111;
+      border: 1px solid #2a2a2a;
+      border-radius: 10px;
+      padding: 18px;
+      margin-bottom: 20px;
+    }
+
+    .biz-revenue-label {
+      font-size: 12px;
+      color: #9ca3af;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .biz-revenue-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .biz-revenue-period {
+      font-size: 12px;
+      color: #6b7280;
+      margin-left: 6px;
+      font-weight: 400;
+    }
+
+    .biz-tools {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    .biz-tool {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 10px;
+      background: #222;
+      border-radius: 6px;
+      font-size: 12px;
+      color: #d1d5db;
+    }
+
+    .biz-tool-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #22c55e;
+    }
+
+    .biz-insight {
+      background: #111;
+      border: 1px solid #2a2a2a;
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+
+    .biz-insight-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .biz-insight-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #635bff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .biz-insight-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #a78bfa;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .biz-insight-text {
+      font-size: 13px;
+      color: #d1d5db;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    .biz-insight-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 14px;
+      background: #635bff;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+
+    .biz-insight-btn:hover { opacity: 0.9; }
+
+    .your-biz-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: linear-gradient(135deg, #635bff, #a78bfa);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      margin-top: 10px;
+    }
+
+    .your-biz-btn:hover { opacity: 0.9; }
+
+    .msg.hidden {
+      display: none;
+    }
+
+    @keyframes fadeInMsg {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .msg.animate-in {
+      animation: fadeInMsg 0.3s ease forwards;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <div class="topbar">
+    <div class="topbar-logo">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#7c3aed"/>
+      </svg>
+      lovable
+    </div>
+    <div class="topbar-divider"></div>
+    <div class="topbar-project">
+      Project / <span>sarah-lens-photography</span>
+    </div>
+    <div class="topbar-actions">
+      <button class="topbar-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+        Share
+      </button>
+      <button class="topbar-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Settings
+      </button>
+      <button class="topbar-btn primary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
+        Deploy
+      </button>
+      <div class="topbar-avatar">SL</div>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="main-layout">
+
+    <!-- Chat Panel -->
+    <div class="chat-panel">
+      <div class="chat-header">
+        <div class="chat-tab active">Chat</div>
+        <div class="chat-tab">History</div>
+      </div>
+
+      <div class="chat-messages">
+        <!-- User message 1 -->
+        <div class="msg hidden" id="userMsg1">
+          <div class="msg-avatar user">SL</div>
+          <div class="msg-content">
+            <div class="msg-name">Sarah Lens <span class="timestamp">10:23 AM</span></div>
+            <div class="msg-text">
+              Build me a photography portfolio site for my business "Sarah Lens Photography." I specialize in portraits, weddings, and nature photography. I need a hero section, gallery, and pricing cards for my services. Use a modern, minimal aesthetic with elegant typography.
+            </div>
+          </div>
+        </div>
+
+        <!-- AI message 1 -->
+        <div class="msg hidden" id="aiMsg1">
+          <div class="msg-avatar ai">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#fff"/></svg>
+          </div>
+          <div class="msg-content">
+            <div class="msg-name">Lovable <span class="timestamp">10:23 AM</span></div>
+            <div class="msg-text">
+              I'll build your photography portfolio with a stunning hero, a masonry-style gallery, and clean pricing cards. I'm using <code>Playfair Display</code> for headings and <code>Inter</code> for body text to give it that elegant, editorial feel.
+            </div>
+            <div class="msg-files">
+              <div class="msg-file">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                src/pages/Index.tsx
+              </div>
+              <div class="msg-file">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                src/components/Hero.tsx
+              </div>
+              <div class="msg-file">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                src/components/Gallery.tsx
+              </div>
+              <div class="msg-file">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                src/components/Pricing.tsx
+              </div>
+            </div>
+            <div class="status-badge success">
+              <div class="pulse"></div>
+              Built successfully
+            </div>
+          </div>
+        </div>
+
+        <!-- User message 2 -->
+        <div class="msg hidden" id="userMsg2">
+          <div class="msg-avatar user">SL</div>
+          <div class="msg-content">
+            <div class="msg-name">Sarah Lens <span class="timestamp">10:25 AM</span></div>
+            <div class="msg-text">
+              This looks amazing! Can you also add a booking section? I want clients to be able to schedule sessions directly on the site.
+            </div>
+          </div>
+        </div>
+
+        <!-- AI message 2 -->
+        <div class="msg hidden" id="aiMsg2">
+          <div class="msg-avatar ai">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#fff"/></svg>
+          </div>
+          <div class="msg-content">
+            <div class="msg-name">Lovable <span class="timestamp">10:25 AM</span></div>
+            <div class="msg-text">
+              I can do that! You might also need a way to collect payments for photography sessions. Connect Stripe to accept bookings and sell prints, you can also use Stripe's app marketplace to integrate scheduling and business management tools.
+            </div>
+            <div style="margin-top: 10px;">
+              <button id="connectStripeBtn" style="
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 8px 16px;
+                background: #635bff;
+                color: #fff;
+                border: none;
+                border-radius: 6px;
+                font-size: 13px;
+                font-weight: 500;
+                font-family: inherit;
+                cursor: pointer;
+                transition: opacity 0.15s;
+              " onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                Connect Stripe
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- AI message 3: Stripe connected (hidden initially) -->
+        <div class="msg hidden" id="aiMsg3">
+          <div class="msg-avatar ai">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#fff"/></svg>
+          </div>
+          <div class="msg-content">
+            <div class="msg-name">Lovable <span class="timestamp">10:26 AM</span></div>
+            <div class="msg-text">
+              Stripe connected! I'm now setting up your payment services...
+            </div>
+            <div class="status-badge success" style="margin-top: 6px;">
+              <div class="pulse"></div>
+              Stripe connected
+            </div>
+          </div>
+        </div>
+
+        <!-- AI message 4: confirmation (hidden initially) -->
+        <div class="msg hidden" id="aiMsg4">
+          <div class="msg-avatar ai">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#fff"/></svg>
+          </div>
+          <div class="msg-content">
+            <div class="msg-name">Lovable <span class="timestamp">10:27 AM</span></div>
+            <div class="msg-text">
+              You're all set! Your Stripe account is now connected to Lovable. This means I can help you get set up with services like <code>Acuity Scheduling</code>, <code>17hats</code>, and others — all through your Stripe account.
+            </div>
+            <div class="msg-files" style="margin-top: 12px;">
+              <div class="msg-file" style="background: rgba(34,197,94,0.08); border-color: rgba(34,197,94,0.15); color: #16a34a;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                Stripe account connected to Lovable
+              </div>
+            </div>
+            <div class="msg-text" style="margin-top: 10px;">
+              You can manage which services have access and review permissions anytime from your Stripe dashboard.
+            </div>
+            <div style="margin-top: 12px;">
+              <button id="visitDashboardBtn" style="
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 8px 16px;
+                background: #635bff;
+                color: #fff;
+                border: none;
+                border-radius: 6px;
+                font-size: 13px;
+                font-weight: 500;
+                font-family: inherit;
+                cursor: pointer;
+                transition: opacity 0.15s;
+              " onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                Visit Stripe Dashboard
+              </button>
+            </div>
+            <div id="serviceButtons" style="margin-top: 14px; display: flex; flex-direction: column; gap: 8px;">
+              <button class="svc-connect-btn" id="connectAcuityBtn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                Connect Acuity Scheduling with Stripe
+              </button>
+              <button class="svc-connect-btn" id="connectPixiesetBtn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                Connect Pixieset with Stripe
+              </button>
+              <button class="svc-connect-btn" id="connect17hatsBtn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                Connect 17hats with Stripe
+              </button>
+            </div>
+            <div class="status-badge success">
+              <div class="pulse"></div>
+              Account connected
+            </div>
+          </div>
+        </div>
+
+        <!-- Acuity connected message -->
+        <div class="msg hidden" id="acuityMsg">
+          <div class="msg-avatar ai">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#fff"/></svg>
+          </div>
+          <div class="msg-content">
+            <div class="msg-name">Lovable <span class="timestamp">10:28 AM</span></div>
+            <div class="msg-text">
+              Acuity is connected! I have updated your booking page — clients will now see real-time availability.
+            </div>
+            <div class="msg-files" style="margin-top: 8px;">
+              <div class="msg-file" style="background: rgba(34,197,94,0.08); border-color: rgba(34,197,94,0.15); color: #16a34a;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                Acuity Scheduling connected
+              </div>
+              <div class="msg-file">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                src/components/BookingWidget.tsx
+              </div>
+            </div>
+            <div class="status-badge success">
+              <div class="pulse"></div>
+              Site updated
+            </div>
+          </div>
+        </div>
+
+        <!-- Pixieset connected message -->
+        <div class="msg hidden" id="pixiesetMsg">
+          <div class="msg-avatar ai">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#fff"/></svg>
+          </div>
+          <div class="msg-content">
+            <div class="msg-name">Lovable <span class="timestamp">10:29 AM</span></div>
+            <div class="msg-text">
+              Pixieset connected! I have added a <code>Client Galleries</code> link to your site navigation.
+            </div>
+            <div class="msg-files" style="margin-top: 8px;">
+              <div class="msg-file" style="background: rgba(34,197,94,0.08); border-color: rgba(34,197,94,0.15); color: #16a34a;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                Pixieset connected
+              </div>
+              <div class="msg-file">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                src/components/Navbar.tsx
+              </div>
+            </div>
+            <div class="status-badge success">
+              <div class="pulse"></div>
+              Navigation updated
+            </div>
+          </div>
+        </div>
+
+        <!-- 17hats connected message -->
+        <div class="msg hidden" id="hatsMsg">
+          <div class="msg-avatar ai">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#fff"/></svg>
+          </div>
+          <div class="msg-content">
+            <div class="msg-name">Lovable <span class="timestamp">10:30 AM</span></div>
+            <div class="msg-text">
+              17hats connected! I have updated your contact form to feed leads into your 17hats CRM.
+            </div>
+            <div class="msg-files" style="margin-top: 8px;">
+              <div class="msg-file" style="background: rgba(34,197,94,0.08); border-color: rgba(34,197,94,0.15); color: #16a34a;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                17hats CRM connected
+              </div>
+              <div class="msg-file">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                src/components/ContactForm.tsx
+              </div>
+            </div>
+            <div class="status-badge success">
+              <div class="pulse"></div>
+              Contact form updated
+            </div>
+          </div>
+        </div>
+
+        <!-- Your business message -->
+        <div class="msg hidden" id="bizMsg">
+          <div class="msg-avatar ai">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#fff"/></svg>
+          </div>
+          <div class="msg-content">
+            <div class="msg-name">Lovable <span class="timestamp">10:31 AM</span></div>
+            <div class="msg-text">
+              All your tools are connected! I've created a business dashboard where you can see your revenue, connected services, and get insights about your site.
+            </div>
+            <button class="your-biz-btn" id="openBizBtn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+              Your business
+            </button>
+            <div class="status-badge success" style="margin-top: 8px;">
+              <div class="pulse"></div>
+              Dashboard ready
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-input-area">
+        <div class="chat-input-box" id="chatInputBox">
+          <textarea class="chat-input" id="chatInput" rows="4" placeholder="Ask Lovable to build something...">Build me a photography portfolio site for my business "Sarah Lens Photography." I specialize in portraits, weddings, and nature photography. I need a hero section, gallery, and pricing cards for my services. Use a modern, minimal aesthetic with elegant typography.</textarea>
+          <button class="chat-send" id="chatSendBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Preview Panel -->
+    <div class="preview-panel">
+      <div class="preview-toolbar">
+        <div class="preview-tab-group">
+          <button class="preview-tab active">Preview</button>
+          <button class="preview-tab" id="codeToggle">Code</button>
+        </div>
+        <div class="preview-url">
+          <svg class="lock" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          sarah-lens-photography.lovable.app
+        </div>
+        <div class="preview-device-btns">
+          <button class="device-btn active" title="Desktop">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </button>
+          <button class="device-btn" title="Tablet">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+          </button>
+          <button class="device-btn" title="Mobile">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="preview-content">
+        <div class="split-view">
+          <!-- Live Preview -->
+          <div class="site-preview" id="sitePreview">
+            <div class="photo-site" id="photoSite" style="display:none;">
+              <!-- Navbar -->
+              <nav class="photo-nav">
+                <div class="photo-nav-brand">Sarah Lens</div>
+                <ul class="photo-nav-links">
+                  <li class="active">Home</li>
+                  <li>Portfolio</li>
+                  <li>Services</li>
+                  <li>About</li>
+                  <li>Contact</li>
+                </ul>
+                <button class="photo-nav-cta">Book a Session</button>
+              </nav>
+
+              <!-- Hero -->
+              <div class="photo-hero">
+                <div class="photo-hero-grid">
+                  <div></div><div></div><div></div><div></div><div></div>
+                </div>
+                <div class="photo-hero-content">
+                  <h1>Sarah Lens Photography</h1>
+                  <p>Capturing life's most beautiful moments with artistry and heart</p>
+                  <div class="photo-hero-btns">
+                    <button class="photo-btn-primary">View Portfolio</button>
+                    <button class="photo-btn-secondary">Book a Session</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Gallery -->
+              <div class="photo-gallery">
+                <h2>Featured Work</h2>
+                <p class="subtitle">A curated selection of recent sessions</p>
+                <div class="gallery-grid">
+                  <div class="gallery-item">
+                    <div class="gallery-item-label">Portraits</div>
+                  </div>
+                  <div class="gallery-item">
+                    <div class="gallery-item-label">Weddings</div>
+                  </div>
+                  <div class="gallery-item">
+                    <div class="gallery-item-label">Nature</div>
+                  </div>
+                  <div class="gallery-item">
+                    <div class="gallery-item-label">Events</div>
+                  </div>
+                  <div class="gallery-item">
+                    <div class="gallery-item-label">Editorial</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Services / Pricing -->
+              <div class="photo-services">
+                <h2>Services & Pricing</h2>
+                <div class="services-grid">
+                  <div class="service-card">
+                    <div class="service-icon" style="background: #fef3c7;">📸</div>
+                    <h3>Portrait Session</h3>
+                    <p>1-hour session at a location of your choice. Includes 20 edited digital images.</p>
+                    <div class="price">$350 <span>/ session</span></div>
+                  </div>
+                  <div class="service-card">
+                    <div class="service-icon" style="background: #fce7f3;">💒</div>
+                    <h3>Wedding Package</h3>
+                    <p>Full-day coverage with a second shooter. 300+ edited photos and an online gallery.</p>
+                    <div class="price">$3,500 <span>/ event</span></div>
+                  </div>
+                  <div class="service-card">
+                    <div class="service-icon" style="background: #d1fae5;">🌿</div>
+                    <h3>Nature & Landscape</h3>
+                    <p>Fine art prints available. Custom commissions for home and office decor.</p>
+                    <div class="price">$200 <span>/ print</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Footer -->
+              <div class="photo-footer">
+                <div class="photo-footer-brand">Sarah Lens</div>
+                <div>&copy; 2026 Sarah Lens Photography. All rights reserved.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Code Panel -->
+          <div class="code-panel" id="codePanel" style="display:none;">
+            <div class="code-tabs">
+              <div class="code-tab active" data-file="index">
+                <div class="dot tsx"></div>
+                Index.tsx
+              </div>
+              <div class="code-tab" data-file="hero">
+                <div class="dot tsx"></div>
+                Hero.tsx
+              </div>
+              <div class="code-tab" data-file="gallery">
+                <div class="dot tsx"></div>
+                Gallery.tsx
+              </div>
+              <div class="code-tab" data-file="pricing">
+                <div class="dot tsx"></div>
+                Pricing.tsx
+              </div>
+            </div>
+            <div class="code-content" id="codeContent"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stripe Login Modal -->
+  <div class="stripe-overlay" id="stripeOverlay">
+    <div class="stripe-modal">
+      <button class="stripe-close" id="stripeClose">&times;</button>
+      <div class="stripe-modal-header">
+        <div class="stripe-logo">stripe</div>
+      </div>
+      <div class="stripe-modal-body">
+        <!-- Step 1: Sign in -->
+        <div class="stripe-step" id="stripeStep1">
+          <div class="stripe-modal-title">Sign in to your Stripe account</div>
+          <div class="stripe-modal-subtitle">Sign in to claim your sandbox.</div>
+
+          <button class="stripe-google-btn">
+            <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+            Sign in with Google
+          </button>
+
+          <div class="stripe-divider">or</div>
+
+          <div class="stripe-field">
+            <label>Email</label>
+            <input type="email" placeholder="sarah@example.com" value="sarah@example.com">
+          </div>
+
+          <div class="stripe-field">
+            <label>Password</label>
+            <input type="password" placeholder="Enter your password" value="••••••••••">
+          </div>
+
+          <button class="stripe-submit" id="stripeSignInBtn">Sign in</button>
+
+          <div class="stripe-alt-link">
+            Don't have an account? <a href="#">Sign up</a>
+          </div>
+        </div>
+
+        <!-- Step 2: Permissions confirmation -->
+        <div class="stripe-step step-hidden" id="stripeStep2">
+          <div class="stripe-modal-title" style="margin-bottom: 4px;">Lovable wants to connect to your Stripe account</div>
+
+          <div class="perm-account-bar">
+            <div class="perm-account-avatar">SL</div>
+            <div class="perm-account-info">
+              <div class="perm-account-name">Sarah Lens Photography</div>
+              <div class="perm-account-email">sarah@example.com</div>
+            </div>
+            <div class="perm-check-icon">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+          </div>
+
+          <div class="perm-section-label">Allowed</div>
+          <div class="perm-list">
+            <div class="perm-item">
+              <div class="perm-item-checkbox">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="perm-item-icon" style="background: #eff6ff;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+              </div>
+              <div class="perm-item-text">
+                <div class="perm-item-title">Create payments on your behalf</div>
+                <div class="perm-item-desc">Process charges and payment intents</div>
+              </div>
+              <div class="perm-allowed-badge">Allowed</div>
+            </div>
+            <div class="perm-item">
+              <div class="perm-item-checkbox">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="perm-item-icon" style="background: #f3e8ff;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+              </div>
+              <div class="perm-item-text">
+                <div class="perm-item-title">Manage products</div>
+                <div class="perm-item-desc">Create and update product catalog and prices</div>
+              </div>
+              <div class="perm-allowed-badge">Allowed</div>
+            </div>
+            <div class="perm-item">
+              <div class="perm-item-checkbox">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="perm-item-icon" style="background: #fef3c7;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+              </div>
+              <div class="perm-item-text">
+                <div class="perm-item-title">Receive webhook notifications</div>
+                <div class="perm-item-desc">Listen for events on your account</div>
+              </div>
+              <div class="perm-allowed-badge">Allowed</div>
+            </div>
+          </div>
+
+          <div class="perm-notice" style="margin-top: 16px;">
+            <svg class="perm-notice-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <div>
+              <strong>Your funds are protected.</strong> Lovable cannot access your balance, payouts, or funds. You can revoke access anytime from your Stripe dashboard.
+            </div>
+          </div>
+
+          <button class="stripe-submit" id="stripeConfirmBtn">Allow access</button>
+
+          <div class="stripe-alt-link">
+            <a href="#" id="stripeCancelPerms">Cancel</a>
+          </div>
+        </div>
+      </div>
+      <div class="stripe-modal-footer">
+        <span>&copy; Stripe</span>
+        <a href="#">Privacy &amp; terms</a>
+      </div>
+      <div class="stripe-gradient-bl"></div>
+      <div class="stripe-gradient-br"></div>
+    </div>
+  </div>
+
+  <!-- Service consent overlay (reusable for Acuity, Pixieset, 17hats) -->
+  <div class="stripe-overlay" id="svcOverlay">
+    <div class="stripe-modal">
+      <button class="stripe-close" id="svcClose">&times;</button>
+      <div class="stripe-modal-header">
+        <div class="stripe-logo">stripe</div>
+      </div>
+      <div class="stripe-modal-body">
+        <div class="stripe-step" id="svcStep">
+          <div class="stripe-modal-title" id="svcTitle" style="margin-bottom: 4px;"></div>
+
+          <div class="perm-account-bar">
+            <div class="perm-account-avatar">SC</div>
+            <div class="perm-account-info">
+              <div class="perm-account-name">Sarah Chen Photography</div>
+              <div class="perm-account-email">acct_sarah</div>
+            </div>
+            <div class="perm-check-icon">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+          </div>
+
+          <div class="perm-section-label">Allowed</div>
+          <div class="perm-list" id="svcPermList"></div>
+
+          <div class="perm-notice" style="margin-top: 16px;">
+            <svg class="perm-notice-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <div>
+              <strong>Your funds are protected.</strong> This app cannot access your balance, payouts, or funds. You can revoke access anytime from your Stripe dashboard.
+            </div>
+          </div>
+
+          <button class="stripe-submit" id="svcAllowBtn">Allow</button>
+
+          <div class="stripe-alt-link">
+            <a href="#" id="svcCancelBtn">Cancel</a>
+          </div>
+        </div>
+      </div>
+      <div class="stripe-modal-footer">
+        <span>&copy; Stripe</span>
+        <a href="#">Privacy &amp; terms</a>
+      </div>
+      <div class="stripe-gradient-bl"></div>
+      <div class="stripe-gradient-br"></div>
+    </div>
+  </div>
+
+  <!-- Your Business overlay -->
+  <div class="biz-overlay" id="bizOverlay">
+    <div class="biz-panel">
+      <div class="biz-header">
+        <div class="biz-title">Your business</div>
+        <button class="biz-close" id="bizClose">&times;</button>
+      </div>
+
+      <div class="biz-revenue">
+        <div class="biz-revenue-label">Your Website Revenue</div>
+        <div class="biz-revenue-value">$65.00 <span class="biz-revenue-period">today</span></div>
+        <div class="biz-tools">
+          <div class="biz-tool"><div class="biz-tool-dot"></div> Acuity Connected</div>
+          <div class="biz-tool"><div class="biz-tool-dot"></div> Pixieset Connected</div>
+          <div class="biz-tool"><div class="biz-tool-dot"></div> 17hats Connected</div>
+        </div>
+        <a href="home.html" target="_blank" style="
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          margin-top: 14px;
+          padding: 7px 14px;
+          background: #635bff;
+          color: #fff;
+          border: none;
+          border-radius: 6px;
+          font-size: 12px;
+          font-weight: 500;
+          font-family: inherit;
+          text-decoration: none;
+          transition: opacity 0.15s;
+        " onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          See all your payments in Stripe
+        </a>
+      </div>
+
+      <div class="biz-insight">
+        <div class="biz-insight-header">
+          <div class="biz-insight-icon">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          </div>
+          <div class="biz-insight-label">Insight</div>
+        </div>
+        <div class="biz-insight-text">
+          Your booking page is getting 3x more traffic than your gallery page. Want me to make the gallery link more prominent in the nav?
+        </div>
+        <button class="biz-insight-btn">Yes</button>
+      </div>
+
+      <div class="biz-insight">
+        <div class="biz-insight-header">
+          <div class="biz-insight-icon">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          </div>
+          <div class="biz-insight-label">Insight</div>
+        </div>
+        <div class="biz-insight-text">
+          You connected 17hats last week. I can add a Contracts and Pricing page to your site that links to your 17hats workflow. Want me to build that?
+        </div>
+        <button class="biz-insight-btn">Yes</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const codeFiles = {
+      index: [
+        ['<span class="kw">import</span> <span class="cmp">Hero</span> <span class="kw">from</span> <span class="str">"@/components/Hero"</span>;', ''],
+        ['<span class="kw">import</span> <span class="cmp">Gallery</span> <span class="kw">from</span> <span class="str">"@/components/Gallery"</span>;', ''],
+        ['<span class="kw">import</span> <span class="cmp">Pricing</span> <span class="kw">from</span> <span class="str">"@/components/Pricing"</span>;', ''],
+        ['<span class="kw">import</span> <span class="cmp">Navbar</span> <span class="kw">from</span> <span class="str">"@/components/Navbar"</span>;', ''],
+        ['<span class="kw">import</span> <span class="cmp">Footer</span> <span class="kw">from</span> <span class="str">"@/components/Footer"</span>;', ''],
+        ['', ''],
+        ['<span class="kw">const</span> <span class="fn">Index</span> = () =&gt; {', ''],
+        ['  <span class="kw">return</span> (', ''],
+        ['    <span class="tag">&lt;div</span> <span class="attr">className</span>=<span class="str">"min-h-screen"</span><span class="tag">&gt;</span>', ''],
+        ['      <span class="tag">&lt;<span class="cmp">Navbar</span></span>', ''],
+        ['        <span class="attr">brand</span>=<span class="str">"Sarah Lens"</span>', ''],
+        ['        <span class="attr">links</span>={[<span class="str">"Home"</span>, <span class="str">"Portfolio"</span>, <span class="str">"Services"</span>, <span class="str">"About"</span>, <span class="str">"Contact"</span>]}', ''],
+        ['        <span class="attr">ctaText</span>=<span class="str">"Book a Session"</span>', ''],
+        ['      <span class="tag">/&gt;</span>', ''],
+        ['      <span class="tag">&lt;<span class="cmp">Hero</span></span>', ''],
+        ['        <span class="attr">title</span>=<span class="str">"Sarah Lens Photography"</span>', ''],
+        ['        <span class="attr">subtitle</span>=<span class="str">"Capturing life\'s most beautiful moments"</span>', ''],
+        ['        <span class="attr">primaryCta</span>=<span class="str">"View Portfolio"</span>', ''],
+        ['        <span class="attr">secondaryCta</span>=<span class="str">"Book a Session"</span>', ''],
+        ['      <span class="tag">/&gt;</span>', ''],
+        ['      <span class="tag">&lt;<span class="cmp">Gallery</span></span>', ''],
+        ['        <span class="attr">title</span>=<span class="str">"Featured Work"</span>', ''],
+        ['        <span class="attr">categories</span>={[', ''],
+        ['          <span class="str">"Portraits"</span>, <span class="str">"Weddings"</span>,', ''],
+        ['          <span class="str">"Nature"</span>, <span class="str">"Events"</span>, <span class="str">"Editorial"</span>', ''],
+        ['        ]}', ''],
+        ['      <span class="tag">/&gt;</span>', ''],
+        ['      <span class="tag">&lt;<span class="cmp">Pricing</span></span> <span class="attr">services</span>={<span class="fn">services</span>} <span class="tag">/&gt;</span>', ''],
+        ['      <span class="tag">&lt;<span class="cmp">Footer</span></span> <span class="attr">brand</span>=<span class="str">"Sarah Lens"</span> <span class="tag">/&gt;</span>', ''],
+        ['    <span class="tag">&lt;/div&gt;</span>', ''],
+        ['  );', ''],
+        ['};', ''],
+        ['', ''],
+        ['<span class="kw">export default</span> <span class="cmp">Index</span>;', ''],
+      ],
+      hero: [
+        ['<span class="kw">import</span> { <span class="cmp">Button</span> } <span class="kw">from</span> <span class="str">"@/components/ui/button"</span>;', ''],
+        ['', ''],
+        ['<span class="kw">interface</span> <span class="type">HeroProps</span> {', ''],
+        ['  <span class="prop">title</span>: <span class="type">string</span>;', ''],
+        ['  <span class="prop">subtitle</span>: <span class="type">string</span>;', ''],
+        ['  <span class="prop">primaryCta</span>: <span class="type">string</span>;', ''],
+        ['  <span class="prop">secondaryCta</span>?: <span class="type">string</span>;', ''],
+        ['}', ''],
+        ['', ''],
+        ['<span class="kw">const</span> <span class="fn">Hero</span> = ({ <span class="prop">title</span>, <span class="prop">subtitle</span>, <span class="prop">primaryCta</span>, <span class="prop">secondaryCta</span> }: <span class="type">HeroProps</span>) =&gt; {', ''],
+        ['  <span class="kw">return</span> (', ''],
+        ['    <span class="tag">&lt;section</span> <span class="attr">className</span>=<span class="str">"relative h-[600px] flex items-center</span>', ''],
+        ['      <span class="str">justify-center bg-gradient-to-br from-slate-900</span>', ''],
+        ['      <span class="str">via-indigo-950 to-blue-900 overflow-hidden"</span><span class="tag">&gt;</span>', ''],
+        ['', ''],
+        ['      <span class="cmt">{/* Background photo grid with opacity */}</span>', ''],
+        ['      <span class="tag">&lt;div</span> <span class="attr">className</span>=<span class="str">"absolute inset-5 grid grid-cols-3</span>', ''],
+        ['        <span class="str">grid-rows-2 gap-2 opacity-20"</span><span class="tag">&gt;</span>', ''],
+        ['        {<span class="cmp">Array</span>.<span class="fn">from</span>({ <span class="prop">length</span>: <span class="num">5</span> }).<span class="fn">map</span>((_, <span class="prop">i</span>) =&gt; (', ''],
+        ['          <span class="tag">&lt;div</span>', ''],
+        ['            <span class="attr">key</span>={<span class="prop">i</span>}', ''],
+        ['            <span class="attr">className</span>=<span class="str">"rounded-lg bg-gradient-to-br</span>', ''],
+        ['              <span class="str">from-white/10 to-white/5"</span>', ''],
+        ['          <span class="tag">/&gt;</span>', ''],
+        ['        ))}', ''],
+        ['      <span class="tag">&lt;/div&gt;</span>', ''],
+        ['', ''],
+        ['      <span class="tag">&lt;div</span> <span class="attr">className</span>=<span class="str">"relative z-10 text-center text-white"</span><span class="tag">&gt;</span>', ''],
+        ['        <span class="tag">&lt;h1</span> <span class="attr">className</span>=<span class="str">"font-playfair text-6xl mb-4"</span><span class="tag">&gt;</span>', ''],
+        ['          {<span class="prop">title</span>}', ''],
+        ['        <span class="tag">&lt;/h1&gt;</span>', ''],
+        ['        <span class="tag">&lt;p</span> <span class="attr">className</span>=<span class="str">"text-lg text-white/70 mb-8"</span><span class="tag">&gt;</span>', ''],
+        ['          {<span class="prop">subtitle</span>}', ''],
+        ['        <span class="tag">&lt;/p&gt;</span>', ''],
+        ['        <span class="tag">&lt;div</span> <span class="attr">className</span>=<span class="str">"flex gap-3 justify-center"</span><span class="tag">&gt;</span>', ''],
+        ['          <span class="tag">&lt;<span class="cmp">Button</span></span> <span class="attr">size</span>=<span class="str">"lg"</span><span class="tag">&gt;</span>{<span class="prop">primaryCta</span>}<span class="tag">&lt;/<span class="cmp">Button</span>&gt;</span>', ''],
+        ['          {<span class="prop">secondaryCta</span> &amp;&amp; (', ''],
+        ['            <span class="tag">&lt;<span class="cmp">Button</span></span> <span class="attr">variant</span>=<span class="str">"outline"</span> <span class="attr">size</span>=<span class="str">"lg"</span><span class="tag">&gt;</span>', ''],
+        ['              {<span class="prop">secondaryCta</span>}', ''],
+        ['            <span class="tag">&lt;/<span class="cmp">Button</span>&gt;</span>', ''],
+        ['          )}', ''],
+        ['        <span class="tag">&lt;/div&gt;</span>', ''],
+        ['      <span class="tag">&lt;/div&gt;</span>', ''],
+        ['    <span class="tag">&lt;/section&gt;</span>', ''],
+        ['  );', ''],
+        ['};', ''],
+        ['', ''],
+        ['<span class="kw">export default</span> <span class="cmp">Hero</span>;', ''],
+      ],
+      gallery: [
+        ['<span class="kw">import</span> { <span class="fn">useState</span> } <span class="kw">from</span> <span class="str">"react"</span>;', ''],
+        ['', ''],
+        ['<span class="kw">interface</span> <span class="type">GalleryProps</span> {', ''],
+        ['  <span class="prop">title</span>: <span class="type">string</span>;', ''],
+        ['  <span class="prop">categories</span>: <span class="type">string</span>[];', ''],
+        ['}', ''],
+        ['', ''],
+        ['<span class="kw">const</span> <span class="fn">Gallery</span> = ({ <span class="prop">title</span>, <span class="prop">categories</span> }: <span class="type">GalleryProps</span>) =&gt; {', ''],
+        ['  <span class="kw">const</span> [<span class="prop">active</span>, <span class="fn">setActive</span>] = <span class="fn">useState</span>(<span class="str">"all"</span>);', ''],
+        ['', ''],
+        ['  <span class="kw">return</span> (', ''],
+        ['    <span class="tag">&lt;section</span> <span class="attr">className</span>=<span class="str">"py-16 px-10 bg-gray-50"</span><span class="tag">&gt;</span>', ''],
+        ['      <span class="tag">&lt;h2</span> <span class="attr">className</span>=<span class="str">"font-playfair text-3xl</span>', ''],
+        ['        <span class="str">text-center mb-2"</span><span class="tag">&gt;</span>', ''],
+        ['        {<span class="prop">title</span>}', ''],
+        ['      <span class="tag">&lt;/h2&gt;</span>', ''],
+        ['      <span class="tag">&lt;p</span> <span class="attr">className</span>=<span class="str">"text-center text-gray-500</span>', ''],
+        ['        <span class="str">text-sm mb-10"</span><span class="tag">&gt;</span>', ''],
+        ['        A curated selection of recent sessions', ''],
+        ['      <span class="tag">&lt;/p&gt;</span>', ''],
+        ['', ''],
+        ['      <span class="tag">&lt;div</span> <span class="attr">className</span>=<span class="str">"grid grid-cols-3 gap-3</span>', ''],
+        ['        <span class="str">max-w-5xl mx-auto"</span><span class="tag">&gt;</span>', ''],
+        ['        {<span class="prop">categories</span>.<span class="fn">map</span>((<span class="prop">cat</span>, <span class="prop">i</span>) =&gt; (', ''],
+        ['          <span class="tag">&lt;div</span>', ''],
+        ['            <span class="attr">key</span>={<span class="prop">cat</span>}', ''],
+        ['            <span class="attr">className</span>={<span class="fn">cn</span>(', ''],
+        ['              <span class="str">"rounded-lg overflow-hidden relative</span>', ''],
+        ['              <span class="str">cursor-pointer group"</span>,', ''],
+        ['              <span class="prop">i</span> === <span class="num">0</span> &amp;&amp; <span class="str">"row-span-2"</span>', ''],
+        ['            )}', ''],
+        ['          <span class="tag">&gt;</span>', ''],
+        ['            <span class="tag">&lt;img</span>', ''],
+        ['              <span class="attr">src</span>={<span class="fn">getPhotoUrl</span>(<span class="prop">cat</span>)}', ''],
+        ['              <span class="attr">alt</span>={<span class="prop">cat</span>}', ''],
+        ['              <span class="attr">className</span>=<span class="str">"w-full h-full object-cover</span>', ''],
+        ['                <span class="str">group-hover:scale-105 transition"</span>', ''],
+        ['            <span class="tag">/&gt;</span>', ''],
+        ['            <span class="tag">&lt;span</span> <span class="attr">className</span>=<span class="str">"absolute bottom-3 left-3</span>', ''],
+        ['              <span class="str">bg-black/50 text-white text-xs px-2</span>', ''],
+        ['              <span class="str">py-1 rounded backdrop-blur"</span><span class="tag">&gt;</span>', ''],
+        ['              {<span class="prop">cat</span>}', ''],
+        ['            <span class="tag">&lt;/span&gt;</span>', ''],
+        ['          <span class="tag">&lt;/div&gt;</span>', ''],
+        ['        ))}', ''],
+        ['      <span class="tag">&lt;/div&gt;</span>', ''],
+        ['    <span class="tag">&lt;/section&gt;</span>', ''],
+        ['  );', ''],
+        ['};', ''],
+        ['', ''],
+        ['<span class="kw">export default</span> <span class="cmp">Gallery</span>;', ''],
+      ],
+      pricing: [
+        ['<span class="kw">import</span> { <span class="cmp">Card</span> } <span class="kw">from</span> <span class="str">"@/components/ui/card"</span>;', ''],
+        ['<span class="kw">import</span> { <span class="cmp">Button</span> } <span class="kw">from</span> <span class="str">"@/components/ui/button"</span>;', ''],
+        ['', ''],
+        ['<span class="kw">interface</span> <span class="type">Service</span> {', ''],
+        ['  <span class="prop">icon</span>: <span class="type">string</span>;', ''],
+        ['  <span class="prop">name</span>: <span class="type">string</span>;', ''],
+        ['  <span class="prop">description</span>: <span class="type">string</span>;', ''],
+        ['  <span class="prop">price</span>: <span class="type">number</span>;', ''],
+        ['  <span class="prop">unit</span>: <span class="type">string</span>;', ''],
+        ['}', ''],
+        ['', ''],
+        ['<span class="kw">const</span> <span class="prop">services</span>: <span class="type">Service</span>[] = [', ''],
+        ['  {', ''],
+        ['    <span class="prop">icon</span>: <span class="str">"📸"</span>,', ''],
+        ['    <span class="prop">name</span>: <span class="str">"Portrait Session"</span>,', ''],
+        ['    <span class="prop">description</span>: <span class="str">"1-hour session at a location of your</span>', ''],
+        ['      <span class="str">choice. Includes 20 edited digital images."</span>,', ''],
+        ['    <span class="prop">price</span>: <span class="num">350</span>,', ''],
+        ['    <span class="prop">unit</span>: <span class="str">"session"</span>,', ''],
+        ['  },', ''],
+        ['  {', ''],
+        ['    <span class="prop">icon</span>: <span class="str">"💒"</span>,', ''],
+        ['    <span class="prop">name</span>: <span class="str">"Wedding Package"</span>,', ''],
+        ['    <span class="prop">description</span>: <span class="str">"Full-day coverage with a second</span>', ''],
+        ['      <span class="str">shooter. 300+ edited photos."</span>,', ''],
+        ['    <span class="prop">price</span>: <span class="num">3500</span>,', ''],
+        ['    <span class="prop">unit</span>: <span class="str">"event"</span>,', ''],
+        ['  },', ''],
+        ['  {', ''],
+        ['    <span class="prop">icon</span>: <span class="str">"🌿"</span>,', ''],
+        ['    <span class="prop">name</span>: <span class="str">"Nature & Landscape"</span>,', ''],
+        ['    <span class="prop">description</span>: <span class="str">"Fine art prints. Custom commissions</span>', ''],
+        ['      <span class="str">for home and office decor."</span>,', ''],
+        ['    <span class="prop">price</span>: <span class="num">200</span>,', ''],
+        ['    <span class="prop">unit</span>: <span class="str">"print"</span>,', ''],
+        ['  },', ''],
+        ['];', ''],
+        ['', ''],
+        ['<span class="kw">const</span> <span class="fn">Pricing</span> = () =&gt; {', ''],
+        ['  <span class="kw">return</span> (', ''],
+        ['    <span class="tag">&lt;section</span> <span class="attr">className</span>=<span class="str">"py-16 px-10"</span><span class="tag">&gt;</span>', ''],
+        ['      <span class="tag">&lt;h2</span> <span class="attr">className</span>=<span class="str">"font-playfair text-3xl</span>', ''],
+        ['        <span class="str">text-center mb-10"</span><span class="tag">&gt;</span>', ''],
+        ['        Services &amp; Pricing', ''],
+        ['      <span class="tag">&lt;/h2&gt;</span>', ''],
+        ['      <span class="tag">&lt;div</span> <span class="attr">className</span>=<span class="str">"grid grid-cols-3 gap-5</span>', ''],
+        ['        <span class="str">max-w-5xl mx-auto"</span><span class="tag">&gt;</span>', ''],
+        ['        {<span class="prop">services</span>.<span class="fn">map</span>((<span class="prop">svc</span>) =&gt; (', ''],
+        ['          <span class="tag">&lt;<span class="cmp">Card</span></span> <span class="attr">key</span>={<span class="prop">svc</span>.<span class="prop">name</span>} <span class="attr">className</span>=<span class="str">"p-7 text-center</span>', ''],
+        ['            <span class="str">hover:shadow-lg transition"</span><span class="tag">&gt;</span>', ''],
+        ['            <span class="tag">&lt;div</span> <span class="attr">className</span>=<span class="str">"text-2xl mb-4"</span><span class="tag">&gt;</span>', ''],
+        ['              {<span class="prop">svc</span>.<span class="prop">icon</span>}', ''],
+        ['            <span class="tag">&lt;/div&gt;</span>', ''],
+        ['            <span class="tag">&lt;h3</span> <span class="attr">className</span>=<span class="str">"font-semibold text-lg mb-2"</span><span class="tag">&gt;</span>', ''],
+        ['              {<span class="prop">svc</span>.<span class="prop">name</span>}', ''],
+        ['            <span class="tag">&lt;/h3&gt;</span>', ''],
+        ['            <span class="tag">&lt;p</span> <span class="attr">className</span>=<span class="str">"text-sm text-gray-500 mb-4"</span><span class="tag">&gt;</span>', ''],
+        ['              {<span class="prop">svc</span>.<span class="prop">description</span>}', ''],
+        ['            <span class="tag">&lt;/p&gt;</span>', ''],
+        ['            <span class="tag">&lt;p</span> <span class="attr">className</span>=<span class="str">"text-2xl font-bold"</span><span class="tag">&gt;</span>', ''],
+        ['              ${<span class="prop">svc</span>.<span class="prop">price</span>}', ''],
+        ['              <span class="tag">&lt;span</span> <span class="attr">className</span>=<span class="str">"text-sm font-normal</span>', ''],
+        ['                <span class="str">text-gray-400"</span><span class="tag">&gt;</span>', ''],
+        ['                / {<span class="prop">svc</span>.<span class="prop">unit</span>}', ''],
+        ['              <span class="tag">&lt;/span&gt;</span>', ''],
+        ['            <span class="tag">&lt;/p&gt;</span>', ''],
+        ['            <span class="tag">&lt;<span class="cmp">Button</span></span> <span class="attr">className</span>=<span class="str">"mt-4 w-full"</span><span class="tag">&gt;</span>', ''],
+        ['              Book Now', ''],
+        ['            <span class="tag">&lt;/<span class="cmp">Button</span>&gt;</span>', ''],
+        ['          <span class="tag">&lt;/<span class="cmp">Card</span>&gt;</span>', ''],
+        ['        ))}', ''],
+        ['      <span class="tag">&lt;/div&gt;</span>', ''],
+        ['    <span class="tag">&lt;/section&gt;</span>', ''],
+        ['  );', ''],
+        ['};', ''],
+        ['', ''],
+        ['<span class="kw">export default</span> <span class="cmp">Pricing</span>;', ''],
+      ],
+    };
+
+    function renderCode(fileKey) {
+      const lines = codeFiles[fileKey];
+      const container = document.getElementById('codeContent');
+      container.innerHTML = lines.map((line, i) =>
+        `<div class="line"><span class="line-num">${i + 1}</span><span class="line-code">${line[0] || '&nbsp;'}</span></div>`
+      ).join('');
+    }
+
+    document.querySelectorAll('.code-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.code-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        renderCode(tab.dataset.file);
+      });
+    });
+
+    renderCode('index');
+
+    const previewTabs = document.querySelectorAll('.preview-tab');
+    const sitePreview = document.getElementById('sitePreview');
+    const codePanel = document.getElementById('codePanel');
+
+    previewTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        previewTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        if (tab.id === 'codeToggle') {
+          sitePreview.style.display = 'none';
+          codePanel.style.flex = '1';
+          codePanel.style.width = '100%';
+        } else {
+          sitePreview.style.display = 'block';
+          codePanel.style.flex = '';
+          codePanel.style.width = '480px';
+        }
+      });
+    });
+
+    // Initial send button: trigger the first conversation
+    const chatSendBtn = document.getElementById('chatSendBtn');
+    const chatInput = document.getElementById('chatInput');
+    const chatMessages = document.querySelector('.chat-messages');
+    let initialSent = false;
+
+    chatSendBtn.addEventListener('click', () => {
+      if (initialSent) return;
+      initialSent = true;
+
+      chatInput.value = '';
+      chatInput.setAttribute('placeholder', 'Ask Lovable to build something...');
+
+      const userMsg1 = document.getElementById('userMsg1');
+      userMsg1.classList.remove('hidden');
+      userMsg1.classList.add('animate-in');
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+
+      setTimeout(() => {
+        const aiMsg1 = document.getElementById('aiMsg1');
+        aiMsg1.classList.remove('hidden');
+        aiMsg1.classList.add('animate-in');
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        document.getElementById('photoSite').style.display = '';
+        document.getElementById('codePanel').style.display = '';
+
+        setTimeout(() => {
+          const userMsg2 = document.getElementById('userMsg2');
+          userMsg2.classList.remove('hidden');
+          userMsg2.classList.add('animate-in');
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+
+          setTimeout(() => {
+            const aiMsg2 = document.getElementById('aiMsg2');
+            aiMsg2.classList.remove('hidden');
+            aiMsg2.classList.add('animate-in');
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+          }, 800);
+        }, 1200);
+      }, 800);
+    });
+
+    // Connect Stripe button opens the Stripe sign-in popup
+    const connectStripeBtn = document.getElementById('connectStripeBtn');
+    const stripeOverlay = document.getElementById('stripeOverlay');
+    const stripeClose = document.getElementById('stripeClose');
+
+    connectStripeBtn.addEventListener('click', () => {
+      stripeOverlay.classList.add('visible');
+    });
+
+    // Step transition: Sign in -> Permissions
+    const stripeSignInBtn = document.getElementById('stripeSignInBtn');
+    const stripeStep1 = document.getElementById('stripeStep1');
+    const stripeStep2 = document.getElementById('stripeStep2');
+    const stripeConfirmBtn = document.getElementById('stripeConfirmBtn');
+    const stripeCancelPerms = document.getElementById('stripeCancelPerms');
+
+    stripeSignInBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      stripeStep1.style.opacity = '0';
+      stripeStep1.style.transform = 'translateX(-20px)';
+      setTimeout(() => {
+        stripeStep1.classList.add('step-hidden');
+        stripeStep2.classList.remove('step-hidden');
+        stripeStep2.classList.add('step-entering');
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            stripeStep2.style.opacity = '1';
+            stripeStep2.style.transform = 'translateX(0)';
+            stripeStep2.classList.remove('step-entering');
+          });
+        });
+      }, 250);
+    });
+
+    const aiMsg3 = document.getElementById('aiMsg3');
+    const aiMsg4 = document.getElementById('aiMsg4');
+
+    stripeConfirmBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      stripeOverlay.classList.remove('visible');
+
+      setTimeout(() => {
+        aiMsg3.classList.remove('hidden');
+        aiMsg3.classList.add('animate-in');
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        setTimeout(() => {
+          aiMsg4.classList.remove('hidden');
+          aiMsg4.classList.add('animate-in');
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        }, 600);
+      }, 400);
+    });
+
+    stripeCancelPerms.addEventListener('click', (e) => {
+      e.preventDefault();
+      stripeStep2.style.opacity = '0';
+      stripeStep2.style.transform = 'translateX(20px)';
+      setTimeout(() => {
+        stripeStep2.classList.add('step-hidden');
+        stripeStep1.classList.remove('step-hidden');
+        stripeStep1.style.opacity = '0';
+        stripeStep1.style.transform = 'translateX(-20px)';
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            stripeStep1.style.opacity = '1';
+            stripeStep1.style.transform = 'translateX(0)';
+          });
+        });
+      }, 250);
+    });
+
+    stripeClose.addEventListener('click', () => {
+      stripeOverlay.classList.remove('visible');
+    });
+
+    stripeOverlay.addEventListener('click', (e) => {
+      if (e.target === stripeOverlay) {
+        stripeOverlay.classList.remove('visible');
+      }
+    });
+
+    // Visit Stripe Dashboard button
+    document.getElementById('visitDashboardBtn').addEventListener('click', () => {
+      window.open('dashboard.html', '_blank');
+    });
+
+    // --- Service consent flow ---
+    const svcOverlay = document.getElementById('svcOverlay');
+    const svcClose = document.getElementById('svcClose');
+    const svcTitle = document.getElementById('svcTitle');
+    const svcPermList = document.getElementById('svcPermList');
+    const svcAllowBtn = document.getElementById('svcAllowBtn');
+    const svcCancelBtn = document.getElementById('svcCancelBtn');
+    let activeSvc = null;
+
+    const permIcons = {
+      payments: `<div class="perm-item-icon" style="background:#eff6ff;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>`,
+      customers: `<div class="perm-item-icon" style="background:#fef3c7;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>`,
+      products: `<div class="perm-item-icon" style="background:#f3e8ff;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div>`,
+      invoices: `<div class="perm-item-icon" style="background:#dcfce7;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg></div>`,
+      balance: `<div class="perm-item-icon" style="background:#f3f4f6;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="10" x2="16" y2="10"/><line x1="4" y1="14" x2="20" y2="14"/><line x1="4" y1="18" x2="12" y2="18"/></svg></div>`,
+      apps: `<div class="perm-item-icon" style="background:#f3f4f6;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>`
+    };
+
+    function makePermItem(title, desc, iconKey, allowed) {
+      return `<div class="perm-item${allowed ? '' : ' denied'}">
+        <div class="perm-item-checkbox${allowed ? '' : ' denied'}">
+          ${allowed
+            ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>'
+            : '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'}
+        </div>
+        ${permIcons[iconKey]}
+        <div class="perm-item-text">
+          <div class="perm-item-title">${title}</div>
+          <div class="perm-item-desc">${desc}</div>
+        </div>
+        <div class="${allowed ? 'perm-allowed-badge' : 'perm-denied-badge'}">${allowed ? 'Allowed' : 'Blocked'}</div>
+      </div>`;
+    }
+
+    const svcConfigs = {
+      acuity: {
+        title: 'Acuity Scheduling wants to connect to your Stripe account',
+        allowed: [
+          { title: 'Create payments on your behalf', desc: 'Process charges and payment intents', icon: 'payments' },
+          { title: 'Manage customers', desc: 'Create and update customer records', icon: 'customers' }
+        ],
+        denied: [
+          { title: 'Access your balance', desc: 'View or modify balance and payout settings', icon: 'balance' },
+          { title: 'See activity from other apps', desc: 'View data from other integrations', icon: 'apps' }
+        ],
+        msgId: 'acuityMsg',
+        btnId: 'connectAcuityBtn',
+        previewUpdate: 'acuity'
+      },
+      pixieset: {
+        title: 'Pixieset wants to connect to your Stripe account',
+        allowed: [
+          { title: 'Create payments on your behalf', desc: 'Process charges and payment intents', icon: 'payments' },
+          { title: 'Manage products', desc: 'Create and update product catalog and prices', icon: 'products' }
+        ],
+        denied: [
+          { title: 'Access your balance', desc: 'View or modify balance and payout settings', icon: 'balance' },
+          { title: 'See activity from other apps', desc: 'View data from other integrations', icon: 'apps' }
+        ],
+        msgId: 'pixiesetMsg',
+        btnId: 'connectPixiesetBtn',
+        previewUpdate: 'pixieset'
+      },
+      hats: {
+        title: '17hats wants to connect to your Stripe account',
+        allowed: [
+          { title: 'Create payments on your behalf', desc: 'Process charges and payment intents', icon: 'payments' },
+          { title: 'Send invoices', desc: 'Create and send invoices to customers', icon: 'invoices' },
+          { title: 'Manage customers', desc: 'Create and update customer records', icon: 'customers' }
+        ],
+        denied: [
+          { title: 'Access your balance', desc: 'View or modify balance and payout settings', icon: 'balance' },
+          { title: 'See activity from other apps', desc: 'View data from other integrations', icon: 'apps' }
+        ],
+        msgId: 'hatsMsg',
+        btnId: 'connect17hatsBtn',
+        previewUpdate: 'hats'
+      }
+    };
+
+    function openSvcOverlay(svcKey) {
+      const cfg = svcConfigs[svcKey];
+      activeSvc = svcKey;
+      svcTitle.textContent = cfg.title;
+      svcPermList.innerHTML = cfg.allowed.map(p => makePermItem(p.title, p.desc, p.icon, true)).join('');
+      svcOverlay.classList.add('visible');
+    }
+
+    document.getElementById('connectAcuityBtn').addEventListener('click', () => openSvcOverlay('acuity'));
+    document.getElementById('connectPixiesetBtn').addEventListener('click', () => openSvcOverlay('pixieset'));
+    document.getElementById('connect17hatsBtn').addEventListener('click', () => openSvcOverlay('hats'));
+
+    function updateSitePreview(svcKey) {
+      const nav = document.querySelector('.photo-nav-links');
+      if (svcKey === 'acuity') {
+        const bookingSection = document.createElement('div');
+        bookingSection.id = 'acuityWidget';
+        bookingSection.style.cssText = 'padding: 24px 30px; background: #f8fafc; border-top: 1px solid #e2e8f0;';
+        bookingSection.innerHTML = `
+          <h2 style="font-size: 15px; color: #1e293b; margin-bottom: 12px;">Book a Session</h2>
+          <div style="background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+              <div style="width: 8px; height: 8px; border-radius: 50%; background: #22c55e;"></div>
+              <span style="font-size: 11px; color: #64748b; font-weight: 500;">POWERED BY ACUITY SCHEDULING</span>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 12px;">
+              ${['M','T','W','T','F','S','S'].map(d => '<div style="text-align:center;font-size:9px;color:#94a3b8;padding:2px;">' + d + '</div>').join('')}
+              ${Array.from({length: 14}, (_, i) => {
+                const avail = [2, 4, 5, 8, 10, 12].includes(i);
+                return '<div style="text-align:center;font-size:10px;padding:4px;border-radius:4px;' +
+                  (avail ? 'background:#eff6ff;color:#3b82f6;font-weight:600;cursor:pointer;' : 'color:#cbd5e1;') +
+                  '">' + (i + 10) + '</div>';
+              }).join('')}
+            </div>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+              ${['9:00 AM', '10:30 AM', '2:00 PM', '4:00 PM'].map(t =>
+                '<div style="padding:4px 10px;border:1px solid #e2e8f0;border-radius:4px;font-size:10px;color:#475569;cursor:pointer;">' + t + '</div>'
+              ).join('')}
+            </div>
+          </div>`;
+        const gallery = document.querySelector('.photo-gallery');
+        gallery.parentNode.insertBefore(bookingSection, gallery);
+      }
+      if (svcKey === 'pixieset') {
+        const galleryLink = document.createElement('li');
+        galleryLink.textContent = 'Client Galleries';
+        galleryLink.style.color = '#3b82f6';
+        galleryLink.style.fontWeight = '600';
+        const contactLi = nav.querySelector('li:nth-child(5)');
+        nav.insertBefore(galleryLink, contactLi);
+      }
+      if (svcKey === 'hats') {
+        const footer = document.querySelector('.photo-footer');
+        const crmNotice = document.createElement('div');
+        crmNotice.style.cssText = 'padding: 20px 30px; background: #fefce8; border-top: 1px solid #fde68a;';
+        crmNotice.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+            <div style="width: 8px; height: 8px; border-radius: 50%; background: #eab308;"></div>
+            <span style="font-size: 11px; color: #92400e; font-weight: 500;">POWERED BY 17HATS CRM</span>
+          </div>
+          <div style="background: #fff; border: 1px solid #fde68a; border-radius: 8px; padding: 12px;">
+            <div style="font-size: 12px; font-weight: 600; color: #1e293b; margin-bottom: 8px;">Contact Form</div>
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <div style="height:24px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:4px;padding:0 8px;font-size:10px;color:#94a3b8;line-height:24px;">Name</div>
+              <div style="height:24px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:4px;padding:0 8px;font-size:10px;color:#94a3b8;line-height:24px;">Email</div>
+              <div style="height:40px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:4px;padding:4px 8px;font-size:10px;color:#94a3b8;">Message...</div>
+            </div>
+            <div style="margin-top:8px;font-size:9px;color:#78716c;">Leads auto-synced to 17hats CRM</div>
+          </div>`;
+        footer.parentNode.insertBefore(crmNotice, footer);
+      }
+    }
+
+    const connectedServices = new Set();
+
+    svcAllowBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const cfg = svcConfigs[activeSvc];
+      svcOverlay.classList.remove('visible');
+
+      const btn = document.getElementById(cfg.btnId);
+      btn.classList.add('connected');
+      connectedServices.add(activeSvc);
+
+      updateSitePreview(activeSvc);
+
+      setTimeout(() => {
+        const msg = document.getElementById(cfg.msgId);
+        msg.classList.remove('hidden');
+        msg.classList.add('animate-in');
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        if (connectedServices.size === 3) {
+          setTimeout(() => {
+            const bizMsg = document.getElementById('bizMsg');
+            bizMsg.classList.remove('hidden');
+            bizMsg.classList.add('animate-in');
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+          }, 800);
+        }
+      }, 400);
+    });
+
+    svcCancelBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      svcOverlay.classList.remove('visible');
+    });
+
+    svcClose.addEventListener('click', () => {
+      svcOverlay.classList.remove('visible');
+    });
+
+    svcOverlay.addEventListener('click', (e) => {
+      if (e.target === svcOverlay) {
+        svcOverlay.classList.remove('visible');
+      }
+    });
+
+    // Your Business overlay
+    const bizOverlay = document.getElementById('bizOverlay');
+    const bizClose = document.getElementById('bizClose');
+
+    document.addEventListener('click', (e) => {
+      if (e.target && e.target.id === 'openBizBtn') {
+        bizOverlay.classList.add('visible');
+      }
+    });
+
+    bizClose.addEventListener('click', () => {
+      bizOverlay.classList.remove('visible');
+    });
+
+    bizOverlay.addEventListener('click', (e) => {
+      if (e.target === bizOverlay) {
+        bizOverlay.classList.remove('visible');
+      }
+    });
+  </script>
+</body>
+</html>

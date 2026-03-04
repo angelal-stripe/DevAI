@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Balances – Sarah's photography – Stripe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #fff;
+      color: #1a1a1a;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 220px;
+      background: #fff;
+      border-right: 1px solid #e5e7eb;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      flex-shrink: 0;
+    }
+
+    .sidebar-brand {
+      padding: 20px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .sidebar-brand-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: #635bff;
+      flex-shrink: 0;
+    }
+
+    .sidebar-nav {
+      padding: 16px 0;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 9px 20px;
+      font-size: 13.5px;
+      font-weight: 400;
+      color: #4b5563;
+      cursor: pointer;
+      transition: all 0.1s;
+      text-decoration: none;
+    }
+
+    .nav-item:hover { color: #1a1a1a; background: #f9fafb; }
+    .nav-item.active { color: #635bff; font-weight: 500; }
+
+    .nav-item svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      opacity: 0.7;
+    }
+
+    .nav-section {
+      padding: 20px 20px 8px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #9ca3af;
+      letter-spacing: 0.2px;
+    }
+
+    .nav-item-chevron { margin-left: auto; color: #d1d5db; }
+
+    .sidebar-footer { padding: 12px 0; }
+
+    /* Topbar */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .topbar {
+      height: 56px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      gap: 16px;
+    }
+
+    .search-bar {
+      flex: 1;
+      max-width: 480px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 8px 12px;
+      cursor: text;
+    }
+
+    .search-bar svg { color: #9ca3af; flex-shrink: 0; }
+    .search-bar span { font-size: 13px; color: #9ca3af; }
+
+    .topbar-icons {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .topbar-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #6b7280;
+      transition: background 0.1s;
+    }
+
+    .topbar-icon:hover { background: #f3f4f6; }
+    .topbar-icon svg { width: 18px; height: 18px; }
+
+    .topbar-icon.create {
+      background: #635bff;
+      color: #fff;
+      width: 32px;
+      height: 32px;
+    }
+
+    .topbar-icon.create:hover { background: #4f46e5; }
+
+    /* Content */
+    .content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 32px 40px;
+    }
+
+    /* Balances page */
+    .balance-header {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .balance-title {
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .balance-total {
+      font-size: 28px;
+      font-weight: 400;
+      color: #1a1a1a;
+    }
+
+    .action-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 28px;
+    }
+
+    .action-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      background: #fff;
+      font-size: 13px;
+      font-weight: 500;
+      color: #374151;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.1s;
+    }
+
+    .action-btn:hover { background: #f9fafb; border-color: #d1d5db; }
+    .action-btn svg { width: 14px; height: 14px; }
+
+    .action-bar-right {
+      margin-left: auto;
+      display: flex;
+      gap: 2px;
+    }
+
+    .view-btn {
+      width: 32px;
+      height: 32px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #6b7280;
+      transition: all 0.1s;
+    }
+
+    .view-btn:first-child { border-radius: 6px 0 0 6px; }
+    .view-btn:last-child { border-radius: 0 6px 6px 0; }
+    .view-btn.active { background: #f3f4f6; color: #1a1a1a; }
+
+    /* Balance cards */
+    .cards-row {
+      display: flex;
+      gap: 0;
+      margin-bottom: 8px;
+    }
+
+    .balance-card-group {
+      display: flex;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-right: 16px;
+    }
+
+    .balance-card {
+      padding: 20px 24px;
+      min-width: 180px;
+      position: relative;
+    }
+
+    .balance-card + .balance-card {
+      border-left: 1px solid #e5e7eb;
+    }
+
+    .balance-card-currency {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #374151;
+      margin-bottom: 6px;
+    }
+
+    .flag {
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    .usdc-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #2775ca;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .balance-card-amount {
+      font-size: 24px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+    }
+
+    .balance-card-id {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-bottom: 24px;
+    }
+
+    .balance-card-settle {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    .balance-card-settle svg { width: 14px; height: 14px; }
+
+    .add-new-card {
+      min-width: 200px;
+      border: 2px dashed #e5e7eb;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #9ca3af;
+      font-size: 13px;
+      transition: all 0.1s;
+      padding: 20px;
+    }
+
+    .add-new-card:hover { border-color: #d1d5db; color: #6b7280; }
+
+    .add-new-card svg { width: 20px; height: 20px; margin-bottom: 6px; }
+
+    .card-label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 36px;
+      max-width: 420px;
+    }
+
+    .card-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: #1a1a1a;
+    }
+
+    .card-more {
+      width: 28px;
+      height: 28px;
+      border: none;
+      background: none;
+      color: #9ca3af;
+      cursor: pointer;
+      font-size: 18px;
+      letter-spacing: 2px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-more:hover { background: #f3f4f6; }
+
+    /* Bottom section */
+    .bottom-grid {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 40px;
+    }
+
+    /* Recent activity */
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .activity-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid #e5e7eb;
+      margin-bottom: 0;
+    }
+
+    .activity-tab {
+      padding: 8px 2px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #6b7280;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-right: 20px;
+    }
+
+    .activity-tab.active {
+      color: #635bff;
+      border-bottom-color: #635bff;
+    }
+
+    .activity-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .activity-table th {
+      text-align: left;
+      font-size: 12px;
+      font-weight: 500;
+      color: #6b7280;
+      padding: 10px 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .activity-table td {
+      padding: 12px 0;
+      font-size: 13px;
+      color: #374151;
+      border-bottom: 1px solid #f3f4f6;
+    }
+
+    .amount-positive { color: #16a34a; font-weight: 500; }
+    .amount-negative { color: #1a1a1a; font-weight: 500; }
+
+    .view-more {
+      display: inline-block;
+      margin-top: 12px;
+      font-size: 13px;
+      color: #635bff;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .view-more:hover { text-decoration: underline; }
+
+    /* Right sidebar */
+    .right-section-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .edit-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #6b7280;
+    }
+
+    .edit-icon:hover { background: #f9fafb; }
+    .edit-icon svg { width: 14px; height: 14px; }
+
+    .setup-recurring {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px;
+      border: 1px dashed #e5e7eb;
+      border-radius: 8px;
+      font-size: 13px;
+      color: #6b7280;
+      cursor: pointer;
+      margin-bottom: 32px;
+      transition: all 0.1s;
+    }
+
+    .setup-recurring:hover { border-color: #d1d5db; color: #374151; }
+
+    .resource-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      font-size: 13px;
+      color: #374151;
+      cursor: pointer;
+      transition: color 0.1s;
+      text-decoration: none;
+    }
+
+    .resource-item:hover { color: #1a1a1a; }
+
+    .resource-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: #f3f4f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #6b7280;
+      flex-shrink: 0;
+    }
+
+    .resource-icon svg { width: 14px; height: 14px; }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-brand-dot"></div>
+      Sarah's photography
+    </div>
+    <div class="sidebar-nav">
+      <a class="nav-item" href="home.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V10.5z"/><path d="M9 21V14h6v7"/></svg>
+        Home
+      </a>
+      <a class="nav-item active" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="10" x2="16" y2="10"/><line x1="4" y1="14" x2="20" y2="14"/><line x1="4" y1="18" x2="12" y2="18"/></svg>
+        Balances
+      </a>
+      <a class="nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+        Transactions
+      </a>
+      <a class="nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Network
+      </a>
+      <a class="nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        Product catalog
+      </a>
+
+      <div class="nav-section">Products</div>
+      <a class="nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+        Payments
+        <svg class="nav-item-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </a>
+      <a class="nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 2h16v20l-3-2-2 2-3-2-3 2-2-2-3 2V2z"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="12" y2="15"/></svg>
+        Billing
+        <svg class="nav-item-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </a>
+      <a class="nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="12" width="4" height="8" rx="0.5"/><rect x="10" y="6" width="4" height="14" rx="0.5"/><rect x="16" y="9" width="4" height="11" rx="0.5"/></svg>
+        Reporting
+        <svg class="nav-item-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </a>
+      <a class="nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="5" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.5" fill="currentColor" stroke="none"/></svg>
+        More
+        <svg class="nav-item-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </a>
+    </div>
+    <div class="sidebar-footer">
+      <a class="nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="3" width="20" height="18" rx="2"/><polyline points="7 10 10 13 7 16"/><line x1="13" y1="16" x2="17" y2="16"/></svg>
+        Developers
+      </a>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+    <div class="topbar">
+      <div class="search-bar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span>Search</span>
+      </div>
+      <div class="topbar-icons">
+        <div class="topbar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <div class="topbar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
+        <div class="topbar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div>
+        <div class="topbar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+        <div class="topbar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg></div>
+        <div class="topbar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
+        <div class="topbar-icon create"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+      </div>
+    </div>
+
+    <div class="content">
+      <!-- Header -->
+      <div class="balance-header">
+        <span class="balance-title">Balances</span>
+        <span class="balance-total">$75,000.00</span>
+      </div>
+
+      <!-- Action bar -->
+      <div class="action-bar">
+        <button class="action-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+          Transfer
+        </button>
+        <button class="action-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Send
+        </button>
+        <button class="action-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          Convert
+        </button>
+        <button class="action-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Deposit
+        </button>
+        <button class="action-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+          Create card
+        </button>
+        <div class="action-bar-right">
+          <button class="view-btn active">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          </button>
+          <button class="view-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Balance cards -->
+      <div class="cards-row">
+        <div class="balance-card-group">
+          <div class="balance-card">
+            <div class="balance-card-currency">
+              <span class="flag">🇺🇸</span> USD
+            </div>
+            <div class="balance-card-amount">$0.00</div>
+            <div class="balance-card-id">··7834</div>
+            <div class="balance-card-settle">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+              Earnings settle daily
+            </div>
+          </div>
+          <div class="balance-card">
+            <div class="balance-card-currency">
+              <div class="usdc-icon">$</div> USDC
+            </div>
+            <div class="balance-card-amount">$75,000.00</div>
+            <div class="balance-card-id">...d23s</div>
+          </div>
+        </div>
+        <div class="add-new-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add new
+        </div>
+      </div>
+
+      <div class="card-label-row">
+        <span class="card-label">Main</span>
+        <button class="card-more">···</button>
+      </div>
+
+      <!-- Bottom grid -->
+      <div class="bottom-grid">
+        <!-- Recent activity -->
+        <div>
+          <div class="section-title">Recent activity</div>
+          <div class="activity-tabs">
+            <div class="activity-tab active">All</div>
+            <div class="activity-tab">Money in</div>
+            <div class="activity-tab">Money out</div>
+          </div>
+          <table class="activity-table">
+            <thead>
+              <tr>
+                <th>Amount</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Source</th>
+                <th>Balance</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="amount-negative">−$12,490.90</td>
+                <td>Payout to ··7834</td>
+                <td><span style="color:#16a34a;">Succeeded</span></td>
+                <td>—</td>
+                <td>Main · USD</td>
+                <td>Mar 3</td>
+              </tr>
+              <tr>
+                <td class="amount-positive">+$65.00</td>
+                <td>Lovable website payment — @artfan42</td>
+                <td><span style="color:#16a34a;">Succeeded</span></td>
+                <td>Lovable</td>
+                <td>Main · USD</td>
+                <td>Mar 3</td>
+              </tr>
+              <tr>
+                <td class="amount-positive">+$200.00</td>
+                <td>Payment — Emily Watson</td>
+                <td><span style="color:#16a34a;">Succeeded</span></td>
+                <td>Acuity Scheduling</td>
+                <td>Main · USD</td>
+                <td>Mar 3</td>
+              </tr>
+              <tr>
+                <td class="amount-positive">+$1,800.00</td>
+                <td>Payment — James and Priya K</td>
+                <td><span style="color:#16a34a;">Succeeded</span></td>
+                <td>17hats</td>
+                <td>Main · USD</td>
+                <td>Mar 2</td>
+              </tr>
+              <tr>
+                <td class="amount-positive">+$85.00</td>
+                <td>Payment — Emily Watson</td>
+                <td><span style="color:#16a34a;">Succeeded</span></td>
+                <td>Pixieset</td>
+                <td>Main · USD</td>
+                <td>Mar 2</td>
+              </tr>
+              <tr>
+                <td class="amount-positive">+$350.00</td>
+                <td>Portrait session — Aisha Johnson</td>
+                <td><span style="color:#16a34a;">Succeeded</span></td>
+                <td>Acuity Scheduling</td>
+                <td>Main · USD</td>
+                <td>Mar 1</td>
+              </tr>
+              <tr>
+                <td class="amount-positive">+$350.00</td>
+                <td>Portrait session — Marco Rivera</td>
+                <td><span style="color:#16a34a;">Succeeded</span></td>
+                <td>17hats</td>
+                <td>Main · USD</td>
+                <td>Feb 28</td>
+              </tr>
+              <tr>
+                <td class="amount-positive">+$3,500.00</td>
+                <td>Wedding package — Priya & Liam</td>
+                <td><span style="color:#16a34a;">Succeeded</span></td>
+                <td>Acuity Scheduling</td>
+                <td>Main · USD</td>
+                <td>Feb 27</td>
+              </tr>
+              <tr>
+                <td class="amount-positive">+$200.00</td>
+                <td>Landscape print — Sophie Turner</td>
+                <td><span style="color:#16a34a;">Succeeded</span></td>
+                <td>17hats</td>
+                <td>Main · USD</td>
+                <td>Feb 26</td>
+              </tr>
+              <tr>
+                <td class="amount-positive">+$3,690.90</td>
+                <td>Wedding package — Olivia & Noah</td>
+                <td><span style="color:#16a34a;">Succeeded</span></td>
+                <td>Acuity Scheduling</td>
+                <td>Main · USD</td>
+                <td>Feb 25</td>
+              </tr>
+              <tr>
+                <td class="amount-positive">+$350.00</td>
+                <td>Portrait session — Rachel Kim</td>
+                <td><span style="color:#16a34a;">Succeeded</span></td>
+                <td>17hats</td>
+                <td>Main · USD</td>
+                <td>Feb 24</td>
+              </tr>
+            </tbody>
+          </table>
+          <a href="#" class="view-more">View more</a>
+        </div>
+
+        <!-- Right sidebar -->
+        <div>
+          <div class="right-section-title">
+            Scheduled
+            <button class="edit-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </button>
+          </div>
+          <div class="setup-recurring">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Set up recurring transfers
+          </div>
+
+          <div class="section-title" style="font-size: 16px;">Resources</div>
+          <a href="#" class="resource-item">
+            <div class="resource-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+            </div>
+            Manage cards
+          </a>
+          <a href="#" class="resource-item">
+            <div class="resource-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            Manage recipients
+          </a>
+          <a href="#" class="resource-item">
+            <div class="resource-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+            </div>
+            Integrate with accounting app
+          </a>
+          <a href="#" class="resource-item">
+            <div class="resource-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="10" x2="16" y2="10"/><line x1="4" y1="14" x2="20" y2="14"/><line x1="4" y1="18" x2="12" y2="18"/></svg>
+            </div>
+            Balance summary report
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
