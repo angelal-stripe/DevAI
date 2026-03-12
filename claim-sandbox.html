@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claim your sandbox – Stripe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #f6f8fa;
+      color: #1a1a1a;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .dashboard-bg {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      filter: blur(2px);
+      opacity: 0.5;
+    }
+
+    .sidebar {
+      width: 220px;
+      background: #fff;
+      border-right: 1px solid #e5e7eb;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      flex-shrink: 0;
+    }
+
+    .sidebar-brand {
+      padding: 20px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .sidebar-brand-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: #635bff;
+      flex-shrink: 0;
+    }
+
+    .sidebar-nav { padding: 16px 0; flex: 1; }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 18px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #6b7280;
+      text-decoration: none;
+      border-radius: 6px;
+      margin: 1px 8px;
+    }
+
+    .nav-item.active { background: #f3f4f6; color: #1a1a1a; }
+
+    .main-area {
+      flex: 1;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      height: 52px;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+    }
+
+    .topbar-search {
+      flex: 1;
+      height: 34px;
+      background: #f3f4f6;
+      border: none;
+      border-radius: 6px;
+      padding: 0 12px;
+      font-size: 13px;
+      color: #9ca3af;
+      max-width: 480px;
+    }
+
+    .content-placeholder {
+      flex: 1;
+      padding: 32px;
+    }
+
+    .placeholder-block {
+      height: 14px;
+      background: #f0f0f0;
+      border-radius: 4px;
+      margin-bottom: 12px;
+    }
+
+    /* Claim overlay */
+    .claim-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(6px);
+    }
+
+    .claim-modal {
+      width: 780px;
+      max-width: 90vw;
+      background: #fff;
+      border-radius: 16px;
+      display: flex;
+      overflow: hidden;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+      position: relative;
+    }
+
+    .claim-left {
+      flex: 1;
+      padding: 40px 36px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .claim-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 12px;
+    }
+
+    .claim-desc {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #6b7280;
+      margin-bottom: 32px;
+    }
+
+    .claim-loading {
+      font-size: 14px;
+      color: #9ca3af;
+      margin-bottom: auto;
+      padding-left: 4px;
+    }
+
+    .claim-continue {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      background: #635bff;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: opacity 0.15s;
+      margin-top: 40px;
+    }
+
+    .claim-continue:hover { opacity: 0.9; }
+
+    .claim-right {
+      width: 340px;
+      background: linear-gradient(135deg, #f0f4ff 0%, #fce7f3 50%, #fef3c7 100%);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .claim-right::before {
+      content: '';
+      position: absolute;
+      top: -40px;
+      right: -40px;
+      width: 160px;
+      height: 160px;
+      background: linear-gradient(135deg, #fbbf24, #f59e0b, #ec4899);
+      border-radius: 50%;
+      opacity: 0.15;
+      filter: blur(30px);
+    }
+
+    .sandbox-badge {
+      background: #0e2439;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 10px 16px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+
+    .sandbox-account {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      margin-bottom: 16px;
+    }
+
+    .sandbox-account-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      background: #5eead4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: #0f766e;
+    }
+
+    .sandbox-account-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+
+    .preview-skeleton {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      opacity: 0.5;
+    }
+
+    .skel-bar {
+      height: 10px;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 4px;
+    }
+
+    .skel-bar.w80 { width: 80%; }
+    .skel-bar.w60 { width: 60%; }
+    .skel-bar.w90 { width: 90%; }
+    .skel-bar.w50 { width: 50%; }
+    .skel-bar.w70 { width: 70%; }
+
+    .preview-section-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #374151;
+      margin-top: 12px;
+      margin-bottom: 6px;
+    }
+
+    .preview-chart {
+      height: 60px;
+      position: relative;
+      margin-top: 4px;
+      opacity: 0.3;
+    }
+
+    .preview-chart svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Gradient decorations */
+    .claim-modal::after {
+      content: '';
+      position: absolute;
+      bottom: -30px;
+      left: 30%;
+      width: 200px;
+      height: 80px;
+      background: linear-gradient(135deg, #a78bfa, #ec4899, #fbbf24);
+      border-radius: 50%;
+      opacity: 0.12;
+      filter: blur(25px);
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Blurred dashboard background -->
+  <div class="dashboard-bg">
+    <div class="sidebar">
+      <div class="sidebar-brand">
+        <div class="sidebar-brand-dot"></div>
+        Sarah's photography
+      </div>
+      <nav class="sidebar-nav">
+        <a class="nav-item active" href="#">Home</a>
+        <a class="nav-item" href="#">Balances</a>
+        <a class="nav-item" href="#">Customers</a>
+        <a class="nav-item" href="#">Products</a>
+        <a class="nav-item" href="#">Payments</a>
+      </nav>
+    </div>
+    <div class="main-area">
+      <div class="topbar">
+        <input class="topbar-search" type="text" placeholder="Search..." disabled>
+      </div>
+      <div class="content-placeholder">
+        <div class="placeholder-block" style="width:180px; height:22px;"></div>
+        <div class="placeholder-block" style="width:100%; height:120px; margin-top:16px;"></div>
+        <div class="placeholder-block" style="width:60%; margin-top:24px;"></div>
+        <div class="placeholder-block" style="width:80%;"></div>
+        <div class="placeholder-block" style="width:45%;"></div>
+        <div class="placeholder-block" style="width:70%; margin-top:24px;"></div>
+        <div class="placeholder-block" style="width:55%;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Claim your sandbox overlay -->
+  <div class="claim-overlay">
+    <div class="claim-modal" id="claimModal">
+      <!-- Step 1: Choose account -->
+      <div class="claim-step" id="claimStep1">
+        <div class="claim-left">
+          <div>
+            <div class="claim-title">Claim your sandbox</div>
+            <div class="claim-desc">We've saved all your work to a sandbox. Before you can start accepting payments, choose an account you'd like to use or create a new one.</div>
+            <div class="claim-accounts" style="margin-top:24px; display:flex; flex-direction:column; gap:10px;">
+              <button class="acct-option" id="acctNew" style="display:flex; align-items:center; gap:14px; width:100%; padding:14px 16px; border:2px solid #635bff; border-radius:10px; background:#fff; cursor:pointer; font-family:inherit; text-align:left; transition:border-color .15s, background .15s;">
+                <span style="font-size:20px; color:#635bff; font-weight:300;">+</span>
+                <span style="font-size:14px; font-weight:600; color:#635bff;">Create new account</span>
+              </button>
+              <button class="acct-option" id="acctSarah" style="display:flex; align-items:center; gap:14px; width:100%; padding:14px 16px; border:1px solid #e5e7eb; border-radius:10px; background:#fff; cursor:pointer; font-family:inherit; text-align:left; transition:border-color .15s, background .15s;">
+                <span style="display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:6px; background:#f3f4f6; font-size:12px; font-weight:700; color:#6b7280; flex-shrink:0;">SL</span>
+                <span style="font-size:14px; font-weight:500; color:#1a1a1a;">Sarah Lens</span>
+              </button>
+            </div>
+          </div>
+          <button class="claim-continue" id="claimContinueBtn">Continue</button>
+        </div>
+        <div class="claim-right">
+          <div class="sandbox-badge">Sandbox</div>
+          <div class="sandbox-account">
+            <div class="sandbox-account-icon">NB</div>
+            <div class="sandbox-account-name">New business</div>
+          </div>
+          <div class="preview-skeleton">
+            <div class="skel-bar w80"></div>
+            <div class="skel-bar w60"></div>
+            <div class="skel-bar w90"></div>
+            <div style="height:8px;"></div>
+            <div class="preview-section-label">Products</div>
+            <div class="skel-bar w70"></div>
+            <div class="skel-bar w50"></div>
+            <div class="skel-bar w80"></div>
+            <div style="height:8px;"></div>
+            <div class="preview-chart">
+              <svg viewBox="0 0 280 60" fill="none">
+                <path d="M0 45 Q30 40, 60 42 T120 35 T180 38 T240 30 T280 28" stroke="#c4b5fd" stroke-width="1.5" fill="none"/>
+                <path d="M0 50 Q30 48, 60 50 T120 45 T180 48 T240 42 T280 40" stroke="#e5e7eb" stroke-width="1" fill="none"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Continue testing -->
+      <div class="claim-step" id="claimStep2" style="display:none;">
+        <div class="claim-left" style="padding:40px 36px;">
+          <div>
+            <div style="font-size:15px; line-height:1.6; color:#374151; margin-bottom:32px;">
+              <a href="#" style="color:#635bff; font-weight:600; text-decoration:none;">Continue testing your work</a>.
+              Try out more features in your sandbox—a safe environment for testing. When you're ready, switch to your live account.
+            </div>
+            <div style="display:flex; flex-direction:column; gap:16px;">
+              <div style="height:44px; border:1px solid #d1d5db; border-radius:8px; background:#fff;"></div>
+              <div style="display:flex; gap:8px; align-items:center;">
+                <div style="height:8px; width:80px; background:#e0e0e6; border-radius:4px;"></div>
+              </div>
+              <div style="height:44px; border:1px solid #e5e7eb; border-radius:8px; background:#fff;"></div>
+              <div style="display:flex; gap:8px; align-items:center;">
+                <div style="height:8px; width:60px; background:#e0e0e6; border-radius:4px;"></div>
+              </div>
+              <div style="height:100px; border:1px solid #e5e7eb; border-radius:8px; background:#fff;"></div>
+            </div>
+          </div>
+          <div style="display:flex; gap:12px; justify-content:flex-end; margin-top:40px;">
+            <button id="getLiveBtn" style="padding:10px 20px; border:1px solid #e5e7eb; border-radius:8px; background:#fff; font-size:14px; font-weight:500; color:#374151; cursor:pointer; font-family:inherit; transition:background .15s;">Get your live account now</button>
+            <button id="step2ContinueBtn" style="padding:10px 24px; border:none; border-radius:8px; background:#635bff; color:#fff; font-size:14px; font-weight:600; cursor:pointer; font-family:inherit; transition:opacity .15s;">Continue</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .claim-step { display:flex; width:100%; }
+    .acct-option.selected { border:2px solid #635bff !important; background:#f8f7ff !important; }
+  </style>
+
+  <script>
+    const acctNew = document.getElementById('acctNew');
+    const acctSarah = document.getElementById('acctSarah');
+
+    acctSarah.addEventListener('click', () => {
+      acctNew.classList.remove('selected');
+      acctNew.style.border = '1px solid #e5e7eb';
+      acctSarah.classList.add('selected');
+    });
+
+    acctNew.addEventListener('click', () => {
+      acctSarah.classList.remove('selected');
+      acctSarah.style.border = '1px solid #e5e7eb';
+      acctNew.classList.add('selected');
+      acctNew.style.border = '2px solid #635bff';
+    });
+
+    document.getElementById('claimContinueBtn').addEventListener('click', () => {
+      const step1 = document.getElementById('claimStep1');
+      const step2 = document.getElementById('claimStep2');
+      step1.style.opacity = '0';
+      step1.style.transition = 'opacity 0.25s ease';
+      setTimeout(() => {
+        step1.style.display = 'none';
+        step2.style.display = 'flex';
+        step2.style.opacity = '0';
+        step2.style.transition = 'opacity 0.25s ease';
+        requestAnimationFrame(() => { step2.style.opacity = '1'; });
+      }, 250);
+    });
+
+    document.getElementById('step2ContinueBtn').addEventListener('click', () => {
+      sessionStorage.setItem('sandboxClaimed', 'true');
+      sessionStorage.setItem('diagramState', 'full');
+      window.close();
+    });
+
+    document.getElementById('getLiveBtn').addEventListener('click', () => {
+      sessionStorage.setItem('sandboxClaimed', 'true');
+      sessionStorage.setItem('diagramState', 'full');
+      window.close();
+    });
+  </script>
+</body>
+</html>

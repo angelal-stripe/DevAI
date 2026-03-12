@@ -28,7 +28,10 @@
       color: var(--lovable-text);
       height: 100vh;
       overflow: hidden;
+      margin-right: 340px;
+      transition: margin-right 0.3s ease;
     }
+    body.diagram-closed { margin-right: 0; }
 
     .topbar {
       height: 48px;
@@ -186,6 +189,11 @@
       font-weight: 600;
     }
 
+    .msg-avatar.user {
+      background: linear-gradient(135deg, #f472b6, #a78bfa);
+      color: #fff;
+    }
+
     .msg-avatar.ai {
       background: var(--lovable-accent);
       color: #fff;
@@ -199,10 +207,70 @@
       margin-bottom: 4px;
     }
 
+    .msg-name .timestamp {
+      font-weight: 400;
+      color: var(--lovable-text-muted);
+      font-size: 11px;
+      margin-left: 8px;
+    }
+
     .msg-text {
       font-size: 13px;
       line-height: 1.6;
       color: #d4d4d4;
+    }
+
+    .msg-text code {
+      background: rgba(124, 58, 237, 0.15);
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-size: 12px;
+      color: var(--lovable-accent);
+    }
+
+    .msg-files {
+      margin-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .msg-file {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--lovable-accent);
+      padding: 4px 8px;
+      background: rgba(124, 58, 237, 0.08);
+      border-radius: 4px;
+      border: 1px solid rgba(124, 58, 237, 0.15);
+      width: fit-content;
+    }
+
+    .msg-file svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 500;
+      margin-top: 8px;
+    }
+
+    .status-badge.success {
+      background: rgba(34, 197, 94, 0.1);
+      color: var(--lovable-green);
+    }
+
+    .status-badge .pulse {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--lovable-green);
     }
 
     .chat-input-area {
@@ -486,6 +554,11 @@
       padding: 3px 10px;
       border-radius: 4px;
       margin-left: 8px;
+    }
+
+    .badge-complete {
+      background: rgba(34, 197, 94, 0.15);
+      color: #22c55e;
     }
 
     .badge-action {
@@ -911,12 +984,79 @@
 
       <div class="chat-messages">
         <div class="msg">
+          <div class="msg-avatar user">SL</div>
+          <div class="msg-content">
+            <div class="msg-name">Sarah Lens <span class="timestamp">10:23 AM</span></div>
+            <div class="msg-text">
+              Build me a photography portfolio site for my business "Sarah Lens Photography." I specialize in portraits, weddings, and nature photography. I need a hero section, gallery, and pricing cards for my services. Use a modern, minimal aesthetic with elegant typography.
+            </div>
+          </div>
+        </div>
+
+        <div class="msg">
           <div class="msg-avatar ai">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#fff"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#fff"/></svg>
           </div>
           <div class="msg-content">
-            <div class="msg-name">Lovable</div>
-            <div class="msg-text">Your Stripe payments dashboard is ready. You're currently in sandbox mode — connect your account to go live and start accepting real payments.</div>
+            <div class="msg-name">Lovable <span class="timestamp">10:23 AM</span></div>
+            <div class="msg-text">
+              I'll build your photography portfolio with a stunning hero, a masonry-style gallery, and clean pricing cards. I'm using <code>Playfair Display</code> for headings and <code>Inter</code> for body text to give it that elegant, editorial feel.
+            </div>
+            <div class="msg-files">
+              <div class="msg-file">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                src/pages/Index.tsx
+              </div>
+              <div class="msg-file">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                src/components/Hero.tsx
+              </div>
+              <div class="msg-file">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                src/components/Gallery.tsx
+              </div>
+              <div class="msg-file">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                src/components/Pricing.tsx
+              </div>
+            </div>
+            <div class="status-badge success">
+              <div class="pulse"></div>
+              Built successfully
+            </div>
+          </div>
+        </div>
+
+        <div class="msg">
+          <div class="msg-avatar ai">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#fff"/></svg>
+          </div>
+          <div class="msg-content">
+            <div class="msg-name">Lovable <span class="timestamp">10:25 AM</span></div>
+            <div class="msg-text">
+              I've set up a Stripe sandbox for your site so you can test payments. When you're ready to accept live payments, you can claim your sandbox and go live.
+            </div>
+            <div style="margin-top: 10px;">
+              <a href="payments.html" style="
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 8px 16px;
+                background: #635bff;
+                color: #fff;
+                border: none;
+                border-radius: 6px;
+                font-size: 13px;
+                font-weight: 500;
+                font-family: inherit;
+                cursor: pointer;
+                text-decoration: none;
+                transition: opacity 0.15s;
+              " onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                View payments dashboard
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -1010,24 +1150,27 @@
             <div class="step">
               <div class="step-number active">1</div>
               <span class="step-label">Claim your Stripe account</span>
-              <span class="step-badge badge-action">Action required</span>
-              <button class="step-btn">Claim account <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+              <span class="step-badge badge-action" id="step1Badge">Action required</span>
+              <button class="step-btn" id="claimAccountBtn">Claim account <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
             </div>
             <div class="step">
-              <div class="step-number locked">2</div>
-              <span class="step-label">Readiness check</span>
-              <span class="step-lock">
+              <div class="step-number locked" id="step2Number">2</div>
+              <span class="step-label">Allow Lovable to use Stripe data</span>
+              <span class="step-lock" id="step2Lock">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                 Locked
               </span>
+              <span class="step-badge badge-complete" id="step2Badge" style="display:none;">Complete</span>
+              <button class="step-btn" id="step2AllowBtn" style="display:none;">Allow</button>
             </div>
             <div class="step">
-              <div class="step-number locked">3</div>
+              <div class="step-number locked" id="step3Number">3</div>
               <span class="step-label">Verification</span>
-              <span class="step-lock">
+              <span class="step-lock" id="step3Lock">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                 Locked
               </span>
+              <span class="step-badge badge-complete" id="step3Badge" style="display:none;">Complete</span>
             </div>
           </div>
 
@@ -1125,24 +1268,10 @@
                 <th>Date</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <span class="txn-amount">$65.00</span> <span style="color:var(--lovable-text-muted); font-size:12px;">USD</span>
-                  <span class="txn-status" style="margin-left:8px;">Succeeded</span>
-                </td>
-                <td>
-                  <span class="txn-payment-method">
-                    <span class="visa-badge">VISA</span>
-                    ···· 7421
-                  </span>
-                </td>
-                <td>Lovable website payment — @artfan42</td>
-                <td style="color:var(--lovable-text-muted);">Mar 3, 10:29 AM</td>
-              </tr>
+            <tbody id="txnBody">
             </tbody>
           </table>
-          <div class="txn-footer">Viewing 1 of 1 item</div>
+          <div class="txn-footer" id="txnFooter">No items</div>
 
           <!-- Your business section -->
           <div class="biz-section">
@@ -1150,7 +1279,7 @@
 
             <div class="biz-revenue">
               <div class="biz-revenue-label">Your Website Revenue</div>
-              <div class="biz-revenue-value">$65.00 <span class="biz-revenue-period">today</span></div>
+              <div class="biz-revenue-value" id="bizRevValue">$0 <span class="biz-revenue-period">today</span></div>
               <a href="home.html" target="_blank" style="
                 display: inline-flex;
                 align-items: center;
@@ -1203,5 +1332,332 @@
     </div>
   </div>
 
+  <!-- Stripe Sign-in Modal -->
+  <style>
+    .stripe-overlay{position:fixed;top:0;left:0;bottom:0;right:340px;background:rgba(0,0,0,0.6);z-index:1000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s ease, right .3s ease;backdrop-filter:blur(4px)}
+    body.diagram-closed .stripe-overlay{right:0}
+    .stripe-overlay.visible{opacity:1;pointer-events:all}
+    .stripe-modal{width:460px;background:#fff;border-radius:12px;position:relative;overflow:hidden;box-shadow:0 25px 60px rgba(0,0,0,.3);transform:scale(.95) translateY(10px);transition:transform .3s ease;font-family:'Inter',-apple-system,sans-serif;color:#1a1a1a}
+    .stripe-overlay.visible .stripe-modal{transform:scale(1) translateY(0)}
+    .stripe-modal-header{padding:28px 36px 0}
+    .stripe-logo{font-size:28px;font-weight:700;color:#635bff;letter-spacing:-.5px;margin-bottom:28px}
+    .stripe-modal-body{padding:0 36px 28px}
+    .stripe-modal-title{font-size:22px;font-weight:600;color:#1a1a1a;margin-bottom:8px}
+    .stripe-modal-subtitle{font-size:14px;color:#6b7280;margin-bottom:24px;padding:10px 14px;background:#f9fafb;border-radius:6px;border:1px solid #f0f0f0}
+    .stripe-google-btn{width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:6px;background:#fff;font-size:14px;font-weight:500;color:#1a1a1a;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .15s,border-color .15s;font-family:inherit}
+    .stripe-google-btn:hover{background:#f9fafb;border-color:#d1d5db}
+    .stripe-divider{display:flex;align-items:center;gap:12px;margin:20px 0;font-size:12px;color:#9ca3af;text-transform:uppercase;letter-spacing:.5px}
+    .stripe-divider::before,.stripe-divider::after{content:'';flex:1;height:1px;background:#e5e7eb}
+    .stripe-field{margin-bottom:16px}
+    .stripe-field label{display:block;font-size:13px;font-weight:500;color:#374151;margin-bottom:6px}
+    .stripe-field input{width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:6px;font-size:14px;font-family:inherit;color:#1a1a1a;outline:none;transition:border-color .15s,box-shadow .15s;background:#fff}
+    .stripe-field input:focus{border-color:#635bff;box-shadow:0 0 0 3px rgba(99,91,255,.12)}
+    .stripe-submit{width:100%;padding:11px;border:none;border-radius:6px;background:linear-gradient(135deg,#635bff 0%,#a855f7 50%,#ec4899 100%);color:#fff;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:4px;transition:opacity .15s}
+    .stripe-submit:hover{opacity:.92}
+    .stripe-alt-link{text-align:center;margin-top:18px;font-size:13px;color:#6b7280}
+    .stripe-alt-link a{color:#635bff;text-decoration:none;font-weight:500}
+    .stripe-modal-footer{padding:16px 36px;display:flex;justify-content:space-between;font-size:12px;color:#9ca3af;border-top:1px solid #f3f4f6}
+    .stripe-modal-footer a{color:#9ca3af;text-decoration:none}
+    .stripe-gradient-bl{position:absolute;bottom:-30px;left:-30px;width:140px;height:140px;background:linear-gradient(135deg,#fbbf24,#f59e0b,#ec4899,#a855f7);border-radius:50%;opacity:.3;filter:blur(30px);pointer-events:none}
+    .stripe-gradient-br{position:absolute;bottom:-20px;right:-20px;width:120px;height:120px;background:linear-gradient(135deg,#ec4899,#8b5cf6,#3b82f6);border-radius:50%;opacity:.3;filter:blur(25px);pointer-events:none}
+    .stripe-close{position:absolute;top:16px;right:16px;width:28px;height:28px;border-radius:50%;border:none;background:#f3f4f6;color:#6b7280;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:background .15s;z-index:2}
+    .stripe-close:hover{background:#e5e7eb}
+  </style>
+
+  <style>
+    .stripe-step-wrap{transition:opacity .25s ease, transform .25s ease;}
+    .stripe-step-wrap.step-hidden{display:none;}
+    .allow-perm-item{padding:16px 0;border-bottom:1px solid #f0f0f0;}
+    .allow-perm-item:last-child{border-bottom:none;}
+    .allow-perm-title{font-size:14px;font-weight:600;color:#1a1a1a;margin-bottom:3px;}
+    .allow-perm-desc{font-size:13px;color:#6b7280;line-height:1.5;}
+    .allow-perm-detail{font-size:13px;color:#9ca3af;line-height:1.5;margin-top:4px;}
+    .allow-ack-box{padding:12px 14px;background:#f9fafb;border-radius:8px;border:1px solid #e5e7eb;margin:20px 0 4px;display:flex;align-items:flex-start;gap:10px;}
+    .allow-ack-box input[type="checkbox"]{width:18px;height:18px;accent-color:#635bff;cursor:pointer;flex-shrink:0;margin-top:1px;}
+    .allow-ack-box label{font-size:13px;color:#374151;line-height:1.5;cursor:pointer;margin:0;}
+  </style>
+
+  <div class="stripe-overlay" id="stripeOverlay">
+    <div class="stripe-modal">
+      <button class="stripe-close" id="stripeClose">&times;</button>
+
+      <!-- Step 1: Sign in -->
+      <div class="stripe-step-wrap" id="stripeSignInStep">
+        <div class="stripe-modal-header"></div>
+        <div class="stripe-modal-body">
+          <div class="stripe-modal-title" style="font-size:24px; font-weight:700;">Sign in to your account</div>
+          <div class="stripe-modal-subtitle" style="font-size:13px; line-height:1.5;">
+            Sign in to your Stripe account to claim this sandbox from Lovable, created by <strong>sarah@example.com</strong>. The Lovable Stripe app will be pre-installed.
+          </div>
+
+          <div class="stripe-field">
+            <label>Email</label>
+            <input type="email" value="sarah@example.com">
+          </div>
+          <div class="stripe-field">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <label style="margin-bottom:0;">Password</label>
+              <a href="#" style="font-size:12px; color:#635bff; text-decoration:none; font-weight:500;">Forgot?</a>
+            </div>
+            <input type="password" value="••••••••••" style="margin-top:6px;">
+          </div>
+
+          <div style="display:flex; align-items:center; gap:8px; margin:12px 0 16px;">
+            <input type="checkbox" checked style="width:16px; height:16px; accent-color:#635bff; cursor:pointer;">
+            <label style="font-size:13px; color:#374151; font-weight:400; margin:0;">Remember me on this device</label>
+          </div>
+
+          <button class="stripe-submit" id="stripeSignInBtn">Sign in</button>
+
+          <div class="stripe-divider" style="margin:20px 0;">or</div>
+
+          <button class="stripe-google-btn" style="margin-bottom:8px;">
+            <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+            Sign in with Google
+          </button>
+          <button class="stripe-google-btn" style="margin-bottom:8px;">Sign in with passkey</button>
+          <button class="stripe-google-btn">Sign in with SSO</button>
+
+          <div class="stripe-alt-link" style="margin-top:20px;">
+            New to Stripe? <a href="#">Create account</a>
+          </div>
+        </div>
+        <div class="stripe-gradient-bl"></div>
+        <div class="stripe-gradient-br"></div>
+      </div>
+
+      <!-- Step 2: Allow permissions -->
+      <div class="stripe-step-wrap step-hidden" id="stripeAllowStep">
+        <div class="stripe-modal-header"></div>
+        <div class="stripe-modal-body">
+          <div class="stripe-modal-title" style="font-size:22px; font-weight:700; margin-bottom:16px;">
+            Allow <strong>Lovable</strong> to use your:
+          </div>
+
+          <div class="allow-perm-item">
+            <div class="allow-perm-title">Identity info</div>
+            <div class="allow-perm-desc">Your business and personal details</div>
+          </div>
+
+          <div class="allow-perm-item">
+            <div class="allow-perm-title">Linked external accounts</div>
+            <div class="allow-perm-desc">Bank accounts and card info for payouts</div>
+            <div class="allow-perm-detail">Visa •••• 1212<br>Chase •••• 2357</div>
+          </div>
+
+          <div class="allow-perm-item">
+            <div class="allow-perm-title">Product list</div>
+            <div class="allow-perm-desc">Goods and services you offer to your customers</div>
+            <div class="allow-perm-detail">Cosmic Sunrise – $199.99 and 8 others</div>
+          </div>
+
+          <div class="allow-perm-item">
+            <div class="allow-perm-title">Customer list</div>
+            <div class="allow-perm-desc">Names, emails, and saved payment methods for your customers</div>
+            <div class="allow-perm-detail">42 customers and 30 saved payment methods</div>
+          </div>
+
+          <div class="allow-ack-box">
+            <input type="checkbox" id="allowAckCheckbox" checked>
+            <label for="allowAckCheckbox">Allow Lovable to read and write to your live Stripe account</label>
+          </div>
+
+          <button class="stripe-submit" id="allowContinueBtn" style="margin-top:16px;">Continue</button>
+        </div>
+        <div class="stripe-gradient-bl"></div>
+        <div class="stripe-gradient-br"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Diagram Panel -->
+  <style>
+    .diagram-panel{position:fixed;top:0;right:0;width:340px;height:100vh;background:radial-gradient(circle,#d0d5dd .8px,transparent .8px);background-size:20px 20px;background-color:#fff;border-left:1px solid #ddd;display:flex;flex-direction:column;z-index:300;transition:transform .3s ease}
+    .diagram-panel.collapsed{transform:translateX(100%)}
+    .diagram-toggle{position:fixed;top:50%;transform:translateY(-50%);z-index:301;width:24px;height:48px;background:#fff;border:1px solid #ddd;border-right:none;border-radius:6px 0 0 6px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#666;transition:background .15s,right .3s ease;box-shadow:-2px 0 4px rgba(0,0,0,.08);right:340px}
+    .diagram-toggle:hover{background:#eee}
+    .diagram-toggle.collapsed{right:0}
+    .diagram-toggle.collapsed svg{transform:rotate(180deg)}
+    .diagram-content{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 24px;gap:16px}
+    .diagram-box{width:130px;height:72px;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;line-height:1.4;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+    .diagram-box .diagram-box-sub{font-weight:400;font-size:11px}
+    .diagram-box.blue{background:#4da3ff;color:#fff;border:2px solid #4da3ff}
+    .diagram-box.white{background:#fff;color:#333;border:3px solid #888}
+    .diagram-grid{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 20px;gap:0}
+    .diagram-row{display:flex;align-items:center;gap:16px}
+    .diagram-connector{display:flex;gap:16px;justify-content:center;position:relative}
+    .diagram-connector-col{width:130px;display:flex;justify-content:center;position:relative}
+    .dashed-line{width:3px;height:40px;background:repeating-linear-gradient(to bottom,currentColor,currentColor 6px,transparent 6px,transparent 12px)}
+    .dashed-line.blue-line{color:#2b7de9}
+    .dashed-line.gray-line{color:#888}
+    .connector-label{font-size:12px;font-weight:500;color:#555;font-family:'Inter',sans-serif;padding:2px 0}
+    .connector-split{display:flex;flex-direction:column;align-items:center}
+    .diag-s2,.diag-s3,.diag-s3-only,.diag-s4-only{max-height:0;opacity:0;overflow:hidden;transition:max-height .6s ease,opacity .6s ease}
+    .diag-s2.visible,.diag-s3.visible,.diag-s3-only.visible,.diag-s4-only.visible{max-height:200px;opacity:1}
+    .diag-s2.no-anim,.diag-s3.no-anim,.diag-s3-only.no-anim,.diag-s4-only.no-anim{transition:none}
+  </style>
+  <div class="diagram-panel" id="diagramPanel">
+    <div class="diagram-grid" id="diagramGrid">
+      <div class="diagram-row">
+        <div class="diagram-box blue">Lovable<span class="diagram-box-sub">Direct account</span></div>
+        <div class="diagram-box white">Lovable<span class="diagram-box-sub">App sandbox</span></div>
+      </div>
+      <div class="diagram-connector diag-s2">
+        <div class="diagram-connector-col"><div class="dashed-line blue-line"></div></div>
+        <div class="diagram-connector-col"><div class="dashed-line gray-line"></div></div>
+      </div>
+      <div class="diagram-row diag-s2">
+        <div class="diagram-box blue">Sarah's Biz<span class="diagram-box-sub">v2 account</span></div>
+        <div class="diagram-box white">Sarah's Biz<span class="diagram-box-sub">v2 account sandbox</span></div>
+      </div>
+      <div class="diagram-connector diag-s3">
+        <div class="diagram-connector-col">
+          <div class="connector-split diag-s4-only" id="connLeftWrap">
+            <div class="dashed-line blue-line" style="height:16px;"></div>
+            <span class="connector-label">Consent record</span>
+            <div class="dashed-line blue-line" style="height:16px;"></div>
+          </div>
+        </div>
+        <div class="diagram-connector-col">
+          <div class="connector-split">
+            <div class="dashed-line gray-line" style="height:16px;"></div>
+            <span class="connector-label diag-s3-only" id="connLabelRight">Connects existing<br>Stripe account</span>
+            <div class="dashed-line gray-line" style="height:16px;"></div>
+          </div>
+        </div>
+      </div>
+      <div class="diagram-row diag-s3" id="diagRow3" style="position:relative;">
+        <div class="diagram-box blue">Sarah's Biz<span class="diagram-box-sub">Direct account</span></div>
+        <div class="diagram-box white">Sarah's Biz<span class="diagram-box-sub">Direct sandbox</span></div>
+      
+      </div>
+      <div class="diag-s4-only" style="text-align:center;margin-top:6px;">
+        <span class="connector-label" style="font-size:11px;">Resource sharing</span>
+      </div>
+    </div>
+  </div>
+  <button class="diagram-toggle" id="diagramToggle" title="Toggle diagram panel">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+  </button>
+  <script>
+    // Stripe sign-in modal
+    const claimBtn=document.getElementById('claimAccountBtn');
+    const overlay=document.getElementById('stripeOverlay');
+    const closeBtn=document.getElementById('stripeClose');
+    claimBtn.addEventListener('click',()=>{overlay.classList.add('visible')});
+    closeBtn.addEventListener('click',()=>{overlay.classList.remove('visible')});
+    overlay.addEventListener('click',(e)=>{if(e.target===overlay)overlay.classList.remove('visible')});
+    const signInStep = document.getElementById('stripeSignInStep');
+    const allowStep = document.getElementById('stripeAllowStep');
+
+    function unlockStep2() {
+      document.getElementById('step1Badge').textContent = 'Complete';
+      document.getElementById('step1Badge').className = 'step-badge badge-complete';
+      document.getElementById('claimAccountBtn').style.display = 'none';
+      document.getElementById('step2Number').classList.remove('locked');
+      document.getElementById('step2Number').classList.add('active');
+      document.getElementById('step2Lock').style.display = 'none';
+      document.getElementById('step2AllowBtn').style.display = '';
+    }
+
+    function completeStep2And3() {
+      document.getElementById('step2AllowBtn').textContent = 'View';
+      document.getElementById('step2Badge').style.display = '';
+      document.getElementById('step3Number').classList.remove('locked');
+      document.getElementById('step3Number').classList.add('active');
+      document.getElementById('step3Lock').style.display = 'none';
+      document.getElementById('step3Badge').style.display = '';
+    }
+
+    document.getElementById('step2AllowBtn').addEventListener('click', () => {
+      overlay.classList.add('visible');
+      signInStep.classList.add('step-hidden');
+      allowStep.classList.remove('step-hidden');
+      allowStep.style.opacity = '1';
+      allowStep.style.transform = 'translateX(0)';
+    });
+
+    document.getElementById('stripeSignInBtn').addEventListener('click',(e)=>{
+      e.preventDefault();
+      window.open('claim-sandbox.html','_blank');
+      setDiagramState('signin');
+      unlockStep2();
+      sessionStorage.setItem('step2Unlocked','true');
+      signInStep.style.opacity = '0';
+      signInStep.style.transform = 'translateX(-20px)';
+      setTimeout(() => {
+        signInStep.classList.add('step-hidden');
+        allowStep.classList.remove('step-hidden');
+        allowStep.style.opacity = '0';
+        allowStep.style.transform = 'translateX(20px)';
+        requestAnimationFrame(() => {
+          allowStep.style.opacity = '1';
+          allowStep.style.transform = 'translateX(0)';
+        });
+      }, 250);
+    });
+
+    document.getElementById('allowContinueBtn').addEventListener('click',(e)=>{
+      e.preventDefault();
+      overlay.classList.remove('visible');
+      setDiagramState('full');
+      showTransaction();
+      completeStep2And3();
+      sessionStorage.setItem('stepsCompleted','true');
+      setTimeout(() => {
+        allowStep.classList.add('step-hidden');
+        signInStep.classList.remove('step-hidden');
+        signInStep.style.opacity = '1';
+        signInStep.style.transform = 'translateX(0)';
+      }, 300);
+    });
+
+    window.addEventListener('focus', () => {
+      if (sessionStorage.getItem('sandboxClaimed') === 'true' && !window._claimApplied) {
+        window._claimApplied = true;
+        restoreDiagramState();
+      }
+    });
+
+    function showTransaction(){
+      document.getElementById('bizRevValue').innerHTML='$65.00 <span class="biz-revenue-period">today</span>';
+      document.getElementById('txnBody').innerHTML='<tr><td><span class="txn-amount">$65.00</span> <span style="color:var(--lovable-text-muted);font-size:12px;">USD</span><span class="txn-status" style="margin-left:8px;">Succeeded</span></td><td><span class="txn-payment-method"><span class="visa-badge">VISA</span> ···· 7421</span></td><td>Lovable website payment — @artfan42</td><td style="color:var(--lovable-text-muted);">Mar 3, 10:29 AM</td></tr>';
+      document.getElementById('txnFooter').textContent='Viewing 1 of 1 item';
+    }
+
+    if(sessionStorage.getItem('sandboxClaimed')==='true'){showTransaction()}
+    if(sessionStorage.getItem('step2Unlocked')==='true'){unlockStep2()}
+    if(sessionStorage.getItem('stepsCompleted')==='true'){unlockStep2();completeStep2And3()}
+
+    // Diagram state helpers
+    function setDiagramState(state){
+      sessionStorage.setItem('diagramState',state);
+      applyDiagramState(state,false);
+    }
+    function applyDiagramState(state,instant){
+      if(state==='sent'||state==='signin'||state==='full'){
+        document.querySelectorAll('.diag-s2').forEach(function(el){el.classList.add('visible');if(instant)el.classList.add('no-anim');});
+      }
+      if(state==='signin'||state==='full'){
+        document.querySelectorAll('.diag-s3').forEach(function(el){el.classList.add('visible');if(instant)el.classList.add('no-anim');});
+        document.querySelectorAll('.diag-s3-only').forEach(function(el){el.classList.add('visible');if(instant)el.classList.add('no-anim');});
+      }
+      if(state==='full'){
+        document.querySelectorAll('.diag-s3-only').forEach(function(el){el.classList.remove('visible');el.style.maxHeight='0';el.style.opacity='0';});
+        document.querySelectorAll('.diag-s4-only').forEach(function(el){el.classList.add('visible');if(instant)el.classList.add('no-anim');});
+      }
+    }
+    function restoreDiagramState(){
+      var s=sessionStorage.getItem('diagramState');
+      if(s)applyDiagramState(s,false);
+    }
+
+    // Diagram panel
+    var ne=performance.getEntriesByType('navigation');if(ne.length&&ne[0].type==='reload'){sessionStorage.removeItem('diagramState');sessionStorage.removeItem('sandboxClaimed');sessionStorage.removeItem('step2Unlocked');sessionStorage.removeItem('stepsCompleted')}
+    var savedState=sessionStorage.getItem('diagramState');if(savedState)applyDiagramState(savedState,true);
+    const dp=document.getElementById('diagramPanel'),dt=document.getElementById('diagramToggle');
+    if(localStorage.getItem('diagramCollapsed')==='true'){dp.classList.add('collapsed');dt.classList.add('collapsed');document.body.classList.add('diagram-closed')}
+    dt.addEventListener('click',()=>{dp.classList.toggle('collapsed');dt.classList.toggle('collapsed');document.body.classList.toggle('diagram-closed');localStorage.setItem('diagramCollapsed',dp.classList.contains('collapsed'))});
+  </script>
 </body>
 </html>

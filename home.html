@@ -17,7 +17,10 @@
       height: 100vh;
       overflow: hidden;
       display: flex;
+      margin-right: 340px;
+      transition: margin-right 0.3s ease;
     }
+    body.diagram-closed { margin-right: 0; }
 
     /* Sidebar */
     .sidebar {
@@ -862,5 +865,56 @@
     <label><input type="radio" name="proto" value="sarah" checked onchange="if(this.checked) window.location.href='home.html'"> Sarah's photography</label>
     <label><input type="radio" name="proto" value="lovable" onchange="if(this.checked) window.location.href='lovable-network.html'"> Lovable</label>
   </div>
+
+  <!-- Diagram Panel -->
+  <style>
+    .diagram-panel{position:fixed;top:0;right:0;width:340px;height:100vh;background:radial-gradient(circle,#d0d5dd .8px,transparent .8px);background-size:20px 20px;background-color:#fff;border-left:1px solid #ddd;display:flex;flex-direction:column;z-index:300;transition:transform .3s ease}
+    .diagram-panel.collapsed{transform:translateX(100%)}
+    .diagram-toggle{position:fixed;top:50%;transform:translateY(-50%);z-index:301;width:24px;height:48px;background:#fff;border:1px solid #ddd;border-right:none;border-radius:6px 0 0 6px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#666;transition:background .15s,right .3s ease;box-shadow:-2px 0 4px rgba(0,0,0,.08);right:340px}
+    .diagram-toggle:hover{background:#eee}
+    .diagram-toggle.collapsed{right:0}
+    .diagram-toggle.collapsed svg{transform:rotate(180deg)}
+    .diagram-content{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 24px;gap:16px}
+    .diagram-box{width:130px;height:72px;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;line-height:1.4;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+    .diagram-box .diagram-box-sub{font-weight:400;font-size:11px}
+    .diagram-box.blue{background:#4da3ff;color:#fff;border:2px solid #4da3ff}
+    .diagram-box.white{background:#fff;color:#333;border:3px solid #888}
+    .diagram-grid{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 20px;gap:0}
+    .diagram-row{display:flex;align-items:center;gap:16px}
+    .diagram-connector{display:flex;gap:16px;justify-content:center;position:relative}
+    .diagram-connector-col{width:130px;display:flex;justify-content:center;position:relative}
+    .dashed-line{width:3px;height:40px;background:repeating-linear-gradient(to bottom,currentColor,currentColor 6px,transparent 6px,transparent 12px)}
+    .dashed-line.blue-line{color:#2b7de9}
+    .dashed-line.gray-line{color:#888}
+    .connector-label{font-size:12px;font-weight:500;color:#555;font-family:'Inter',sans-serif;padding:2px 0}
+    .connector-split{display:flex;flex-direction:column;align-items:center}
+    .diag-s2,.diag-s3,.diag-s3-only,.diag-s4-only{max-height:0;opacity:0;overflow:hidden;transition:max-height .6s ease,opacity .6s ease}
+    .diag-s2.visible,.diag-s3.visible,.diag-s3-only.visible,.diag-s4-only.visible{max-height:200px;opacity:1}
+    .diag-s2.no-anim,.diag-s3.no-anim,.diag-s3-only.no-anim,.diag-s4-only.no-anim{transition:none}
+  </style>
+  <div class="diagram-panel" id="diagramPanel">
+    <div class="diagram-grid" id="diagramGrid">
+      <div style="display:flex;align-items:center;gap:0;width:100%;">
+        <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;">
+          <div class="diagram-box blue" style="width:130px;">Sarah's Biz<span class="diagram-box-sub">Direct account</span></div>
+        </div>
+        <div style="width:40px;height:3px;background:repeating-linear-gradient(to right,#2b7de9,#2b7de9 6px,transparent 6px,transparent 12px);flex-shrink:0;"></div>
+        <div style="display:flex;flex-direction:column;align-items:stretch;gap:12px;">
+          <div class="diagram-box blue" style="width:130px;">Sarah's Biz<span class="diagram-box-sub">Acuity v2 acct</span></div>
+          <div class="diagram-box blue" style="width:130px;">Sarah's Biz<span class="diagram-box-sub">17hats v2 acct</span></div>
+          <div class="diagram-box blue" style="width:130px;">Sarah's Biz<span class="diagram-box-sub">Pixieset v2 acct</span></div>
+          <div class="diagram-box blue" style="width:130px;">Sarah's Biz<span class="diagram-box-sub">Lovable v2 acct</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button class="diagram-toggle" id="diagramToggle" title="Toggle diagram panel">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+  </button>
+  <script>
+    const dp=document.getElementById('diagramPanel'),dt=document.getElementById('diagramToggle');
+    if(localStorage.getItem('diagramCollapsed')==='true'){dp.classList.add('collapsed');dt.classList.add('collapsed');document.body.classList.add('diagram-closed')}
+    dt.addEventListener('click',()=>{dp.classList.toggle('collapsed');dt.classList.toggle('collapsed');document.body.classList.toggle('diagram-closed');localStorage.setItem('diagramCollapsed',dp.classList.contains('collapsed'))});
+  </script>
 </body>
 </html>
