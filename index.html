@@ -1663,7 +1663,8 @@
 
     .diagram-box {
       width: 130px;
-      height: 72px;
+      min-height: 72px;
+      padding: 8px 4px;
       border-radius: 8px;
       display: flex;
       flex-direction: column;
@@ -1674,6 +1675,7 @@
       font-weight: 600;
       line-height: 1.4;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      box-sizing: border-box;
     }
 
     .diagram-box .diagram-box-sub {
@@ -2174,36 +2176,29 @@
         <div class="diagram-box blue">Lovable<span class="diagram-box-sub">Direct account</span></div>
         <div class="diagram-box white">Lovable<span class="diagram-box-sub">App sandbox</span></div>
       </div>
-      <!-- State 2+: Connectors 1 + Row 2 -->
+      <!-- Sent+: Connectors 1 + Row 2 -->
       <div class="diagram-connector diag-s2">
         <div class="diagram-connector-col"><div class="dashed-line blue-line"></div></div>
         <div class="diagram-connector-col"><div class="dashed-line gray-line"></div></div>
       </div>
       <div class="diagram-row diag-s2">
-        <div class="diagram-box blue">Sarah's Biz<span class="diagram-box-sub">v2 account</span></div>
-        <div class="diagram-box white">Sarah's Biz<span class="diagram-box-sub">v2 account sandbox</span></div>
+        <div class="diagram-box blue">Sarah's Biz<span class="diagram-box-sub">v2 acct</span><span class="diagram-box-sub" style="margin-top:2px;font-size:10px;opacity:0.85;">Customer / Merchant</span></div>
+        <div class="diagram-box white">Sarah's Biz<span class="diagram-box-sub">v2 account</span><span class="diagram-box-sub">sandbox</span></div>
       </div>
-      <!-- State 3+: Connectors 2 + Row 3 -->
-      <div class="diagram-connector diag-s3">
+      <!-- Sent+: Connectors 2 + Row 3 -->
+      <div class="diagram-connector diag-s2">
         <div class="diagram-connector-col">
-          <div class="connector-split diag-s4-only" id="connLeftWrap">
+          <div class="connector-split diag-s4-only">
             <div class="dashed-line blue-line" style="height:16px;"></div>
             <span class="connector-label">Consent record</span>
             <div class="dashed-line blue-line" style="height:16px;"></div>
           </div>
         </div>
-        <div class="diagram-connector-col">
-          <div class="connector-split">
-            <div class="dashed-line gray-line" style="height:16px;"></div>
-            <span class="connector-label diag-s3-only" id="connLabelRight">Connects existing<br>Stripe account</span>
-            <div class="dashed-line gray-line" style="height:16px;"></div>
-          </div>
-        </div>
+        <div class="diagram-connector-col"><div class="dashed-line gray-line"></div></div>
       </div>
-      <div class="diagram-row diag-s3" id="diagRow3" style="position:relative;">
+      <div class="diagram-row diag-s2">
         <div class="diagram-box blue">Sarah's Biz<span class="diagram-box-sub">Direct account</span></div>
-        <div class="diagram-box white">Sarah's Biz<span class="diagram-box-sub">Direct sandbox</span></div>
-      
+        <div class="diagram-box white">Sarah's Biz<span class="diagram-box-sub">Direct account</span></div>
       </div>
       <div class="diag-s4-only" style="text-align:center;margin-top:6px;">
         <span class="connector-label" style="font-size:11px;">Resource sharing</span>
@@ -3198,16 +3193,10 @@
       applyDiagramState(state, false);
     }
     function applyDiagramState(state, instant) {
-      const cls = instant ? 'no-anim' : '';
       if (state === 'sent' || state === 'signin' || state === 'full') {
         document.querySelectorAll('.diag-s2').forEach(el => { el.classList.add('visible'); if (instant) el.classList.add('no-anim'); });
       }
-      if (state === 'signin' || state === 'full') {
-        document.querySelectorAll('.diag-s3').forEach(el => { el.classList.add('visible'); if (instant) el.classList.add('no-anim'); });
-        document.querySelectorAll('.diag-s3-only').forEach(el => { el.classList.add('visible'); if (instant) el.classList.add('no-anim'); });
-      }
       if (state === 'full') {
-        document.querySelectorAll('.diag-s3-only').forEach(el => { el.classList.remove('visible'); el.style.maxHeight='0'; el.style.opacity='0'; });
         document.querySelectorAll('.diag-s4-only').forEach(el => { el.classList.add('visible'); if (instant) el.classList.add('no-anim'); });
       }
     }

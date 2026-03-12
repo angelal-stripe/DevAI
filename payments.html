@@ -1171,6 +1171,7 @@
                 Locked
               </span>
               <span class="step-badge badge-complete" id="step3Badge" style="display:none;">Complete</span>
+              <button class="step-btn" id="step3VerifyBtn" style="display:none;">Verify</button>
             </div>
           </div>
 
@@ -1426,7 +1427,72 @@
         <div class="stripe-gradient-br"></div>
       </div>
 
-      <!-- Step 2: Allow permissions -->
+      <!-- Step 2: Claim your sandbox -->
+      <div class="stripe-step-wrap step-hidden" id="stripeClaimStep">
+        <div class="stripe-modal-header"></div>
+        <div class="stripe-modal-body" style="display:flex; gap:0; padding:0;">
+          <div style="flex:1; padding:32px 28px; display:flex; flex-direction:column; justify-content:space-between;">
+            <div>
+              <div class="stripe-modal-title" style="font-size:22px; font-weight:700; margin-bottom:10px;">Claim your sandbox</div>
+              <div style="font-size:13px; line-height:1.6; color:#6b7280; margin-bottom:24px;">We've saved all your work to a sandbox. Before you can start accepting payments, choose an account you'd like to use or create a new one.</div>
+              <div style="display:flex; flex-direction:column; gap:10px;">
+                <button class="claim-acct-option" id="claimAcctNew" style="display:flex; align-items:center; gap:12px; width:100%; padding:12px 14px; border:1px solid #e5e7eb; border-radius:8px; background:#fff; cursor:pointer; font-family:inherit; text-align:left;">
+                  <span style="font-size:18px; color:#635bff; font-weight:300;">+</span>
+                  <span style="font-size:13px; font-weight:600; color:#635bff;">Create new account</span>
+                </button>
+                <button class="claim-acct-option" id="claimAcctSarah" style="display:flex; align-items:center; gap:12px; width:100%; padding:12px 14px; border:1px solid #e5e7eb; border-radius:8px; background:#fff; cursor:pointer; font-family:inherit; text-align:left;">
+                  <span style="display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:5px; background:#f3f4f6; font-size:11px; font-weight:700; color:#6b7280; flex-shrink:0;">SL</span>
+                  <span style="font-size:13px; font-weight:500; color:#1a1a1a;">Sarah Lens</span>
+                </button>
+              </div>
+            </div>
+            <button class="stripe-submit" id="claimContinueBtn" style="margin-top:24px;">Continue</button>
+          </div>
+        </div>
+        <div class="stripe-gradient-bl"></div>
+        <div class="stripe-gradient-br"></div>
+      </div>
+
+      <!-- Step 2b: Business type (for new account) -->
+      <div class="stripe-step-wrap step-hidden" id="stripeBusinessTypeStep">
+        <div class="stripe-modal-header"></div>
+        <div class="stripe-modal-body">
+          <div class="stripe-modal-title" style="font-size:22px; font-weight:700; margin-bottom:8px;">Let's start with your business type</div>
+          <div style="font-size:13px; line-height:1.6; color:#6b7280; margin-bottom:24px;">This ensures we set up your business correctly on Stripe. Not sure? <a href="#" style="color:#635bff; text-decoration:none; font-weight:500;">View support article</a></div>
+
+          <div style="margin-bottom:24px;">
+            <div style="font-size:13px; font-weight:600; color:#1a1a1a; margin-bottom:8px;">Business location</div>
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 14px; border:1px solid #e5e7eb; border-radius:8px; background:#fff; font-size:13px; color:#1a1a1a;">
+              United States
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><polyline points="6 9 12 4 18 9"/><polyline points="6 15 12 20 18 15"/></svg>
+            </div>
+          </div>
+
+          <div style="margin-bottom:24px;">
+            <div style="font-size:13px; font-weight:600; color:#1a1a1a; margin-bottom:4px; display:flex; align-items:center; gap:6px;">Business type <span style="display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; border-radius:50%; border:1px solid #d1d5db; font-size:10px; color:#9ca3af; cursor:help;">i</span></div>
+            <div style="display:flex; flex-direction:column; gap:10px; margin-top:12px;">
+              <button class="biz-type-option" style="display:flex; flex-direction:column; gap:2px; width:100%; padding:14px 16px; border:1px solid #e5e7eb; border-radius:10px; background:#fff; cursor:pointer; font-family:inherit; text-align:left; transition:border-color .15s;">
+                <span style="font-size:13px; font-weight:600; color:#1a1a1a;">Unregistered business</span>
+                <span style="font-size:12px; color:#6b7280;">Owned by one person and not registered with the government</span>
+              </button>
+              <button class="biz-type-option" style="display:flex; flex-direction:column; gap:2px; width:100%; padding:14px 16px; border:1px solid #e5e7eb; border-radius:10px; background:#fff; cursor:pointer; font-family:inherit; text-align:left; transition:border-color .15s;">
+                <span style="font-size:13px; font-weight:600; color:#1a1a1a;">Registered business</span>
+                <span style="font-size:12px; color:#6b7280;">LLC, partnership, or corporation</span>
+              </button>
+              <button class="biz-type-option" style="display:flex; flex-direction:column; gap:2px; width:100%; padding:14px 16px; border:1px solid #e5e7eb; border-radius:10px; background:#fff; cursor:pointer; font-family:inherit; text-align:left; transition:border-color .15s;">
+                <span style="font-size:13px; font-weight:600; color:#1a1a1a;">Nonprofit organization</span>
+                <span style="font-size:12px; color:#6b7280;">Tax-exempt organization with 501(c)3 status</span>
+              </button>
+            </div>
+          </div>
+
+          <button class="stripe-submit" id="bizTypeContinueBtn">Continue</button>
+        </div>
+        <div class="stripe-gradient-bl"></div>
+        <div class="stripe-gradient-br"></div>
+      </div>
+
+      <!-- Step 3: Allow permissions -->
       <div class="stripe-step-wrap step-hidden" id="stripeAllowStep">
         <div class="stripe-modal-header"></div>
         <div class="stripe-modal-body">
@@ -1479,7 +1545,7 @@
     .diagram-toggle.collapsed{right:0}
     .diagram-toggle.collapsed svg{transform:rotate(180deg)}
     .diagram-content{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 24px;gap:16px}
-    .diagram-box{width:130px;height:72px;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;line-height:1.4;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+    .diagram-box{width:130px;min-height:72px;padding:8px 4px;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;line-height:1.4;box-shadow:0 2px 8px rgba(0,0,0,.1);box-sizing:border-box}
     .diagram-box .diagram-box-sub{font-weight:400;font-size:11px}
     .diagram-box.blue{background:#4da3ff;color:#fff;border:2px solid #4da3ff}
     .diagram-box.white{background:#fff;color:#333;border:3px solid #888}
@@ -1502,34 +1568,27 @@
         <div class="diagram-box blue">Lovable<span class="diagram-box-sub">Direct account</span></div>
         <div class="diagram-box white">Lovable<span class="diagram-box-sub">App sandbox</span></div>
       </div>
-      <div class="diagram-connector diag-s2">
+      <div class="diagram-connector">
         <div class="diagram-connector-col"><div class="dashed-line blue-line"></div></div>
         <div class="diagram-connector-col"><div class="dashed-line gray-line"></div></div>
       </div>
-      <div class="diagram-row diag-s2">
-        <div class="diagram-box blue">Sarah's Biz<span class="diagram-box-sub">v2 account</span></div>
-        <div class="diagram-box white">Sarah's Biz<span class="diagram-box-sub">v2 account sandbox</span></div>
+      <div class="diagram-row">
+        <div class="diagram-box blue">Sarah's Biz<span class="diagram-box-sub">v2 acct</span><span class="diagram-box-sub" style="margin-top:2px;font-size:10px;opacity:0.85;">Customer / Merchant</span></div>
+        <div class="diagram-box white">Sarah's Biz<span class="diagram-box-sub">v2 account</span><span class="diagram-box-sub">sandbox</span></div>
       </div>
-      <div class="diagram-connector diag-s3">
+      <div class="diagram-connector">
         <div class="diagram-connector-col">
-          <div class="connector-split diag-s4-only" id="connLeftWrap">
+          <div class="connector-split diag-s4-only">
             <div class="dashed-line blue-line" style="height:16px;"></div>
             <span class="connector-label">Consent record</span>
             <div class="dashed-line blue-line" style="height:16px;"></div>
           </div>
         </div>
-        <div class="diagram-connector-col">
-          <div class="connector-split">
-            <div class="dashed-line gray-line" style="height:16px;"></div>
-            <span class="connector-label diag-s3-only" id="connLabelRight">Connects existing<br>Stripe account</span>
-            <div class="dashed-line gray-line" style="height:16px;"></div>
-          </div>
-        </div>
+        <div class="diagram-connector-col"><div class="dashed-line gray-line"></div></div>
       </div>
-      <div class="diagram-row diag-s3" id="diagRow3" style="position:relative;">
+      <div class="diagram-row">
         <div class="diagram-box blue">Sarah's Biz<span class="diagram-box-sub">Direct account</span></div>
-        <div class="diagram-box white">Sarah's Biz<span class="diagram-box-sub">Direct sandbox</span></div>
-      
+        <div class="diagram-box white">Sarah's Biz<span class="diagram-box-sub">Direct account</span></div>
       </div>
       <div class="diag-s4-only" style="text-align:center;margin-top:6px;">
         <span class="connector-label" style="font-size:11px;">Resource sharing</span>
@@ -1548,6 +1607,8 @@
     closeBtn.addEventListener('click',()=>{overlay.classList.remove('visible')});
     overlay.addEventListener('click',(e)=>{if(e.target===overlay)overlay.classList.remove('visible')});
     const signInStep = document.getElementById('stripeSignInStep');
+    const claimStep = document.getElementById('stripeClaimStep');
+    const bizTypeStep = document.getElementById('stripeBusinessTypeStep');
     const allowStep = document.getElementById('stripeAllowStep');
 
     function unlockStep2() {
@@ -1579,7 +1640,6 @@
 
     document.getElementById('stripeSignInBtn').addEventListener('click',(e)=>{
       e.preventDefault();
-      window.open('claim-sandbox.html','_blank');
       setDiagramState('signin');
       unlockStep2();
       sessionStorage.setItem('step2Unlocked','true');
@@ -1587,14 +1647,110 @@
       signInStep.style.transform = 'translateX(-20px)';
       setTimeout(() => {
         signInStep.classList.add('step-hidden');
-        allowStep.classList.remove('step-hidden');
-        allowStep.style.opacity = '0';
-        allowStep.style.transform = 'translateX(20px)';
+        claimStep.classList.remove('step-hidden');
+        claimStep.style.opacity = '0';
+        claimStep.style.transform = 'translateX(20px)';
         requestAnimationFrame(() => {
-          allowStep.style.opacity = '1';
-          allowStep.style.transform = 'translateX(0)';
+          claimStep.style.opacity = '1';
+          claimStep.style.transform = 'translateX(0)';
         });
       }, 250);
+    });
+
+    var selectedAccount = null;
+    document.getElementById('claimAcctNew').addEventListener('click', function() {
+      selectedAccount = 'new';
+      this.style.border = '2px solid #635bff';
+      this.style.background = '#f8f7ff';
+      document.getElementById('claimAcctSarah').style.border = '1px solid #e5e7eb';
+      document.getElementById('claimAcctSarah').style.background = '#fff';
+    });
+    document.getElementById('claimAcctSarah').addEventListener('click', function() {
+      selectedAccount = 'sarah';
+      this.style.border = '2px solid #635bff';
+      this.style.background = '#f8f7ff';
+      document.getElementById('claimAcctNew').style.border = '1px solid #e5e7eb';
+      document.getElementById('claimAcctNew').style.background = '#fff';
+    });
+
+    function transitionStep(fromStep, toStep) {
+      fromStep.style.opacity = '0';
+      fromStep.style.transform = 'translateX(-20px)';
+      setTimeout(() => {
+        fromStep.classList.add('step-hidden');
+        toStep.classList.remove('step-hidden');
+        toStep.style.opacity = '0';
+        toStep.style.transform = 'translateX(20px)';
+        requestAnimationFrame(() => {
+          toStep.style.opacity = '1';
+          toStep.style.transform = 'translateX(0)';
+        });
+      }, 250);
+    }
+
+    function unlockStep3Verify() {
+      document.getElementById('step3Number').classList.remove('locked');
+      document.getElementById('step3Number').classList.add('active');
+      document.getElementById('step3Lock').style.display = 'none';
+      document.getElementById('step3VerifyBtn').style.display = '';
+    }
+
+    // Claim step Continue → close modal (new) or Allow (Sarah)
+    document.getElementById('claimContinueBtn').addEventListener('click',(e)=>{
+      e.preventDefault();
+      if (selectedAccount === 'new') {
+        overlay.classList.remove('visible');
+        unlockStep2();
+        unlockStep3Verify();
+        sessionStorage.setItem('step2Unlocked','true');
+        sessionStorage.setItem('step3Unlocked','true');
+        setTimeout(() => {
+          claimStep.classList.add('step-hidden');
+          signInStep.classList.remove('step-hidden');
+          signInStep.style.opacity = '1';
+          signInStep.style.transform = 'translateX(0)';
+        }, 300);
+      } else {
+        transitionStep(claimStep, allowStep);
+      }
+    });
+
+    // Step 3 Verify button → open business type step
+    document.getElementById('step3VerifyBtn').addEventListener('click', () => {
+      overlay.classList.add('visible');
+      signInStep.classList.add('step-hidden');
+      claimStep.classList.add('step-hidden');
+      allowStep.classList.add('step-hidden');
+      bizTypeStep.classList.remove('step-hidden');
+      bizTypeStep.style.opacity = '1';
+      bizTypeStep.style.transform = 'translateX(0)';
+    });
+
+    // Business type selection
+    document.querySelectorAll('.biz-type-option').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.biz-type-option').forEach(b => {
+          b.style.border = '1px solid #e5e7eb';
+          b.style.background = '#fff';
+        });
+        this.style.border = '2px solid #635bff';
+        this.style.background = '#f8f7ff';
+      });
+    });
+
+    // Business type Continue → close modal, mark step 3 complete
+    document.getElementById('bizTypeContinueBtn').addEventListener('click',(e)=>{
+      e.preventDefault();
+      overlay.classList.remove('visible');
+      document.getElementById('step3VerifyBtn').style.display = 'none';
+      document.getElementById('step3Badge').style.display = '';
+      sessionStorage.setItem('step3Completed','true');
+      setTimeout(() => {
+        bizTypeStep.classList.add('step-hidden');
+        signInStep.classList.remove('step-hidden');
+        signInStep.style.opacity = '1';
+        signInStep.style.transform = 'translateX(0)';
+      }, 300);
     });
 
     document.getElementById('allowContinueBtn').addEventListener('click',(e)=>{
@@ -1606,6 +1762,8 @@
       sessionStorage.setItem('stepsCompleted','true');
       setTimeout(() => {
         allowStep.classList.add('step-hidden');
+        claimStep.classList.add('step-hidden');
+        bizTypeStep.classList.add('step-hidden');
         signInStep.classList.remove('step-hidden');
         signInStep.style.opacity = '1';
         signInStep.style.transform = 'translateX(0)';
@@ -1627,23 +1785,16 @@
 
     if(sessionStorage.getItem('sandboxClaimed')==='true'){showTransaction()}
     if(sessionStorage.getItem('step2Unlocked')==='true'){unlockStep2()}
+    if(sessionStorage.getItem('step3Unlocked')==='true'){unlockStep3Verify()}
+    if(sessionStorage.getItem('step3Completed')==='true'){unlockStep3Verify();document.getElementById('step3VerifyBtn').style.display='none';document.getElementById('step3Badge').style.display='';}
     if(sessionStorage.getItem('stepsCompleted')==='true'){unlockStep2();completeStep2And3()}
 
-    // Diagram state helpers
     function setDiagramState(state){
       sessionStorage.setItem('diagramState',state);
       applyDiagramState(state,false);
     }
     function applyDiagramState(state,instant){
-      if(state==='sent'||state==='signin'||state==='full'){
-        document.querySelectorAll('.diag-s2').forEach(function(el){el.classList.add('visible');if(instant)el.classList.add('no-anim');});
-      }
-      if(state==='signin'||state==='full'){
-        document.querySelectorAll('.diag-s3').forEach(function(el){el.classList.add('visible');if(instant)el.classList.add('no-anim');});
-        document.querySelectorAll('.diag-s3-only').forEach(function(el){el.classList.add('visible');if(instant)el.classList.add('no-anim');});
-      }
       if(state==='full'){
-        document.querySelectorAll('.diag-s3-only').forEach(function(el){el.classList.remove('visible');el.style.maxHeight='0';el.style.opacity='0';});
         document.querySelectorAll('.diag-s4-only').forEach(function(el){el.classList.add('visible');if(instant)el.classList.add('no-anim');});
       }
     }
@@ -1653,7 +1804,7 @@
     }
 
     // Diagram panel
-    var ne=performance.getEntriesByType('navigation');if(ne.length&&ne[0].type==='reload'){sessionStorage.removeItem('diagramState');sessionStorage.removeItem('sandboxClaimed');sessionStorage.removeItem('step2Unlocked');sessionStorage.removeItem('stepsCompleted')}
+    var ne=performance.getEntriesByType('navigation');if(ne.length&&ne[0].type==='reload'){sessionStorage.removeItem('diagramState');sessionStorage.removeItem('sandboxClaimed');sessionStorage.removeItem('step2Unlocked');sessionStorage.removeItem('step3Unlocked');sessionStorage.removeItem('step3Completed');sessionStorage.removeItem('stepsCompleted')}
     var savedState=sessionStorage.getItem('diagramState');if(savedState)applyDiagramState(savedState,true);
     const dp=document.getElementById('diagramPanel'),dt=document.getElementById('diagramToggle');
     if(localStorage.getItem('diagramCollapsed')==='true'){dp.classList.add('collapsed');dt.classList.add('collapsed');document.body.classList.add('diagram-closed')}
