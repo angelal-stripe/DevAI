@@ -1145,7 +1145,7 @@
           </div>
 
           <!-- Testing -->
-          <div class="go-live-label" style="color:#f59e0b;">Testing</div>
+          <div class="analytics-title">Testing</div>
           <div class="go-live-steps">
             <div class="step">
               <div class="step-number active">1</div>
@@ -1156,7 +1156,7 @@
           </div>
 
           <!-- Go live -->
-          <div class="go-live-label" style="margin-top:20px;">Go live</div>
+          <div class="analytics-title" style="margin-top:20px;">Go live</div>
           <div class="go-live-steps">
             <div class="step">
               <div class="step-number locked" id="step2Number">1</div>
@@ -1511,21 +1511,18 @@
           </div>
 
           <div class="allow-perm-item">
-            <div class="allow-perm-title">Linked external accounts</div>
-            <div class="allow-perm-desc">Bank accounts and card info for payouts</div>
-            <div class="allow-perm-detail">Visa •••• 1212<br>Chase •••• 2357</div>
+            <div class="allow-perm-title">Events</div>
+            <div class="allow-perm-desc">Real-time notifications for account activity</div>
           </div>
 
           <div class="allow-perm-item">
-            <div class="allow-perm-title">Product list</div>
-            <div class="allow-perm-desc">Goods and services you offer to your customers</div>
-            <div class="allow-perm-detail">Cosmic Sunrise – $199.99 and 8 others</div>
+            <div class="allow-perm-title">API key management</div>
+            <div class="allow-perm-desc">Create and manage API keys on your behalf</div>
           </div>
 
           <div class="allow-perm-item">
-            <div class="allow-perm-title">Customer list</div>
-            <div class="allow-perm-desc">Names, emails, and saved payment methods for your customers</div>
-            <div class="allow-perm-detail">42 customers and 30 saved payment methods</div>
+            <div class="allow-perm-title">Data sync</div>
+            <div class="allow-perm-desc">Sync transaction and customer data with your account</div>
           </div>
 
           <div class="allow-ack-box">
@@ -1626,9 +1623,13 @@
       document.getElementById('step2AllowBtn').style.display = '';
     }
 
-    function completeStep2And3() {
+    function completeStep2Only() {
       document.getElementById('step2AllowBtn').textContent = 'View';
       document.getElementById('step2Badge').style.display = '';
+    }
+
+    function completeStep2And3() {
+      completeStep2Only();
       document.getElementById('step3Number').classList.remove('locked');
       document.getElementById('step3Number').classList.add('active');
       document.getElementById('step3Lock').style.display = 'none';
@@ -1763,8 +1764,13 @@
       overlay.classList.remove('visible');
       setDiagramState('full');
       showTransaction();
-      completeStep2And3();
-      sessionStorage.setItem('stepsCompleted','true');
+      if (sessionStorage.getItem('step3Unlocked') === 'true') {
+        completeStep2Only();
+        sessionStorage.setItem('step2Completed','true');
+      } else {
+        completeStep2And3();
+        sessionStorage.setItem('stepsCompleted','true');
+      }
       setTimeout(() => {
         allowStep.classList.add('step-hidden');
         claimStep.classList.add('step-hidden');
@@ -1792,6 +1798,7 @@
     if(sessionStorage.getItem('step2Unlocked')==='true'){unlockStep2()}
     if(sessionStorage.getItem('step3Unlocked')==='true'){unlockStep3Verify()}
     if(sessionStorage.getItem('step3Completed')==='true'){unlockStep3Verify();document.getElementById('step3VerifyBtn').style.display='none';document.getElementById('step3Badge').style.display='';}
+    if(sessionStorage.getItem('step2Completed')==='true'){unlockStep2();completeStep2Only()}
     if(sessionStorage.getItem('stepsCompleted')==='true'){unlockStep2();completeStep2And3()}
 
     function setDiagramState(state){
@@ -1809,7 +1816,7 @@
     }
 
     // Diagram panel
-    var ne=performance.getEntriesByType('navigation');if(ne.length&&ne[0].type==='reload'){sessionStorage.removeItem('diagramState');sessionStorage.removeItem('sandboxClaimed');sessionStorage.removeItem('step2Unlocked');sessionStorage.removeItem('step3Unlocked');sessionStorage.removeItem('step3Completed');sessionStorage.removeItem('stepsCompleted')}
+    var ne=performance.getEntriesByType('navigation');if(ne.length&&ne[0].type==='reload'){sessionStorage.removeItem('diagramState');sessionStorage.removeItem('sandboxClaimed');sessionStorage.removeItem('step2Unlocked');sessionStorage.removeItem('step2Completed');sessionStorage.removeItem('step3Unlocked');sessionStorage.removeItem('step3Completed');sessionStorage.removeItem('stepsCompleted')}
     var savedState=sessionStorage.getItem('diagramState');if(savedState)applyDiagramState(savedState,true);
     const dp=document.getElementById('diagramPanel'),dt=document.getElementById('diagramToggle');
     if(localStorage.getItem('diagramCollapsed')==='true'){dp.classList.add('collapsed');dt.classList.add('collapsed');document.body.classList.add('diagram-closed')}
