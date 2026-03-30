@@ -1660,6 +1660,18 @@
     .diag-s2.no-anim, .diag-s3.no-anim, .diag-s3-only.no-anim, .diag-s4-only.no-anim {
       transition: none;
     }
+    .diagram-box.diag-s2, .diagram-connector-col.diag-s2 {
+      max-height: none;
+      opacity: 0;
+      overflow: hidden;
+      transition: opacity 0.6s ease;
+    }
+    .diagram-box.diag-s2.visible, .diagram-connector-col.diag-s2.visible {
+      opacity: 1;
+    }
+    .diagram-box.diag-s2.no-anim, .diagram-connector-col.diag-s2.no-anim {
+      transition: none;
+    }
 
     .diagram-box {
       width: 130px;
@@ -2176,19 +2188,18 @@
         <div class="diagram-box blue">Lovable<span class="diagram-box-sub">Direct account</span></div>
         <div class="diagram-box white">Lovable<span class="diagram-box-sub">App sandbox</span></div>
       </div>
-      <!-- Sent+: Connectors 1 + Row 2 -->
-      <div class="diagram-connector diag-s2">
+      <div class="diagram-connector">
         <div class="diagram-connector-col"><div class="dashed-line blue-line"></div></div>
-        <div class="diagram-connector-col"><div class="dashed-line gray-line"></div></div>
+        <div class="diagram-connector-col diag-s2"><div class="dashed-line gray-line"></div></div>
       </div>
-      <div class="diagram-row diag-s2">
-        <div class="diagram-box blue">Sarah's Biz<span class="diagram-box-sub">v2 acct</span><span class="diagram-box-sub" style="margin-top:2px;font-size:10px;opacity:0.85;">Customer / Merchant</span></div>
-        <div class="diagram-box white">Sarah's Biz<span class="diagram-box-sub">v2 account</span><span class="diagram-box-sub">sandbox</span></div>
+      <div class="diagram-row">
+        <div class="diagram-box blue">Sarah's Biz<span class="diagram-box-sub">v2 acct</span><span class="diagram-box-sub" style="margin-top:2px;font-size:10px;opacity:0.85;">Customer</span></div>
+        <div class="diagram-box white diag-s2">Sarah's Biz<span class="diagram-box-sub">v2 account</span><span class="diagram-box-sub">sandbox</span></div>
       </div>
       <!-- Sent+: Connectors 2 + Row 3 -->
-      <div class="diagram-connector diag-s2">
+      <div class="diagram-connector diag-s4-only">
         <div class="diagram-connector-col">
-          <div class="connector-split diag-s4-only">
+          <div class="connector-split">
             <div class="dashed-line blue-line" style="height:16px;"></div>
             <span class="connector-label">Consent record</span>
             <div class="dashed-line blue-line" style="height:16px;"></div>
@@ -2196,7 +2207,7 @@
         </div>
         <div class="diagram-connector-col"><div class="dashed-line gray-line"></div></div>
       </div>
-      <div class="diagram-row diag-s2">
+      <div class="diagram-row diag-s4-only">
         <div class="diagram-box blue">Sarah's Biz<span class="diagram-box-sub">Direct account</span></div>
         <div class="diagram-box white">Sarah's Biz<span class="diagram-box-sub">Direct account</span></div>
       </div>
