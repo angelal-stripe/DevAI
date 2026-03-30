@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agentic Commerce Protocol — How It Works</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f6f8fa;
+      color: #1a1a2e;
+      padding: 40px 24px;
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      font-size: 15px;
+      color: #5a6678;
+      margin-bottom: 40px;
+    }
+
+    .subtitle a {
+      color: #635bff;
+      text-decoration: none;
+    }
+
+    /* ── Section titles ── */
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title .badge {
+      font-size: 11px;
+      font-weight: 600;
+      background: #635bff;
+      color: #fff;
+      padding: 2px 8px;
+      border-radius: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .section-title .badge.meta {
+      background: #0081fb;
+    }
+
+    .section-title .badge.connect {
+      background: #0ea5e9;
+    }
+
+    /* ── Diagram container ── */
+    .diagram {
+      background: #fff;
+      border: 1px solid #e3e8ee;
+      border-radius: 12px;
+      padding: 36px 28px;
+      margin-bottom: 40px;
+      overflow-x: auto;
+    }
+
+    /* ── SVG ── */
+    svg text {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    /* ── Callout boxes ── */
+    .callouts {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+
+    .callout {
+      background: #fff;
+      border: 1px solid #e3e8ee;
+      border-radius: 10px;
+      padding: 20px 22px;
+    }
+
+    .callout h3 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .callout p {
+      font-size: 13px;
+      line-height: 1.55;
+      color: #5a6678;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    .dot.green  { background: #30d158; }
+    .dot.purple { background: #635bff; }
+    .dot.blue   { background: #0081fb; }
+    .dot.orange { background: #f5a623; }
+    .dot.teal   { background: #0ea5e9; }
+    .dot.red    { background: #e25950; }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 24px;
+      font-size: 13px;
+      color: #5a6678;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .legend-line {
+      width: 28px;
+      height: 3px;
+      border-radius: 2px;
+    }
+
+    .legend-line.solid-green  { background: #30d158; }
+    .legend-line.solid-purple { background: #635bff; }
+    .legend-line.dashed-gray  { background: repeating-linear-gradient(90deg, #9ca3af 0 6px, transparent 6px 10px); }
+    .legend-line.solid-blue   { background: #0081fb; }
+    .legend-line.solid-orange { background: #f5a623; }
+    .legend-line.solid-teal   { background: #0ea5e9; }
+    .legend-line.dashed-red   { background: repeating-linear-gradient(90deg, #e25950 0 6px, transparent 6px 10px); }
+
+    .divider {
+      border: none;
+      border-top: 1px solid #e3e8ee;
+      margin: 40px 0;
+    }
+
+    .footer-note {
+      font-size: 12px;
+      color: #9ca3af;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .footer-note a {
+      color: #635bff;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <h1>Agentic Commerce Protocol (ACP)</h1>
+  <p class="subtitle">
+    How AI agents, businesses, and payment processors transact — including platforms (Connect) and Meta / Facebook.<br>
+    Sources: <a href="https://www.agenticcommerce.dev/" target="_blank">agenticcommerce.dev</a> ·
+    <a href="https://stripe.com/newsroom/news/checkout-for-facebook" target="_blank">Stripe newsroom</a> ·
+    <a href="https://docs.stripe.com/agentic-commerce/concepts" target="_blank">Stripe docs</a> ·
+    <a href="https://docs.stripe.com/connect/saas/tasks/enable-in-context-selling-on-ai-agents" target="_blank">Platforms guide</a>
+  </p>
+
+  <!-- ═══════════════════════════════════════════════
+       DIAGRAM 1 — Generic ACP flow
+       ═══════════════════════════════════════════════ -->
+  <div class="section-title">
+    Generic ACP Flow
+    <span class="badge">Open Standard</span>
+  </div>
+
+  <div class="legend">
+    <span class="legend-item"><span class="legend-line solid-green"></span> Payment credentials</span>
+    <span class="legend-item"><span class="legend-line solid-purple"></span> Shared Payment Token (SPT)</span>
+    <span class="legend-item"><span class="legend-line dashed-gray"></span> Product / order data</span>
+    <span class="legend-item"><span class="legend-line solid-orange"></span> Funds settlement</span>
+  </div>
+
+  <div class="diagram">
+    <svg viewBox="0 0 980 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+      <defs>
+        <marker id="arrow-green" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#30d158"/></marker>
+        <marker id="arrow-purple" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#635bff"/></marker>
+        <marker id="arrow-gray" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#9ca3af"/></marker>
+        <marker id="arrow-orange" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#f5a623"/></marker>
+      </defs>
+
+      <!-- Boxes -->
+      <!-- Buyer -->
+      <rect x="30" y="140" width="160" height="80" rx="10" fill="#f0fdf4" stroke="#30d158" stroke-width="1.5"/>
+      <text x="110" y="175" text-anchor="middle" font-size="15" font-weight="700" fill="#1a1a2e">Buyer</text>
+      <text x="110" y="198" text-anchor="middle" font-size="11" fill="#5a6678">End consumer</text>
+
+      <!-- AI Agent -->
+      <rect x="310" y="30" width="180" height="80" rx="10" fill="#f0ecff" stroke="#635bff" stroke-width="1.5"/>
+      <text x="400" y="65" text-anchor="middle" font-size="15" font-weight="700" fill="#1a1a2e">AI Agent</text>
+      <text x="400" y="88" text-anchor="middle" font-size="11" fill="#5a6678">ChatGPT, Facebook, etc.</text>
+
+      <!-- Stripe -->
+      <rect x="310" y="260" width="180" height="80" rx="10" fill="#f0ecff" stroke="#635bff" stroke-width="1.5"/>
+      <text x="400" y="295" text-anchor="middle" font-size="15" font-weight="700" fill="#635bff">Stripe</text>
+      <text x="400" y="318" text-anchor="middle" font-size="11" fill="#5a6678">Payment processor (PSP)</text>
+
+      <!-- Business / Seller -->
+      <rect x="620" y="140" width="180" height="80" rx="10" fill="#fffbeb" stroke="#f5a623" stroke-width="1.5"/>
+      <text x="710" y="170" text-anchor="middle" font-size="15" font-weight="700" fill="#1a1a2e">Business</text>
+      <text x="710" y="193" text-anchor="middle" font-size="11" fill="#5a6678">Merchant of record</text>
+      <text x="710" y="208" text-anchor="middle" font-size="10" fill="#9ca3af">(Fanatics, Quince, …)</text>
+
+      <!-- ── Arrows ── -->
+
+      <!-- 1  Buyer → Agent : payment method -->
+      <line x1="190" y1="155" x2="308" y2="95" stroke="#30d158" stroke-width="2" marker-end="url(#arrow-green)"/>
+      <rect x="195" y="100" width="110" height="32" rx="6" fill="#fff" stroke="#e3e8ee" stroke-width="1"/>
+      <text x="250" y="113" text-anchor="middle" font-size="10" font-weight="600" fill="#30d158">①</text>
+      <text x="250" y="126" text-anchor="middle" font-size="10" fill="#5a6678">Payment method</text>
+
+      <!-- 2  Agent → Stripe : create SPT -->
+      <line x1="400" y1="112" x2="400" y2="258" stroke="#635bff" stroke-width="2" marker-end="url(#arrow-purple)"/>
+      <rect x="410" y="170" width="120" height="32" rx="6" fill="#fff" stroke="#e3e8ee" stroke-width="1"/>
+      <text x="470" y="183" text-anchor="middle" font-size="10" font-weight="600" fill="#635bff">②</text>
+      <text x="470" y="196" text-anchor="middle" font-size="10" fill="#5a6678">Create SPT</text>
+
+      <!-- 3  Agent → Business : send SPT + order via ACP -->
+      <line x1="492" y1="70" x2="618" y2="155" stroke="#635bff" stroke-width="2" marker-end="url(#arrow-purple)"/>
+      <rect x="510" y="75" width="140" height="32" rx="6" fill="#fff" stroke="#e3e8ee" stroke-width="1"/>
+      <text x="580" y="88" text-anchor="middle" font-size="10" font-weight="600" fill="#635bff">③ via ACP</text>
+      <text x="580" y="101" text-anchor="middle" font-size="10" fill="#5a6678">SPT + order details</text>
+
+      <!-- 4  Business → Stripe : create PaymentIntent w/ SPT -->
+      <line x1="635" y1="222" x2="492" y2="278" stroke="#f5a623" stroke-width="2" marker-end="url(#arrow-orange)"/>
+      <rect x="510" y="230" width="168" height="32" rx="6" fill="#fff" stroke="#e3e8ee" stroke-width="1"/>
+      <text x="594" y="243" text-anchor="middle" font-size="10" font-weight="600" fill="#f5a623">④</text>
+      <text x="594" y="256" text-anchor="middle" font-size="10" fill="#5a6678">PaymentIntent w/ SPT</text>
+
+      <!-- 5  Stripe → Business : settlement -->
+      <line x1="492" y1="310" x2="618" y2="220" stroke="#f5a623" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arrow-orange)"/>
+      <rect x="530" y="275" width="120" height="32" rx="6" fill="#fff" stroke="#e3e8ee" stroke-width="1"/>
+      <text x="590" y="288" text-anchor="middle" font-size="10" font-weight="600" fill="#f5a623">⑤</text>
+      <text x="590" y="301" text-anchor="middle" font-size="10" fill="#5a6678">Funds settlement</text>
+
+      <!-- Fulfillment dashed -->
+      <line x1="620" y1="195" x2="192" y2="195" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#arrow-gray)"/>
+      <rect x="340" y="200" width="120" height="24" rx="6" fill="#fff" stroke="#e3e8ee" stroke-width="1"/>
+      <text x="400" y="216" text-anchor="middle" font-size="10" fill="#9ca3af">⑥ Order fulfilled</text>
+
+      <!-- Annotations -->
+      <text x="30" y="395" font-size="11" fill="#9ca3af">ACP = open spec (REST / MCP) · SPT = Shared Payment Token (scoped, time-limited, no raw PANs)</text>
+    </svg>
+  </div>
+
+  <div class="callouts">
+    <div class="callout">
+      <h3><span class="dot green"></span> Buyer</h3>
+      <p>Provides a payment method to the AI agent (e.g. saved card in their ChatGPT or Meta wallet). Never shares raw card numbers — credentials are tokenized.</p>
+    </div>
+    <div class="callout">
+      <h3><span class="dot purple"></span> AI Agent</h3>
+      <p>Discovers products, renders checkout UI, collects buyer selections. Issues a <strong>Shared Payment Token</strong> (SPT) via Stripe and passes it to the business using ACP. The agent is <em>not</em> the merchant of record.</p>
+    </div>
+    <div class="callout">
+      <h3><span class="dot purple"></span> Stripe</h3>
+      <p>Creates and validates SPTs, processes payments via <code>PaymentIntent</code>, settles funds to the business. First PSP to support ACP. Never exposes raw credentials.</p>
+    </div>
+    <div class="callout">
+      <h3><span class="dot orange"></span> Business (Seller)</h3>
+      <p>Merchant of record. Controls product catalog, pricing, and fulfillment. Receives the SPT, creates a <code>PaymentIntent</code>, and gets paid by Stripe.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ═══════════════════════════════════════════════
+       DIAGRAM 2 — Facebook / Meta specific flow
+       ═══════════════════════════════════════════════ -->
+  <div class="section-title">
+    Facebook / Meta — Checkout via Ads
+    <span class="badge meta">ACP in Practice</span>
+  </div>
+
+  <div class="legend">
+    <span class="legend-item"><span class="legend-line solid-blue"></span> Meta surfaces / interaction</span>
+    <span class="legend-item"><span class="legend-line solid-purple"></span> Stripe payment rails</span>
+    <span class="legend-item"><span class="legend-line solid-orange"></span> Funds flow</span>
+    <span class="legend-item"><span class="legend-line dashed-gray"></span> Fulfillment / config</span>
+  </div>
+
+  <div class="diagram">
+    <svg viewBox="0 0 980 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+      <defs>
+        <marker id="a-blue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#0081fb"/></marker>
+        <marker id="a-purple2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#635bff"/></marker>
+        <marker id="a-orange2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#f5a623"/></marker>
+        <marker id="a-gray2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#9ca3af"/></marker>
+      </defs>
+
+      <!-- Buyer -->
+      <rect x="30" y="180" width="150" height="80" rx="10" fill="#f0fdf4" stroke="#30d158" stroke-width="1.5"/>
+      <text x="105" y="215" text-anchor="middle" font-size="15" font-weight="700" fill="#1a1a2e">Buyer</text>
+      <text x="105" y="238" text-anchor="middle" font-size="11" fill="#5a6678">On Facebook app</text>
+
+      <!-- Facebook / Meta -->
+      <rect x="290" y="40" width="200" height="90" rx="10" fill="#e7f3ff" stroke="#0081fb" stroke-width="1.5"/>
+      <text x="390" y="72" text-anchor="middle" font-size="15" font-weight="700" fill="#0081fb">Facebook / Meta</text>
+      <text x="390" y="93" text-anchor="middle" font-size="11" fill="#5a6678">Ad surface + checkout UI</text>
+      <text x="390" y="110" text-anchor="middle" font-size="10" fill="#9ca3af">Uses buyer's Meta wallet</text>
+
+      <!-- Stripe -->
+      <rect x="290" y="310" width="200" height="80" rx="10" fill="#f0ecff" stroke="#635bff" stroke-width="1.5"/>
+      <text x="390" y="345" text-anchor="middle" font-size="15" font-weight="700" fill="#635bff">Stripe</text>
+      <text x="390" y="368" text-anchor="middle" font-size="11" fill="#5a6678">Payment processing + SPTs</text>
+
+      <!-- Business -->
+      <rect x="620" y="180" width="190" height="80" rx="10" fill="#fffbeb" stroke="#f5a623" stroke-width="1.5"/>
+      <text x="715" y="210" text-anchor="middle" font-size="15" font-weight="700" fill="#1a1a2e">Business</text>
+      <text x="715" y="233" text-anchor="middle" font-size="11" fill="#5a6678">Merchant of record</text>
+      <text x="715" y="248" text-anchor="middle" font-size="10" fill="#9ca3af">Fanatics · Quince</text>
+
+      <!-- Stripe Dashboard link -->
+      <rect x="680" y="310" width="190" height="68" rx="10" fill="#fff" stroke="#e3e8ee" stroke-width="1" stroke-dasharray="5,3"/>
+      <text x="775" y="335" text-anchor="middle" font-size="11" font-weight="600" fill="#5a6678">Stripe Dashboard</text>
+      <text x="775" y="352" text-anchor="middle" font-size="10" fill="#9ca3af">Toggle: sell via FB ads</text>
+      <text x="775" y="366" text-anchor="middle" font-size="10" fill="#9ca3af">Link Meta ads account</text>
+
+      <!-- ── Arrows ── -->
+
+      <!-- A  Buyer sees ad, taps "Buy now" -->
+      <line x1="180" y1="195" x2="288" y2="115" stroke="#0081fb" stroke-width="2" marker-end="url(#a-blue)"/>
+      <rect x="170" y="126" width="130" height="36" rx="6" fill="#fff" stroke="#e3e8ee" stroke-width="1"/>
+      <text x="235" y="141" text-anchor="middle" font-size="10" font-weight="600" fill="#0081fb">❶ Sees ad</text>
+      <text x="235" y="155" text-anchor="middle" font-size="10" fill="#5a6678">Taps "Buy now"</text>
+
+      <!-- B  Meta → Stripe : SPT from Meta wallet -->
+      <line x1="390" y1="132" x2="390" y2="308" stroke="#635bff" stroke-width="2" marker-end="url(#a-purple2)"/>
+      <rect x="400" y="200" width="148" height="36" rx="6" fill="#fff" stroke="#e3e8ee" stroke-width="1"/>
+      <text x="474" y="215" text-anchor="middle" font-size="10" font-weight="600" fill="#635bff">❷ Create SPT</text>
+      <text x="474" y="229" text-anchor="middle" font-size="10" fill="#5a6678">From Meta wallet creds</text>
+
+      <!-- C  Meta → Business : SPT + order via ACP -->
+      <line x1="492" y1="85" x2="618" y2="195" stroke="#635bff" stroke-width="2" marker-end="url(#a-purple2)"/>
+      <rect x="510" y="107" width="140" height="36" rx="6" fill="#fff" stroke="#e3e8ee" stroke-width="1"/>
+      <text x="580" y="122" text-anchor="middle" font-size="10" font-weight="600" fill="#635bff">❸ via ACP</text>
+      <text x="580" y="136" text-anchor="middle" font-size="10" fill="#5a6678">SPT + order details</text>
+
+      <!-- D  Business → Stripe : PaymentIntent -->
+      <line x1="640" y1="262" x2="492" y2="328" stroke="#f5a623" stroke-width="2" marker-end="url(#a-orange2)"/>
+      <rect x="518" y="270" width="160" height="36" rx="6" fill="#fff" stroke="#e3e8ee" stroke-width="1"/>
+      <text x="598" y="285" text-anchor="middle" font-size="10" font-weight="600" fill="#f5a623">❹ PaymentIntent</text>
+      <text x="598" y="299" text-anchor="middle" font-size="10" fill="#5a6678">Business charges SPT</text>
+
+      <!-- E  Stripe → Business : settlement -->
+      <line x1="492" y1="365" x2="618" y2="260" stroke="#f5a623" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#a-orange2)"/>
+      <rect x="535" y="319" width="110" height="28" rx="6" fill="#fff" stroke="#e3e8ee" stroke-width="1"/>
+      <text x="590" y="338" text-anchor="middle" font-size="10" fill="#f5a623">❺ Funds settle</text>
+
+      <!-- Config arrow: Business → Dashboard -->
+      <line x1="715" y1="262" x2="755" y2="308" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#a-gray2)"/>
+
+      <!-- Fulfillment -->
+      <line x1="620" y1="240" x2="182" y2="240" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#a-gray2)"/>
+      <rect x="340" y="244" width="120" height="24" rx="6" fill="#fff" stroke="#e3e8ee" stroke-width="1"/>
+      <text x="400" y="260" text-anchor="middle" font-size="10" fill="#9ca3af">❻ Order fulfilled</text>
+
+      <!-- Key insight box -->
+      <rect x="30" y="400" width="920" height="62" rx="10" fill="#fffbeb" stroke="#f5a623" stroke-width="1"/>
+      <text x="490" y="424" text-anchor="middle" font-size="13" font-weight="700" fill="#1a1a2e">Key: Facebook / Meta is NOT in the flow of funds</text>
+      <text x="490" y="446" text-anchor="middle" font-size="12" fill="#5a6678">
+        Meta acts as the agent surface (ads + checkout UI). The business remains the merchant of record.
+        Funds flow: Buyer → Stripe → Business.
+      </text>
+    </svg>
+  </div>
+
+  <div class="callouts">
+    <div class="callout">
+      <h3><span class="dot blue"></span> Meta / Facebook's Role</h3>
+      <p><strong>Distribution surface, not merchant of record.</strong> Meta shows ads and surfaces a native checkout UI powered by Stripe. It uses the buyer's saved credentials from their Meta wallet to create an SPT. Meta earns revenue from <em>ads</em>, not from the commerce transaction itself.</p>
+    </div>
+    <div class="callout">
+      <h3><span class="dot purple"></span> Stripe's Role</h3>
+      <p><strong>Payment infrastructure.</strong> Stripe issues SPTs, processes PaymentIntents, and settles funds to the business. Businesses opt in via a <em>toggle in the Stripe Dashboard</em> and link their Meta ads account — no separate integration needed.</p>
+    </div>
+    <div class="callout">
+      <h3><span class="dot orange"></span> Flow of Funds</h3>
+      <p><strong>Buyer → Stripe → Business.</strong> The business is charged Stripe processing fees as usual. Meta does not touch the payment funds. The ACP protocol coordinates the checkout, but all money movement happens on Stripe rails.</p>
+    </div>
+    <div class="callout">
+      <h3><span class="dot green"></span> Agreements</h3>
+      <p><strong>Business ↔ Stripe</strong> (existing processing agreement). <strong>Business ↔ Meta</strong> (ads account linkage, opt-in to sell via FB). <strong>Buyer ↔ Meta</strong> (Meta wallet / saved payment credentials). ACP is the open protocol gluing these together.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ═══════════════════════════════════════════════
+       DIAGRAM 3 — Platform / Connect flow
+       ═══════════════════════════════════════════════ -->
+  <div class="section-title">
+    Agentic Commerce for Platforms (Connect)
+    <span class="badge connect">Stripe Connect</span>
+  </div>
+
+  <div class="legend">
+    <span class="legend-item"><span class="legend-line solid-teal"></span> Platform actions</span>
+    <span class="legend-item"><span class="legend-line solid-purple"></span> Stripe / SPT rails</span>
+    <span class="legend-item"><span class="legend-line solid-orange"></span> Funds flow</span>
+    <span class="legend-item"><span class="legend-line dashed-red"></span> Webhooks / hooks</span>
+    <span class="legend-item"><span class="legend-line dashed-gray"></span> Config / fulfillment</span>
+  </div>
+
+  <div class="diagram">
+    <svg viewBox="0 0 1060 680" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+      <defs>
+        <marker id="p-teal" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#0ea5e9"/></marker>
+        <marker id="p-purple" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#635bff"/></marker>
+        <marker id="p-orange" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#f5a623"/></marker>
+        <marker id="p-gray" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#9ca3af"/></marker>
+        <marker id="p-red" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#e25950"/></marker>
+        <marker id="p-green" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#30d158"/></marker>
+      </defs>
+
+      <!-- ── SETUP PHASE (top) ── -->
+      <rect x="20" y="8" width="1020" height="210" rx="12" fill="#f8fafc" stroke="#e3e8ee" stroke-width="1" stroke-dasharray="6,3"/>
+      <text x="40" y="30" font-size="11" font-weight="700" fill="#9ca3af" letter-spacing="1">SETUP &amp; ONBOARDING</text>
+
+      <!-- Platform -->
+      <rect x="40" y="48" width="200" height="80" rx="10" fill="#e0f7fa" stroke="#0ea5e9" stroke-width="1.5"/>
+      <text x="140" y="78" text-anchor="middle" font-size="15" font-weight="700" fill="#0e7490">Platform</text>
+      <text x="140" y="98" text-anchor="middle" font-size="11" fill="#5a6678">SaaS / Marketplace</text>
+      <text x="140" y="113" text-anchor="middle" font-size="10" fill="#9ca3af">Shopify, BigCommerce, …</text>
+
+      <!-- Stripe (setup) -->
+      <rect x="420" y="48" width="200" height="80" rx="10" fill="#f0ecff" stroke="#635bff" stroke-width="1.5"/>
+      <text x="520" y="78" text-anchor="middle" font-size="15" font-weight="700" fill="#635bff">Stripe</text>
+      <text x="520" y="98" text-anchor="middle" font-size="11" fill="#5a6678">Processes catalogs, creates</text>
+      <text x="520" y="113" text-anchor="middle" font-size="10" fill="#5a6678">Agreements, manages sessions</text>
+
+      <!-- Connected Account -->
+      <rect x="800" y="48" width="220" height="80" rx="10" fill="#fffbeb" stroke="#f5a623" stroke-width="1.5"/>
+      <text x="910" y="78" text-anchor="middle" font-size="15" font-weight="700" fill="#1a1a2e">Connected Account</text>
+      <text x="910" y="98" text-anchor="middle" font-size="11" fill="#5a6678">Seller / merchant of record</text>
+      <text x="910" y="113" text-anchor="middle" font-size="10" fill="#9ca3af">Fanatics, Quince, …</text>
+
+      <!-- Setup arrows -->
+      <!-- Platform → Stripe: upload catalog -->
+      <line x1="242" y1="75" x2="418" y2="75" stroke="#0ea5e9" stroke-width="2" marker-end="url(#p-teal)"/>
+      <rect x="265" y="55" width="140" height="28" rx="6" fill="#fff" stroke="#e3e8ee" stroke-width="1"/>
+      <text x="335" y="73" text-anchor="middle" font-size="10" fill="#0e7490">Upload product catalog</text>
+
+      <!-- Platform → Stripe: set charge type -->
+      <line x1="242" y1="105" x2="418" y2="105" stroke="#0ea5e9" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#p-teal)"/>
+      <rect x="265" y="108" width="140" height="28" rx="6" fill="#fff" stroke="#e3e8ee" stroke-width="1"/>
+      <text x="335" y="126" text-anchor="middle" font-size="10" fill="#0e7490">Set charge type + hooks</text>
+
+      <!-- AI Agent (setup) -->
+      <rect x="420" y="140" width="200" height="30" rx="8" fill="#f0ecff" stroke="#635bff" stroke-width="1"/>
+      <text x="520" y="160" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1a2e">AI Agent</text>
+
+      <!-- Connected Account ↔ AI Agent: Agreement (managed by Stripe) -->
+      <line x1="798" y1="100" x2="622" y2="148" stroke="#635bff" stroke-width="2" marker-end="url(#p-purple)"/>
+      <rect x="660" y="110" width="178" height="28" rx="6" fill="#fff" stroke="#e3e8ee" stroke-width="1"/>
+      <text x="749" y="128" text-anchor="middle" font-size="10" fill="#635bff">Agreement (via Stripe)</text>
+
+      <!-- Platform → Connected Account: embed component -->
+      <path d="M 140 130 L 140 192 L 910 192 L 910 130" fill="none" stroke="#0ea5e9" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#p-teal)"/>
+      <rect x="400" y="180" width="240" height="24" rx="6" fill="#fff" stroke="#e3e8ee" stroke-width="1"/>
+      <text x="520" y="196" text-anchor="middle" font-size="10" fill="#0e7490">Embed AgenticCommerceSettings component</text>
+
+      <!-- ── TRANSACTION PHASE (bottom) ── -->
+      <rect x="20" y="235" width="1020" height="390" rx="12" fill="#fefefe" stroke="#e3e8ee" stroke-width="1" stroke-dasharray="6,3"/>
+      <text x="40" y="258" font-size="11" font-weight="700" fill="#9ca3af" letter-spacing="1">TRANSACTION FLOW</text>
+
+      <!-- Buyer -->
+      <rect x="40" y="280" width="160" height="76" rx="10" fill="#f0fdf4" stroke="#30d158" stroke-width="1.5"/>
+      <text x="120" y="312" text-anchor="middle" font-size="15" font-weight="700" fill="#1a1a2e">Buyer</text>
+      <text x="120" y="333" text-anchor="middle" font-size="11" fill="#5a6678">End consumer</text>
+
+      <!-- AI Agent -->
+      <rect x="310" y="280" width="180" height="76" rx="10" fill="#f0ecff" stroke="#635bff" stroke-width="1.5"/>
+      <text x="400" y="312" text-anchor="middle" font-size="15" font-weight="700" fill="#1a1a2e">AI Agent</text>
+      <text x="400" y="333" text-anchor="middle" font-size="11" fill="#5a6678">ChatGPT, Facebook, etc.</text>
+
+      <!-- Stripe (txn) -->
+      <rect x="310" y="460" width="180" height="76" rx="10" fill="#f0ecff" stroke="#635bff" stroke-width="1.5"/>
+      <text x="400" y="492" text-anchor="middle" font-size="15" font-weight="700" fill="#635bff">Stripe</text>
+      <text x="400" y="513" text-anchor="middle" font-size="11" fill="#5a6678">Checkout session + SPT</text>
+
+      <!-- Platform (txn) -->
+      <rect x="620" y="460" width="180" height="76" rx="10" fill="#e0f7fa" stroke="#0ea5e9" stroke-width="1.5"/>
+      <text x="710" y="492" text-anchor="middle" font-size="15" font-weight="700" fill="#0e7490">Platform</text>
+      <text x="710" y="513" text-anchor="middle" font-size="11" fill="#5a6678">Hooks: tax, approval, fees</text>
+
+      <!-- Connected Account (txn) -->
+      <rect x="840" y="280" width="180" height="76" rx="10" fill="#fffbeb" stroke="#f5a623" stroke-width="1.5"/>
+      <text x="930" y="307" text-anchor="middle" font-size="15" font-weight="700" fill="#1a1a2e">Connected Acct</text>
+      <text x="930" y="328" text-anchor="middle" font-size="11" fill="#5a6678">Seller (MoR)</text>
+
+      <!-- ── Transaction arrows ── -->
+
+      <!-- 1. Buyer → Agent: payment + product request -->
+      <line x1="202" y1="305" x2="308" y2="305" stroke="#30d158" stroke-width="2" marker-end="url(#p-green)"/>
+      <rect x="215" y="278" width="90" height="24" rx="6" fill="#fff" stroke="#e3e8ee" stroke-width="1"/>
+      <text x="260" y="294" text-anchor="middle" font-size="10" fill="#30d158">❶ Pay creds</text>
+
+      <!-- 2. Agent → Stripe: create SPT -->
+      <line x1="400" y1="358" x2="400" y2="458" stroke="#635bff" stroke-width="2" marker-end="url(#p-purple)"/>
+      <rect x="408" y="390" width="110" height="28" rx="6" fill="#fff" stroke="#e3e8ee" stroke-width="1"/>
+      <text x="463" y="408" text-anchor="middle" font-size="10" fill="#635bff">❷ Create SPT</text>
+
+      <!-- 3. Agent → Connected Acct: SPT + order via ACP -->
+      <line x1="492" y1="310" x2="838" y2="310" stroke="#635bff" stroke-width="2" marker-end="url(#p-purple)"/>
+      <rect x="580" y="288" width="148" height="28" rx="6" fill="#fff" stroke="#e3e8ee" stroke-width="1"/>
+      <text x="654" y="306" text-anchor="middle" font-size="10" fill="#635bff">❸ SPT + order (ACP)</text>
+
+      <!-- 4. Stripe → Platform: customize_checkout hook -->
+      <line x1="492" y1="485" x2="618" y2="485" stroke="#e25950" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#p-red)"/>
+      <rect x="505" y="465" width="110" height="28" rx="6" fill="#fff" stroke="#fecaca" stroke-width="1"/>
+      <text x="560" y="479" text-anchor="middle" font-size="9" fill="#e25950">❹ customize_</text>
+      <text x="560" y="489" text-anchor="middle" font-size="9" fill="#e25950">checkout hook</text>
+
+      <!-- 5. Stripe → Platform: finalize_checkout hook -->
+      <line x1="492" y1="515" x2="618" y2="515" stroke="#e25950" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#p-red)"/>
+      <rect x="505" y="501" width="110" height="28" rx="6" fill="#fff" stroke="#fecaca" stroke-width="1"/>
+      <text x="560" y="515" text-anchor="middle" font-size="9" fill="#e25950">❺ finalize_checkout</text>
+      <text x="560" y="524" text-anchor="middle" font-size="9" fill="#e25950">approval + app fee</text>
+
+      <!-- 6. Stripe → Connected Acct: PaymentIntent (direct or destination charge) -->
+      <path d="M 400 538 L 400 580 L 930 580 L 930 358" fill="none" stroke="#f5a623" stroke-width="2" marker-end="url(#p-orange)"/>
+      <rect x="580" y="564" width="200" height="28" rx="6" fill="#fff" stroke="#e3e8ee" stroke-width="1"/>
+      <text x="680" y="582" text-anchor="middle" font-size="10" fill="#f5a623">❻ PaymentIntent (direct or dest. charge)</text>
+
+      <!-- 7. Stripe → Platform: app fee settlement -->
+      <path d="M 400 538 L 400 600 L 710 600 L 710 538" fill="none" stroke="#f5a623" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#p-orange)"/>
+      <rect x="465" y="589" width="130" height="24" rx="6" fill="#fff" stroke="#e3e8ee" stroke-width="1"/>
+      <text x="530" y="605" text-anchor="middle" font-size="10" fill="#f5a623">❼ Application fee</text>
+
+      <!-- 8. Connected Acct → Buyer: fulfillment -->
+      <line x1="838" y1="340" x2="202" y2="340" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#p-gray)"/>
+      <rect x="440" y="340" width="120" height="24" rx="6" fill="#fff" stroke="#e3e8ee" stroke-width="1"/>
+      <text x="500" y="356" text-anchor="middle" font-size="10" fill="#9ca3af">❽ Order fulfilled</text>
+
+      <!-- Key insight box -->
+      <rect x="40" y="620" width="540" height="42" rx="8" fill="#e0f7fa" stroke="#0ea5e9" stroke-width="1"/>
+      <text x="310" y="645" text-anchor="middle" font-size="12" fill="#0e7490">
+        Funds: Buyer → Stripe → Connected Acct (seller) + Platform (app fee)
+      </text>
+      <rect x="600" y="620" width="420" height="42" rx="8" fill="#fff0f0" stroke="#e25950" stroke-width="1"/>
+      <text x="810" y="645" text-anchor="middle" font-size="12" fill="#e25950">
+        Platform controls: catalog, taxes, shipping, approval, and fees via hooks
+      </text>
+    </svg>
+  </div>
+
+  <div class="callouts">
+    <div class="callout">
+      <h3><span class="dot teal"></span> Platform (SaaS / Marketplace)</h3>
+      <p><strong>Orchestrator, not the seller.</strong> Uploads product catalogs on behalf of connected accounts. Embeds the <code>ConnectAgenticCommerceSettings</code> component so sellers can opt into AI agents. Controls tax, shipping, order approval, and application fees via webhook hooks.</p>
+    </div>
+    <div class="callout">
+      <h3><span class="dot orange"></span> Connected Account (Seller)</h3>
+      <p><strong>Merchant of record.</strong> Opts into selling via agents through the embedded component. Stripe creates an <strong>Agreement</strong> between the seller and each agent. Receives funds directly (minus platform app fee). Handles fulfillment, refunds, and disputes.</p>
+    </div>
+    <div class="callout">
+      <h3><span class="dot red"></span> Webhook Hooks</h3>
+      <p>Stripe sends two hooks to the platform before completing checkout: <code>customize_checkout</code> (tax rates, shipping options) and <code>finalize_checkout</code> (order approval + application fee). Platform must respond within <strong>4 seconds</strong> or the payment is declined.</p>
+    </div>
+    <div class="callout">
+      <h3><span class="dot purple"></span> Charge Types</h3>
+      <p>Platforms choose <strong>direct charges</strong> (PaymentIntent on connected account) or <strong>destination charges</strong> with <code>on_behalf_of</code>. In both models the connected account is the seller. Platform monetizes via <code>application_fee_amount</code> returned in the finalize hook.</p>
+    </div>
+  </div>
+
+  <!-- Setup steps detail -->
+  <div class="diagram" style="padding: 24px 20px;">
+    <div style="font-size: 14px; font-weight: 700; margin-bottom: 12px;">Platform Setup Steps</div>
+    <table style="width:100%; border-collapse: collapse; font-size: 13px;">
+      <thead>
+        <tr style="border-bottom: 2px solid #e3e8ee; text-align: left;">
+          <th style="padding: 10px 12px; font-weight: 700; width: 30px;">#</th>
+          <th style="padding: 10px 12px; font-weight: 700;">Step</th>
+          <th style="padding: 10px 12px; font-weight: 700;">Who</th>
+          <th style="padding: 10px 12px; font-weight: 700;">Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom: 1px solid #f0f0f5;">
+          <td style="padding: 10px 12px; color: #0ea5e9; font-weight: 600;">1</td>
+          <td style="padding: 10px 12px;">Choose charge type</td>
+          <td style="padding: 10px 12px;">Platform → Stripe</td>
+          <td style="padding: 10px 12px;">Direct charges or destination charges w/ <code>on_behalf_of</code></td>
+        </tr>
+        <tr style="border-bottom: 1px solid #f0f0f5;">
+          <td style="padding: 10px 12px; color: #0ea5e9; font-weight: 600;">2</td>
+          <td style="padding: 10px 12px;">Upload product catalogs</td>
+          <td style="padding: 10px 12px;">Platform → Stripe</td>
+          <td style="padding: 10px 12px;">CSV via Files API + Data Management API, per connected account (<code>Stripe-Account</code> header)</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #f0f0f5;">
+          <td style="padding: 10px 12px; color: #0ea5e9; font-weight: 600;">3</td>
+          <td style="padding: 10px 12px;">Configure taxes</td>
+          <td style="padding: 10px 12px;">Platform</td>
+          <td style="padding: 10px 12px;">Stripe Tax, third-party providers, or custom tax hook</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #f0f0f5;">
+          <td style="padding: 10px 12px; color: #0ea5e9; font-weight: 600;">4</td>
+          <td style="padding: 10px 12px;">Set up hooks</td>
+          <td style="padding: 10px 12px;">Platform → Stripe Dashboard</td>
+          <td style="padding: 10px 12px;">Register endpoints for <code>customize_checkout</code> and <code>finalize_checkout</code></td>
+        </tr>
+        <tr style="border-bottom: 1px solid #f0f0f5;">
+          <td style="padding: 10px 12px; color: #0ea5e9; font-weight: 600;">5</td>
+          <td style="padding: 10px 12px;">Embed settings component</td>
+          <td style="padding: 10px 12px;">Platform</td>
+          <td style="padding: 10px 12px;"><code>ConnectAgenticCommerceSettings</code> — lets connected accounts enable/disable agents</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #f0f0f5;">
+          <td style="padding: 10px 12px; color: #f5a623; font-weight: 600;">6</td>
+          <td style="padding: 10px 12px;">Seller enables agent</td>
+          <td style="padding: 10px 12px;">Connected account</td>
+          <td style="padding: 10px 12px;">Reviews terms, enables agent → Stripe creates Agreement</td>
+        </tr>
+        <tr>
+          <td style="padding: 10px 12px; color: #635bff; font-weight: 600;">7</td>
+          <td style="padding: 10px 12px;">Listen for webhooks</td>
+          <td style="padding: 10px 12px;">Platform</td>
+          <td style="padding: 10px 12px;"><code>checkout.session.completed</code>, <code>payment_intent.succeeded</code>, Agreement events</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ═══════════════════════════════════════════════
+       Summary table
+       ═══════════════════════════════════════════════ -->
+  <div class="section-title">Agreements & Relationships</div>
+
+  <div class="diagram" style="padding: 24px 20px;">
+    <table style="width:100%; border-collapse: collapse; font-size: 13px;">
+      <thead>
+        <tr style="border-bottom: 2px solid #e3e8ee; text-align: left;">
+          <th style="padding: 10px 12px; font-weight: 700;">Relationship</th>
+          <th style="padding: 10px 12px; font-weight: 700;">Agreement Type</th>
+          <th style="padding: 10px 12px; font-weight: 700;">What flows</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom: 1px solid #f0f0f5;">
+          <td style="padding: 10px 12px;">Business ↔ Stripe</td>
+          <td style="padding: 10px 12px;">Payment processing agreement</td>
+          <td style="padding: 10px 12px;">PaymentIntents, fund settlement, SPT validation</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #f0f0f5;">
+          <td style="padding: 10px 12px;">Business ↔ Meta</td>
+          <td style="padding: 10px 12px;">Ads account linkage (via Stripe Dashboard toggle)</td>
+          <td style="padding: 10px 12px;">Product catalog, ad creative, opt-in consent</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #f0f0f5;">
+          <td style="padding: 10px 12px;">Buyer ↔ Meta</td>
+          <td style="padding: 10px 12px;">Meta account / wallet</td>
+          <td style="padding: 10px 12px;">Saved payment credentials (tokenized)</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #f0f0f5;">
+          <td style="padding: 10px 12px;">Meta ↔ Stripe</td>
+          <td style="padding: 10px 12px;">ACP integration / SPT issuance</td>
+          <td style="padding: 10px 12px;">SPT creation requests, credential tokenization</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #f0f0f5;">
+          <td style="padding: 10px 12px;">Business ↔ Buyer</td>
+          <td style="padding: 10px 12px;">Merchant-customer (merchant of record)</td>
+          <td style="padding: 10px 12px;">Product fulfillment, customer support, returns</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #f0f0f5; background: #f8fafc;">
+          <td style="padding: 10px 12px;" colspan="3"><strong style="color: #0ea5e9;">+ Platform (Connect) relationships</strong></td>
+        </tr>
+        <tr style="border-bottom: 1px solid #f0f0f5;">
+          <td style="padding: 10px 12px;">Platform ↔ Stripe</td>
+          <td style="padding: 10px 12px;">Connect platform agreement</td>
+          <td style="padding: 10px 12px;">Catalog uploads, charge type config, webhook hooks, app fees</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #f0f0f5;">
+          <td style="padding: 10px 12px;">Platform ↔ Connected Acct</td>
+          <td style="padding: 10px 12px;">Platform-seller relationship</td>
+          <td style="padding: 10px 12px;">Embedded settings component, product data, onboarding</td>
+        </tr>
+        <tr>
+          <td style="padding: 10px 12px;">Connected Acct ↔ AI Agent</td>
+          <td style="padding: 10px 12px;">Agreement (via Stripe)</td>
+          <td style="padding: 10px 12px;">Seller enables agent, Stripe creates Agreement object with lifecycle events</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="footer-note">
+    Sources:
+    <a href="https://www.agenticcommerce.dev/" target="_blank">agenticcommerce.dev</a> ·
+    <a href="https://stripe.com/newsroom/news/checkout-for-facebook" target="_blank">Stripe newsroom</a> ·
+    <a href="https://docs.stripe.com/agentic-commerce/concepts" target="_blank">Stripe docs</a>
+  </p>
+
+</div>
+</body>
+</html>
