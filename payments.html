@@ -567,6 +567,11 @@
       color: #22c55e;
     }
 
+    .badge-skipped {
+      background: rgba(107, 114, 128, 0.15);
+      color: #6b7280;
+    }
+
     .badge-action {
       background: rgba(239, 68, 68, 0.15);
       color: #ef4444;
@@ -1157,9 +1162,9 @@
               <div class="step-number completed"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
               <span class="step-label">Set up sandbox</span>
             </div>
-            <div class="step">
+            <div class="step" id="step1Row">
               <div class="step-number active">2</div>
-              <span class="step-label">Reuse existing Stripe data</span>
+              <span class="step-label" id="step1Label">Reuse existing Stripe data</span>
               <span class="step-badge badge-complete" id="step1Badge" style="display:none;">Complete</span>
               <button class="step-btn" id="claimAccountBtn">Sign in</button>
             </div>
@@ -1170,7 +1175,7 @@
           <div class="go-live-steps">
             <div class="step">
               <div class="step-number active" id="step3Number">1</div>
-              <span class="step-label">Verify business details</span>
+              <span class="step-label" id="step3Label">Verify business details</span>
               <span class="step-lock" id="step3Lock" style="display:none;">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                 Locked
@@ -1178,7 +1183,7 @@
               <span class="step-badge badge-complete" id="step3Badge" style="display:none;">Complete</span>
               <button class="step-btn" id="step3VerifyBtn">Verify</button>
             </div>
-            <div class="step">
+            <div class="step" id="step2Row">
               <div class="step-number active" id="step2Number">2</div>
               <span class="step-label">Allow Lovable to use Stripe data</span>
               <span class="step-lock" id="step2Lock">
@@ -1371,6 +1376,19 @@
     .stripe-field input:focus{border-color:#635bff;box-shadow:0 0 0 3px rgba(99,91,255,.12)}
     .stripe-submit{width:100%;padding:11px;border:none;border-radius:6px;background:#7a6ef0;color:#fff;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:4px;transition:opacity .15s}
     .stripe-submit:hover{opacity:.88}
+    .stripe-modal.lovable-brand .stripe-submit{background:#EC4899 !important;border-color:#EC4899 !important;}
+    .stripe-modal.lovable-brand .stripe-field input:focus{border-color:#EC4899;box-shadow:0 0 0 3px rgba(236,72,153,.12)}
+    .stripe-modal.lovable-brand .stripe-alt-link a{color:#EC4899 !important}
+    .stripe-modal.lovable-brand .stripe-divider{color:#EC4899}
+    .stripe-modal.lovable-brand input[type="checkbox"]{accent-color:#EC4899 !important}
+    .stripe-modal.lovable-brand input[type="radio"]{accent-color:#EC4899 !important}
+    .stripe-modal.lovable-brand a[href]{color:#EC4899 !important}
+    .stripe-modal.lovable-brand .stripe-modal-body a{color:#EC4899 !important}
+    .stripe-modal.lovable-brand .brand-toggle{background:#EC4899 !important}
+    .stripe-modal.lovable-brand .brand-accent-text{color:#EC4899 !important}
+    .stripe-modal.lovable-brand .brand-border{border-color:#EC4899 !important}
+    .stripe-modal.lovable-brand .brand-check-icon{stroke:#EC4899 !important}
+    .stripe-modal.lovable-brand .brand-submit{background:#EC4899 !important}
     .stripe-alt-link{text-align:center;padding:18px 0 18px;font-size:13px;color:#6b7280}
     .stripe-alt-link a{color:#635bff;text-decoration:none;font-weight:500}
     .stripe-modal-footer-area{background:#f6f8fa;border-radius:0 0 12px 12px;padding:0 36px;}
@@ -1420,9 +1438,8 @@
       box-shadow: 0 4px 16px rgba(0,0,0,0.08);
       z-index: 9999;
       font-family: 'Inter', -apple-system, sans-serif;
-      display: none;
+      display: block;
     }
-    .claim-proto-switcher.visible { display: block; }
     .claim-proto-switcher-title {
       font-size: 14px;
       font-weight: 600;
@@ -1543,7 +1560,7 @@
 
           <div>
           <button class="stripe-submit" id="stripeCreateAccountBtn" style="opacity:0.5; cursor:default;" disabled>Create account</button>
-          <div class="stripe-alt-link" style="padding:18px 0 0;">
+          <div class="stripe-alt-link" id="createAcctSignInLink" style="padding:18px 0 0;">
             Already have an account? <a href="#" id="switchToSignInLink">Sign in</a>
           </div>
           </div>
@@ -1555,7 +1572,7 @@
         <div class="stripe-modal-body">
           <div style="flex:1;">
             <div class="stripe-modal-title" style="font-size:24px; font-weight:700; margin-bottom:8px;">Welcome back to Stripe</div>
-            <div style="font-size:14px; color:#6b7280; margin-bottom:20px;">Bring your work into a new or existing account.</div>
+            <div id="claimSubtitle" style="font-size:14px; color:#6b7280; margin-bottom:20px;">Bring your work into a new or existing account.</div>
             <div style="display:flex; flex-direction:column; gap:10px;">
               <button class="claim-acct-option" id="claimAcctNew" style="display:flex; align-items:center; gap:12px; width:100%; padding:14px 16px; border:1px solid #e5e7eb; border-radius:10px; background:#fff; cursor:pointer; font-family:inherit; text-align:left; transition:border-color .15s;">
                 <span style="display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:6px; background:#f3f4f6; font-size:18px; color:#635bff; font-weight:300; flex-shrink:0;">+</span>
@@ -1814,7 +1831,7 @@
                   <div style="width:40px; height:3px; background:#d1d5db; border-radius:2px;"></div>
                 </div>
                 <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
-                  <span style="color:#635bff; font-weight:600; font-size:12px;">FUREVER</span>
+                  <span class="brand-accent-text" style="color:#635bff; font-weight:600; font-size:12px;">FUREVER</span>
                   <span style="font-size:12px;">$XX.XX</span>
                 </div>
                 <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
@@ -1855,7 +1872,7 @@
               </div>
 
               <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
-                <div style="width:40px; height:22px; background:#635bff; border-radius:11px; position:relative; cursor:pointer;">
+                <div class="brand-toggle" style="width:40px; height:22px; background:#635bff; border-radius:11px; position:relative; cursor:pointer;">
                   <div style="width:18px; height:18px; background:#fff; border-radius:50%; position:absolute; top:2px; right:2px;"></div>
                 </div>
                 <span style="font-size:13px; font-weight:500; color:#1a1a1a;">Show phone number on receipts and invoices</span>
@@ -2063,21 +2080,21 @@
             <div style="font-size:22px; font-weight:700; color:#1a1a1a; margin-bottom:20px;">Select accounts</div>
 
             <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:20px;">
-              <label class="select-acct-option" style="display:flex; align-items:center; justify-content:space-between; padding:18px 20px; border:2px solid #635bff; border-radius:12px; background:#fff; cursor:pointer; transition:border-color .15s;">
+              <label class="select-acct-option brand-border" style="display:flex; align-items:center; justify-content:space-between; padding:18px 20px; border:2px solid #635bff; border-radius:12px; background:#fff; cursor:pointer; transition:border-color .15s;">
                 <div>
                   <div style="font-size:15px; font-weight:600; color:#1a1a1a;">Checking</div>
                   <div style="font-size:13px; color:#6b7280;">····1234</div>
                 </div>
                 <input type="checkbox" checked style="display:none;">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#635bff" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <svg class="brand-check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#635bff" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
               </label>
-              <label class="select-acct-option" style="display:flex; align-items:center; justify-content:space-between; padding:18px 20px; border:2px solid #635bff; border-radius:12px; background:#fff; cursor:pointer; transition:border-color .15s;">
+              <label class="select-acct-option brand-border" style="display:flex; align-items:center; justify-content:space-between; padding:18px 20px; border:2px solid #635bff; border-radius:12px; background:#fff; cursor:pointer; transition:border-color .15s;">
                 <div>
                   <div style="font-size:15px; font-weight:600; color:#1a1a1a;">Savings</div>
                   <div style="font-size:13px; color:#6b7280;">····1234</div>
                 </div>
                 <input type="checkbox" checked style="display:none;">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#635bff" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <svg class="brand-check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#635bff" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
               </label>
             </div>
 
@@ -2085,7 +2102,7 @@
           </div>
 
           <div style="padding:0 40px 24px;">
-            <button class="stripe-submit" id="connectAccountsBtn" style="background:#635bff;">Connect accounts</button>
+            <button class="stripe-submit brand-submit" id="connectAccountsBtn" style="background:#635bff;">Connect accounts</button>
           </div>
         </div>
       </div>
@@ -2118,7 +2135,7 @@
             </div>
 
             <div style="margin-bottom:20px;">
-              <div style="display:flex; border:2px solid #635bff; border-radius:8px; overflow:hidden;">
+              <div class="brand-border" style="display:flex; border:2px solid #635bff; border-radius:8px; overflow:hidden;">
                 <div style="display:flex; align-items:center; gap:6px; padding:10px 12px; background:#fff; border-right:1px solid #e5e7eb;">
                   <span style="font-size:16px;">&#127482;&#127480;</span>
                   <span style="font-size:13px; color:#1a1a1a;">+1</span>
@@ -2134,7 +2151,7 @@
           </div>
 
           <div style="padding:0 40px 24px;">
-            <button class="stripe-submit" id="saveLinkBtn" style="background:#635bff; margin-bottom:10px;">Save with Link</button>
+            <button class="stripe-submit brand-submit" id="saveLinkBtn" style="background:#635bff; margin-bottom:10px;">Save with Link</button>
             <button class="stripe-google-btn" id="finishWithoutSavingBtn" style="font-size:14px; font-weight:600; color:#1a1a1a; border:1px solid #e5e7eb;">Finish without saving</button>
           </div>
         </div>
@@ -2197,8 +2214,13 @@
   <!-- Claim sandbox proto-switcher -->
   <div class="claim-proto-switcher" id="claimProtoSwitcher">
     <div class="claim-proto-switcher-title">Prototype options</div>
-    <label><input type="radio" name="claimProto" value="dense" id="protoDense" checked> Dense</label>
-    <label><input type="radio" name="claimProto" value="oneToOne" id="protoOneToOne"> 1:1</label>
+    <div style="font-size:12px; font-weight:600; color:#374151; margin-bottom:4px; margin-top:4px;">Flow</div>
+    <label><input type="radio" name="claimProto" value="flexible" id="protoFlexible" checked> Flexible</label>
+    <label><input type="radio" name="claimProto" value="focused" id="protoFocused"> Focused</label>
+    <div style="font-size:12px; font-weight:600; color:#374151; margin-bottom:4px; margin-top:12px;">Branding</div>
+    <label><input type="radio" name="brandingProto" value="stripe" id="brandStripe" checked> Stripe</label>
+    <label><input type="radio" name="brandingProto" value="lovable" id="brandLovable"> Lovable</label>
+    <button onclick="location.reload()" style="margin-top:14px; width:100%; padding:8px; border:1px solid #e5e7eb; border-radius:6px; background:#fff; font-size:13px; font-weight:500; color:#374151; cursor:pointer; font-family:inherit; transition:background .15s;">Reset</button>
   </div>
 
   <!-- Diagram Panel -->
@@ -2280,11 +2302,11 @@
     const closeBtn=document.getElementById('stripeClose');
     claimBtn.addEventListener('click',()=>{
       resetToFirstStep();
+      applyProtoMode();
       overlay.classList.add('visible');
-      protoSwitcher.classList.add('visible');
     });
-    closeBtn.addEventListener('click',()=>{overlay.classList.remove('visible');protoSwitcher.classList.remove('visible')});
-    overlay.addEventListener('click',(e)=>{if(e.target===overlay){overlay.classList.remove('visible');protoSwitcher.classList.remove('visible')}});
+    closeBtn.addEventListener('click',()=>{overlay.classList.remove('visible');});
+    overlay.addEventListener('click',(e)=>{if(e.target===overlay){overlay.classList.remove('visible');}});
     const signInStep = document.getElementById('stripeSignInStep');
     const createAccountStep = document.getElementById('stripeCreateAccountStep');
     const claimStep = document.getElementById('stripeClaimStep');
@@ -2342,12 +2364,18 @@
       document.getElementById('step2AllowBtn').style.display = '';
     }
 
-    // "Sarah Lens" flow: step1 complete, step3 complete, step2 gets Allow
+    // "Sarah Lens" flow: step1 complete, step3 complete/skipped, step2 gets Allow
     function completeForSarahLens() {
       completeStep1();
-      // Verify business details: mark complete, hide Verify button
-      document.getElementById('step3Badge').style.display = '';
       document.getElementById('step3VerifyBtn').style.display = 'none';
+      document.getElementById('step3Badge').style.display = '';
+      if (isFocusedMode()) {
+        document.getElementById('step3Badge').textContent = 'Skipped';
+        document.getElementById('step3Badge').className = 'step-badge badge-skipped';
+      } else {
+        document.getElementById('step3Badge').textContent = 'Complete';
+        document.getElementById('step3Badge').className = 'step-badge badge-complete';
+      }
       // Allow Lovable: show Allow button
       document.getElementById('step2Lock').style.display = 'none';
       document.getElementById('step2AllowBtn').style.display = '';
@@ -2362,7 +2390,6 @@
 
     document.getElementById('step2AllowBtn').addEventListener('click', () => {
       overlay.classList.add('visible');
-      protoSwitcher.classList.add('visible');
       signInStep.classList.add('step-hidden');
       createAccountStep.classList.add('step-hidden');
       allowStep.classList.remove('step-hidden');
@@ -2375,7 +2402,6 @@
     // Manage button → reopen Review permissions modal with Remove access link
     document.getElementById('step2ManageBtn').addEventListener('click', () => {
       overlay.classList.add('visible');
-      protoSwitcher.classList.add('visible');
       [signInStep, createAccountStep, claimStep, newAccountStep, bizTypeStep, verifyEmailStep].forEach(s => s.classList.add('step-hidden'));
       allowStep.classList.remove('step-hidden');
       allowStep.style.opacity = '1';
@@ -2396,7 +2422,7 @@
         el.style.maxHeight = '0';
       });
       overlay.classList.remove('visible');
-      protoSwitcher.classList.remove('visible');
+;
       setTimeout(() => { resetToFirstStep(); }, 300);
     });
 
@@ -2414,12 +2440,67 @@
       }
     });
 
-    // Proto-switcher: toggle between Dense and 1:1 layouts
-    document.getElementById('protoDense').addEventListener('change', function() {
-      if (this.checked) resetToFirstStep();
+    function isFocusedMode() {
+      return document.getElementById('protoFocused').checked;
+    }
+
+    function applyBranding() {
+      var modal = document.querySelector('.stripe-modal');
+      var isLovable = document.getElementById('brandLovable').checked;
+      var color = isLovable ? '#EC4899' : '#635bff';
+      if (isLovable) {
+        modal.classList.add('lovable-brand');
+      } else {
+        modal.classList.remove('lovable-brand');
+      }
+      document.querySelectorAll('.brand-toggle').forEach(function(el){ el.style.background = color; });
+      document.querySelectorAll('.brand-accent-text').forEach(function(el){ el.style.color = color; });
+      document.querySelectorAll('.brand-border').forEach(function(el){ el.style.borderColor = color; });
+      document.querySelectorAll('.brand-check-icon').forEach(function(el){ el.setAttribute('stroke', color); });
+      document.querySelectorAll('.brand-submit').forEach(function(el){ el.style.background = color; });
+    }
+
+    function applyProtoMode() {
+      var focused = isFocusedMode();
+      applyBranding();
+      // Sign In step: hide "New to Stripe? Create account" in focused
+      document.getElementById('switchToCreateAccountLink').closest('.stripe-alt-link').style.display = focused ? 'none' : '';
+      // Welcome back: hide "Create new account" option in focused
+      document.getElementById('claimAcctNew').style.display = focused ? 'none' : '';
+      document.getElementById('claimSubtitle').textContent = focused ? 'Select an account.' : 'Bring your work into a new or existing account.';
+      // Create Account modal: hide "Already have an account? Sign in" in focused
+      document.getElementById('createAcctSignInLink').style.display = focused ? 'none' : '';
+      // Step row labels
+      document.getElementById('step1Label').textContent = focused ? '(optional) Connect existing Stripe account to reuse data' : 'Reuse existing Stripe data';
+      document.getElementById('step3Label').textContent = focused ? 'Create new Stripe account' : 'Set up Stripe account and reuse data';
+      // Reuse existing Stripe data row: hide in flexible
+      document.getElementById('step1Row').style.display = focused ? '' : 'none';
+      // Allow Lovable row: hide in flexible, show in focused
+      document.getElementById('step2Row').style.display = focused ? '' : 'none';
+      // Verify button text: "Sign in" in flexible, "Verify" in focused
+      document.getElementById('step3VerifyBtn').textContent = focused ? 'Verify' : 'Sign in';
+    }
+
+    // Proto-switcher: close modal and reset when switching
+    document.getElementById('protoFlexible').addEventListener('change', function() {
+      if (this.checked) {
+        overlay.classList.remove('visible');
+        resetToFirstStep();
+        applyProtoMode();
+      }
     });
-    document.getElementById('protoOneToOne').addEventListener('change', function() {
-      if (this.checked) resetToFirstStep();
+    document.getElementById('protoFocused').addEventListener('change', function() {
+      if (this.checked) {
+        overlay.classList.remove('visible');
+        resetToFirstStep();
+        applyProtoMode();
+      }
+    });
+    document.getElementById('brandStripe').addEventListener('change', function() {
+      if (this.checked) applyBranding();
+    });
+    document.getElementById('brandLovable').addEventListener('change', function() {
+      if (this.checked) applyBranding();
     });
 
     // "Already have an account? Sign in" link in Create Account step
@@ -2487,18 +2568,24 @@
       btn.style.opacity = '1';
       btn.style.cursor = 'pointer';
     }
+    function getBrandColor() {
+      return document.getElementById('brandLovable').checked ? '#EC4899' : '#635bff';
+    }
+    function getBrandBg() {
+      return document.getElementById('brandLovable').checked ? '#fdf2f8' : '#f8f7ff';
+    }
     document.getElementById('claimAcctNew').addEventListener('click', function() {
       selectedAccount = 'new';
-      this.style.border = '2px solid #635bff';
-      this.style.background = '#f8f7ff';
+      this.style.border = '2px solid ' + getBrandColor();
+      this.style.background = getBrandBg();
       document.getElementById('claimAcctSarah').style.border = '1px solid #e5e7eb';
       document.getElementById('claimAcctSarah').style.background = '#fff';
       enableClaimContinue();
     });
     document.getElementById('claimAcctSarah').addEventListener('click', function() {
       selectedAccount = 'sarah';
-      this.style.border = '2px solid #635bff';
-      this.style.background = '#f8f7ff';
+      this.style.border = '2px solid ' + getBrandColor();
+      this.style.background = getBrandBg();
       document.getElementById('claimAcctNew').style.border = '1px solid #e5e7eb';
       document.getElementById('claimAcctNew').style.background = '#fff';
       enableClaimContinue();
@@ -2535,7 +2622,11 @@
           el.style.maxHeight = '200px';
           el.style.opacity = '1';
         });
-        transitionStep(claimStep, newAccountStep);
+        if (isFocusedMode()) {
+          transitionStep(claimStep, newAccountStep);
+        } else {
+          transitionStep(claimStep, allowStep);
+        }
       } else {
         activeFlow = 'sarah';
         setDiagramState('full');
@@ -2543,14 +2634,18 @@
       }
     });
 
-    // Step 3 Verify button → open create account step
+    // Step 3 Verify button → sign in (flexible) or create account (focused)
     document.getElementById('step3VerifyBtn').addEventListener('click', () => {
       overlay.classList.add('visible');
-      protoSwitcher.classList.add('visible');
-      [signInStep, claimStep, newAccountStep, bizTypeStep, allowStep].forEach(s => s.classList.add('step-hidden'));
-      createAccountStep.classList.remove('step-hidden');
-      createAccountStep.style.opacity = '1';
-      createAccountStep.style.transform = 'translateX(0)';
+      applyProtoMode();
+      [signInStep, createAccountStep, claimStep, newAccountStep, bizTypeStep, allowStep, verifyEmailStep].forEach(s => s.classList.add('step-hidden'));
+      if (isFocusedMode()) {
+        createAccountStep.classList.remove('step-hidden');
+        createAccountStep.style.opacity = '1';
+        createAccountStep.style.transform = 'translateX(0)';
+      } else {
+        resetToFirstStep();
+      }
     });
 
     // New account step: auto-fill business name on focus
@@ -2577,7 +2672,7 @@
     document.getElementById('verifyOpenGmailBtn').addEventListener('click', (e) => {
       e.preventDefault();
       overlay.classList.remove('visible');
-      protoSwitcher.classList.remove('visible');
+;
       unlockStep2();
       sessionStorage.setItem('step2Unlocked','true');
       setTimeout(() => { resetToFirstStep(); }, 300);
@@ -2598,8 +2693,8 @@
           b.style.border = '1px solid #e5e7eb';
           b.style.background = '#fff';
         });
-        this.style.border = '2px solid #635bff';
-        this.style.background = '#f8f7ff';
+        this.style.border = '2px solid ' + getBrandColor();
+        this.style.background = getBrandBg();
         einSection.style.display = (idx === 0) ? 'block' : 'none';
       });
     });
@@ -2650,7 +2745,7 @@
     document.getElementById('bankCredsCloseBtn').addEventListener('click',(e)=>{
       e.preventDefault();
       overlay.classList.remove('visible');
-      protoSwitcher.classList.remove('visible');
+;
       setTimeout(() => { resetToFirstStep(); }, 300);
     });
 
@@ -2669,7 +2764,7 @@
       if (connectingTimer) clearTimeout(connectingTimer);
       e.preventDefault();
       overlay.classList.remove('visible');
-      protoSwitcher.classList.remove('visible');
+;
       setTimeout(() => { resetToFirstStep(); }, 300);
     });
 
@@ -2677,7 +2772,7 @@
     document.getElementById('selectAccountsCloseBtn').addEventListener('click',(e)=>{
       e.preventDefault();
       overlay.classList.remove('visible');
-      protoSwitcher.classList.remove('visible');
+;
       setTimeout(() => { resetToFirstStep(); }, 300);
     });
 
@@ -2687,34 +2782,41 @@
       transitionStep(selectAccountsStep, saveLinkStep);
     });
 
-    // Save with Link X → close modal
+    // Save with Link X → close or go to Review permissions in flexible
     document.getElementById('saveLinkCloseBtn').addEventListener('click',(e)=>{
       e.preventDefault();
-      overlay.classList.remove('visible');
-      protoSwitcher.classList.remove('visible');
-      setTimeout(() => { resetToFirstStep(); }, 300);
+      if (!isFocusedMode()) {
+        transitionStep(saveLinkStep, allowStep);
+      } else {
+        overlay.classList.remove('visible');
+        setTimeout(() => { resetToFirstStep(); }, 300);
+      }
     });
 
-    // Save with Link → close modal
+    // Save with Link → close or go to Review permissions in flexible
     document.getElementById('saveLinkBtn').addEventListener('click',(e)=>{
       e.preventDefault();
-      overlay.classList.remove('visible');
-      protoSwitcher.classList.remove('visible');
-      setTimeout(() => { resetToFirstStep(); }, 300);
+      if (!isFocusedMode()) {
+        transitionStep(saveLinkStep, allowStep);
+      } else {
+        overlay.classList.remove('visible');
+        setTimeout(() => { resetToFirstStep(); }, 300);
+      }
     });
 
-    // Finish without saving → close modal
+    // Finish without saving → close or go to Review permissions in flexible
     document.getElementById('finishWithoutSavingBtn').addEventListener('click',(e)=>{
       e.preventDefault();
-      overlay.classList.remove('visible');
-      protoSwitcher.classList.remove('visible');
-      setTimeout(() => { resetToFirstStep(); }, 300);
+      if (!isFocusedMode()) {
+        transitionStep(saveLinkStep, allowStep);
+      } else {
+        overlay.classList.remove('visible');
+        setTimeout(() => { resetToFirstStep(); }, 300);
+      }
     });
 
     document.getElementById('allowContinueBtn').addEventListener('click',(e)=>{
       e.preventDefault();
-      overlay.classList.remove('visible');
-      protoSwitcher.classList.remove('visible');
       showTransaction();
 
       // Always show consent record label
@@ -2732,6 +2834,13 @@
         });
       }
 
+      // Flexible + new account: go to Verify flow after Review permissions
+      if (!isFocusedMode() && activeFlow === 'new') {
+        transitionStep(allowStep, bizTypeStep);
+        return;
+      }
+
+      overlay.classList.remove('visible');
       if (activeFlow === 'new') {
         completeForNewAccount();
       } else {
@@ -2755,6 +2864,7 @@
     }
 
     if(sessionStorage.getItem('sandboxClaimed')==='true'){showTransaction()}
+    applyProtoMode();
 
     function setDiagramState(state){
       sessionStorage.setItem('diagramState',state);
