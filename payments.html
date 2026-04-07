@@ -3167,6 +3167,7 @@
       document.getElementById('step3Badge').className = 'step-badge badge-complete';
       document.getElementById('removeAccessLink').style.display = 'none';
       document.getElementById('allowContinueBtn').textContent = 'Finish';
+      setDiagramState('full');
       transitionStep(reviewStep, allowStep);
     });
 

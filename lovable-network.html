@@ -897,16 +897,37 @@
   </style>
   <div class="diagram-panel" id="diagramPanel">
     <div class="diagram-grid" id="diagramGrid">
-      <div style="display:flex;flex-direction:column;align-items:center;gap:0;">
-        <div class="diagram-box blue" style="width:160px;">Lovable<span class="diagram-box-sub">Direct account</span></div>
-        <div class="dashed-line blue-line" style="height:40px;"></div>
-        <div class="diagram-box blue" style="width:160px;">Sarah's Biz<span class="diagram-box-sub">Lovable v2 acct</span></div>
-        <div class="connector-split">
-          <div class="dashed-line blue-line" style="height:16px;"></div>
-          <span class="connector-label">Consent record</span>
-          <div class="dashed-line blue-line" style="height:16px;"></div>
+      <div class="diagram-row">
+        <div class="diagram-box blue">Lovable<span class="diagram-box-sub">Direct account</span></div>
+        <div class="diagram-box white">Lovable<span class="diagram-box-sub">App sandbox</span></div>
+      </div>
+      <div class="diagram-connector">
+        <div class="diagram-connector-col"><div class="dashed-line blue-line"></div></div>
+        <div class="diagram-connector-col"><div class="dashed-line gray-line"></div></div>
+      </div>
+      <div class="diagram-row">
+        <div class="diagram-box blue">Sarah's Biz<span class="diagram-box-sub">v2 acct</span><span class="diagram-box-sub" style="margin-top:2px;font-size:10px;opacity:0.85;">Customer</span></div>
+        <div class="diagram-box white">Sarah's Biz<span class="diagram-box-sub">v2 account</span><span class="diagram-box-sub">sandbox</span></div>
+      </div>
+      <div class="diagram-connector">
+        <div class="diagram-connector-col">
+          <div class="connector-split">
+            <div class="dashed-line blue-line" style="height:16px;"></div>
+            <span class="connector-label">Consent record</span>
+            <div class="dashed-line blue-line" style="height:16px;"></div>
+          </div>
         </div>
-        <div class="diagram-box blue" style="width:160px;">Sarah's Biz<span class="diagram-box-sub">Direct account</span></div>
+        <div class="diagram-connector-col"><div class="dashed-line gray-line"></div></div>
+      </div>
+      <div class="diagram-row">
+        <div class="diagram-box blue">Sarah's Biz<span class="diagram-box-sub">Direct account</span></div>
+        <div style="width:130px;min-height:72px;position:relative;">
+          <div class="dashed-line gray-line" style="height:36px;position:absolute;top:0;left:50%;transform:translateX(-50%);"></div>
+          <div style="position:absolute;top:34.5px;left:-16px;width:81px;height:3px;background:repeating-linear-gradient(to right,#888,#888 6px,transparent 6px,transparent 12px);"></div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:6px;">
+        <span class="connector-label" style="font-size:11px;">Resource sharing</span>
       </div>
     </div>
   </div>
