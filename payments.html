@@ -37,7 +37,7 @@
     .topbar {
       height: 48px;
       background: var(--lovable-surface);
-      border-bottom: 1px solid var(--lovable-border);
+      border-bottom: none;
       display: flex;
       align-items: center;
       padding: 0 16px;
@@ -569,7 +569,7 @@
 
     .badge-skipped {
       background: rgba(107, 114, 128, 0.15);
-      color: #6b7280;
+      color: #6c7688;
     }
 
     .badge-action {
@@ -874,7 +874,7 @@
 
     .biz-revenue-label {
       font-size: 12px;
-      color: #9ca3af;
+      color: #6c7688;
       font-weight: 500;
       margin-bottom: 4px;
     }
@@ -887,7 +887,7 @@
 
     .biz-revenue-period {
       font-size: 12px;
-      color: #6b7280;
+      color: #6c7688;
       margin-left: 6px;
       font-weight: 400;
     }
@@ -911,7 +911,7 @@
       width: 20px;
       height: 20px;
       border-radius: 50%;
-      background: #635bff;
+      background: #533afd;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -928,7 +928,7 @@
 
     .biz-insight-text {
       font-size: 13px;
-      color: #d1d5db;
+      color: #d8dee4;
       line-height: 1.5;
       margin-bottom: 12px;
     }
@@ -938,7 +938,7 @@
       align-items: center;
       gap: 4px;
       padding: 6px 14px;
-      background: #635bff;
+      background: #533afd;
       color: #fff;
       border: none;
       border-radius: 6px;
@@ -1053,7 +1053,7 @@
                 align-items: center;
                 gap: 6px;
                 padding: 8px 16px;
-                background: #635bff;
+                background: #533afd;
                 color: #fff;
                 border: none;
                 border-radius: 6px;
@@ -1308,7 +1308,7 @@
                 gap: 6px;
                 margin-top: 14px;
                 padding: 7px 14px;
-                background: #635bff;
+                background: #533afd;
                 color: #fff;
                 border: none;
                 border-radius: 6px;
@@ -1359,21 +1359,21 @@
     .stripe-overlay{position:fixed;top:0;left:0;bottom:0;right:340px;background:rgba(0,0,0,0.6);z-index:1000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s ease, right .3s ease;backdrop-filter:blur(4px)}
     body.diagram-closed .stripe-overlay{right:0}
     .stripe-overlay.visible{opacity:1;pointer-events:all}
-    .stripe-modal{width:460px;height:720px;max-height:90vh;background:#fff;border-radius:12px;position:relative;overflow:hidden;box-shadow:0 25px 60px rgba(0,0,0,.3);transform:scale(.95) translateY(10px);transition:transform .3s ease;font-family:'Inter',-apple-system,sans-serif;color:#1a1a1a;display:flex;flex-direction:column;}
+    .stripe-modal{width:460px;height:720px;max-height:90vh;background:#fff;border-radius:12px;position:relative;overflow:hidden;box-shadow:0 25px 60px rgba(0,0,0,.3);transform:scale(.95) translateY(10px);transition:transform .3s ease;font-family:'Inter',-apple-system,sans-serif;color:#353a44;display:flex;flex-direction:column;}
     .stripe-overlay.visible .stripe-modal{transform:scale(1) translateY(0)}
     .stripe-modal-header{padding:0}
-    .stripe-logo{font-size:28px;font-weight:700;color:#635bff;letter-spacing:-.5px;margin-bottom:28px}
+    .stripe-logo{font-size:28px;font-weight:700;color:#533afd;letter-spacing:-.5px;margin-bottom:28px}
     .stripe-modal-body{padding:40px;flex:1;display:flex;flex-direction:column;}
-    .stripe-modal-title{font-size:22px;font-weight:600;color:#1a1a1a;margin-bottom:8px}
-    .stripe-modal-subtitle{font-size:14px;color:#6b7280;margin-bottom:24px;padding:10px 14px;background:#f9fafb;border-radius:6px;border:1px solid #f0f0f0}
-    .stripe-google-btn{width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:6px;background:#fff;font-size:14px;font-weight:500;color:#1a1a1a;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .15s,border-color .15s;font-family:inherit}
-    .stripe-google-btn:hover{background:#f9fafb;border-color:#d1d5db}
-    .stripe-divider{display:flex;align-items:center;gap:12px;margin:20px 0;font-size:12px;color:#9ca3af;text-transform:uppercase;letter-spacing:.5px}
-    .stripe-divider::before,.stripe-divider::after{content:'';flex:1;height:1px;background:#e5e7eb}
+    .stripe-modal-title{font-size:22px;font-weight:600;color:#353a44;margin-bottom:8px}
+    .stripe-modal-subtitle{font-size:14px;color:#6c7688;margin-bottom:24px;padding:10px 14px;background:#f5f6f8;border-radius:6px;border:1px solid #f0f0f0}
+    .stripe-google-btn{width:100%;padding:10px;border:1px solid #d8dee4;border-radius:6px;background:#fff;font-size:14px;font-weight:500;color:#353a44;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .15s,border-color .15s;font-family:inherit}
+    .stripe-google-btn:hover{background:#f5f6f8;border-color:#d8dee4}
+    .stripe-divider{display:flex;align-items:center;gap:12px;margin:20px 0;font-size:12px;color:#6c7688;text-transform:uppercase;letter-spacing:.5px}
+    .stripe-divider::before,.stripe-divider::after{content:'';flex:1;height:1px;background:#d8dee4}
     .stripe-field{margin-bottom:16px}
-    .stripe-field label{display:block;font-size:13px;font-weight:500;color:#374151;margin-bottom:6px}
-    .stripe-field input{width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:6px;font-size:14px;font-family:inherit;color:#1a1a1a;outline:none;transition:border-color .15s,box-shadow .15s;background:#fff}
-    .stripe-field input:focus{border-color:#635bff;box-shadow:0 0 0 3px rgba(99,91,255,.12)}
+    .stripe-field label{display:block;font-size:13px;font-weight:500;color:#596171;margin-bottom:6px}
+    .stripe-field input{width:100%;padding:10px 12px;border:1px solid #d8dee4;border-radius:6px;font-size:14px;font-family:inherit;color:#353a44;outline:none;transition:border-color .15s,box-shadow .15s;background:#fff}
+    .stripe-field input:focus{border-color:#533afd;box-shadow:0 0 0 3px rgba(99,91,255,.12)}
     .stripe-submit{width:100%;padding:11px;border:none;border-radius:6px;background:#7a6ef0;color:#fff;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:4px;transition:opacity .15s}
     .stripe-submit:hover{opacity:.88}
     .stripe-modal.lovable-brand .stripe-submit{background:#EC4899 !important;border-color:#EC4899 !important;}
@@ -1389,13 +1389,13 @@
     .stripe-modal.lovable-brand .brand-border{border-color:#EC4899 !important}
     .stripe-modal.lovable-brand .brand-check-icon{stroke:#EC4899 !important}
     .stripe-modal.lovable-brand .brand-submit{background:#EC4899 !important}
-    .stripe-alt-link{text-align:center;padding:18px 0 18px;font-size:13px;color:#6b7280}
-    .stripe-alt-link a{color:#635bff;text-decoration:none;font-weight:500}
+    .stripe-alt-link{text-align:center;padding:18px 0 18px;font-size:13px;color:#6c7688}
+    .stripe-alt-link a{color:#533afd;text-decoration:none;font-weight:500}
     .stripe-modal-footer-area{background:#f6f8fa;border-radius:0 0 12px 12px;padding:0 36px;}
-    .stripe-modal-footer{padding:16px 36px;display:flex;justify-content:space-between;font-size:12px;color:#9ca3af;border-top:1px solid #f3f4f6}
-    .stripe-modal-footer a{color:#9ca3af;text-decoration:none}
-    .stripe-close{position:absolute;top:72px;right:16px;width:28px;height:28px;border-radius:50%;border:none;background:#f3f4f6;color:#6b7280;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:background .15s;z-index:2}
-    .stripe-close:hover{background:#e5e7eb}
+    .stripe-modal-footer{padding:16px 36px;display:flex;justify-content:space-between;font-size:12px;color:#6c7688;border-top:1px solid #f5f6f8}
+    .stripe-modal-footer a{color:#6c7688;text-decoration:none}
+    .stripe-close{position:absolute;top:72px;right:16px;width:28px;height:28px;border-radius:50%;border:none;background:#f5f6f8;color:#6c7688;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:background .15s;z-index:2}
+    .stripe-close:hover{background:#d8dee4}
     .browser-chrome{background:#333;border-radius:12px 12px 0 0;padding:0;font-family:-apple-system,sans-serif;user-select:none;}
     .browser-titlebar{display:flex;align-items:center;padding:10px 14px 6px;gap:8px;}
     .browser-dots{display:flex;gap:6px;}
@@ -1404,7 +1404,7 @@
     .browser-dot.yellow{background:#febc2e;}
     .browser-dot.green{background:#28c840;}
     .browser-title{flex:1;text-align:center;font-size:12px;font-weight:500;color:#ccc;margin-right:40px;}
-    .browser-urlbar{margin:0 10px 8px;background:#1a1a1a;border-radius:6px;padding:6px 10px;display:flex;align-items:center;gap:6px;font-size:11px;color:#888;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+    .browser-urlbar{margin:0 10px 8px;background:#353a44;border-radius:6px;padding:6px 10px;display:flex;align-items:center;gap:6px;font-size:11px;color:#888;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
     .browser-urlbar svg{flex-shrink:0;}
     .browser-progress{display:none;}
   </style>
@@ -1415,24 +1415,24 @@
     .stripe-step-wrap.step-hidden{display:none;}
     .ein-radio{position:relative;width:16px;height:16px;flex-shrink:0;margin-top:2px;}
     .ein-radio input{position:absolute;opacity:0;width:0;height:0;}
-    .ein-radio .ein-radio-circle{width:16px;height:16px;border-radius:50%;border:2px solid #d1d5db;background:#fff;display:flex;align-items:center;justify-content:center;transition:border-color .15s, background .15s, box-shadow .15s;}
-    .ein-radio input:checked + .ein-radio-circle{border-color:#635bff;background:#635bff;box-shadow:0 0 0 2px rgba(99,91,255,.15);}
+    .ein-radio .ein-radio-circle{width:16px;height:16px;border-radius:50%;border:2px solid #d8dee4;background:#fff;display:flex;align-items:center;justify-content:center;transition:border-color .15s, background .15s, box-shadow .15s;}
+    .ein-radio input:checked + .ein-radio-circle{border-color:#533afd;background:#533afd;box-shadow:0 0 0 2px rgba(99,91,255,.15);}
     .ein-radio input:checked + .ein-radio-circle::after{content:'';width:6px;height:6px;border-radius:50%;background:#fff;}
     .allow-perm-item{padding:16px 0;border-bottom:1px solid #f0f0f0;}
     .allow-perm-item:last-child{border-bottom:none;}
-    .allow-perm-title{font-size:14px;font-weight:600;color:#1a1a1a;margin-bottom:3px;}
-    .allow-perm-desc{font-size:13px;color:#6b7280;line-height:1.5;}
-    .allow-perm-detail{font-size:13px;color:#9ca3af;line-height:1.5;margin-top:4px;}
-    .allow-ack-box{padding:12px 14px;background:#f9fafb;border-radius:8px;border:1px solid #e5e7eb;margin:20px 0 4px;display:flex;align-items:flex-start;gap:10px;}
-    .allow-ack-box input[type="checkbox"]{width:18px;height:18px;accent-color:#635bff;cursor:pointer;flex-shrink:0;margin-top:1px;}
-    .allow-ack-box label{font-size:13px;color:#374151;line-height:1.5;cursor:pointer;margin:0;}
+    .allow-perm-title{font-size:14px;font-weight:600;color:#353a44;margin-bottom:3px;}
+    .allow-perm-desc{font-size:13px;color:#6c7688;line-height:1.5;}
+    .allow-perm-detail{font-size:13px;color:#6c7688;line-height:1.5;margin-top:4px;}
+    .allow-ack-box{padding:12px 14px;background:#f5f6f8;border-radius:8px;border:1px solid #d8dee4;margin:20px 0 4px;display:flex;align-items:flex-start;gap:10px;}
+    .allow-ack-box input[type="checkbox"]{width:18px;height:18px;accent-color:#533afd;cursor:pointer;flex-shrink:0;margin-top:1px;}
+    .allow-ack-box label{font-size:13px;color:#596171;line-height:1.5;cursor:pointer;margin:0;}
 
     .claim-proto-switcher {
       position: fixed;
       bottom: 20px;
       right: 20px;
       background: #fff;
-      border: 1px solid #e5e7eb;
+      border: 1px solid #d8dee4;
       border-radius: 12px;
       padding: 16px 20px;
       box-shadow: 0 4px 16px rgba(0,0,0,0.08);
@@ -1443,7 +1443,7 @@
     .claim-proto-switcher-title {
       font-size: 14px;
       font-weight: 600;
-      color: #1a1a1a;
+      color: #353a44;
       margin-bottom: 12px;
     }
     .claim-proto-switcher label {
@@ -1451,12 +1451,12 @@
       align-items: center;
       gap: 8px;
       font-size: 14px;
-      color: #1a1a1a;
+      color: #353a44;
       cursor: pointer;
       padding: 4px 0;
     }
     .claim-proto-switcher input[type="radio"] {
-      accent-color: #635bff;
+      accent-color: #533afd;
       width: 16px;
       height: 16px;
       cursor: pointer;
@@ -1498,14 +1498,14 @@
           <div class="stripe-field">
             <div style="display:flex; justify-content:space-between; align-items:center;">
               <label style="margin-bottom:0;">Password</label>
-              <a href="#" style="font-size:12px; color:#635bff; text-decoration:none; font-weight:500;">Forgot your password?</a>
+              <a href="#" style="font-size:12px; color:#533afd; text-decoration:none; font-weight:500;">Forgot your password?</a>
             </div>
             <input type="password" id="signInPassword" style="margin-top:6px;">
           </div>
 
           <div style="display:flex; align-items:center; gap:8px; margin:12px 0 16px;">
-            <input type="checkbox" style="width:16px; height:16px; accent-color:#635bff; cursor:pointer;">
-            <label style="font-size:13px; color:#374151; font-weight:400; margin:0;">Remember me on this device</label>
+            <input type="checkbox" style="width:16px; height:16px; accent-color:#533afd; cursor:pointer;">
+            <label style="font-size:13px; color:#596171; font-weight:400; margin:0;">Remember me on this device</label>
           </div>
           </div>
 
@@ -1551,9 +1551,9 @@
           </div>
           <div class="stripe-field">
             <label>Business country</label>
-            <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border:1px solid #e5e7eb; border-radius:6px; background:#fff; font-size:14px; color:#1a1a1a; cursor:pointer;">
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border:1px solid #d8dee4; border-radius:6px; background:#fff; font-size:14px; color:#353a44; cursor:pointer;">
               <span style="display:flex; align-items:center; gap:8px;">&#127482;&#127480; United States</span>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><polyline points="6 9 12 4 18 9"/><polyline points="6 15 12 20 18 15"/></svg>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6c7688" stroke-width="2"><polyline points="6 9 12 4 18 9"/><polyline points="6 15 12 20 18 15"/></svg>
             </div>
           </div>
           </div>
@@ -1572,15 +1572,15 @@
         <div class="stripe-modal-body">
           <div style="flex:1;">
             <div class="stripe-modal-title" style="font-size:24px; font-weight:700; margin-bottom:8px;">Welcome back to Stripe</div>
-            <div id="claimSubtitle" style="font-size:14px; color:#6b7280; margin-bottom:20px;">Bring your work into a new or existing account.</div>
+            <div id="claimSubtitle" style="font-size:14px; color:#6c7688; margin-bottom:20px;">Bring your work into a new or existing account.</div>
             <div style="display:flex; flex-direction:column; gap:10px;">
-              <button class="claim-acct-option" id="claimAcctNew" style="display:flex; align-items:center; gap:12px; width:100%; padding:14px 16px; border:1px solid #e5e7eb; border-radius:10px; background:#fff; cursor:pointer; font-family:inherit; text-align:left; transition:border-color .15s;">
-                <span style="display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:6px; background:#f3f4f6; font-size:18px; color:#635bff; font-weight:300; flex-shrink:0;">+</span>
-                <span style="font-size:14px; font-weight:600; color:#635bff;">Create new account</span>
+              <button class="claim-acct-option" id="claimAcctNew" style="display:flex; align-items:center; gap:12px; width:100%; padding:14px 16px; border:1px solid #d8dee4; border-radius:10px; background:#fff; cursor:pointer; font-family:inherit; text-align:left; transition:border-color .15s;">
+                <span style="display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:6px; background:#f5f6f8; font-size:18px; color:#533afd; font-weight:300; flex-shrink:0;">+</span>
+                <span style="font-size:14px; font-weight:600; color:#533afd;">Create new account</span>
               </button>
-              <button class="claim-acct-option" id="claimAcctSarah" style="display:flex; align-items:center; gap:12px; width:100%; padding:14px 16px; border:1px solid #e5e7eb; border-radius:10px; background:#fff; cursor:pointer; font-family:inherit; text-align:left; transition:border-color .15s;">
+              <button class="claim-acct-option" id="claimAcctSarah" style="display:flex; align-items:center; gap:12px; width:100%; padding:14px 16px; border:1px solid #d8dee4; border-radius:10px; background:#fff; cursor:pointer; font-family:inherit; text-align:left; transition:border-color .15s;">
                 <span style="display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:6px; background:#fef3c7; font-size:16px; flex-shrink:0;">&#127797;</span>
-                <span style="font-size:14px; font-weight:500; color:#1a1a1a;">Sarah Lens</span>
+                <span style="font-size:14px; font-weight:500; color:#353a44;">Sarah Lens</span>
               </button>
             </div>
           </div>
@@ -1592,15 +1592,15 @@
       <div class="stripe-step-wrap step-hidden" id="stripeNewAccountStep">
         <div class="stripe-modal-body">
           <div style="flex:1;">
-            <div style="font-size:28px; font-weight:700; color:#1a1a1a; line-height:1.2; margin-bottom:8px;">Create a new account</div>
-            <div style="font-size:14px; color:#6b7280; line-height:1.5; margin-bottom:28px;">Try out more features in your sandbox—a safe environment for testing.</div>
+            <div style="font-size:28px; font-weight:700; color:#353a44; line-height:1.2; margin-bottom:8px;">Create a new account</div>
+            <div style="font-size:14px; color:#6c7688; line-height:1.5; margin-bottom:28px;">Try out more features in your sandbox—a safe environment for testing.</div>
 
             <div class="stripe-field">
               <label style="font-weight:600;">Business name</label>
               <input type="text" id="newAcctBizName">
             </div>
             <div class="stripe-field">
-              <label><span style="font-weight:600;">Business website</span> <span style="font-weight:400; color:#6b7280;">(optional)</span></label>
+              <label><span style="font-weight:600;">Business website</span> <span style="font-weight:400; color:#6c7688;">(optional)</span></label>
               <input type="text">
             </div>
           </div>
@@ -1613,54 +1613,54 @@
         <div class="stripe-modal-body">
           <div style="flex:1;">
           <div class="stripe-modal-title" style="font-size:22px; font-weight:700; margin-bottom:8px;">Let's start with your business type</div>
-          <div style="font-size:13px; line-height:1.6; color:#6b7280; margin-bottom:24px;">This ensures we set up your business correctly on Stripe. Not sure? <a href="#" style="color:#635bff; text-decoration:none; font-weight:500;">View support article</a></div>
+          <div style="font-size:13px; line-height:1.6; color:#6c7688; margin-bottom:24px;">This ensures we set up your business correctly on Stripe. Not sure? <a href="#" style="color:#533afd; text-decoration:none; font-weight:500;">View support article</a></div>
 
           <div style="margin-bottom:24px;">
-            <div style="font-size:13px; font-weight:600; color:#1a1a1a; margin-bottom:8px;">Business location</div>
-            <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 14px; border:1px solid #e5e7eb; border-radius:8px; background:#fff; font-size:13px; color:#1a1a1a;">
+            <div style="font-size:13px; font-weight:600; color:#353a44; margin-bottom:8px;">Business location</div>
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 14px; border:1px solid #d8dee4; border-radius:8px; background:#fff; font-size:13px; color:#353a44;">
               United States
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><polyline points="6 9 12 4 18 9"/><polyline points="6 15 12 20 18 15"/></svg>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6c7688" stroke-width="2"><polyline points="6 9 12 4 18 9"/><polyline points="6 15 12 20 18 15"/></svg>
             </div>
           </div>
 
           <div style="margin-bottom:24px;">
-            <div style="font-size:13px; font-weight:600; color:#1a1a1a; margin-bottom:4px; display:flex; align-items:center; gap:6px;">Business type <span style="display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; border-radius:50%; border:1px solid #d1d5db; font-size:10px; color:#9ca3af; cursor:help;">i</span></div>
+            <div style="font-size:13px; font-weight:600; color:#353a44; margin-bottom:4px; display:flex; align-items:center; gap:6px;">Business type <span style="display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; border-radius:50%; border:1px solid #d8dee4; font-size:10px; color:#6c7688; cursor:help;">i</span></div>
             <div style="display:flex; flex-direction:column; gap:10px; margin-top:12px;">
-              <button class="biz-type-option" style="display:flex; flex-direction:column; gap:2px; width:100%; padding:14px 16px; border:1px solid #e5e7eb; border-radius:10px; background:#fff; cursor:pointer; font-family:inherit; text-align:left; transition:border-color .15s;">
-                <span style="font-size:13px; font-weight:600; color:#1a1a1a;">Unregistered business</span>
-                <span style="font-size:12px; color:#6b7280;">Owned by one person and not registered with the government</span>
+              <button class="biz-type-option" style="display:flex; flex-direction:column; gap:2px; width:100%; padding:14px 16px; border:1px solid #d8dee4; border-radius:10px; background:#fff; cursor:pointer; font-family:inherit; text-align:left; transition:border-color .15s;">
+                <span style="font-size:13px; font-weight:600; color:#353a44;">Unregistered business</span>
+                <span style="font-size:12px; color:#6c7688;">Owned by one person and not registered with the government</span>
               </button>
-              <button class="biz-type-option" style="display:flex; flex-direction:column; gap:2px; width:100%; padding:14px 16px; border:1px solid #e5e7eb; border-radius:10px; background:#fff; cursor:pointer; font-family:inherit; text-align:left; transition:border-color .15s;">
-                <span style="font-size:13px; font-weight:600; color:#1a1a1a;">Registered business</span>
-                <span style="font-size:12px; color:#6b7280;">LLC, partnership, or corporation</span>
+              <button class="biz-type-option" style="display:flex; flex-direction:column; gap:2px; width:100%; padding:14px 16px; border:1px solid #d8dee4; border-radius:10px; background:#fff; cursor:pointer; font-family:inherit; text-align:left; transition:border-color .15s;">
+                <span style="font-size:13px; font-weight:600; color:#353a44;">Registered business</span>
+                <span style="font-size:12px; color:#6c7688;">LLC, partnership, or corporation</span>
               </button>
-              <button class="biz-type-option" style="display:flex; flex-direction:column; gap:2px; width:100%; padding:14px 16px; border:1px solid #e5e7eb; border-radius:10px; background:#fff; cursor:pointer; font-family:inherit; text-align:left; transition:border-color .15s;">
-                <span style="font-size:13px; font-weight:600; color:#1a1a1a;">Nonprofit organization</span>
-                <span style="font-size:12px; color:#6b7280;">Tax-exempt organization with 501(c)3 status</span>
+              <button class="biz-type-option" style="display:flex; flex-direction:column; gap:2px; width:100%; padding:14px 16px; border:1px solid #d8dee4; border-radius:10px; background:#fff; cursor:pointer; font-family:inherit; text-align:left; transition:border-color .15s;">
+                <span style="font-size:13px; font-weight:600; color:#353a44;">Nonprofit organization</span>
+                <span style="font-size:12px; color:#6c7688;">Tax-exempt organization with 501(c)3 status</span>
               </button>
             </div>
           </div>
 
           <!-- EIN section (shown when Unregistered is selected) -->
           <div id="einSection" style="display:none; margin-bottom:24px;">
-            <div style="border-top:1px solid #e5e7eb; padding-top:24px;">
-              <div style="font-size:13px; font-weight:600; color:#1a1a1a; line-height:1.3; margin-bottom:8px;">Does your business have an Employee Identification Number (EIN)?</div>
-              <div style="font-size:13px; color:#6b7280; line-height:1.6; margin-bottom:4px;">Find this on your Letter 147C or SS-4 Confirmation Letter from the IRS.</div>
-              <a href="#" style="font-size:13px; color:#635bff; text-decoration:none; font-weight:500;">View support article</a>
+            <div style="border-top:1px solid #d8dee4; padding-top:24px;">
+              <div style="font-size:13px; font-weight:600; color:#353a44; line-height:1.3; margin-bottom:8px;">Does your business have an Employee Identification Number (EIN)?</div>
+              <div style="font-size:13px; color:#6c7688; line-height:1.6; margin-bottom:4px;">Find this on your Letter 147C or SS-4 Confirmation Letter from the IRS.</div>
+              <a href="#" style="font-size:13px; color:#533afd; text-decoration:none; font-weight:500;">View support article</a>
 
               <div style="display:flex; flex-direction:column; gap:12px; margin-top:20px;">
                 <label id="einNo" style="display:flex; align-items:flex-start; gap:12px; cursor:pointer;">
                   <span class="ein-radio"><input type="radio" name="einChoice" value="no" checked><span class="ein-radio-circle"></span></span>
                   <div>
-                    <div style="font-size:13px; font-weight:600; color:#1a1a1a;">No</div>
-                    <div style="font-size:12px; color:#6b7280; line-height:1.5;">Typically applies to businesses owned and operated by one person, with no additional employees.</div>
+                    <div style="font-size:13px; font-weight:600; color:#353a44;">No</div>
+                    <div style="font-size:12px; color:#6c7688; line-height:1.5;">Typically applies to businesses owned and operated by one person, with no additional employees.</div>
                   </div>
                 </label>
                 <label id="einYes" style="display:flex; align-items:flex-start; gap:12px; cursor:pointer;">
                   <span class="ein-radio"><input type="radio" name="einChoice" value="yes"><span class="ein-radio-circle"></span></span>
                   <div>
-                    <div style="font-size:13px; font-weight:600; color:#1a1a1a;">Yes</div>
-                    <div style="font-size:12px; color:#6b7280; line-height:1.5;">Typically applies to businesses with employees in addition to the owner.</div>
+                    <div style="font-size:13px; font-weight:600; color:#353a44;">Yes</div>
+                    <div style="font-size:12px; color:#6c7688; line-height:1.5;">Typically applies to businesses with employees in addition to the owner.</div>
                   </div>
                 </label>
               </div>
@@ -1678,55 +1678,55 @@
         <div class="stripe-modal-body" style="padding:32px 40px;">
           <div style="flex:1; overflow-y:auto;">
             <div class="stripe-modal-title" style="font-size:22px; font-weight:700; margin-bottom:8px;">Verify your personal details</div>
-            <div style="font-size:13px; color:#6b7280; line-height:1.6; margin-bottom:24px;">This information is collected to verify your identity, keep your account safe, and help meet legal and regulatory requirements. For more information, review Stripe's <a href="#" style="color:#1a1a1a; text-decoration:underline; font-weight:500;">Privacy Policy</a>.</div>
+            <div style="font-size:13px; color:#6c7688; line-height:1.6; margin-bottom:24px;">This information is collected to verify your identity, keep your account safe, and help meet legal and regulatory requirements. For more information, review Stripe's <a href="#" style="color:#353a44; text-decoration:underline; font-weight:500;">Privacy Policy</a>.</div>
 
             <div style="margin-bottom:20px;">
-              <div style="font-size:13px; font-weight:600; color:#1a1a1a; margin-bottom:4px;">Legal name</div>
-              <div style="font-size:12px; color:#6b7280; margin-bottom:8px;">Enter name exactly as it is recorded with government agencies (such as IRS).</div>
-              <input type="text" placeholder="Legal first name" style="width:100%; padding:10px 12px; border:1px solid #e5e7eb; border-radius:6px; font-size:14px; font-family:inherit; color:#1a1a1a; outline:none; margin-bottom:8px;">
-              <input type="text" placeholder="Legal last name" style="width:100%; padding:10px 12px; border:1px solid #e5e7eb; border-radius:6px; font-size:14px; font-family:inherit; color:#1a1a1a; outline:none;">
+              <div style="font-size:13px; font-weight:600; color:#353a44; margin-bottom:4px;">Legal name</div>
+              <div style="font-size:12px; color:#6c7688; margin-bottom:8px;">Enter name exactly as it is recorded with government agencies (such as IRS).</div>
+              <input type="text" placeholder="Legal first name" style="width:100%; padding:10px 12px; border:1px solid #d8dee4; border-radius:6px; font-size:14px; font-family:inherit; color:#353a44; outline:none; margin-bottom:8px;">
+              <input type="text" placeholder="Legal last name" style="width:100%; padding:10px 12px; border:1px solid #d8dee4; border-radius:6px; font-size:14px; font-family:inherit; color:#353a44; outline:none;">
             </div>
 
             <div style="margin-bottom:20px;">
-              <div style="font-size:13px; font-weight:600; color:#1a1a1a; margin-bottom:8px;">Email address</div>
-              <input type="email" value="sarah@example.com" style="width:100%; padding:10px 12px; border:1px solid #e5e7eb; border-radius:6px; font-size:14px; font-family:inherit; color:#1a1a1a; outline:none;">
+              <div style="font-size:13px; font-weight:600; color:#353a44; margin-bottom:8px;">Email address</div>
+              <input type="email" value="sarah@example.com" style="width:100%; padding:10px 12px; border:1px solid #d8dee4; border-radius:6px; font-size:14px; font-family:inherit; color:#353a44; outline:none;">
             </div>
 
             <div style="margin-bottom:20px;">
-              <div style="font-size:13px; font-weight:600; color:#1a1a1a; margin-bottom:8px;">Date of birth</div>
-              <input type="text" placeholder="MM / DD / YYYY" style="width:auto; padding:10px 12px; border:1px solid #e5e7eb; border-radius:6px; font-size:14px; font-family:inherit; color:#1a1a1a; outline:none;">
+              <div style="font-size:13px; font-weight:600; color:#353a44; margin-bottom:8px;">Date of birth</div>
+              <input type="text" placeholder="MM / DD / YYYY" style="width:auto; padding:10px 12px; border:1px solid #d8dee4; border-radius:6px; font-size:14px; font-family:inherit; color:#353a44; outline:none;">
             </div>
 
             <div style="margin-bottom:20px;">
-              <div style="font-size:13px; font-weight:600; color:#1a1a1a; margin-bottom:4px; display:flex; align-items:center; gap:6px;">Home address <span style="display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; border-radius:50%; border:1px solid #d1d5db; font-size:10px; color:#9ca3af; cursor:help;">i</span></div>
+              <div style="font-size:13px; font-weight:600; color:#353a44; margin-bottom:4px; display:flex; align-items:center; gap:6px;">Home address <span style="display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; border-radius:50%; border:1px solid #d8dee4; font-size:10px; color:#6c7688; cursor:help;">i</span></div>
               <div style="display:flex; flex-direction:column; gap:8px; margin-top:8px;">
-                <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border:1px solid #e5e7eb; border-radius:6px; background:#f9fafb; font-size:14px; color:#9ca3af; cursor:default;">
+                <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border:1px solid #d8dee4; border-radius:6px; background:#f5f6f8; font-size:14px; color:#6c7688; cursor:default;">
                   <span>United States</span>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="2"><polyline points="6 9 12 4 18 9"/><polyline points="6 15 12 20 18 15"/></svg>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#d8dee4" stroke-width="2"><polyline points="6 9 12 4 18 9"/><polyline points="6 15 12 20 18 15"/></svg>
                 </div>
-                <input type="text" placeholder="Street address" style="width:100%; padding:10px 12px; border:1px solid #e5e7eb; border-radius:6px; font-size:14px; font-family:inherit; color:#1a1a1a; outline:none;">
-                <input type="text" placeholder="Apartment, unit, or other" style="width:100%; padding:10px 12px; border:1px solid #e5e7eb; border-radius:6px; font-size:14px; font-family:inherit; color:#1a1a1a; outline:none;">
-                <input type="text" placeholder="City" style="width:100%; padding:10px 12px; border:1px solid #e5e7eb; border-radius:6px; font-size:14px; font-family:inherit; color:#1a1a1a; outline:none;">
-                <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border:1px solid #e5e7eb; border-radius:6px; font-size:14px; color:#9ca3af; cursor:pointer;">
+                <input type="text" placeholder="Street address" style="width:100%; padding:10px 12px; border:1px solid #d8dee4; border-radius:6px; font-size:14px; font-family:inherit; color:#353a44; outline:none;">
+                <input type="text" placeholder="Apartment, unit, or other" style="width:100%; padding:10px 12px; border:1px solid #d8dee4; border-radius:6px; font-size:14px; font-family:inherit; color:#353a44; outline:none;">
+                <input type="text" placeholder="City" style="width:100%; padding:10px 12px; border:1px solid #d8dee4; border-radius:6px; font-size:14px; font-family:inherit; color:#353a44; outline:none;">
+                <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border:1px solid #d8dee4; border-radius:6px; font-size:14px; color:#6c7688; cursor:pointer;">
                   <span>State</span>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><polyline points="6 9 12 4 18 9"/><polyline points="6 15 12 20 18 15"/></svg>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6c7688" stroke-width="2"><polyline points="6 9 12 4 18 9"/><polyline points="6 15 12 20 18 15"/></svg>
                 </div>
-                <input type="text" placeholder="Postal code" style="width:100%; padding:10px 12px; border:1px solid #e5e7eb; border-radius:6px; font-size:14px; font-family:inherit; color:#1a1a1a; outline:none;">
+                <input type="text" placeholder="Postal code" style="width:100%; padding:10px 12px; border:1px solid #d8dee4; border-radius:6px; font-size:14px; font-family:inherit; color:#353a44; outline:none;">
               </div>
             </div>
 
             <div style="margin-bottom:20px;">
-              <div style="font-size:13px; font-weight:600; color:#1a1a1a; margin-bottom:4px;">Phone number</div>
-              <div style="font-size:12px; color:#6b7280; margin-bottom:8px;">Your phone number is required to be in the country of your account.</div>
-              <input type="tel" placeholder="+1  201 555 0123" style="width:100%; padding:10px 12px; border:1px solid #e5e7eb; border-radius:6px; font-size:14px; font-family:inherit; color:#1a1a1a; outline:none;">
+              <div style="font-size:13px; font-weight:600; color:#353a44; margin-bottom:4px;">Phone number</div>
+              <div style="font-size:12px; color:#6c7688; margin-bottom:8px;">Your phone number is required to be in the country of your account.</div>
+              <input type="tel" placeholder="+1  201 555 0123" style="width:100%; padding:10px 12px; border:1px solid #d8dee4; border-radius:6px; font-size:14px; font-family:inherit; color:#353a44; outline:none;">
             </div>
 
             <div style="margin-bottom:8px;">
-              <div style="font-size:13px; font-weight:600; color:#1a1a1a; margin-bottom:4px;">Last 4 digits of Social Security number</div>
-              <div style="font-size:12px; color:#6b7280; margin-bottom:8px;">We are required to collect this information to satisfy regulatory obligations.</div>
+              <div style="font-size:13px; font-weight:600; color:#353a44; margin-bottom:4px;">Last 4 digits of Social Security number</div>
+              <div style="font-size:12px; color:#6c7688; margin-bottom:8px;">We are required to collect this information to satisfy regulatory obligations.</div>
               <div style="display:flex; align-items:center; gap:8px;">
-                <span style="font-size:16px; color:#6b7280; letter-spacing:3px;">&#8226;&#8226;&#8226; &ndash; &#8226;&#8226; &ndash;</span>
-                <input type="text" placeholder="8888" maxlength="4" style="width:60px; padding:10px 12px; border:1px solid #e5e7eb; border-radius:6px; font-size:14px; font-family:inherit; color:#1a1a1a; outline:none;">
+                <span style="font-size:16px; color:#6c7688; letter-spacing:3px;">&#8226;&#8226;&#8226; &ndash; &#8226;&#8226; &ndash;</span>
+                <input type="text" placeholder="8888" maxlength="4" style="width:60px; padding:10px 12px; border:1px solid #d8dee4; border-radius:6px; font-size:14px; font-family:inherit; color:#353a44; outline:none;">
               </div>
             </div>
           </div>
@@ -1740,27 +1740,27 @@
         <div class="stripe-modal-body" style="padding:32px 40px;">
           <div style="flex:1; overflow-y:auto;">
             <div class="stripe-modal-title" style="font-size:22px; font-weight:700; margin-bottom:8px;">Tell us about your business</div>
-            <div style="font-size:13px; color:#6b7280; line-height:1.6; margin-bottom:24px;">This information is collected to better understand and serve your business.</div>
+            <div style="font-size:13px; color:#6c7688; line-height:1.6; margin-bottom:24px;">This information is collected to better understand and serve your business.</div>
 
             <div style="margin-bottom:20px;">
-              <div style="font-size:13px; font-weight:600; color:#1a1a1a; margin-bottom:4px;">Business name</div>
-              <div style="font-size:12px; color:#6b7280; margin-bottom:8px;">The operating name of your company, if it's different than the legal name.</div>
-              <input type="text" value="Sarah's Photography" style="width:100%; padding:10px 12px; border:1px solid #e5e7eb; border-radius:6px; font-size:14px; font-family:inherit; color:#1a1a1a; outline:none;">
+              <div style="font-size:13px; font-weight:600; color:#353a44; margin-bottom:4px;">Business name</div>
+              <div style="font-size:12px; color:#6c7688; margin-bottom:8px;">The operating name of your company, if it's different than the legal name.</div>
+              <input type="text" value="Sarah's Photography" style="width:100%; padding:10px 12px; border:1px solid #d8dee4; border-radius:6px; font-size:14px; font-family:inherit; color:#353a44; outline:none;">
             </div>
 
             <div style="margin-bottom:20px;">
-              <div style="font-size:13px; font-weight:600; color:#1a1a1a; margin-bottom:8px;">Business website</div>
-              <input type="text" placeholder="www.example.com" style="width:100%; padding:10px 12px; border:1px solid #e5e7eb; border-radius:6px; font-size:14px; font-family:inherit; color:#1a1a1a; outline:none; margin-bottom:12px;">
-              <div style="background:#f3f4f6; border-radius:8px; padding:16px; font-size:13px; color:#4b5563; line-height:1.6;">
+              <div style="font-size:13px; font-weight:600; color:#353a44; margin-bottom:8px;">Business website</div>
+              <input type="text" placeholder="www.example.com" style="width:100%; padding:10px 12px; border:1px solid #d8dee4; border-radius:6px; font-size:14px; font-family:inherit; color:#353a44; outline:none; margin-bottom:12px;">
+              <div style="background:#f5f6f8; border-radius:8px; padding:16px; font-size:13px; color:#596171; line-height:1.6;">
                 <div style="display:flex; align-items:flex-start; gap:8px;">
-                  <span style="display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; border-radius:50%; border:1px solid #d1d5db; font-size:10px; color:#9ca3af; flex-shrink:0; margin-top:1px;">i</span>
+                  <span style="display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; border-radius:50%; border:1px solid #d8dee4; font-size:10px; color:#6c7688; flex-shrink:0; margin-top:1px;">i</span>
                   <div>
                     Your website must:
                     <ul style="margin:4px 0 8px 16px; padding:0;">
                       <li>Be viewable and not password-protected</li>
                       <li>Match the business name you provided to Stripe</li>
                     </ul>
-                    If your website doesn't meet these requirements, <a href="#" style="color:#635bff; text-decoration:none; font-weight:500;">view our support article</a>.
+                    If your website doesn't meet these requirements, <a href="#" style="color:#533afd; text-decoration:none; font-weight:500;">view our support article</a>.
                   </div>
                 </div>
               </div>
@@ -1776,22 +1776,22 @@
         <div class="stripe-modal-body" style="padding:32px 40px;">
           <div style="flex:1; overflow-y:auto;">
             <div class="stripe-modal-title" style="font-size:22px; font-weight:700; margin-bottom:8px;">What products or services will you offer through Stripe?</div>
-            <div style="font-size:13px; color:#6b7280; line-height:1.6; margin-bottom:4px;">We use this information to ensure your product or service offerings meet regulatory and banking partner requirements.</div>
-            <a href="#" style="font-size:13px; color:#635bff; text-decoration:none; font-weight:500; display:inline-block; margin-bottom:24px;">View support article</a>
+            <div style="font-size:13px; color:#6c7688; line-height:1.6; margin-bottom:4px;">We use this information to ensure your product or service offerings meet regulatory and banking partner requirements.</div>
+            <a href="#" style="font-size:13px; color:#533afd; text-decoration:none; font-weight:500; display:inline-block; margin-bottom:24px;">View support article</a>
 
             <div style="margin-bottom:20px;">
-              <div style="font-size:13px; font-weight:600; color:#1a1a1a; margin-bottom:4px;">Category</div>
-              <div style="font-size:12px; color:#6b7280; margin-bottom:8px;">Select the option that best matches what you'll offer through Stripe.</div>
-              <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border:1px solid #e5e7eb; border-radius:6px; background:#fff; font-size:14px; color:#9ca3af; cursor:pointer;">
+              <div style="font-size:13px; font-weight:600; color:#353a44; margin-bottom:4px;">Category</div>
+              <div style="font-size:12px; color:#6c7688; margin-bottom:8px;">Select the option that best matches what you'll offer through Stripe.</div>
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border:1px solid #d8dee4; border-radius:6px; background:#fff; font-size:14px; color:#6c7688; cursor:pointer;">
                 <span>Choose an option</span>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><polyline points="6 9 12 4 18 9"/><polyline points="6 15 12 20 18 15"/></svg>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6c7688" stroke-width="2"><polyline points="6 9 12 4 18 9"/><polyline points="6 15 12 20 18 15"/></svg>
               </div>
             </div>
 
             <div style="margin-bottom:20px;">
-              <div style="font-size:13px; font-weight:600; color:#1a1a1a; margin-bottom:4px;">Description</div>
-              <div style="font-size:12px; color:#6b7280; margin-bottom:8px;">Describe the types of products or services you'll offer.</div>
-              <textarea style="width:100%; height:120px; padding:10px 12px; border:1px solid #e5e7eb; border-radius:6px; font-size:14px; font-family:inherit; color:#1a1a1a; outline:none; resize:vertical;"></textarea>
+              <div style="font-size:13px; font-weight:600; color:#353a44; margin-bottom:4px;">Description</div>
+              <div style="font-size:12px; color:#6c7688; margin-bottom:8px;">Describe the types of products or services you'll offer.</div>
+              <textarea style="width:100%; height:120px; padding:10px 12px; border:1px solid #d8dee4; border-radius:6px; font-size:14px; font-family:inherit; color:#353a44; outline:none; resize:vertical;"></textarea>
             </div>
           </div>
 
@@ -1804,95 +1804,95 @@
         <div class="stripe-modal-body" style="padding:32px 40px;">
           <div style="flex:1; overflow-y:auto;">
             <div class="stripe-modal-title" style="font-size:22px; font-weight:700; margin-bottom:8px;">Add public details for customers</div>
-            <div style="font-size:13px; color:#6b7280; line-height:1.6; margin-bottom:24px;">This information may be visible in payment statements, invoices, and receipts.</div>
+            <div style="font-size:13px; color:#6c7688; line-height:1.6; margin-bottom:24px;">This information may be visible in payment statements, invoices, and receipts.</div>
 
             <div style="margin-bottom:20px;">
-              <div style="font-size:13px; font-weight:600; color:#1a1a1a; margin-bottom:4px;">Business name</div>
-              <div style="font-size:12px; color:#6b7280; margin-bottom:8px;">The operating name of your company, if it's different than the legal name.</div>
-              <input type="text" value="Sarah's Photography" style="width:100%; padding:10px 12px; border:1px solid #e5e7eb; border-radius:6px; font-size:14px; font-family:inherit; color:#1a1a1a; outline:none;">
+              <div style="font-size:13px; font-weight:600; color:#353a44; margin-bottom:4px;">Business name</div>
+              <div style="font-size:12px; color:#6c7688; margin-bottom:8px;">The operating name of your company, if it's different than the legal name.</div>
+              <input type="text" value="Sarah's Photography" style="width:100%; padding:10px 12px; border:1px solid #d8dee4; border-radius:6px; font-size:14px; font-family:inherit; color:#353a44; outline:none;">
             </div>
 
-            <div style="margin-bottom:24px; border-top:1px solid #e5e7eb; padding-top:20px;">
-              <div style="font-size:16px; font-weight:700; color:#1a1a1a; margin-bottom:8px;">Statement descriptor</div>
-              <div style="font-size:12px; color:#6b7280; line-height:1.5; margin-bottom:16px;">To prevent chargebacks and disputes, your statement descriptor must be similar to your business name or URL. We provided suggestions that meet our requirements. <a href="#" style="color:#635bff; text-decoration:none; font-weight:500;">View support article</a></div>
+            <div style="margin-bottom:24px; border-top:1px solid #d8dee4; padding-top:20px;">
+              <div style="font-size:16px; font-weight:700; color:#353a44; margin-bottom:8px;">Statement descriptor</div>
+              <div style="font-size:12px; color:#6c7688; line-height:1.5; margin-bottom:16px;">To prevent chargebacks and disputes, your statement descriptor must be similar to your business name or URL. We provided suggestions that meet our requirements. <a href="#" style="color:#533afd; text-decoration:none; font-weight:500;">View support article</a></div>
 
               <div style="margin-bottom:12px;">
-                <div style="font-size:13px; font-weight:600; color:#1a1a1a; margin-bottom:4px;">Statement descriptor</div>
-                <div style="font-size:11px; color:#6b7280; margin-bottom:6px;">These suggestions are auto-generated, so double-check for typos.</div>
-                <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border:1px solid #e5e7eb; border-radius:6px; background:#fff; font-size:14px; color:#1a1a1a; cursor:pointer;">
+                <div style="font-size:13px; font-weight:600; color:#353a44; margin-bottom:4px;">Statement descriptor</div>
+                <div style="font-size:11px; color:#6c7688; margin-bottom:6px;">These suggestions are auto-generated, so double-check for typos.</div>
+                <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border:1px solid #d8dee4; border-radius:6px; background:#fff; font-size:14px; color:#353a44; cursor:pointer;">
                   <span style="font-weight:500;">FUREVER</span>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><polyline points="6 9 12 4 18 9"/><polyline points="6 15 12 20 18 15"/></svg>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6c7688" stroke-width="2"><polyline points="6 9 12 4 18 9"/><polyline points="6 15 12 20 18 15"/></svg>
                 </div>
               </div>
 
-              <div style="background:#f9fafb; border-radius:8px; padding:14px 16px; margin-bottom:12px; font-size:13px; color:#6b7280;">
+              <div style="background:#f5f6f8; border-radius:8px; padding:14px 16px; margin-bottom:12px; font-size:13px; color:#6c7688;">
                 <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
-                  <svg width="16" height="12" viewBox="0 0 24 18" fill="none" stroke="#9ca3af" stroke-width="1.5"><rect x="1" y="1" width="22" height="16" rx="2"/><line x1="1" y1="6" x2="23" y2="6"/></svg>
-                  <div style="width:40px; height:3px; background:#d1d5db; border-radius:2px;"></div>
+                  <svg width="16" height="12" viewBox="0 0 24 18" fill="none" stroke="#6c7688" stroke-width="1.5"><rect x="1" y="1" width="22" height="16" rx="2"/><line x1="1" y1="6" x2="23" y2="6"/></svg>
+                  <div style="width:40px; height:3px; background:#d8dee4; border-radius:2px;"></div>
                 </div>
                 <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
-                  <span class="brand-accent-text" style="color:#635bff; font-weight:600; font-size:12px;">FUREVER</span>
+                  <span class="brand-accent-text" style="color:#533afd; font-weight:600; font-size:12px;">FUREVER</span>
                   <span style="font-size:12px;">$XX.XX</span>
                 </div>
                 <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
-                  <div style="display:flex; gap:6px;"><div style="width:30px; height:3px; background:#d1d5db; border-radius:2px; margin-top:6px;"></div><div style="width:50px; height:3px; background:#d1d5db; border-radius:2px; margin-top:6px;"></div></div>
+                  <div style="display:flex; gap:6px;"><div style="width:30px; height:3px; background:#d8dee4; border-radius:2px; margin-top:6px;"></div><div style="width:50px; height:3px; background:#d8dee4; border-radius:2px; margin-top:6px;"></div></div>
                   <span style="font-size:12px;">$XXX.XX</span>
                 </div>
                 <div style="display:flex; justify-content:space-between;">
-                  <div style="display:flex; gap:6px;"><div style="width:40px; height:3px; background:#d1d5db; border-radius:2px; margin-top:6px;"></div><div style="width:35px; height:3px; background:#d1d5db; border-radius:2px; margin-top:6px;"></div></div>
+                  <div style="display:flex; gap:6px;"><div style="width:40px; height:3px; background:#d8dee4; border-radius:2px; margin-top:6px;"></div><div style="width:35px; height:3px; background:#d8dee4; border-radius:2px; margin-top:6px;"></div></div>
                   <span style="font-size:12px;">$XX.XX</span>
                 </div>
               </div>
 
-              <div style="font-size:11px; color:#6b7280; line-height:1.5; margin-bottom:20px;">Your statement descriptor shows up on your customers' bank or credit card statements. It should be 5–22 characters.</div>
+              <div style="font-size:11px; color:#6c7688; line-height:1.5; margin-bottom:20px;">Your statement descriptor shows up on your customers' bank or credit card statements. It should be 5–22 characters.</div>
 
               <div style="margin-bottom:8px;">
-                <div style="font-size:13px; font-weight:600; color:#1a1a1a; margin-bottom:4px; display:flex; align-items:center; gap:6px;">Shortened descriptor <span style="font-size:11px; font-weight:400; color:#9ca3af; padding:1px 6px; border:1px solid #e5e7eb; border-radius:4px;">Optional</span></div>
-                <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border:1px solid #e5e7eb; border-radius:6px; background:#fff; font-size:14px; color:#9ca3af; cursor:pointer; margin-top:6px;">
+                <div style="font-size:13px; font-weight:600; color:#353a44; margin-bottom:4px; display:flex; align-items:center; gap:6px;">Shortened descriptor <span style="font-size:11px; font-weight:400; color:#6c7688; padding:1px 6px; border:1px solid #d8dee4; border-radius:4px;">Optional</span></div>
+                <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border:1px solid #d8dee4; border-radius:6px; background:#fff; font-size:14px; color:#6c7688; cursor:pointer; margin-top:6px;">
                   <span>Choose an option</span>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><polyline points="6 9 12 4 18 9"/><polyline points="6 15 12 20 18 15"/></svg>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6c7688" stroke-width="2"><polyline points="6 9 12 4 18 9"/><polyline points="6 15 12 20 18 15"/></svg>
                 </div>
-                <div style="font-size:11px; color:#6b7280; line-height:1.5; margin-top:6px;">This appears on your customers' statements when you add descriptors for individual products. It should be 2–10 characters.</div>
+                <div style="font-size:11px; color:#6c7688; line-height:1.5; margin-top:6px;">This appears on your customers' statements when you add descriptors for individual products. It should be 2–10 characters.</div>
               </div>
             </div>
 
-            <div style="border-top:1px solid #e5e7eb; padding-top:20px;">
-              <div style="font-size:16px; font-weight:700; color:#1a1a1a; margin-bottom:8px;">Customer support</div>
-              <div style="font-size:12px; color:#6b7280; line-height:1.5; margin-bottom:16px;">These details should match what is displayed on your website or social media.</div>
+            <div style="border-top:1px solid #d8dee4; padding-top:20px;">
+              <div style="font-size:16px; font-weight:700; color:#353a44; margin-bottom:8px;">Customer support</div>
+              <div style="font-size:12px; color:#6c7688; line-height:1.5; margin-bottom:16px;">These details should match what is displayed on your website or social media.</div>
 
               <div style="margin-bottom:16px;">
-                <div style="font-size:13px; font-weight:600; color:#1a1a1a; margin-bottom:8px;">Customer support phone number</div>
+                <div style="font-size:13px; font-weight:600; color:#353a44; margin-bottom:8px;">Customer support phone number</div>
                 <div style="display:flex; align-items:center; gap:0;">
-                  <div style="display:flex; align-items:center; gap:6px; padding:10px 10px; border:1px solid #e5e7eb; border-radius:6px 0 0 6px; background:#fff; font-size:14px; color:#1a1a1a; cursor:pointer;">
+                  <div style="display:flex; align-items:center; gap:6px; padding:10px 10px; border:1px solid #d8dee4; border-radius:6px 0 0 6px; background:#fff; font-size:14px; color:#353a44; cursor:pointer;">
                     <span style="font-size:16px;">&#127482;&#127480;</span>
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#6c7688" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                   </div>
-                  <input type="tel" value="+1  123 456 7890" style="flex:1; padding:10px 12px; border:1px solid #e5e7eb; border-left:none; border-radius:0 6px 6px 0; font-size:14px; font-family:inherit; color:#1a1a1a; outline:none;">
+                  <input type="tel" value="+1  123 456 7890" style="flex:1; padding:10px 12px; border:1px solid #d8dee4; border-left:none; border-radius:0 6px 6px 0; font-size:14px; font-family:inherit; color:#353a44; outline:none;">
                 </div>
               </div>
 
               <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
-                <div class="brand-toggle" style="width:40px; height:22px; background:#635bff; border-radius:11px; position:relative; cursor:pointer;">
+                <div class="brand-toggle" style="width:40px; height:22px; background:#533afd; border-radius:11px; position:relative; cursor:pointer;">
                   <div style="width:18px; height:18px; background:#fff; border-radius:50%; position:absolute; top:2px; right:2px;"></div>
                 </div>
-                <span style="font-size:13px; font-weight:500; color:#1a1a1a;">Show phone number on receipts and invoices</span>
+                <span style="font-size:13px; font-weight:500; color:#353a44;">Show phone number on receipts and invoices</span>
               </div>
 
               <div>
-                <div style="font-size:13px; font-weight:600; color:#1a1a1a; margin-bottom:8px;">Customer support address</div>
+                <div style="font-size:13px; font-weight:600; color:#353a44; margin-bottom:8px;">Customer support address</div>
                 <div style="display:flex; flex-direction:column; gap:8px;">
-                  <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border:1px solid #e5e7eb; border-radius:6px; background:#fff; font-size:14px; color:#1a1a1a; cursor:pointer;">
+                  <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border:1px solid #d8dee4; border-radius:6px; background:#fff; font-size:14px; color:#353a44; cursor:pointer;">
                     <span>United States</span>
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><polyline points="6 9 12 4 18 9"/><polyline points="6 15 12 20 18 15"/></svg>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6c7688" stroke-width="2"><polyline points="6 9 12 4 18 9"/><polyline points="6 15 12 20 18 15"/></svg>
                   </div>
-                  <input type="text" value="123 Main St." style="width:100%; padding:10px 12px; border:1px solid #e5e7eb; border-radius:6px; font-size:14px; font-family:inherit; color:#1a1a1a; outline:none;">
-                  <input type="text" placeholder="Apartment, unit, or other" style="width:100%; padding:10px 12px; border:1px solid #e5e7eb; border-radius:6px; font-size:14px; font-family:inherit; color:#1a1a1a; outline:none;">
-                  <input type="text" value="Seattle" style="width:100%; padding:10px 12px; border:1px solid #e5e7eb; border-radius:6px; font-size:14px; font-family:inherit; color:#1a1a1a; outline:none;">
-                  <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border:1px solid #e5e7eb; border-radius:6px; background:#fff; font-size:14px; color:#1a1a1a; cursor:pointer;">
+                  <input type="text" value="123 Main St." style="width:100%; padding:10px 12px; border:1px solid #d8dee4; border-radius:6px; font-size:14px; font-family:inherit; color:#353a44; outline:none;">
+                  <input type="text" placeholder="Apartment, unit, or other" style="width:100%; padding:10px 12px; border:1px solid #d8dee4; border-radius:6px; font-size:14px; font-family:inherit; color:#353a44; outline:none;">
+                  <input type="text" value="Seattle" style="width:100%; padding:10px 12px; border:1px solid #d8dee4; border-radius:6px; font-size:14px; font-family:inherit; color:#353a44; outline:none;">
+                  <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border:1px solid #d8dee4; border-radius:6px; background:#fff; font-size:14px; color:#353a44; cursor:pointer;">
                     <span>Washington</span>
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><polyline points="6 9 12 4 18 9"/><polyline points="6 15 12 20 18 15"/></svg>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6c7688" stroke-width="2"><polyline points="6 9 12 4 18 9"/><polyline points="6 15 12 20 18 15"/></svg>
                   </div>
-                  <input type="text" value="98122" style="width:100%; padding:10px 12px; border:1px solid #e5e7eb; border-radius:6px; font-size:14px; font-family:inherit; color:#1a1a1a; outline:none;">
+                  <input type="text" value="98122" style="width:100%; padding:10px 12px; border:1px solid #d8dee4; border-radius:6px; font-size:14px; font-family:inherit; color:#353a44; outline:none;">
                 </div>
               </div>
             </div>
@@ -1907,55 +1907,55 @@
         <div class="stripe-modal-body" style="padding:32px 40px;">
           <div style="flex:1; overflow-y:auto;">
             <div class="stripe-modal-title" style="font-size:22px; font-weight:700; margin-bottom:8px;">Select an account for payouts</div>
-            <div style="font-size:13px; color:#6b7280; line-height:1.6; margin-bottom:24px;">We'll send earnings you receive to this account.</div>
+            <div style="font-size:13px; color:#6c7688; line-height:1.6; margin-bottom:24px;">We'll send earnings you receive to this account.</div>
 
             <div style="margin-bottom:20px;">
-              <div id="bankSearchBar" style="display:flex; align-items:center; gap:8px; padding:10px 12px; border:1px solid #e5e7eb; border-radius:6px; background:#fff; font-size:14px; color:#9ca3af; margin-bottom:16px; cursor:pointer;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <div id="bankSearchBar" style="display:flex; align-items:center; gap:8px; padding:10px 12px; border:1px solid #d8dee4; border-radius:6px; background:#fff; font-size:14px; color:#6c7688; margin-bottom:16px; cursor:pointer;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6c7688" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                 <span>Search for your bank</span>
               </div>
 
               <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;">
-                <button class="bank-option" style="display:flex; align-items:center; justify-content:center; height:72px; border:1px solid #e5e7eb; border-radius:8px; background:#fff; cursor:pointer; padding:8px; font-family:inherit; transition:border-color .15s;">
+                <button class="bank-option" style="display:flex; align-items:center; justify-content:center; height:72px; border:1px solid #d8dee4; border-radius:8px; background:#fff; cursor:pointer; padding:8px; font-family:inherit; transition:border-color .15s;">
                   <span style="font-size:15px; font-weight:700; color:#0a3d91; letter-spacing:-0.5px;">CHASE <span style="color:#0a3d91;">&#9724;</span></span>
                 </button>
-                <button class="bank-option" style="display:flex; align-items:center; justify-content:center; height:72px; border:1px solid #e5e7eb; border-radius:8px; background:#fff; cursor:pointer; padding:8px; font-family:inherit; transition:border-color .15s;">
+                <button class="bank-option" style="display:flex; align-items:center; justify-content:center; height:72px; border:1px solid #d8dee4; border-radius:8px; background:#fff; cursor:pointer; padding:8px; font-family:inherit; transition:border-color .15s;">
                   <span style="font-size:11px; font-weight:700; color:#c41230; text-align:center; line-height:1.2;">Bank of America<br><span style="color:#c41230; font-size:16px;">&#9776;</span></span>
                 </button>
-                <button class="bank-option" style="display:flex; align-items:center; justify-content:center; height:72px; border:1px solid #e5e7eb; border-radius:8px; background:#fff; cursor:pointer; padding:8px; font-family:inherit; transition:border-color .15s;">
+                <button class="bank-option" style="display:flex; align-items:center; justify-content:center; height:72px; border:1px solid #d8dee4; border-radius:8px; background:#fff; cursor:pointer; padding:8px; font-family:inherit; transition:border-color .15s;">
                   <span style="font-size:13px; font-weight:900; color:#c8102e; text-align:center; line-height:1.1; letter-spacing:0.5px;">WELLS<br>FARGO</span>
                 </button>
-                <button class="bank-option" style="display:flex; align-items:center; justify-content:center; height:72px; border:1px solid #e5e7eb; border-radius:8px; background:#fff; cursor:pointer; padding:8px; font-family:inherit; transition:border-color .15s;">
+                <button class="bank-option" style="display:flex; align-items:center; justify-content:center; height:72px; border:1px solid #d8dee4; border-radius:8px; background:#fff; cursor:pointer; padding:8px; font-family:inherit; transition:border-color .15s;">
                   <span style="font-size:12px; font-weight:700; color:#004977;">Capital<span style="color:#d03027;">One</span></span>
                 </button>
-                <button class="bank-option" style="display:flex; align-items:center; justify-content:center; height:72px; border:1px solid #e5e7eb; border-radius:8px; background:#fff; cursor:pointer; padding:8px; font-family:inherit; transition:border-color .15s;">
+                <button class="bank-option" style="display:flex; align-items:center; justify-content:center; height:72px; border:1px solid #d8dee4; border-radius:8px; background:#fff; cursor:pointer; padding:8px; font-family:inherit; transition:border-color .15s;">
                   <span style="font-size:10px; font-weight:800; color:#003468; text-align:center; line-height:1.1;">NAVY<br>FEDERAL<br><span style="font-size:8px; font-weight:400;">Credit Union</span></span>
                 </button>
-                <button class="bank-option" style="display:flex; align-items:center; justify-content:center; height:72px; border:1px solid #e5e7eb; border-radius:8px; background:#fff; cursor:pointer; padding:8px; font-family:inherit; transition:border-color .15s;">
+                <button class="bank-option" style="display:flex; align-items:center; justify-content:center; height:72px; border:1px solid #d8dee4; border-radius:8px; background:#fff; cursor:pointer; padding:8px; font-family:inherit; transition:border-color .15s;">
                   <span style="font-size:14px; font-weight:700; color:#d71e28;">US</span><span style="font-size:14px; font-weight:300; color:#002b5c;">bank</span>
                 </button>
-                <button class="bank-option" style="display:flex; align-items:center; justify-content:center; height:72px; border:1px solid #e5e7eb; border-radius:8px; background:#fff; cursor:pointer; padding:8px; font-family:inherit; transition:border-color .15s;">
+                <button class="bank-option" style="display:flex; align-items:center; justify-content:center; height:72px; border:1px solid #d8dee4; border-radius:8px; background:#fff; cursor:pointer; padding:8px; font-family:inherit; transition:border-color .15s;">
                   <span style="font-size:16px; font-weight:800; color:#e35205;">PNC</span>
                 </button>
-                <button class="bank-option" style="display:flex; align-items:center; justify-content:center; height:72px; border:1px solid #e5e7eb; border-radius:8px; background:#fff; cursor:pointer; padding:8px; font-family:inherit; transition:border-color .15s;">
-                  <span style="font-size:14px; font-weight:700; color:#1a1a1a; letter-spacing:1px;">USAA</span>
+                <button class="bank-option" style="display:flex; align-items:center; justify-content:center; height:72px; border:1px solid #d8dee4; border-radius:8px; background:#fff; cursor:pointer; padding:8px; font-family:inherit; transition:border-color .15s;">
+                  <span style="font-size:14px; font-weight:700; color:#353a44; letter-spacing:1px;">USAA</span>
                 </button>
-                <button class="bank-option" style="display:flex; align-items:center; justify-content:center; height:72px; border:1px solid #e5e7eb; border-radius:8px; background:#fff; cursor:pointer; padding:8px; font-family:inherit; transition:border-color .15s;">
+                <button class="bank-option" style="display:flex; align-items:center; justify-content:center; height:72px; border:1px solid #d8dee4; border-radius:8px; background:#fff; cursor:pointer; padding:8px; font-family:inherit; transition:border-color .15s;">
                   <span style="font-size:14px; font-weight:700; color:#008732;">TD </span><span style="font-size:14px; font-weight:700; color:#2e2e2e;"> Bank</span>
                 </button>
-                <button class="bank-option" style="display:flex; align-items:center; justify-content:center; height:72px; border:1px solid #e5e7eb; border-radius:8px; background:#fff; cursor:pointer; padding:8px; font-family:inherit; transition:border-color .15s;">
+                <button class="bank-option" style="display:flex; align-items:center; justify-content:center; height:72px; border:1px solid #d8dee4; border-radius:8px; background:#fff; cursor:pointer; padding:8px; font-family:inherit; transition:border-color .15s;">
                   <span style="font-size:13px; font-weight:700; color:#532e8a;">TRUIST</span>
                 </button>
-                <button class="bank-option" style="display:flex; align-items:center; justify-content:center; height:72px; border:1px solid #e5e7eb; border-radius:8px; background:#fff; cursor:pointer; padding:8px; font-family:inherit; transition:border-color .15s;">
+                <button class="bank-option" style="display:flex; align-items:center; justify-content:center; height:72px; border:1px solid #d8dee4; border-radius:8px; background:#fff; cursor:pointer; padding:8px; font-family:inherit; transition:border-color .15s;">
                   <span style="font-size:11px; font-weight:700; color:#00614a;">Huntington</span>
                 </button>
-                <button class="bank-option" style="display:flex; align-items:center; justify-content:center; height:72px; border:1px solid #e5e7eb; border-radius:8px; background:#fff; cursor:pointer; padding:8px; font-family:inherit; transition:border-color .15s;">
-                  <span style="font-size:11px; font-weight:600; color:#4b5563; letter-spacing:1.5px;">MERCURY</span>
+                <button class="bank-option" style="display:flex; align-items:center; justify-content:center; height:72px; border:1px solid #d8dee4; border-radius:8px; background:#fff; cursor:pointer; padding:8px; font-family:inherit; transition:border-color .15s;">
+                  <span style="font-size:11px; font-weight:600; color:#596171; letter-spacing:1.5px;">MERCURY</span>
                 </button>
               </div>
             </div>
 
-            <div style="font-size:11px; color:#6b7280; line-height:1.5; margin-bottom:20px;">Linking your account will allow Stripe to regularly receive, store and use your account data to assess your eligibility for financial services. By selecting your financial institution, you agree to Stripe's <a href="#" style="color:#635bff; text-decoration:none; font-weight:500;">Terms</a> and <a href="#" style="color:#635bff; text-decoration:none; font-weight:500;">Privacy Policy</a>. <a href="#" style="color:#1a1a1a; text-decoration:none; font-weight:500;">Learn more</a></div>
+            <div style="font-size:11px; color:#6c7688; line-height:1.5; margin-bottom:20px;">Linking your account will allow Stripe to regularly receive, store and use your account data to assess your eligibility for financial services. By selecting your financial institution, you agree to Stripe's <a href="#" style="color:#533afd; text-decoration:none; font-weight:500;">Terms</a> and <a href="#" style="color:#533afd; text-decoration:none; font-weight:500;">Privacy Policy</a>. <a href="#" style="color:#353a44; text-decoration:none; font-weight:500;">Learn more</a></div>
 
             <button class="stripe-google-btn" style="margin-bottom:8px; font-size:13px;">Enter bank details manually instead &rarr;</button>
           </div>
@@ -1967,12 +1967,12 @@
       <!-- Step: Bank credentials -->
       <div class="stripe-step-wrap step-hidden" id="stripeBankCredsStep">
         <div class="stripe-modal-body" style="padding:0;">
-          <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-bottom:1px solid #e5e7eb;">
-            <div style="display:flex; align-items:center; gap:6px; font-size:13px; color:#6b7280;">
+          <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-bottom:1px solid #d8dee4;">
+            <div style="display:flex; align-items:center; gap:6px; font-size:13px; color:#6c7688;">
               Log in via Stripe and its partners
-              <span style="display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; border-radius:50%; border:1px solid #d1d5db; font-size:10px; color:#9ca3af; cursor:help;">i</span>
+              <span style="display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; border-radius:50%; border:1px solid #d8dee4; font-size:10px; color:#6c7688; cursor:help;">i</span>
             </div>
-            <button id="bankCredsCloseBtn" style="background:none; border:none; font-size:20px; color:#6b7280; cursor:pointer; padding:4px; line-height:1;">&times;</button>
+            <button id="bankCredsCloseBtn" style="background:none; border:none; font-size:20px; color:#6c7688; cursor:pointer; padding:4px; line-height:1;">&times;</button>
           </div>
           <div style="flex:1; overflow-y:auto; padding:32px 40px;">
             <div style="display:flex; align-items:center; gap:12px; margin-bottom:24px;">
@@ -1980,29 +1980,29 @@
                 <span style="font-size:28px; font-weight:800; color:#fff;">B</span>
               </div>
               <div>
-                <div style="font-size:15px; font-weight:700; color:#1a1a1a;">BECU</div>
-                <div style="font-size:13px; color:#6b7280;">www.becu.org</div>
+                <div style="font-size:15px; font-weight:700; color:#353a44;">BECU</div>
+                <div style="font-size:13px; color:#6c7688;">www.becu.org</div>
               </div>
             </div>
 
-            <div style="font-size:20px; font-weight:700; color:#1a1a1a; margin-bottom:24px;">Enter your credentials</div>
+            <div style="font-size:20px; font-weight:700; color:#353a44; margin-bottom:24px;">Enter your credentials</div>
 
             <div style="margin-bottom:20px;">
               <div style="position:relative;">
-                <input type="text" id="bankUserId" placeholder=" " style="width:100%; padding:18px 12px 8px; border:1px solid #d1d5db; border-radius:8px; font-size:15px; font-family:inherit; color:#1a1a1a; outline:none;">
-                <label style="position:absolute; top:14px; left:12px; font-size:14px; color:#6b7280; pointer-events:none; transition:all .15s;">User ID <span style="color:#e8192c;">*</span></label>
+                <input type="text" id="bankUserId" placeholder=" " style="width:100%; padding:18px 12px 8px; border:1px solid #d8dee4; border-radius:8px; font-size:15px; font-family:inherit; color:#353a44; outline:none;">
+                <label style="position:absolute; top:14px; left:12px; font-size:14px; color:#6c7688; pointer-events:none; transition:all .15s;">User ID <span style="color:#e8192c;">*</span></label>
               </div>
             </div>
 
             <div style="margin-bottom:20px;">
               <div style="position:relative;">
-                <input type="password" id="bankPassword" placeholder=" " style="width:100%; padding:18px 12px 8px; border:1px solid #d1d5db; border-radius:8px; font-size:15px; font-family:inherit; color:#1a1a1a; outline:none; padding-right:40px;">
-                <label style="position:absolute; top:14px; left:12px; font-size:14px; color:#6b7280; pointer-events:none; transition:all .15s;">Password <span style="color:#e8192c;">*</span></label>
-                <svg style="position:absolute; right:12px; top:16px; cursor:pointer;" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                <input type="password" id="bankPassword" placeholder=" " style="width:100%; padding:18px 12px 8px; border:1px solid #d8dee4; border-radius:8px; font-size:15px; font-family:inherit; color:#353a44; outline:none; padding-right:40px;">
+                <label style="position:absolute; top:14px; left:12px; font-size:14px; color:#6c7688; pointer-events:none; transition:all .15s;">Password <span style="color:#e8192c;">*</span></label>
+                <svg style="position:absolute; right:12px; top:16px; cursor:pointer;" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6c7688" stroke-width="1.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
               </div>
             </div>
 
-            <div style="font-size:13px; color:#6b7280; margin-bottom:24px;"><span style="color:#e8192c;">*</span> Required</div>
+            <div style="font-size:13px; color:#6c7688; margin-bottom:24px;"><span style="color:#e8192c;">*</span> Required</div>
           </div>
 
           <div style="padding:0 40px 24px;">
@@ -2020,40 +2020,40 @@
       <!-- Step: Connecting to BECU -->
       <div class="stripe-step-wrap step-hidden" id="stripeBankConnectingStep">
         <div class="stripe-modal-body" style="padding:0;">
-          <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-bottom:1px solid #e5e7eb;">
-            <div style="display:flex; align-items:center; gap:6px; font-size:13px; color:#6b7280;">
+          <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-bottom:1px solid #d8dee4;">
+            <div style="display:flex; align-items:center; gap:6px; font-size:13px; color:#6c7688;">
               Log in via Stripe and its partners
-              <span style="display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; border-radius:50%; border:1px solid #d1d5db; font-size:10px; color:#9ca3af; cursor:help;">i</span>
+              <span style="display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; border-radius:50%; border:1px solid #d8dee4; font-size:10px; color:#6c7688; cursor:help;">i</span>
             </div>
-            <button id="bankConnectingCloseBtn" style="background:none; border:none; font-size:20px; color:#6b7280; cursor:pointer; padding:4px; line-height:1;">&times;</button>
+            <button id="bankConnectingCloseBtn" style="background:none; border:none; font-size:20px; color:#6c7688; cursor:pointer; padding:4px; line-height:1;">&times;</button>
           </div>
           <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px; text-align:center;">
-            <div style="font-size:15px; color:#6b7280; margin-bottom:4px;">Connecting to</div>
-            <div style="font-size:24px; font-weight:800; color:#1a1a1a; margin-bottom:40px;">BECU</div>
+            <div style="font-size:15px; color:#6c7688; margin-bottom:4px;">Connecting to</div>
+            <div style="font-size:24px; font-weight:800; color:#353a44; margin-bottom:40px;">BECU</div>
 
             <div style="display:flex; align-items:center; gap:0; margin-bottom:40px;">
               <!-- Stripe logo -->
-              <div style="width:64px; height:64px; background:#635bff; border-radius:14px; display:flex; align-items:center; justify-content:center; position:relative; z-index:2;">
+              <div style="width:64px; height:64px; background:#533afd; border-radius:14px; display:flex; align-items:center; justify-content:center; position:relative; z-index:2;">
                 <span style="font-size:32px; font-weight:800; color:#fff; font-style:italic;">S</span>
               </div>
               <!-- Connection line with status indicators -->
               <div style="display:flex; align-items:center; margin:0 -4px; position:relative; z-index:1;">
-                <div style="width:24px; height:2px; background:#635bff;"></div>
+                <div style="width:24px; height:2px; background:#533afd;"></div>
                 <!-- Checkmark circle -->
-                <div style="width:20px; height:20px; background:#635bff; border-radius:50%; display:flex; align-items:center; justify-content:center;">
+                <div style="width:20px; height:20px; background:#533afd; border-radius:50%; display:flex; align-items:center; justify-content:center;">
                   <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
                 </div>
-                <div style="width:16px; height:2px; background:#d1d5db;"></div>
+                <div style="width:16px; height:2px; background:#d8dee4;"></div>
                 <!-- Pulsing circle -->
-                <div style="width:24px; height:24px; border-radius:50%; border:2px solid #635bff; display:flex; align-items:center; justify-content:center; position:relative;">
-                  <div style="width:8px; height:8px; border-radius:50%; background:#635bff; animation:pulse 1.5s ease-in-out infinite;"></div>
-                  <div style="position:absolute; width:36px; height:36px; border-radius:50%; border:1px solid #e5e7eb;"></div>
-                  <div style="position:absolute; width:48px; height:48px; border-radius:50%; border:1px solid #f3f4f6;"></div>
+                <div style="width:24px; height:24px; border-radius:50%; border:2px solid #533afd; display:flex; align-items:center; justify-content:center; position:relative;">
+                  <div style="width:8px; height:8px; border-radius:50%; background:#533afd; animation:pulse 1.5s ease-in-out infinite;"></div>
+                  <div style="position:absolute; width:36px; height:36px; border-radius:50%; border:1px solid #d8dee4;"></div>
+                  <div style="position:absolute; width:48px; height:48px; border-radius:50%; border:1px solid #f5f6f8;"></div>
                 </div>
-                <div style="width:16px; height:2px; background:#d1d5db;"></div>
+                <div style="width:16px; height:2px; background:#d8dee4;"></div>
                 <!-- Gray circle -->
-                <div style="width:20px; height:20px; border-radius:50%; border:2px solid #d1d5db; background:#fff;"></div>
-                <div style="width:24px; height:2px; background:#d1d5db;"></div>
+                <div style="width:20px; height:20px; border-radius:50%; border:2px solid #d8dee4; background:#fff;"></div>
+                <div style="width:24px; height:2px; background:#d8dee4;"></div>
               </div>
               <!-- BECU logo -->
               <div style="width:64px; height:64px; background:#e8192c; border-radius:14px; display:flex; align-items:center; justify-content:center; position:relative; z-index:2;">
@@ -2061,7 +2061,7 @@
               </div>
             </div>
 
-            <div style="font-size:16px; font-weight:600; color:#1a1a1a;">Getting verification data.</div>
+            <div style="font-size:16px; font-weight:600; color:#353a44;">Getting verification data.</div>
           </div>
         </div>
       </div>
@@ -2069,40 +2069,40 @@
       <!-- Step: Select accounts -->
       <div class="stripe-step-wrap step-hidden" id="stripeSelectAccountsStep">
         <div class="stripe-modal-body" style="padding:0;">
-          <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-bottom:1px solid #e5e7eb;">
-            <div style="font-size:15px; font-weight:700; color:#635bff; font-style:italic; letter-spacing:-0.5px;">stripe</div>
-            <button id="selectAccountsCloseBtn" style="background:none; border:none; font-size:20px; color:#6b7280; cursor:pointer; padding:4px; line-height:1;">&times;</button>
+          <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-bottom:1px solid #d8dee4;">
+            <div style="font-size:15px; font-weight:700; color:#533afd; font-style:italic; letter-spacing:-0.5px;">stripe</div>
+            <button id="selectAccountsCloseBtn" style="background:none; border:none; font-size:20px; color:#6c7688; cursor:pointer; padding:4px; line-height:1;">&times;</button>
           </div>
           <div style="flex:1; overflow-y:auto; padding:24px 40px;">
             <div style="width:56px; height:56px; background:#e8192c; border-radius:10px; display:flex; align-items:center; justify-content:center; margin-bottom:16px;">
               <span style="font-size:28px; font-weight:800; color:#fff; font-style:italic; font-family:serif;">E</span>
             </div>
-            <div style="font-size:22px; font-weight:700; color:#1a1a1a; margin-bottom:20px;">Select accounts</div>
+            <div style="font-size:22px; font-weight:700; color:#353a44; margin-bottom:20px;">Select accounts</div>
 
             <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:20px;">
-              <label class="select-acct-option brand-border" style="display:flex; align-items:center; justify-content:space-between; padding:18px 20px; border:2px solid #635bff; border-radius:12px; background:#fff; cursor:pointer; transition:border-color .15s;">
+              <label class="select-acct-option brand-border" style="display:flex; align-items:center; justify-content:space-between; padding:18px 20px; border:2px solid #533afd; border-radius:12px; background:#fff; cursor:pointer; transition:border-color .15s;">
                 <div>
-                  <div style="font-size:15px; font-weight:600; color:#1a1a1a;">Checking</div>
-                  <div style="font-size:13px; color:#6b7280;">····1234</div>
+                  <div style="font-size:15px; font-weight:600; color:#353a44;">Checking</div>
+                  <div style="font-size:13px; color:#6c7688;">····1234</div>
                 </div>
                 <input type="checkbox" checked style="display:none;">
-                <svg class="brand-check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#635bff" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <svg class="brand-check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#533afd" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
               </label>
-              <label class="select-acct-option brand-border" style="display:flex; align-items:center; justify-content:space-between; padding:18px 20px; border:2px solid #635bff; border-radius:12px; background:#fff; cursor:pointer; transition:border-color .15s;">
+              <label class="select-acct-option brand-border" style="display:flex; align-items:center; justify-content:space-between; padding:18px 20px; border:2px solid #533afd; border-radius:12px; background:#fff; cursor:pointer; transition:border-color .15s;">
                 <div>
-                  <div style="font-size:15px; font-weight:600; color:#1a1a1a;">Savings</div>
-                  <div style="font-size:13px; color:#6b7280;">····1234</div>
+                  <div style="font-size:15px; font-weight:600; color:#353a44;">Savings</div>
+                  <div style="font-size:13px; color:#6c7688;">····1234</div>
                 </div>
                 <input type="checkbox" checked style="display:none;">
-                <svg class="brand-check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#635bff" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <svg class="brand-check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#533afd" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
               </label>
             </div>
 
-            <div style="font-size:11px; color:#6b7280; line-height:1.5;">Stripe can access account details, balances, ownership details, and transactions. <a href="#" style="color:#1a1a1a; text-decoration:underline; font-weight:500;">Learn more</a></div>
+            <div style="font-size:11px; color:#6c7688; line-height:1.5;">Stripe can access account details, balances, ownership details, and transactions. <a href="#" style="color:#353a44; text-decoration:underline; font-weight:500;">Learn more</a></div>
           </div>
 
           <div style="padding:0 40px 24px;">
-            <button class="stripe-submit brand-submit" id="connectAccountsBtn" style="background:#635bff;">Connect accounts</button>
+            <button class="stripe-submit brand-submit" id="connectAccountsBtn" style="background:#533afd;">Connect accounts</button>
           </div>
         </div>
       </div>
@@ -2110,49 +2110,49 @@
       <!-- Step: Save account with Link -->
       <div class="stripe-step-wrap step-hidden" id="stripeSaveLinkStep">
         <div class="stripe-modal-body" style="padding:0;">
-          <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-bottom:1px solid #e5e7eb;">
-            <div style="font-size:15px; font-weight:700; color:#635bff; font-style:italic; letter-spacing:-0.5px;">stripe</div>
-            <button id="saveLinkCloseBtn" style="background:none; border:none; font-size:20px; color:#6b7280; cursor:pointer; padding:4px; line-height:1;">&times;</button>
+          <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-bottom:1px solid #d8dee4;">
+            <div style="font-size:15px; font-weight:700; color:#533afd; font-style:italic; letter-spacing:-0.5px;">stripe</div>
+            <button id="saveLinkCloseBtn" style="background:none; border:none; font-size:20px; color:#6c7688; cursor:pointer; padding:4px; line-height:1;">&times;</button>
           </div>
           <div style="flex:1; overflow-y:auto; padding:24px 40px;">
-            <div style="font-size:22px; font-weight:700; color:#1a1a1a; margin-bottom:24px;">Save account with Link</div>
+            <div style="font-size:22px; font-weight:700; color:#353a44; margin-bottom:24px;">Save account with Link</div>
 
             <div style="display:flex; align-items:flex-start; gap:12px; margin-bottom:16px;">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" style="flex-shrink:0; margin-top:2px;"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-              <div style="font-size:14px; color:#1a1a1a; line-height:1.5;">Connect your account faster everywhere Link is accepted.</div>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6c7688" stroke-width="2" style="flex-shrink:0; margin-top:2px;"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+              <div style="font-size:14px; color:#353a44; line-height:1.5;">Connect your account faster everywhere Link is accepted.</div>
             </div>
 
             <div style="display:flex; align-items:flex-start; gap:12px; margin-bottom:28px;">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" style="flex-shrink:0; margin-top:2px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-              <div style="font-size:14px; color:#1a1a1a; line-height:1.5;">Link saves and encrypts your data from account setup, including bank and personal details.</div>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6c7688" stroke-width="2" style="flex-shrink:0; margin-top:2px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <div style="font-size:14px; color:#353a44; line-height:1.5;">Link saves and encrypts your data from account setup, including bank and personal details.</div>
             </div>
 
             <div style="margin-bottom:16px;">
-              <div style="position:relative; padding:18px 16px 10px; border:1px solid #e5e7eb; border-radius:8px;">
-                <label style="position:absolute; top:8px; left:16px; font-size:11px; color:#6b7280;">Email address</label>
-                <div style="font-size:14px; color:#1a1a1a;">sarah@example.com</div>
+              <div style="position:relative; padding:18px 16px 10px; border:1px solid #d8dee4; border-radius:8px;">
+                <label style="position:absolute; top:8px; left:16px; font-size:11px; color:#6c7688;">Email address</label>
+                <div style="font-size:14px; color:#353a44;">sarah@example.com</div>
               </div>
             </div>
 
             <div style="margin-bottom:20px;">
-              <div class="brand-border" style="display:flex; border:2px solid #635bff; border-radius:8px; overflow:hidden;">
-                <div style="display:flex; align-items:center; gap:6px; padding:10px 12px; background:#fff; border-right:1px solid #e5e7eb;">
+              <div class="brand-border" style="display:flex; border:2px solid #533afd; border-radius:8px; overflow:hidden;">
+                <div style="display:flex; align-items:center; gap:6px; padding:10px 12px; background:#fff; border-right:1px solid #d8dee4;">
                   <span style="font-size:16px;">&#127482;&#127480;</span>
-                  <span style="font-size:13px; color:#1a1a1a;">+1</span>
+                  <span style="font-size:13px; color:#353a44;">+1</span>
                 </div>
                 <div style="flex:1; position:relative; padding:18px 16px 10px;">
-                  <label style="position:absolute; top:6px; left:16px; font-size:11px; color:#6b7280;">Phone number</label>
-                  <div style="font-size:14px; color:#1a1a1a;">+1 650 804 9632</div>
+                  <label style="position:absolute; top:6px; left:16px; font-size:11px; color:#6c7688;">Phone number</label>
+                  <div style="font-size:14px; color:#353a44;">+1 650 804 9632</div>
                 </div>
               </div>
             </div>
 
-            <div style="font-size:11px; color:#6b7280; text-align:center; line-height:1.5;">By saving your account, you agree to the Link<br><a href="#" style="color:#1a1a1a; text-decoration:underline; font-weight:500;">Terms and Privacy Policy</a></div>
+            <div style="font-size:11px; color:#6c7688; text-align:center; line-height:1.5;">By saving your account, you agree to the Link<br><a href="#" style="color:#353a44; text-decoration:underline; font-weight:500;">Terms and Privacy Policy</a></div>
           </div>
 
           <div style="padding:0 40px 24px;">
-            <button class="stripe-submit brand-submit" id="saveLinkBtn" style="background:#635bff; margin-bottom:10px;">Save with Link</button>
-            <button class="stripe-google-btn" id="finishWithoutSavingBtn" style="font-size:14px; font-weight:600; color:#1a1a1a; border:1px solid #e5e7eb;">Finish without saving</button>
+            <button class="stripe-submit brand-submit" id="saveLinkBtn" style="background:#533afd; margin-bottom:10px;">Save with Link</button>
+            <button class="stripe-google-btn" id="finishWithoutSavingBtn" style="font-size:14px; font-weight:600; color:#353a44; border:1px solid #d8dee4;">Finish without saving</button>
           </div>
         </div>
       </div>
@@ -2162,48 +2162,48 @@
         <div class="stripe-modal-body" style="padding:32px 40px;">
           <div style="flex:1; overflow-y:auto;">
             <div class="stripe-modal-title" style="font-size:22px; font-weight:700; margin-bottom:8px;">Select an account for payouts</div>
-            <div style="font-size:13px; color:#6b7280; line-height:1.6; margin-bottom:24px;">We'll send earnings you receive to this account.</div>
+            <div style="font-size:13px; color:#6c7688; line-height:1.6; margin-bottom:24px;">We'll send earnings you receive to this account.</div>
 
-            <div style="display:flex; align-items:center; gap:12px; padding:16px; border:1px solid #e5e7eb; border-radius:10px; margin-bottom:16px;">
-              <input type="radio" name="payoutAcct" checked style="width:16px; height:16px; accent-color:#635bff; flex-shrink:0;">
+            <div style="display:flex; align-items:center; gap:12px; padding:16px; border:1px solid #d8dee4; border-radius:10px; margin-bottom:16px;">
+              <input type="radio" name="payoutAcct" checked style="width:16px; height:16px; accent-color:#533afd; flex-shrink:0;">
               <div style="width:40px; height:40px; background:#e8192c; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
                 <span style="font-size:20px; font-weight:800; color:#fff; font-style:italic; font-family:serif;">E</span>
               </div>
               <div style="flex:1;">
                 <div style="display:flex; align-items:center; gap:6px;">
-                  <span style="font-size:14px; font-weight:600; color:#1a1a1a;">BECU</span>
-                  <span style="font-size:11px; color:#6b7280; padding:1px 6px; border:1px solid #e5e7eb; border-radius:4px;">USD</span>
+                  <span style="font-size:14px; font-weight:600; color:#353a44;">BECU</span>
+                  <span style="font-size:11px; color:#6c7688; padding:1px 6px; border:1px solid #d8dee4; border-radius:4px;">USD</span>
                 </div>
-                <div style="font-size:13px; color:#6b7280; margin-top:2px;"><span style="letter-spacing:1px;">⫶</span> 325081403 <span style="letter-spacing:1px;">⫶</span> ····8612</div>
+                <div style="font-size:13px; color:#6c7688; margin-top:2px;"><span style="letter-spacing:1px;">⫶</span> 325081403 <span style="letter-spacing:1px;">⫶</span> ····8612</div>
               </div>
               <span style="font-size:12px; color:#16a34a; font-weight:500; padding:2px 8px; border:1px solid #bbf7d0; border-radius:4px; background:#f0fdf4;">Linked</span>
             </div>
 
-            <div style="font-size:12px; color:#6b7280; line-height:1.6; margin-bottom:16px;">You can always unlink your accounts in the <span style="font-weight:600; color:#1a1a1a;">Linked external accounts</span> section of your account settings.</div>
-            <div style="font-size:12px; color:#6b7280; line-height:1.6; margin-bottom:24px;">You can <a href="#" style="color:#635bff; text-decoration:none; font-weight:500;">link another account</a> or <a href="#" style="color:#635bff; text-decoration:none; font-weight:500;">enter bank account details manually</a>.</div>
+            <div style="font-size:12px; color:#6c7688; line-height:1.6; margin-bottom:16px;">You can always unlink your accounts in the <span style="font-weight:600; color:#353a44;">Linked external accounts</span> section of your account settings.</div>
+            <div style="font-size:12px; color:#6c7688; line-height:1.6; margin-bottom:24px;">You can <a href="#" style="color:#533afd; text-decoration:none; font-weight:500;">link another account</a> or <a href="#" style="color:#533afd; text-decoration:none; font-weight:500;">enter bank account details manually</a>.</div>
 
-            <div style="border-top:1px solid #e5e7eb; padding-top:20px;">
-              <div style="font-size:15px; font-weight:700; color:#1a1a1a; margin-bottom:8px;">Select your payout schedule</div>
-              <div style="font-size:12px; color:#6b7280; line-height:1.6; margin-bottom:16px;">Set a schedule to automatically receive payouts, or send manual payouts via the API or Dashboard. You can update your payout schedule at any time in settings. <a href="#" style="color:#1a1a1a; text-decoration:underline; font-weight:500;">View docs</a></div>
+            <div style="border-top:1px solid #d8dee4; padding-top:20px;">
+              <div style="font-size:15px; font-weight:700; color:#353a44; margin-bottom:8px;">Select your payout schedule</div>
+              <div style="font-size:12px; color:#6c7688; line-height:1.6; margin-bottom:16px;">Set a schedule to automatically receive payouts, or send manual payouts via the API or Dashboard. You can update your payout schedule at any time in settings. <a href="#" style="color:#353a44; text-decoration:underline; font-weight:500;">View docs</a></div>
 
               <div style="display:flex; flex-direction:column; gap:16px;">
                 <label style="display:flex; align-items:flex-start; gap:12px; cursor:pointer;">
-                  <input type="radio" name="payoutSchedule" value="manual" checked style="width:16px; height:16px; accent-color:#635bff; margin-top:2px; flex-shrink:0;">
+                  <input type="radio" name="payoutSchedule" value="manual" checked style="width:16px; height:16px; accent-color:#533afd; margin-top:2px; flex-shrink:0;">
                   <div>
-                    <div style="font-size:13px; font-weight:600; color:#1a1a1a;">Manual</div>
-                    <div style="font-size:12px; color:#6b7280; line-height:1.5;">You can manually initiate a payout from Stripe whenever your funds are available.</div>
+                    <div style="font-size:13px; font-weight:600; color:#353a44;">Manual</div>
+                    <div style="font-size:12px; color:#6c7688; line-height:1.5;">You can manually initiate a payout from Stripe whenever your funds are available.</div>
                   </div>
                 </label>
                 <label style="display:flex; align-items:flex-start; gap:12px; cursor:pointer;">
-                  <input type="radio" name="payoutSchedule" value="automatic" style="width:16px; height:16px; accent-color:#635bff; margin-top:2px; flex-shrink:0;">
+                  <input type="radio" name="payoutSchedule" value="automatic" style="width:16px; height:16px; accent-color:#533afd; margin-top:2px; flex-shrink:0;">
                   <div>
-                    <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap; font-size:13px; font-weight:600; color:#1a1a1a;">
+                    <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap; font-size:13px; font-weight:600; color:#353a44;">
                       Automatic every
-                      <span style="font-size:12px; color:#635bff; padding:2px 8px; border:1px solid #e5e7eb; border-radius:4px; background:#fff; cursor:pointer; display:inline-flex; align-items:center; gap:4px;">week <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><polyline points="6 9 12 4 18 9"/><polyline points="6 15 12 20 18 15"/></svg></span>
+                      <span style="font-size:12px; color:#533afd; padding:2px 8px; border:1px solid #d8dee4; border-radius:4px; background:#fff; cursor:pointer; display:inline-flex; align-items:center; gap:4px;">week <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#6c7688" stroke-width="2"><polyline points="6 9 12 4 18 9"/><polyline points="6 15 12 20 18 15"/></svg></span>
                       on
-                      <span style="font-size:12px; color:#635bff; padding:2px 8px; border:1px solid #e5e7eb; border-radius:4px; background:#fff; cursor:pointer; display:inline-flex; align-items:center; gap:4px;">Monday <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><polyline points="6 9 12 4 18 9"/><polyline points="6 15 12 20 18 15"/></svg></span>
+                      <span style="font-size:12px; color:#533afd; padding:2px 8px; border:1px solid #d8dee4; border-radius:4px; background:#fff; cursor:pointer; display:inline-flex; align-items:center; gap:4px;">Monday <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#6c7688" stroke-width="2"><polyline points="6 9 12 4 18 9"/><polyline points="6 15 12 20 18 15"/></svg></span>
                     </div>
-                    <div style="font-size:12px; color:#6b7280; line-height:1.5; margin-top:4px;">When choosing a weekly or monthly schedule, you can specify your preferred day for payouts to your bank account.</div>
+                    <div style="font-size:12px; color:#6c7688; line-height:1.5; margin-top:4px;">When choosing a weekly or monthly schedule, you can specify your preferred day for payouts to your bank account.</div>
                   </div>
                 </label>
               </div>
@@ -2219,26 +2219,26 @@
         <div class="stripe-modal-body" style="padding:32px 40px;">
           <div style="flex:1; overflow-y:auto;">
             <div class="stripe-modal-title" style="font-size:22px; font-weight:700; margin-bottom:12px;">Keep your account secure</div>
-            <div style="font-size:13px; color:#6b7280; line-height:1.6; margin-bottom:16px;">Stripe requires <a href="#" style="color:#635bff; text-decoration:none; font-weight:500;">two-step authentication</a> in order to keep your account secure. By using these authentication methods in addition to your password, you make it much harder for someone else to sign in to your account.</div>
-            <div style="font-size:13px; color:#6b7280; line-height:1.6; margin-bottom:16px;">These settings apply only to you. Anyone you <a href="#" style="color:#635bff; text-decoration:none; font-weight:500;">invite to your team</a> will need to configure their own two-step authentication.</div>
-            <div style="font-size:13px; color:#6b7280; line-height:1.6; margin-bottom:24px;">We strongly encourage enabling multiple forms of two-step authentication as a backup in case you lose access.</div>
+            <div style="font-size:13px; color:#6c7688; line-height:1.6; margin-bottom:16px;">Stripe requires <a href="#" style="color:#533afd; text-decoration:none; font-weight:500;">two-step authentication</a> in order to keep your account secure. By using these authentication methods in addition to your password, you make it much harder for someone else to sign in to your account.</div>
+            <div style="font-size:13px; color:#6c7688; line-height:1.6; margin-bottom:16px;">These settings apply only to you. Anyone you <a href="#" style="color:#533afd; text-decoration:none; font-weight:500;">invite to your team</a> will need to configure their own two-step authentication.</div>
+            <div style="font-size:13px; color:#6c7688; line-height:1.6; margin-bottom:24px;">We strongly encourage enabling multiple forms of two-step authentication as a backup in case you lose access.</div>
 
             <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:12px;">
               <button class="stripe-google-btn" style="font-size:13px; font-weight:500; display:flex; align-items:center; justify-content:center; gap:6px;">
                 Add passkey
-                <span style="display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; border-radius:50%; border:1px solid #d1d5db; font-size:10px; color:#9ca3af; cursor:help;">i</span>
+                <span style="display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; border-radius:50%; border:1px solid #d8dee4; font-size:10px; color:#6c7688; cursor:help;">i</span>
               </button>
               <button class="stripe-google-btn" style="font-size:13px; font-weight:500; display:flex; align-items:center; justify-content:center; gap:6px;">
                 Add security key
-                <span style="display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; border-radius:50%; border:1px solid #d1d5db; font-size:10px; color:#9ca3af; cursor:help;">i</span>
+                <span style="display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; border-radius:50%; border:1px solid #d8dee4; font-size:10px; color:#6c7688; cursor:help;">i</span>
               </button>
               <button class="stripe-google-btn" style="font-size:13px; font-weight:500; display:flex; align-items:center; justify-content:center; gap:6px;">
                 Add authenticator app
-                <span style="display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; border-radius:50%; border:1px solid #d1d5db; font-size:10px; color:#9ca3af; cursor:help;">i</span>
+                <span style="display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; border-radius:50%; border:1px solid #d8dee4; font-size:10px; color:#6c7688; cursor:help;">i</span>
               </button>
             </div>
             <div style="text-align:center; margin-bottom:8px;">
-              <a href="#" style="font-size:13px; color:#635bff; text-decoration:none; font-weight:500;">Show additional options</a>
+              <a href="#" style="font-size:13px; color:#533afd; text-decoration:none; font-weight:500;">Show additional options</a>
             </div>
           </div>
 
@@ -2250,26 +2250,26 @@
       <div class="stripe-step-wrap step-hidden" id="stripeTaxStep">
         <div class="stripe-modal-body" style="padding:32px 40px;">
           <div style="flex:1; overflow-y:auto;">
-            <span style="font-size:11px; color:#6b7280; padding:2px 8px; border:1px solid #e5e7eb; border-radius:4px; display:inline-block; margin-bottom:8px;">Optional</span>
+            <span style="font-size:11px; color:#6c7688; padding:2px 8px; border:1px solid #d8dee4; border-radius:4px; display:inline-block; margin-bottom:8px;">Optional</span>
             <div class="stripe-modal-title" style="font-size:22px; font-weight:700; margin-bottom:8px;">Automate tax collection on your sales</div>
-            <div style="font-size:13px; color:#6b7280; line-height:1.6; margin-bottom:24px;">Understand when, where, and how much tax to collect on all of your transactions.</div>
+            <div style="font-size:13px; color:#6c7688; line-height:1.6; margin-bottom:24px;">Understand when, where, and how much tax to collect on all of your transactions.</div>
 
-            <div style="font-size:15px; font-weight:700; color:#1a1a1a; margin-bottom:8px;">Select your product category</div>
-            <div style="font-size:12px; color:#6b7280; line-height:1.6; margin-bottom:12px;">We've pre-filled this category based on the information about your business. You can select a more specific category for more accurate tax calculation. This can be updated in settings at any time.</div>
+            <div style="font-size:15px; font-weight:700; color:#353a44; margin-bottom:8px;">Select your product category</div>
+            <div style="font-size:12px; color:#6c7688; line-height:1.6; margin-bottom:12px;">We've pre-filled this category based on the information about your business. You can select a more specific category for more accurate tax calculation. This can be updated in settings at any time.</div>
 
-            <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border:1px solid #e5e7eb; border-radius:6px; background:#fff; font-size:14px; color:#1a1a1a; cursor:pointer; margin-bottom:12px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border:1px solid #d8dee4; border-radius:6px; background:#fff; font-size:14px; color:#353a44; cursor:pointer; margin-bottom:12px;">
               <span>General - Services</span>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><polyline points="6 9 12 4 18 9"/><polyline points="6 15 12 20 18 15"/></svg>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6c7688" stroke-width="2"><polyline points="6 9 12 4 18 9"/><polyline points="6 15 12 20 18 15"/></svg>
             </div>
 
-            <div style="font-size:12px; color:#6b7280; line-height:1.6; margin-bottom:24px;">General category for services. <span style="font-weight:600; color:#1a1a1a;">Only use this</span> if you don't have a more specific category. You should set specific tax codes on each product or service you sell.</div>
+            <div style="font-size:12px; color:#6c7688; line-height:1.6; margin-bottom:24px;">General category for services. <span style="font-weight:600; color:#353a44;">Only use this</span> if you don't have a more specific category. You should set specific tax codes on each product or service you sell.</div>
 
-            <div style="font-size:12px; color:#6b7280; line-height:1.6;">We'll monitor your tax registration thresholds for free. <a href="#" style="color:#635bff; text-decoration:none; font-weight:500;">Fees</a> apply after you add a tax registration and tax is calculated on your transactions.</div>
+            <div style="font-size:12px; color:#6c7688; line-height:1.6;">We'll monitor your tax registration thresholds for free. <a href="#" style="color:#533afd; text-decoration:none; font-weight:500;">Fees</a> apply after you add a tax registration and tax is calculated on your transactions.</div>
           </div>
 
           <div style="margin-top:16px;">
             <button class="stripe-submit" id="taxContinueBtn" style="margin-bottom:10px;">Continue</button>
-            <button class="stripe-google-btn" id="taxSkipBtn" style="font-size:14px; font-weight:600; color:#1a1a1a; border:1px solid #e5e7eb;">Skip for now</button>
+            <button class="stripe-google-btn" id="taxSkipBtn" style="font-size:14px; font-weight:600; color:#353a44; border:1px solid #d8dee4;">Skip for now</button>
           </div>
         </div>
       </div>
@@ -2278,56 +2278,56 @@
       <div class="stripe-step-wrap step-hidden" id="stripeClimateStep">
         <div class="stripe-modal-body" style="padding:32px 40px;">
           <div style="flex:1; overflow-y:auto;">
-            <span style="font-size:11px; color:#6b7280; padding:2px 8px; border:1px solid #e5e7eb; border-radius:4px; display:inline-block; margin-bottom:8px;">Optional</span>
+            <span style="font-size:11px; color:#6c7688; padding:2px 8px; border:1px solid #d8dee4; border-radius:4px; display:inline-block; margin-bottom:8px;">Optional</span>
             <div class="stripe-modal-title" style="font-size:22px; font-weight:700; margin-bottom:8px;">Show customers your climate commitment</div>
-            <div style="font-size:13px; color:#6b7280; line-height:1.6; margin-bottom:24px;">With <a href="#" style="color:#635bff; text-decoration:none; font-weight:500;">Stripe Climate</a>, you can direct a fraction of your revenue from payments to fund permanent carbon removal.</div>
+            <div style="font-size:13px; color:#6c7688; line-height:1.6; margin-bottom:24px;">With <a href="#" style="color:#533afd; text-decoration:none; font-weight:500;">Stripe Climate</a>, you can direct a fraction of your revenue from payments to fund permanent carbon removal.</div>
 
-            <div style="font-size:15px; font-weight:700; color:#1a1a1a; margin-bottom:8px;">Set your commitment</div>
-            <div style="font-size:12px; color:#6b7280; line-height:1.6; margin-bottom:16px;">Every dollar will fund next-generation carbon removal. You can change your commitment amount anytime in the climate section of your dashboard.</div>
+            <div style="font-size:15px; font-weight:700; color:#353a44; margin-bottom:8px;">Set your commitment</div>
+            <div style="font-size:12px; color:#6c7688; line-height:1.6; margin-bottom:16px;">Every dollar will fund next-generation carbon removal. You can change your commitment amount anytime in the climate section of your dashboard.</div>
 
             <div style="display:flex; gap:10px; margin-bottom:20px;">
-              <div class="climate-pct-option" style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px 8px; border:1px solid #e5e7eb; border-radius:10px; cursor:pointer; transition:border-color .15s;">
-                <span style="font-size:20px; font-weight:700; color:#1a1a1a;">0.5%</span>
+              <div class="climate-pct-option" style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px 8px; border:1px solid #d8dee4; border-radius:10px; cursor:pointer; transition:border-color .15s;">
+                <span style="font-size:20px; font-weight:700; color:#353a44;">0.5%</span>
               </div>
-              <div class="climate-pct-option selected" style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px 8px; border:2px solid #635bff; border-radius:10px; cursor:pointer; transition:border-color .15s;">
-                <span style="font-size:10px; font-weight:600; color:#635bff; letter-spacing:0.5px; margin-bottom:4px;">MOST POPULAR</span>
-                <span style="font-size:20px; font-weight:700; color:#1a1a1a;">1%</span>
-                <span style="font-size:11px; color:#6b7280;">of revenue</span>
+              <div class="climate-pct-option selected" style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px 8px; border:2px solid #533afd; border-radius:10px; cursor:pointer; transition:border-color .15s;">
+                <span style="font-size:10px; font-weight:600; color:#533afd; letter-spacing:0.5px; margin-bottom:4px;">MOST POPULAR</span>
+                <span style="font-size:20px; font-weight:700; color:#353a44;">1%</span>
+                <span style="font-size:11px; color:#6c7688;">of revenue</span>
               </div>
-              <div class="climate-pct-option" style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px 8px; border:1px solid #e5e7eb; border-radius:10px; cursor:pointer; transition:border-color .15s;">
-                <span style="font-size:20px; font-weight:700; color:#1a1a1a;">1.5%</span>
+              <div class="climate-pct-option" style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px 8px; border:1px solid #d8dee4; border-radius:10px; cursor:pointer; transition:border-color .15s;">
+                <span style="font-size:20px; font-weight:700; color:#353a44;">1.5%</span>
               </div>
             </div>
 
             <div style="display:flex; align-items:center; gap:8px; margin-bottom:16px;">
-              <input type="checkbox" style="width:14px; height:14px; accent-color:#635bff; cursor:pointer;">
-              <span style="font-size:12px; color:#1a1a1a; font-weight:500;">Start contributing after my business has processed:</span>
+              <input type="checkbox" style="width:14px; height:14px; accent-color:#533afd; cursor:pointer;">
+              <span style="font-size:12px; color:#353a44; font-weight:500;">Start contributing after my business has processed:</span>
             </div>
             <div style="display:flex; align-items:center; gap:8px; margin-bottom:24px;">
-              <div style="display:flex; align-items:center; gap:4px; padding:8px 12px; border:1px solid #e5e7eb; border-radius:6px; background:#fff; font-size:14px; color:#9ca3af; min-width:140px;">
-                <span style="color:#1a1a1a;">$</span>
+              <div style="display:flex; align-items:center; gap:4px; padding:8px 12px; border:1px solid #d8dee4; border-radius:6px; background:#fff; font-size:14px; color:#6c7688; min-width:140px;">
+                <span style="color:#353a44;">$</span>
                 <span>–</span>
               </div>
-              <span style="font-size:13px; color:#6b7280;">of revenue with Stripe</span>
+              <span style="font-size:13px; color:#6c7688;">of revenue with Stripe</span>
             </div>
 
-            <div style="background:#f3f4f6; border-radius:12px; padding:16px; margin-bottom:16px;">
-              <div style="background:#e5e7eb; border-radius:8px 8px 0 0; height:24px;"></div>
-              <div style="background:#fff; padding:12px; border-radius:0 0 8px 8px; border:1px solid #e5e7eb; border-top:none;">
-                <div style="background:#635bff; color:#fff; text-align:center; padding:8px; border-radius:6px; font-size:13px; font-weight:600; margin-bottom:8px;">Pay $25.00</div>
+            <div style="background:#f5f6f8; border-radius:12px; padding:16px; margin-bottom:16px;">
+              <div style="background:#d8dee4; border-radius:8px 8px 0 0; height:24px;"></div>
+              <div style="background:#fff; padding:12px; border-radius:0 0 8px 8px; border:1px solid #d8dee4; border-top:none;">
+                <div style="background:#533afd; color:#fff; text-align:center; padding:8px; border-radius:6px; font-size:13px; font-weight:600; margin-bottom:8px;">Pay $25.00</div>
                 <div style="display:flex; align-items:flex-start; gap:8px;">
                   <span style="font-size:16px;">🌿</span>
-                  <div style="font-size:10px; color:#6b7280; line-height:1.4;">Sarah's Photography will contribute <span style="font-weight:600;">1% of your purchase</span> to remove CO₂ from the atmosphere.</div>
+                  <div style="font-size:10px; color:#6c7688; line-height:1.4;">Sarah's Photography will contribute <span style="font-weight:600;">1% of your purchase</span> to remove CO₂ from the atmosphere.</div>
                 </div>
               </div>
             </div>
 
-            <div style="font-size:11px; color:#6b7280; line-height:1.5;">Showcase the Stripe Climate badge to easily share your commitment with customers.</div>
+            <div style="font-size:11px; color:#6c7688; line-height:1.5;">Showcase the Stripe Climate badge to easily share your commitment with customers.</div>
           </div>
 
           <div style="margin-top:16px;">
             <button class="stripe-submit" id="climateContinueBtn" style="margin-bottom:10px;">Continue with 1%</button>
-            <button class="stripe-google-btn" id="climateSkipBtn" style="font-size:14px; font-weight:600; color:#1a1a1a; border:1px solid #e5e7eb;">No thanks</button>
+            <button class="stripe-google-btn" id="climateSkipBtn" style="font-size:14px; font-weight:600; color:#353a44; border:1px solid #d8dee4;">No thanks</button>
           </div>
         </div>
       </div>
@@ -2337,19 +2337,19 @@
         <div class="stripe-modal-body" style="padding:32px 40px;">
           <div style="flex:1; overflow-y:auto;">
             <div class="stripe-modal-title" style="font-size:22px; font-weight:700; margin-bottom:4px;">Review and submit</div>
-            <div style="font-size:13px; color:#6b7280; line-height:1.6; margin-bottom:24px;">Take a moment to review your information.</div>
+            <div style="font-size:13px; color:#6c7688; line-height:1.6; margin-bottom:24px;">Take a moment to review your information.</div>
 
             <!-- Business details -->
             <div style="margin-bottom:20px;">
-              <div style="font-size:13px; font-weight:600; color:#6b7280; margin-bottom:8px;">Business details</div>
-              <div style="border:1px solid #e5e7eb; border-radius:8px; padding:14px 16px;">
+              <div style="font-size:13px; font-weight:600; color:#6c7688; margin-bottom:8px;">Business details</div>
+              <div style="border:1px solid #d8dee4; border-radius:8px; padding:14px 16px;">
                 <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-                  <span style="font-size:13px; font-weight:600; color:#1a1a1a;">Sarah Lens</span>
-                  <a href="#" style="font-size:12px; color:#635bff; text-decoration:none; font-weight:500;">Edit</a>
+                  <span style="font-size:13px; font-weight:600; color:#353a44;">Sarah Lens</span>
+                  <a href="#" style="font-size:12px; color:#533afd; text-decoration:none; font-weight:500;">Edit</a>
                 </div>
-                <div style="font-size:12px; color:#6b7280; line-height:1.8;">
+                <div style="font-size:12px; color:#6c7688; line-height:1.8;">
                   URL<br>
-                  <a href="#" style="color:#635bff; text-decoration:none; font-size:12px;">sarahsphotography.com ↗</a><br>
+                  <a href="#" style="color:#533afd; text-decoration:none; font-size:12px;">sarahsphotography.com ↗</a><br>
                   Other information provided<br>
                   Public business name
                 </div>
@@ -2358,56 +2358,56 @@
 
             <!-- Products or services -->
             <div style="margin-bottom:20px;">
-              <div style="font-size:13px; font-weight:600; color:#6b7280; margin-bottom:8px;">Products or services</div>
-              <div style="border:1px solid #e5e7eb; border-radius:8px; padding:14px 16px;">
+              <div style="font-size:13px; font-weight:600; color:#6c7688; margin-bottom:8px;">Products or services</div>
+              <div style="border:1px solid #d8dee4; border-radius:8px; padding:14px 16px;">
                 <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
-                  <span style="font-size:12px; color:#6b7280;">Category</span>
-                  <a href="#" style="font-size:12px; color:#635bff; text-decoration:none; font-weight:500;">Edit</a>
+                  <span style="font-size:12px; color:#6c7688;">Category</span>
+                  <a href="#" style="font-size:12px; color:#533afd; text-decoration:none; font-weight:500;">Edit</a>
                 </div>
-                <div style="font-size:13px; color:#1a1a1a;">Photography studios</div>
+                <div style="font-size:13px; color:#353a44;">Photography studios</div>
               </div>
             </div>
 
             <!-- Public details -->
             <div style="margin-bottom:20px;">
-              <div style="font-size:13px; font-weight:600; color:#6b7280; margin-bottom:8px;">Public details</div>
-              <div style="border:1px solid #e5e7eb; border-radius:8px; padding:14px 16px;">
+              <div style="font-size:13px; font-weight:600; color:#6c7688; margin-bottom:8px;">Public details</div>
+              <div style="border:1px solid #d8dee4; border-radius:8px; padding:14px 16px;">
                 <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-                  <span style="font-size:12px; color:#6b7280;">Customer support information</span>
-                  <a href="#" style="font-size:12px; color:#635bff; text-decoration:none; font-weight:500;">Edit</a>
+                  <span style="font-size:12px; color:#6c7688;">Customer support information</span>
+                  <a href="#" style="font-size:12px; color:#533afd; text-decoration:none; font-weight:500;">Edit</a>
                 </div>
-                <div style="font-size:12px; color:#6b7280; line-height:1.8;">
+                <div style="font-size:12px; color:#6c7688; line-height:1.8;">
                   Support address<br>
-                  <span style="color:#1a1a1a;">317 Erie Avenue<br>Seattle, WA US</span><br>
+                  <span style="color:#353a44;">317 Erie Avenue<br>Seattle, WA US</span><br>
                   Support phone<br>
-                  <span style="color:#1a1a1a;">+1 (650) 804-9632</span><br>
+                  <span style="color:#353a44;">+1 (650) 804-9632</span><br>
                   Statement descriptor<br>
-                  <span style="color:#1a1a1a;">FUREVER</span>
+                  <span style="color:#353a44;">FUREVER</span>
                 </div>
               </div>
             </div>
 
             <!-- Management and ownership -->
             <div style="margin-bottom:20px;">
-              <div style="font-size:13px; font-weight:600; color:#6b7280; margin-bottom:8px;">Management and ownership</div>
-              <div style="border:1px solid #e5e7eb; border-radius:8px; padding:14px 16px;">
+              <div style="font-size:13px; font-weight:600; color:#6c7688; margin-bottom:8px;">Management and ownership</div>
+              <div style="border:1px solid #d8dee4; border-radius:8px; padding:14px 16px;">
                 <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-                  <span style="font-size:13px; font-weight:600; color:#1a1a1a;">Sarah Lens</span>
-                  <a href="#" style="font-size:12px; color:#635bff; text-decoration:none; font-weight:500;">Edit</a>
+                  <span style="font-size:13px; font-weight:600; color:#353a44;">Sarah Lens</span>
+                  <a href="#" style="font-size:12px; color:#533afd; text-decoration:none; font-weight:500;">Edit</a>
                 </div>
-                <div style="font-size:12px; color:#6b7280; line-height:1.8;">
+                <div style="font-size:12px; color:#6c7688; line-height:1.8;">
                   Role<br>
-                  <span style="color:#1a1a1a;">Account representative</span><br>
+                  <span style="color:#353a44;">Account representative</span><br>
                   Email<br>
-                  <span style="color:#1a1a1a;">sarah@example.com</span>
+                  <span style="color:#353a44;">sarah@example.com</span>
                 </div>
               </div>
             </div>
 
             <!-- Payout details -->
             <div style="margin-bottom:20px;">
-              <div style="font-size:13px; font-weight:600; color:#6b7280; margin-bottom:8px;">Payout details</div>
-              <div style="border:1px solid #e5e7eb; border-radius:8px; padding:14px 16px;">
+              <div style="font-size:13px; font-weight:600; color:#6c7688; margin-bottom:8px;">Payout details</div>
+              <div style="border:1px solid #d8dee4; border-radius:8px; padding:14px 16px;">
                 <div style="display:flex; align-items:center; justify-content:space-between;">
                   <div style="display:flex; align-items:center; gap:10px;">
                     <div style="width:32px; height:32px; background:#e8192c; border-radius:6px; display:flex; align-items:center; justify-content:center;">
@@ -2415,26 +2415,26 @@
                     </div>
                     <div>
                       <div style="display:flex; align-items:center; gap:6px; font-size:12px;">
-                        <span style="font-weight:600; color:#1a1a1a;">BECU</span>
-                        <span style="font-size:10px; color:#6b7280; padding:1px 4px; border:1px solid #e5e7eb; border-radius:3px;">USD</span>
+                        <span style="font-weight:600; color:#353a44;">BECU</span>
+                        <span style="font-size:10px; color:#6c7688; padding:1px 4px; border:1px solid #d8dee4; border-radius:3px;">USD</span>
                       </div>
-                      <div style="font-size:11px; color:#6b7280;"><span style="letter-spacing:1px;">⫶</span> 325081403 <span style="letter-spacing:1px;">⫶</span> ····8612</div>
+                      <div style="font-size:11px; color:#6c7688;"><span style="letter-spacing:1px;">⫶</span> 325081403 <span style="letter-spacing:1px;">⫶</span> ····8612</div>
                     </div>
                   </div>
-                  <a href="#" style="font-size:12px; color:#635bff; text-decoration:none; font-weight:500;">Edit</a>
+                  <a href="#" style="font-size:12px; color:#533afd; text-decoration:none; font-weight:500;">Edit</a>
                 </div>
               </div>
             </div>
 
             <!-- Account security -->
             <div style="margin-bottom:20px;">
-              <div style="font-size:13px; font-weight:600; color:#6b7280; margin-bottom:8px;">Account security</div>
-              <div style="border:1px solid #e5e7eb; border-radius:8px; padding:14px 16px;">
+              <div style="font-size:13px; font-weight:600; color:#6c7688; margin-bottom:8px;">Account security</div>
+              <div style="border:1px solid #d8dee4; border-radius:8px; padding:14px 16px;">
                 <div style="display:flex; align-items:center; justify-content:space-between;">
-                  <span style="font-size:13px; color:#1a1a1a;">Two-step authentication</span>
+                  <span style="font-size:13px; color:#353a44;">Two-step authentication</span>
                   <div style="display:flex; align-items:center; gap:6px;">
                     <span style="font-size:11px; font-weight:600; color:#16a34a; padding:2px 8px; background:#f0fdf4; border-radius:4px;">On</span>
-                    <a href="#" style="font-size:12px; color:#635bff; text-decoration:none; font-weight:500;">Edit</a>
+                    <a href="#" style="font-size:12px; color:#533afd; text-decoration:none; font-weight:500;">Edit</a>
                   </div>
                 </div>
               </div>
@@ -2442,32 +2442,32 @@
 
             <!-- Optional payment features -->
             <div style="margin-bottom:20px;">
-              <div style="font-size:13px; font-weight:600; color:#6b7280; margin-bottom:8px;">Optional payment features</div>
-              <div style="border:1px solid #e5e7eb; border-radius:8px; overflow:hidden;">
-                <div style="display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-bottom:1px solid #e5e7eb;">
-                  <span style="font-size:13px; color:#1a1a1a;">Tax calculation</span>
+              <div style="font-size:13px; font-weight:600; color:#6c7688; margin-bottom:8px;">Optional payment features</div>
+              <div style="border:1px solid #d8dee4; border-radius:8px; overflow:hidden;">
+                <div style="display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-bottom:1px solid #d8dee4;">
+                  <span style="font-size:13px; color:#353a44;">Tax calculation</span>
                   <div style="display:flex; align-items:center; gap:6px;">
-                    <span style="font-size:11px; font-weight:600; color:#6b7280; padding:2px 8px; background:#f3f4f6; border-radius:4px;">Off</span>
-                    <a href="#" style="font-size:12px; color:#635bff; text-decoration:none; font-weight:500;">Edit</a>
+                    <span style="font-size:11px; font-weight:600; color:#6c7688; padding:2px 8px; background:#f5f6f8; border-radius:4px;">Off</span>
+                    <a href="#" style="font-size:12px; color:#533afd; text-decoration:none; font-weight:500;">Edit</a>
                   </div>
                 </div>
                 <div style="padding:14px 16px;">
                   <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:4px;">
-                    <span style="font-size:13px; color:#1a1a1a;">Climate commitment</span>
+                    <span style="font-size:13px; color:#353a44;">Climate commitment</span>
                     <div style="display:flex; align-items:center; gap:6px;">
-                      <span style="font-size:11px; font-weight:600; color:#6b7280; padding:2px 8px; background:#f3f4f6; border-radius:4px;">Off</span>
-                      <a href="#" style="font-size:12px; color:#635bff; text-decoration:none; font-weight:500;">Edit</a>
+                      <span style="font-size:11px; font-weight:600; color:#6c7688; padding:2px 8px; background:#f5f6f8; border-radius:4px;">Off</span>
+                      <a href="#" style="font-size:12px; color:#533afd; text-decoration:none; font-weight:500;">Edit</a>
                     </div>
                   </div>
-                  <div style="font-size:11px; color:#6b7280; line-height:1.5;">Contribute a fraction of your revenue to help fund permanent carbon removal.</div>
+                  <div style="font-size:11px; color:#6c7688; line-height:1.5;">Contribute a fraction of your revenue to help fund permanent carbon removal.</div>
                 </div>
               </div>
             </div>
 
-            <div style="font-size:11px; color:#6b7280; line-height:1.5; margin-bottom:8px;">By submitting this form, you agree to the <a href="#" style="color:#635bff; text-decoration:none; font-weight:500;">Stripe Services Agreement</a>, to receiving text messages from Stripe, and you certify that the information provided is complete and correct. You also acknowledge the <a href="#" style="color:#635bff; text-decoration:none; font-weight:500;">Acquirer Disclosure</a>.</div>
+            <div style="font-size:11px; color:#6c7688; line-height:1.5; margin-bottom:8px;">By submitting this form, you agree to the <a href="#" style="color:#533afd; text-decoration:none; font-weight:500;">Stripe Services Agreement</a>, to receiving text messages from Stripe, and you certify that the information provided is complete and correct. You also acknowledge the <a href="#" style="color:#533afd; text-decoration:none; font-weight:500;">Acquirer Disclosure</a>.</div>
           </div>
 
-          <button class="stripe-submit" id="reviewSubmitBtn" style="margin-top:16px; background:#635bff;">Agree and submit</button>
+          <button class="stripe-submit" id="reviewSubmitBtn" style="margin-top:16px; background:#533afd;">Agree and submit</button>
         </div>
       </div>
 
@@ -2513,8 +2513,8 @@
       <div class="stripe-step-wrap step-hidden" id="stripeVerifyEmailStep">
         <div class="stripe-modal-body" style="justify-content:center; align-items:center; text-align:center;">
           <div>
-            <div style="font-size:28px; font-weight:700; color:#1a1a1a; margin-bottom:16px;">Verify your email</div>
-            <div style="font-size:15px; color:#4b5563; line-height:1.6; margin-bottom:32px;">Before you can activate your account, please check <span style="font-weight:600; color:#1a1a1a;">sarah@example.com</span> for a link to verify your email address.</div>
+            <div style="font-size:28px; font-weight:700; color:#353a44; margin-bottom:16px;">Verify your email</div>
+            <div style="font-size:15px; color:#596171; line-height:1.6; margin-bottom:32px;">Before you can activate your account, please check <span style="font-weight:600; color:#353a44;">sarah@example.com</span> for a link to verify your email address.</div>
             <div style="display:flex; gap:12px;">
               <button class="stripe-submit" id="verifyOpenGmailBtn" style="flex:1;">Open Gmail</button>
               <button class="stripe-google-btn" id="verifyContinueProtoBtn" style="flex:1; padding:12px;">Continue prototype</button>
@@ -2528,13 +2528,13 @@
   <!-- Claim sandbox proto-switcher -->
   <div class="claim-proto-switcher" id="claimProtoSwitcher">
     <div class="claim-proto-switcher-title">Prototype options</div>
-    <div style="font-size:12px; font-weight:600; color:#374151; margin-bottom:4px; margin-top:4px;">Flow</div>
+    <div style="font-size:12px; font-weight:600; color:#596171; margin-bottom:4px; margin-top:4px;">Flow</div>
     <label><input type="radio" name="claimProto" value="flexible" id="protoFlexible" checked> Flexible</label>
     <label><input type="radio" name="claimProto" value="focused" id="protoFocused"> Focused</label>
-    <div style="font-size:12px; font-weight:600; color:#374151; margin-bottom:4px; margin-top:12px;">Branding</div>
+    <div style="font-size:12px; font-weight:600; color:#596171; margin-bottom:4px; margin-top:12px;">Branding</div>
     <label><input type="radio" name="brandingProto" value="stripe" id="brandStripe" checked> Stripe</label>
     <label><input type="radio" name="brandingProto" value="lovable" id="brandLovable"> Lovable</label>
-    <button onclick="location.reload()" style="margin-top:14px; width:100%; padding:8px; border:1px solid #e5e7eb; border-radius:6px; background:#fff; font-size:13px; font-weight:500; color:#374151; cursor:pointer; font-family:inherit; transition:background .15s;">Reset</button>
+    <button onclick="location.reload()" style="margin-top:14px; width:100%; padding:8px; border:1px solid #d8dee4; border-radius:6px; background:#fff; font-size:13px; font-weight:500; color:#596171; cursor:pointer; font-family:inherit; transition:background .15s;">Reset</button>
   </div>
 
   <!-- Diagram Panel -->
@@ -2584,7 +2584,10 @@
       </div>
       <div class="diagram-row diag-new-acct" style="max-height:0;opacity:0;overflow:hidden;transition:max-height .6s ease,opacity .6s ease;">
         <div class="diagram-box blue">Sarah's Biz<span class="diagram-box-sub">Direct account</span></div>
-        <div class="diagram-box white">Sarah's Biz<span class="diagram-box-sub">Direct account</span></div>
+        <div style="width:130px;min-height:72px;position:relative;">
+          <div class="dashed-line gray-line" style="height:36px;position:absolute;top:0;left:50%;transform:translateX(-50%);"></div>
+          <div style="position:absolute;top:34.5px;left:-16px;width:81px;height:3px;background:repeating-linear-gradient(to right,#888,#888 6px,transparent 6px,transparent 12px);"></div>
+        </div>
       </div>
       <!-- Sarah Lens: both boxes -->
       <div class="diagram-connector diag-s4-only">
@@ -2599,7 +2602,10 @@
       </div>
       <div class="diagram-row diag-s4-only">
         <div class="diagram-box blue">Sarah's Biz<span class="diagram-box-sub">Direct account</span></div>
-        <div class="diagram-box white">Sarah's Biz<span class="diagram-box-sub">Direct account</span></div>
+        <div style="width:130px;min-height:72px;position:relative;">
+          <div class="dashed-line gray-line" style="height:36px;position:absolute;top:0;left:50%;transform:translateX(-50%);"></div>
+          <div style="position:absolute;top:34.5px;left:-16px;width:81px;height:3px;background:repeating-linear-gradient(to right,#888,#888 6px,transparent 6px,transparent 12px);"></div>
+        </div>
       </div>
       <div class="diag-s4-only diag-resource-label" style="text-align:center;margin-top:6px;opacity:0;max-height:0;overflow:hidden;transition:opacity .6s ease, max-height .6s ease;">
         <span class="connector-label" style="font-size:11px;">Resource sharing</span>
@@ -2656,9 +2662,9 @@
       claimBtn.disabled = true;
       claimBtn.style.opacity = '0.5';
       claimBtn.style.cursor = 'default';
-      document.getElementById('claimAcctNew').style.border = '1px solid #e5e7eb';
+      document.getElementById('claimAcctNew').style.border = '1px solid #d8dee4';
       document.getElementById('claimAcctNew').style.background = '#fff';
-      document.getElementById('claimAcctSarah').style.border = '1px solid #e5e7eb';
+      document.getElementById('claimAcctSarah').style.border = '1px solid #d8dee4';
       document.getElementById('claimAcctSarah').style.background = '#fff';
       document.getElementById('newAcctBizName').value = '';
       var newAcctBtn = document.getElementById('newAcctContinueBtn');
@@ -2766,7 +2772,7 @@
     function applyBranding() {
       var modal = document.querySelector('.stripe-modal');
       var isLovable = document.getElementById('brandLovable').checked;
-      var color = isLovable ? '#EC4899' : '#635bff';
+      var color = isLovable ? '#EC4899' : '#533afd';
       if (isLovable) {
         modal.classList.add('lovable-brand');
       } else {
@@ -2888,7 +2894,7 @@
       btn.style.cursor = 'pointer';
     }
     function getBrandColor() {
-      return document.getElementById('brandLovable').checked ? '#EC4899' : '#635bff';
+      return document.getElementById('brandLovable').checked ? '#EC4899' : '#533afd';
     }
     function getBrandBg() {
       return document.getElementById('brandLovable').checked ? '#fdf2f8' : '#f8f7ff';
@@ -2897,7 +2903,7 @@
       selectedAccount = 'new';
       this.style.border = '2px solid ' + getBrandColor();
       this.style.background = getBrandBg();
-      document.getElementById('claimAcctSarah').style.border = '1px solid #e5e7eb';
+      document.getElementById('claimAcctSarah').style.border = '1px solid #d8dee4';
       document.getElementById('claimAcctSarah').style.background = '#fff';
       enableClaimContinue();
     });
@@ -2905,7 +2911,7 @@
       selectedAccount = 'sarah';
       this.style.border = '2px solid ' + getBrandColor();
       this.style.background = getBrandBg();
-      document.getElementById('claimAcctNew').style.border = '1px solid #e5e7eb';
+      document.getElementById('claimAcctNew').style.border = '1px solid #d8dee4';
       document.getElementById('claimAcctNew').style.background = '#fff';
       enableClaimContinue();
     });
@@ -3009,7 +3015,7 @@
     bizTypeOptions.forEach((btn, idx) => {
       btn.addEventListener('click', function() {
         bizTypeOptions.forEach(b => {
-          b.style.border = '1px solid #e5e7eb';
+          b.style.border = '1px solid #d8dee4';
           b.style.background = '#fff';
         });
         this.style.border = '2px solid ' + getBrandColor();
@@ -3136,9 +3142,9 @@
     document.querySelectorAll('.climate-pct-option').forEach(opt => {
       opt.addEventListener('click', function() {
         document.querySelectorAll('.climate-pct-option').forEach(o => {
-          o.style.border = '1px solid #e5e7eb';
+          o.style.border = '1px solid #d8dee4';
         });
-        this.style.border = '2px solid #635bff';
+        this.style.border = '2px solid #533afd';
       });
     });
 
@@ -3152,17 +3158,16 @@
       transitionStep(climateStep, reviewStep);
     });
 
-    // Review Submit → close modal and mark step3 complete
+    // Review Submit → go to Review permissions step with "Finish" button
     document.getElementById('reviewSubmitBtn').addEventListener('click',(e)=>{
       e.preventDefault();
-      overlay.classList.remove('visible');
-      protoSwitcher.classList.remove('visible');
-      // Mark "Set up Stripe account and reuse data" as complete
       document.getElementById('step3VerifyBtn').style.display = 'none';
       document.getElementById('step3Badge').style.display = '';
       document.getElementById('step3Badge').textContent = 'Complete';
       document.getElementById('step3Badge').className = 'step-badge badge-complete';
-      setTimeout(() => { resetToFirstStep(); }, 300);
+      document.getElementById('removeAccessLink').style.display = 'none';
+      document.getElementById('allowContinueBtn').textContent = 'Finish';
+      transitionStep(reviewStep, allowStep);
     });
 
     document.getElementById('allowContinueBtn').addEventListener('click',(e)=>{

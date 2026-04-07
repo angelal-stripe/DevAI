@@ -13,7 +13,7 @@
     body {
       font-family: 'Inter', -apple-system, sans-serif;
       background: #f6f8fa;
-      color: #1a1a1a;
+      color: #353a44;
       height: 100vh;
       overflow: hidden;
     }
@@ -29,7 +29,7 @@
     .sidebar {
       width: 220px;
       background: #fff;
-      border-right: 1px solid #e5e7eb;
+      border-right: 1px solid #d8dee4;
       display: flex;
       flex-direction: column;
       height: 100vh;
@@ -43,14 +43,14 @@
       gap: 10px;
       font-size: 14px;
       font-weight: 600;
-      color: #1a1a1a;
+      color: #353a44;
     }
 
     .sidebar-brand-dot {
       width: 24px;
       height: 24px;
       border-radius: 6px;
-      background: #635bff;
+      background: #c4c8cf;
       flex-shrink: 0;
     }
 
@@ -63,13 +63,13 @@
       padding: 7px 18px;
       font-size: 13px;
       font-weight: 500;
-      color: #6b7280;
+      color: #6c7688;
       text-decoration: none;
       border-radius: 6px;
       margin: 1px 8px;
     }
 
-    .nav-item.active { background: #f3f4f6; color: #1a1a1a; }
+    .nav-item.active { background: #f5f6f8; color: #353a44; }
 
     .main-area {
       flex: 1;
@@ -80,7 +80,7 @@
 
     .topbar {
       height: 52px;
-      border-bottom: 1px solid #e5e7eb;
+      border-bottom: none;
       display: flex;
       align-items: center;
       padding: 0 24px;
@@ -89,12 +89,12 @@
     .topbar-search {
       flex: 1;
       height: 34px;
-      background: #f3f4f6;
+      background: #f5f6f8;
       border: none;
       border-radius: 6px;
       padding: 0 12px;
       font-size: 13px;
-      color: #9ca3af;
+      color: #6c7688;
       max-width: 480px;
     }
 
@@ -144,20 +144,20 @@
     .claim-title {
       font-size: 24px;
       font-weight: 700;
-      color: #1a1a1a;
+      color: #353a44;
       margin-bottom: 12px;
     }
 
     .claim-desc {
       font-size: 14px;
       line-height: 1.6;
-      color: #6b7280;
+      color: #6c7688;
       margin-bottom: 32px;
     }
 
     .claim-loading {
       font-size: 14px;
-      color: #9ca3af;
+      color: #6c7688;
       margin-bottom: auto;
       padding-left: 4px;
     }
@@ -167,7 +167,7 @@
       padding: 14px;
       border: none;
       border-radius: 8px;
-      background: #635bff;
+      background: #533afd;
       color: #fff;
       font-size: 15px;
       font-weight: 600;
@@ -237,7 +237,7 @@
     .sandbox-account-name {
       font-size: 14px;
       font-weight: 600;
-      color: #1a1a1a;
+      color: #353a44;
     }
 
     .preview-skeleton {
@@ -263,7 +263,7 @@
     .preview-section-label {
       font-size: 13px;
       font-weight: 600;
-      color: #374151;
+      color: #596171;
       margin-top: 12px;
       margin-bottom: 6px;
     }
@@ -338,13 +338,13 @@
             <div class="claim-title">Claim your sandbox</div>
             <div class="claim-desc">We've saved all your work to a sandbox. Before you can start accepting payments, choose an account you'd like to use or create a new one.</div>
             <div class="claim-accounts" style="margin-top:24px; display:flex; flex-direction:column; gap:10px;">
-              <button class="acct-option" id="acctNew" style="display:flex; align-items:center; gap:14px; width:100%; padding:14px 16px; border:2px solid #635bff; border-radius:10px; background:#fff; cursor:pointer; font-family:inherit; text-align:left; transition:border-color .15s, background .15s;">
-                <span style="font-size:20px; color:#635bff; font-weight:300;">+</span>
-                <span style="font-size:14px; font-weight:600; color:#635bff;">Create new account</span>
+              <button class="acct-option" id="acctNew" style="display:flex; align-items:center; gap:14px; width:100%; padding:14px 16px; border:2px solid #533afd; border-radius:10px; background:#fff; cursor:pointer; font-family:inherit; text-align:left; transition:border-color .15s, background .15s;">
+                <span style="font-size:20px; color:#533afd; font-weight:300;">+</span>
+                <span style="font-size:14px; font-weight:600; color:#533afd;">Create new account</span>
               </button>
-              <button class="acct-option" id="acctSarah" style="display:flex; align-items:center; gap:14px; width:100%; padding:14px 16px; border:1px solid #e5e7eb; border-radius:10px; background:#fff; cursor:pointer; font-family:inherit; text-align:left; transition:border-color .15s, background .15s;">
-                <span style="display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:6px; background:#f3f4f6; font-size:12px; font-weight:700; color:#6b7280; flex-shrink:0;">SL</span>
-                <span style="font-size:14px; font-weight:500; color:#1a1a1a;">Sarah Lens</span>
+              <button class="acct-option" id="acctSarah" style="display:flex; align-items:center; gap:14px; width:100%; padding:14px 16px; border:1px solid #d8dee4; border-radius:10px; background:#fff; cursor:pointer; font-family:inherit; text-align:left; transition:border-color .15s, background .15s;">
+                <span style="display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:6px; background:#f5f6f8; font-size:12px; font-weight:700; color:#6c7688; flex-shrink:0;">SL</span>
+                <span style="font-size:14px; font-weight:500; color:#353a44;">Sarah Lens</span>
               </button>
             </div>
           </div>
@@ -369,7 +369,7 @@
             <div class="preview-chart">
               <svg viewBox="0 0 280 60" fill="none">
                 <path d="M0 45 Q30 40, 60 42 T120 35 T180 38 T240 30 T280 28" stroke="#c4b5fd" stroke-width="1.5" fill="none"/>
-                <path d="M0 50 Q30 48, 60 50 T120 45 T180 48 T240 42 T280 40" stroke="#e5e7eb" stroke-width="1" fill="none"/>
+                <path d="M0 50 Q30 48, 60 50 T120 45 T180 48 T240 42 T280 40" stroke="#d8dee4" stroke-width="1" fill="none"/>
               </svg>
             </div>
           </div>
@@ -380,25 +380,25 @@
       <div class="claim-step" id="claimStep2" style="display:none;">
         <div class="claim-left" style="padding:40px 36px;">
           <div>
-            <div style="font-size:15px; line-height:1.6; color:#374151; margin-bottom:32px;">
-              <a href="#" style="color:#635bff; font-weight:600; text-decoration:none;">Continue testing your work</a>.
+            <div style="font-size:15px; line-height:1.6; color:#596171; margin-bottom:32px;">
+              <a href="#" style="color:#533afd; font-weight:600; text-decoration:none;">Continue testing your work</a>.
               Try out more features in your sandbox—a safe environment for testing. When you're ready, switch to your live account.
             </div>
             <div style="display:flex; flex-direction:column; gap:16px;">
-              <div style="height:44px; border:1px solid #d1d5db; border-radius:8px; background:#fff;"></div>
+              <div style="height:44px; border:1px solid #d8dee4; border-radius:8px; background:#fff;"></div>
               <div style="display:flex; gap:8px; align-items:center;">
                 <div style="height:8px; width:80px; background:#e0e0e6; border-radius:4px;"></div>
               </div>
-              <div style="height:44px; border:1px solid #e5e7eb; border-radius:8px; background:#fff;"></div>
+              <div style="height:44px; border:1px solid #d8dee4; border-radius:8px; background:#fff;"></div>
               <div style="display:flex; gap:8px; align-items:center;">
                 <div style="height:8px; width:60px; background:#e0e0e6; border-radius:4px;"></div>
               </div>
-              <div style="height:100px; border:1px solid #e5e7eb; border-radius:8px; background:#fff;"></div>
+              <div style="height:100px; border:1px solid #d8dee4; border-radius:8px; background:#fff;"></div>
             </div>
           </div>
           <div style="display:flex; gap:12px; justify-content:flex-end; margin-top:40px;">
-            <button id="getLiveBtn" style="padding:10px 20px; border:1px solid #e5e7eb; border-radius:8px; background:#fff; font-size:14px; font-weight:500; color:#374151; cursor:pointer; font-family:inherit; transition:background .15s;">Get your live account now</button>
-            <button id="step2ContinueBtn" style="padding:10px 24px; border:none; border-radius:8px; background:#635bff; color:#fff; font-size:14px; font-weight:600; cursor:pointer; font-family:inherit; transition:opacity .15s;">Continue</button>
+            <button id="getLiveBtn" style="padding:10px 20px; border:1px solid #d8dee4; border-radius:8px; background:#fff; font-size:14px; font-weight:500; color:#596171; cursor:pointer; font-family:inherit; transition:background .15s;">Get your live account now</button>
+            <button id="step2ContinueBtn" style="padding:10px 24px; border:none; border-radius:8px; background:#533afd; color:#fff; font-size:14px; font-weight:600; cursor:pointer; font-family:inherit; transition:opacity .15s;">Continue</button>
           </div>
         </div>
       </div>
@@ -407,7 +407,7 @@
 
   <style>
     .claim-step { display:flex; width:100%; }
-    .acct-option.selected { border:2px solid #635bff !important; background:#f8f7ff !important; }
+    .acct-option.selected { border:2px solid #533afd !important; background:#f8f7ff !important; }
   </style>
 
   <script>
@@ -416,15 +416,15 @@
 
     acctSarah.addEventListener('click', () => {
       acctNew.classList.remove('selected');
-      acctNew.style.border = '1px solid #e5e7eb';
+      acctNew.style.border = '1px solid #d8dee4';
       acctSarah.classList.add('selected');
     });
 
     acctNew.addEventListener('click', () => {
       acctSarah.classList.remove('selected');
-      acctSarah.style.border = '1px solid #e5e7eb';
+      acctSarah.style.border = '1px solid #d8dee4';
       acctNew.classList.add('selected');
-      acctNew.style.border = '2px solid #635bff';
+      acctNew.style.border = '2px solid #533afd';
     });
 
     document.getElementById('claimContinueBtn').addEventListener('click', () => {
