@@ -2872,11 +2872,14 @@
       });
     })();
 
-    // Create Account button → proceed to Verify Email step
+    // Create Account button → proceed to Review permissions step
     document.getElementById('stripeCreateAccountBtn').addEventListener('click',(e)=>{
       e.preventDefault();
-      setDiagramState('signin');
-      transitionStep(createAccountStep, verifyEmailStep);
+      setDiagramState('full');
+      document.getElementById('removeAccessLink').style.display = 'none';
+      document.getElementById('allowContinueBtn').textContent = 'Continue';
+      activeFlow = 'createAccount';
+      transitionStep(createAccountStep, allowStep);
     });
 
     document.getElementById('stripeSignInBtn').addEventListener('click',(e)=>{
@@ -3158,17 +3161,16 @@
       transitionStep(climateStep, reviewStep);
     });
 
-    // Review Submit → go to Review permissions step with "Finish" button
+    // Review Submit → close modal and mark step3 complete
     document.getElementById('reviewSubmitBtn').addEventListener('click',(e)=>{
       e.preventDefault();
+      overlay.classList.remove('visible');
+      protoSwitcher.classList.remove('visible');
       document.getElementById('step3VerifyBtn').style.display = 'none';
       document.getElementById('step3Badge').style.display = '';
       document.getElementById('step3Badge').textContent = 'Complete';
       document.getElementById('step3Badge').className = 'step-badge badge-complete';
-      document.getElementById('removeAccessLink').style.display = 'none';
-      document.getElementById('allowContinueBtn').textContent = 'Finish';
-      setDiagramState('full');
-      transitionStep(reviewStep, allowStep);
+      setTimeout(() => { resetToFirstStep(); }, 300);
     });
 
     document.getElementById('allowContinueBtn').addEventListener('click',(e)=>{
@@ -3188,6 +3190,12 @@
           el.style.opacity = '1';
           el.style.maxHeight = '40px';
         });
+      }
+
+      // Create account flow: go to Verify Email after Review permissions
+      if (activeFlow === 'createAccount') {
+        transitionStep(allowStep, verifyEmailStep);
+        return;
       }
 
       // Flexible + new account: go to Verify flow after Review permissions
