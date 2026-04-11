@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Team and security – Installed apps – Stripe</title>
+  <title>Apps overview – Stripe</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -22,7 +22,6 @@
     }
     body.diagram-closed { margin-right: 0; }
 
-    /* Sidebar */
     .sidebar {
       width: 220px;
       background: #fff;
@@ -70,28 +69,12 @@
       text-decoration: none;
     }
 
-    .nav-item:hover {
-      color: #353a44;
-      background: #f5f6f8;
-    }
+    .nav-item:hover { color: #353a44; background: #f5f6f8; }
+    .nav-item.active { color: #353a44; font-weight: 500; }
 
-    .nav-item.active {
-      color: #353a44;
-      font-weight: 500;
-    }
-
-    .nav-item img {
-      width: 16px;
-      height: 16px;
-      flex-shrink: 0;
-    }
-
-    .nav-item svg {
-      width: 18px;
-      height: 18px;
-      flex-shrink: 0;
-      opacity: 0.7;
-    }
+    .nav-item img { width: 16px; height: 16px; flex-shrink: 0; }
+    .nav-item img.nav-item-chevron { margin-left: auto; width: 8px; height: 8px; opacity: 0.4; }
+    .nav-item img.nav-item-chevron.expanded { transform: rotate(180deg); }
 
     .nav-section {
       padding: 20px 20px 8px;
@@ -101,18 +84,23 @@
       letter-spacing: 0.2px;
     }
 
-    .nav-item img.nav-item-chevron {
-      margin-left: auto;
-      width: 8px;
-      height: 8px;
-      opacity: 0.4;
+    .nav-sub-item {
+      display: flex;
+      align-items: center;
+      padding: 7px 20px 7px 48px;
+      font-size: 13px;
+      font-weight: 400;
+      color: #596171;
+      cursor: pointer;
+      transition: all 0.1s;
+      text-decoration: none;
     }
 
-    .sidebar-footer {
-      padding: 12px 0;
-    }
+    .nav-sub-item:hover { color: #353a44; background: #f5f6f8; }
+    .nav-sub-item.active { color: #635bff; font-weight: 500; }
 
-    /* Main area */
+    .sidebar-footer { padding: 12px 0; }
+
     .main {
       flex: 1;
       display: flex;
@@ -135,407 +123,181 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      background: #f5f6f8;
-      border: none;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
       border-radius: 8px;
-      padding: 10px 14px;
+      padding: 8px 12px;
       cursor: text;
     }
 
-    .search-bar svg { color: #6c7688; flex-shrink: 0; width: 16px; height: 16px; }
-    .search-bar span { font-size: 14px; color: #6c7688; }
+    .search-bar svg { color: #9ca3af; flex-shrink: 0; }
+    .search-bar span { font-size: 13px; color: #9ca3af; }
 
-    .topbar-icons {
-      margin-left: auto;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .topbar-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      color: #6c7688;
-      transition: background 0.1s;
-    }
-
-    .topbar-icon:hover { background: #f5f6f8; }
-    .topbar-icon svg { width: 18px; height: 18px; }
-
-    .topbar-icon.create {
-      background: #533afd;
-      color: #fff;
-      width: 32px;
-      height: 32px;
-    }
-
-    .topbar-icon.create:hover { background: #4e11e2; }
-
-    /* Content */
     .content {
       flex: 1;
       overflow-y: auto;
       padding: 32px 40px;
-      background: #fff;
-      color: #353a44;
       max-width: 1280px;
       margin: 0 auto;
       width: 100%;
       box-sizing: border-box;
     }
 
-    /* Settings page */
-    .settings-breadcrumb {
-      font-size: 13px;
-      color: #533afd;
-      font-weight: 500;
-      margin-bottom: 8px;
-    }
-
-    .settings-title {
-      font-size: 26px;
+    .page-title {
+      font-size: 28px;
       font-weight: 700;
-      color: #353a44;
+      color: #1a1a1a;
       margin-bottom: 20px;
     }
 
-    .settings-tabs {
+    .apps-tabs {
       display: flex;
       gap: 24px;
       border-bottom: 1px solid #d8dee4;
-      margin-bottom: 32px;
+      margin-bottom: 24px;
     }
 
-    .settings-tab {
-      font-size: 13.5px;
-      font-weight: 500;
-      color: #6c7688;
-      padding-bottom: 12px;
-      cursor: pointer;
-      border-bottom: 2px solid transparent;
-      margin-bottom: -1px;
-      white-space: nowrap;
-    }
-
-    .settings-tab:hover { color: #353a44; }
-
-    .settings-tab.active {
-      color: #533afd;
-      border-bottom-color: #533afd;
-    }
-
-    /* Stripe Apps section */
-    .section-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
-    }
-
-    .section-title {
-      font-size: 16px;
-      font-weight: 600;
-      color: #353a44;
-    }
-
-    .marketplace-link {
-      font-size: 13px;
-      color: #533afd;
-      text-decoration: none;
-      font-weight: 500;
-    }
-
-    .marketplace-link:hover { text-decoration: underline; }
-
-    .apps-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      margin-bottom: 40px;
-    }
-
-    .app-card {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 16px;
-      width: 400px;
-    }
-
-    .app-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
-      font-weight: 700;
-      flex-shrink: 0;
-      overflow: hidden;
-    }
-
-    .app-icon img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .app-name {
-      font-size: 13.5px;
-      font-weight: 500;
-      color: #353a44;
-    }
-
-    .app-private {
-      font-size: 12px;
-      color: #6c7688;
-    }
-
-    .btn-review {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
-      border: 1px solid #d8dee4;
-      border-radius: 6px;
-      background: #fff;
-      font-size: 12px;
-      font-weight: 500;
-      color: #353a44;
-      cursor: pointer;
-      font-family: inherit;
-    }
-
-    .btn-review:hover { background: #f5f6f8; border-color: #d8dee4; }
-
-    .btn-review svg { width: 12px; height: 12px; color: #6c7688; }
-
-    .btn-more {
-      width: 28px;
-      height: 28px;
-      border-radius: 6px;
-      border: 1px solid #d8dee4;
-      background: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      color: #6c7688;
-      font-size: 16px;
-      margin-left: auto;
-    }
-
-    .btn-more:hover { background: #f5f6f8; border-color: #d8dee4; }
-
-    /* Connect Extensions section */
-    .extensions-list {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .extension-row {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 16px 0;
-      border-top: 1px solid #d8dee4;
-    }
-
-    .extension-row:first-child { border-top: none; }
-
-    .extension-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .apps-tab {
       font-size: 14px;
-      font-weight: 600;
-      flex-shrink: 0;
-      overflow: hidden;
-      background: #d8dee4;
-      color: #353a44;
-    }
-
-    .extension-icon img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .extension-info { flex: 1; }
-
-    .extension-name-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 2px;
-    }
-
-    .extension-name {
-      font-size: 13.5px;
-      font-weight: 600;
-      color: #353a44;
-    }
-
-    .badge-test {
-      display: inline-flex;
-      align-items: center;
-      padding: 2px 8px;
-      background: #fff3e0;
-      color: #e65100;
-      border-radius: 4px;
-      font-size: 11px;
-      font-weight: 600;
-    }
-
-    .extension-desc {
-      font-size: 12.5px;
-      color: #6c7688;
-    }
-
-    .extension-action {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      border: 1px solid #d8dee4;
-      background: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      font-weight: 500;
+      color: #596171;
+      padding: 8px 0;
       cursor: pointer;
-      color: #6c7688;
-      flex-shrink: 0;
+      position: relative;
     }
 
-    .extension-action:hover { background: #f5f6f8; border-color: #d8dee4; }
-
-    .extension-action svg { width: 16px; height: 16px; }
-
-    /* Connections table */
-    .connections-table {
-      display: flex;
-      flex-direction: column;
+    .apps-tab.active {
+      color: #635bff;
     }
 
-    .connections-header-row {
-      display: flex;
-      align-items: center;
-      padding: 10px 0;
-      border-bottom: 1px solid #d8dee4;
+    .apps-tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: #635bff;
+      border-radius: 2px 2px 0 0;
     }
 
-    .connections-col-name {
-      flex: 1;
-      font-size: 12px;
-      font-weight: 600;
-      color: #353a44;
-      padding-left: 4px;
-    }
-
-    .connections-col-added {
-      width: 120px;
-      font-size: 12px;
-      font-weight: 600;
-      color: #353a44;
-      margin-right: 44px;
-    }
+    .connections-list { display: flex; flex-direction: column; }
 
     .connections-row {
       display: flex;
       align-items: center;
-      padding: 14px 8px;
+      padding: 16px 8px;
       margin: 0 -8px;
-      border-bottom: 1px solid #d8dee4;
+      border-bottom: 1px solid #ebeef1;
       border-radius: 6px;
+      cursor: pointer;
       transition: background 0.1s;
     }
 
     .connections-row:hover { background: #f4f7fa; }
+    .connections-row:first-child { border-top: none; }
 
     .connections-cell-name {
       flex: 1;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
     }
 
-    .connections-cell-added {
-      width: 120px;
+    .conn-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .conn-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: #353a44;
+    }
+
+    .conn-meta {
       font-size: 13px;
       color: #6c7688;
       margin-right: 16px;
     }
 
-    /* Disconnect dialog */
-    .dialog-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(182, 192, 205, 0.7);
-      z-index: 1000;
+    .conn-action {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      border: 1px solid #d8dee4;
+      background: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
+      cursor: pointer;
+      color: #6c7688;
+      flex-shrink: 0;
     }
 
+    .conn-action:hover { background: #f5f6f8; border-color: #d8dee4; }
+
+    .dialog-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+    }
     .dialog-backdrop.hidden { display: none; }
 
     .dialog-box {
       background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.12), 0 15px 35px rgba(48,49,61,0.08);
-      max-width: 480px;
-      width: 100%;
+      border-radius: 12px;
+      width: 420px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.18);
       overflow: hidden;
     }
 
     .dialog-header {
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       justify-content: space-between;
-      padding: 16px 16px 0;
+      padding: 16px 16px 12px;
     }
 
     .dialog-title {
       font-size: 16px;
-      font-weight: 700;
-      color: #1a2c44;
-      line-height: 24px;
+      font-weight: 600;
+      color: #1a1a1a;
     }
 
     .dialog-close {
-      width: 28px;
-      height: 28px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 24px;
+      height: 24px;
       border: none;
       background: none;
       cursor: pointer;
+      color: #6c7688;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       border-radius: 4px;
-      color: #474e5a;
-      flex-shrink: 0;
     }
-
-    .dialog-close:hover { background: #f4f7fa; }
+    .dialog-close:hover { background: #f3f4f6; }
 
     .dialog-body {
-      padding: 16px;
+      padding: 0 16px 20px;
       font-size: 14px;
-      color: #1a2c44;
+      color: #353a44;
       line-height: 20px;
     }
 
     .dialog-footer {
       display: flex;
-      align-items: center;
       justify-content: flex-end;
       gap: 8px;
       padding: 0 16px 16px;
@@ -558,7 +320,6 @@
       border: none;
       box-shadow: 0 1px 1px rgba(26,27,37,0.16), 0 0 0 1px #d5dbe1;
     }
-
     .dialog-btn-secondary:hover { background: #f4f7fa; }
 
     .dialog-btn-destructive {
@@ -567,7 +328,6 @@
       border: none;
       box-shadow: 0 1px 1px rgba(62,2,26,0.32), 0 0 0 1px #df1b41;
     }
-
     .dialog-btn-destructive:hover { background: #d01540; }
 
     .dialog-btn-primary {
@@ -576,23 +336,11 @@
       border: none;
       box-shadow: 0 1px 1px rgba(20,19,78,0.32), 0 0 0 1px #625afa;
     }
-
     .dialog-btn-primary:hover { background: #5a51e6; }
 
-    /* Review permissions dialog */
-    .review-body-text {
-      font-size: 14px;
-      color: #353a44;
-      line-height: 20px;
-      margin-bottom: 4px;
-    }
+    .review-body-text { font-size: 14px; color: #353a44; line-height: 20px; margin-bottom: 4px; }
 
-    .review-accordion {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-    }
-
+    .review-accordion { display: flex; flex-direction: column; width: 100%; }
     .review-accordion-item {
       display: flex;
       align-items: center;
@@ -600,26 +348,9 @@
       padding: 12px 0;
       border-bottom: 1px solid #d8dee4;
     }
-
-    .review-accordion-trigger {
-      width: 12px;
-      height: 12px;
-      flex-shrink: 0;
-      opacity: 0.6;
-    }
-
-    .review-accordion-label {
-      flex: 1;
-      font-size: 14px;
-      color: #353a44;
-      line-height: 20px;
-    }
-
-    .review-accordion-badge {
-      font-size: 12px;
-      color: #596171;
-      line-height: 16px;
-    }
+    .review-accordion-trigger { width: 12px; height: 12px; flex-shrink: 0; opacity: 0.6; }
+    .review-accordion-label { flex: 1; font-size: 14px; color: #353a44; line-height: 20px; }
+    .review-accordion-badge { font-size: 12px; color: #596171; line-height: 16px; }
 
     .review-checkbox {
       display: flex;
@@ -628,22 +359,8 @@
       padding-top: 4px;
       cursor: pointer;
     }
-
-    .review-checkbox input[type="checkbox"] {
-      width: 14px;
-      height: 14px;
-      margin-top: 3px;
-      accent-color: #675dff;
-      flex-shrink: 0;
-      cursor: pointer;
-    }
-
-    .review-checkbox-label {
-      font-size: 14px;
-      font-weight: 600;
-      color: #273951;
-      line-height: 20px;
-    }
+    .review-checkbox input[type="checkbox"] { width: 14px; height: 14px; margin-top: 3px; accent-color: #675dff; flex-shrink: 0; cursor: pointer; }
+    .review-checkbox-label { font-size: 14px; font-weight: 600; color: #273951; line-height: 20px; }
 
     .dialog-footer-with-link {
       display: flex;
@@ -651,7 +368,6 @@
       gap: 24px;
       padding: 0 16px 16px;
     }
-
     .dialog-disconnect-link {
       font-size: 14px;
       color: #c0123c;
@@ -664,26 +380,37 @@
       flex: 1;
       text-align: left;
     }
-
     .dialog-disconnect-link:hover { text-decoration: underline; }
+    .dialog-footer-actions { display: flex; gap: 8px; align-items: center; }
 
-    .dialog-footer-actions {
-      display: flex;
-      gap: 8px;
-      align-items: center;
+    .proto-switcher {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #fff;
+      border: 1px solid #d8dee4;
+      border-radius: 12px;
+      padding: 16px 20px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      z-index: 9999;
+      font-family: 'Inter', -apple-system, sans-serif;
     }
+    .proto-switcher-title { font-size: 14px; font-weight: 600; color: #353a44; margin-bottom: 12px; }
+    .proto-switcher label { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #353a44; cursor: pointer; padding: 4px 0; }
+    .proto-switcher input[type="radio"] { accent-color: #533afd; width: 16px; height: 16px; cursor: pointer; }
+    .proto-section-label { font-size: 11px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; margin-top: 4px; }
+    .proto-options { margin-top: 12px; padding-top: 12px; border-top: 1px solid #e5e7eb; }
   </style>
 </head>
 <body>
 
-  <!-- Sidebar -->
   <div class="sidebar">
     <div class="sidebar-brand">
       <div class="sidebar-brand-dot"></div>
       Sarah's photography
     </div>
     <div class="sidebar-nav">
-      <a class="nav-item active" href="home.html">
+      <a class="nav-item" href="home.html">
         <img src="icons/home.svg" alt="">
         Home
       </a>
@@ -725,6 +452,14 @@
         Reporting
         <img class="nav-item-chevron" src="icons/chevronDown.svg" alt="">
       </a>
+      <a class="nav-item active" href="#">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Apps
+        <img class="nav-item-chevron expanded" src="icons/chevronDown.svg" alt="">
+      </a>
+      <a class="nav-sub-item active" href="sarah-apps.html">
+        Overview
+      </a>
       <a class="nav-item" href="#">
         <img src="icons/more.svg" alt="">
         More
@@ -739,9 +474,7 @@
     </div>
   </div>
 
-  <!-- Main -->
   <div class="main">
-    <!-- Top bar -->
     <div class="topbar">
       <div class="search-bar">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -749,204 +482,50 @@
       </div>
     </div>
 
-    <!-- Content -->
     <div class="content">
-      <!-- Settings breadcrumb -->
-      <div class="settings-breadcrumb">Settings</div>
-      <div class="settings-title">Team and security</div>
+      <div class="page-title">Apps overview</div>
 
-      <!-- Tabs -->
-      <div class="settings-tabs">
-        <div class="settings-tab">Team</div>
-        <div class="settings-tab">Single sign-on (SSO)</div>
-        <div class="settings-tab">Two-step authentication</div>
-        <div class="settings-tab">Security history</div>
-        <div class="settings-tab" onclick="switchTab(this, 'tab-installed-apps')">Installed apps</div>
-        <div class="settings-tab active" onclick="switchTab(this, 'tab-connections')">Shared access</div>
-        <div class="settings-tab">Access requests</div>
-        <div class="settings-tab">MCP access</div>
+      <div class="apps-tabs">
+        <div class="apps-tab">Installed</div>
+        <div class="apps-tab">Created</div>
+        <div class="apps-tab active">Connections</div>
       </div>
 
-      <!-- Tab: Installed apps -->
-      <div id="tab-installed-apps" class="tab-panel" style="display: none;">
-
-      <!-- Stripe Apps -->
-      <div class="section-header">
-        <div class="section-title">Stripe Apps</div>
-        <a href="#" class="marketplace-link">Explore the App Marketplace &rarr;</a>
-      </div>
-
-      <div class="apps-grid">
-        <!-- Xero -->
-        <div class="app-card">
-          <div class="app-icon" style="background: linear-gradient(135deg, #13b5ea, #00a1e0); border-radius: 8px;">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
-          </div>
-          <span class="app-name">Xero</span>
-          <button class="btn-more">&middot;&middot;&middot;</button>
-        </div>
-
-        <!-- Bench Accounting -->
-        <div class="app-card">
-          <div class="app-icon" style="background: #533afd; color: #fff; border-radius: 8px; font-size: 18px;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M4 19V5a2 2 0 0 1 2-2h8l6 6v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><polyline points="14 3 14 9 20 9"/></svg>
-          </div>
-          <span class="app-name">Bench Accounting</span>
-          <button class="btn-more">&middot;&middot;&middot;</button>
-        </div>
-
-        <!-- Controlling Platform App - 2 -->
-        <div class="app-card">
-          <div class="app-icon" style="background: #d8dee4; color: #353a44; border-radius: 8px; font-size: 15px; font-weight: 700;">C</div>
-          <div>
-            <div class="app-name">Controlling Platform App - 2</div>
-            <div class="app-private">Private</div>
-          </div>
-          <button class="btn-more">&middot;&middot;&middot;</button>
-        </div>
-
-        <!-- Custom Links -->
-        <div class="app-card">
-          <div class="app-icon" style="background: #353a44; color: #fff; border-radius: 8px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px;">CL</div>
-          <span class="app-name">Custom Links</span>
-          <button class="btn-more">&middot;&middot;&middot;</button>
-        </div>
-      </div>
-
-      <!-- Connect Extensions -->
-      <div class="section-header" style="margin-top: 8px;">
-        <div class="section-title">Connect extensions</div>
-      </div>
-
-      <div class="extensions-list">
-        <!-- Furever Scenario -->
-        <div class="extension-row">
-          <div class="extension-icon" style="background: #2d6a4f; color: #fff; border-radius: 50%;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><path d="M12 21c-4-4-8-7.5-8-11a8 8 0 0 1 16 0c0 3.5-4 7-8 11z"/></svg>
-          </div>
-          <div class="extension-info">
-            <div class="extension-name-row">
-              <span class="extension-name">Furever Scenario</span>
-              <span class="badge-test">Test account</span>
-            </div>
-            <div class="extension-desc">Application access: Read and write &bull; Approved on May 26, 2023</div>
-          </div>
-          <button class="btn-more"><img src="icons/negativeCircle.svg" width="14" height="14" alt=""></button>
-        </div>
-
-        <!-- Test, Inc -->
-        <div class="extension-row">
-          <div class="extension-icon" style="background: #4a6741; color: #fff; border-radius: 50%;">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          </div>
-          <div class="extension-info">
-            <div class="extension-name-row">
-              <span class="extension-name">Test, Inc</span>
-              <span class="badge-test">Test account</span>
-            </div>
-            <div class="extension-desc">Application access: Read and write &bull; Approved on Aug 24, 2023</div>
-          </div>
-          <button class="btn-more"><img src="icons/negativeCircle.svg" width="14" height="14" alt=""></button>
-        </div>
-
-        <!-- Tripadvisor Demo -->
-        <div class="extension-row">
-          <div class="extension-icon" style="background: #533afd; color: #fff; border-radius: 50%; font-size: 15px; font-weight: 700;">T</div>
-          <div class="extension-info">
-            <div class="extension-name-row">
-              <span class="extension-name">Tripadvisor Demo</span>
-              <span class="badge-test">Test account</span>
-            </div>
-            <div class="extension-desc">Application access: Read and write &bull; Approved on Jan 30, 2024</div>
-          </div>
-          <button class="btn-more"><img src="icons/negativeCircle.svg" width="14" height="14" alt=""></button>
-        </div>
-      </div>
-      </div>
-
-      <!-- Tab: Shared access -->
-      <div id="tab-connections" class="tab-panel">
-
-      <p style="font-size: 14px; color: #1a2c44; line-height: 20px; margin-bottom: 24px;">Services that have access to your identity info, events, or API keys for development.</p>
-
-      <div class="connections-table">
-        <div class="connections-header-row">
-          <span class="connections-col-name">Name</span>
-          <span class="connections-col-added">Added</span>
-        </div>
-        <div class="connections-row" onclick="openReviewDialog('Lovable')" style="cursor: pointer;">
+      <div class="connections-list">
+        <div class="connections-row" onclick="openReviewDialog('Lovable')">
           <div class="connections-cell-name">
-            <div class="app-icon" style="background: linear-gradient(135deg, #ff6b6b, #f59e42, #a855f7); border-radius: 8px;">
+            <div class="conn-icon" style="background: linear-gradient(135deg, #ff6b6b, #f59e42, #a855f7);">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 4C8 4 5 7 5 11c0 5 7 9 7 9s7-4 7-9c0-4-3-7-7-7z" fill="#fff" opacity="0.9"/></svg>
             </div>
-            <span class="app-name">Lovable</span>
+            <span class="conn-name">Lovable</span>
           </div>
-          <span class="connections-cell-added">Mar 4, 2026</span>
-          <button class="btn-more" onclick="event.stopPropagation(); openDisconnectDialog('Lovable')"><img src="icons/negativeCircle.svg" width="14" height="14" alt=""></button>
+          <span class="conn-meta">Mar 4, 2026</span>
+          <button class="conn-action" onclick="event.stopPropagation(); openDisconnectDialog('Lovable')"><img src="icons/negativeCircle.svg" width="14" height="14" alt=""></button>
         </div>
-        <div class="connections-row" onclick="openReviewDialog('17hats')" style="cursor: pointer;">
+        <div class="connections-row" onclick="openReviewDialog('17hats')">
           <div class="connections-cell-name">
-            <div class="app-icon" style="background: #e8f0fe; border-radius: 8px;">
+            <div class="conn-icon" style="background: #e8f0fe;">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 6l6 6-6 6" stroke="#4285f4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 6l6 6-6 6" stroke="#4285f4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
-            <span class="app-name">17hats</span>
+            <span class="conn-name">17hats</span>
           </div>
-          <span class="connections-cell-added">Oct 20, 2025</span>
-          <button class="btn-more" onclick="event.stopPropagation(); openDisconnectDialog('17hats')"><img src="icons/negativeCircle.svg" width="14" height="14" alt=""></button>
+          <span class="conn-meta">Oct 20, 2025</span>
+          <button class="conn-action" onclick="event.stopPropagation(); openDisconnectDialog('17hats')"><img src="icons/negativeCircle.svg" width="14" height="14" alt=""></button>
         </div>
-        <div class="connections-row" onclick="openReviewDialog('Pixieset')" style="cursor: pointer;">
+        <div class="connections-row" onclick="openReviewDialog('Pixieset')">
           <div class="connections-cell-name">
-            <div class="app-icon" style="background: #1a1a3e; border-radius: 8px;">
+            <div class="conn-icon" style="background: #1a1a3e;">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M7 17l5-5-5-5" stroke="#6366f1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 17l5-5-5-5" stroke="#22d3ee" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
-            <span class="app-name">Pixieset</span>
+            <span class="conn-name">Pixieset</span>
           </div>
-          <span class="connections-cell-added">Oct 7, 2025</span>
-          <button class="btn-more" onclick="event.stopPropagation(); openDisconnectDialog('Pixieset')"><img src="icons/negativeCircle.svg" width="14" height="14" alt=""></button>
+          <span class="conn-meta">Oct 7, 2025</span>
+          <button class="conn-action" onclick="event.stopPropagation(); openDisconnectDialog('Pixieset')"><img src="icons/negativeCircle.svg" width="14" height="14" alt=""></button>
         </div>
-      </div>
       </div>
     </div>
   </div>
 
-  <style>
-    .proto-switcher {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #fff;
-      border: 1px solid #d8dee4;
-      border-radius: 12px;
-      padding: 16px 20px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-      z-index: 9999;
-      font-family: 'Inter', -apple-system, sans-serif;
-    }
-    .proto-switcher-title {
-      font-size: 14px;
-      font-weight: 600;
-      color: #353a44;
-      margin-bottom: 12px;
-    }
-    .proto-switcher label {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 14px;
-      color: #353a44;
-      cursor: pointer;
-      padding: 4px 0;
-    }
-    .proto-switcher input[type="radio"] {
-      accent-color: #533afd;
-      width: 16px;
-      height: 16px;
-      cursor: pointer;
-    }
-    .proto-section-label { font-size: 11px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; margin-top: 4px; }
-    .proto-options { margin-top: 12px; padding-top: 12px; border-top: 1px solid #e5e7eb;
-    }
-  </style>
   <div class="proto-switcher">
     <div class="proto-switcher-title">Prototype options</div>
     <div class="proto-section-label">Dashboard</div>
@@ -954,8 +533,8 @@
     <label><input type="radio" name="proto" value="lovable" onchange="handleProtoChange(this)"> Lovable</label>
     <div class="proto-options" id="protoOptions">
       <div class="proto-section-label">Options</div>
-      <label><input type="radio" name="sarah-view" value="settings" checked onchange="handleSarahViewChange(this)"> Settings</label>
-      <label><input type="radio" name="sarah-view" value="apps" onchange="handleSarahViewChange(this)"> App workload</label>
+      <label><input type="radio" name="sarah-view" value="settings" onchange="handleSarahViewChange(this)"> Settings</label>
+      <label><input type="radio" name="sarah-view" value="apps" checked onchange="handleSarahViewChange(this)"> App workload</label>
     </div>
   </div>
   <script>
@@ -977,12 +556,11 @@
     .diagram-toggle:hover{background:#eee}
     .diagram-toggle.collapsed{right:0}
     .diagram-toggle.collapsed svg{transform:rotate(180deg)}
-    .diagram-content{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 24px;gap:16px}
+    .diagram-grid{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 20px;gap:0}
     .diagram-box{width:130px;height:72px;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;line-height:1.4;box-shadow:0 2px 8px rgba(0,0,0,.1)}
     .diagram-box .diagram-box-sub{font-weight:400;font-size:11px}
     .diagram-box.blue{background:#4da3ff;color:#fff;border:2px solid #4da3ff}
     .diagram-box.white{background:#fff;color:#333;border:3px solid #888}
-    .diagram-grid{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 20px;gap:0}
     .diagram-row{display:flex;align-items:center;gap:16px}
     .diagram-connector{display:flex;gap:16px;justify-content:center;position:relative}
     .diagram-connector-col{width:130px;display:flex;justify-content:center;position:relative}
@@ -991,9 +569,6 @@
     .dashed-line.gray-line{color:#888}
     .connector-label{font-size:12px;font-weight:500;color:#555;font-family:'Inter',sans-serif;padding:2px 0}
     .connector-split{display:flex;flex-direction:column;align-items:center}
-    .diag-s2,.diag-s3,.diag-s3-only,.diag-s4-only{max-height:0;opacity:0;overflow:hidden;transition:max-height .6s ease,opacity .6s ease}
-    .diag-s2.visible,.diag-s3.visible,.diag-s3-only.visible,.diag-s4-only.visible{max-height:200px;opacity:1}
-    .diag-s2.no-anim,.diag-s3.no-anim,.diag-s3-only.no-anim,.diag-s4-only.no-anim{transition:none}
   </style>
   <div class="diagram-panel" id="diagramPanel">
     <div class="diagram-grid" id="diagramGrid">
@@ -1039,34 +614,23 @@
     if(localStorage.getItem('diagramCollapsed')==='true'){dp.classList.add('collapsed');dt.classList.add('collapsed');document.body.classList.add('diagram-closed')}
     dt.addEventListener('click',()=>{dp.classList.toggle('collapsed');dt.classList.toggle('collapsed');document.body.classList.toggle('diagram-closed');localStorage.setItem('diagramCollapsed',dp.classList.contains('collapsed'))});
 
-    function switchTab(tabEl, panelId) {
-      document.querySelectorAll('.settings-tab').forEach(t => t.classList.remove('active'));
-      tabEl.classList.add('active');
-      document.querySelectorAll('.tab-panel').forEach(p => p.style.display = 'none');
-      document.getElementById(panelId).style.display = '';
-    }
-
-    function openDisconnectDialog(name) {
-      document.getElementById('dialogName').textContent = 'Disconnect ' + name;
-      document.getElementById('dialogBody').textContent = name + ' will lose access to your identity, events, and API keys.';
-      document.getElementById('disconnectDialog').classList.remove('hidden');
-    }
-
-    function closeDisconnectDialog() {
-      document.getElementById('disconnectDialog').classList.add('hidden');
-    }
-
     function openReviewDialog(name) {
       document.getElementById('reviewDialogTitle').textContent = 'Review permissions for ' + name;
       document.getElementById('reviewDialogAccess').textContent = name + ' has access to:';
       document.getElementById('reviewDialog').dataset.name = name;
       document.getElementById('reviewDialog').classList.remove('hidden');
     }
-
     function closeReviewDialog() {
       document.getElementById('reviewDialog').classList.add('hidden');
     }
-
+    function openDisconnectDialog(name) {
+      document.getElementById('dialogName').textContent = 'Disconnect ' + name;
+      document.getElementById('dialogBody').textContent = name + ' will lose access to your identity, events, and API keys.';
+      document.getElementById('disconnectDialog').classList.remove('hidden');
+    }
+    function closeDisconnectDialog() {
+      document.getElementById('disconnectDialog').classList.add('hidden');
+    }
     function reviewToDisconnect() {
       var name = document.getElementById('reviewDialog').dataset.name;
       closeReviewDialog();

@@ -163,7 +163,7 @@
       gap: 6px;
     }
 
-    .breadcrumb a { color: #596171; text-decoration: none; }
+    .breadcrumb a { color: #533afd; text-decoration: none; }
     .breadcrumb a:hover { text-decoration: underline; }
     .breadcrumb span { color: #9ca3af; }
 
@@ -204,6 +204,23 @@
     }
 
     .status-badge.complete { background: #d7f7c2; color: #006908; }
+    .status-badge.enabled { background: #d7f7c2; color: #006908; }
+
+    .acct-warning {
+      color: #c96900;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .acct-link {
+      color: #596171;
+      text-decoration: none;
+      font-size: 13px;
+    }
+
+    .acct-link:hover { text-decoration: underline; }
+
+    .acct-link.purple { color: #533afd; }
 
     .acct-header-actions { display: flex; align-items: center; gap: 8px; }
 
@@ -676,6 +693,8 @@
     .proto-switcher-title { font-size: 14px; font-weight: 600; color: #353a44; margin-bottom: 12px; }
     .proto-switcher label { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #353a44; cursor: pointer; padding: 4px 0; }
     .proto-switcher input[type="radio"] { accent-color: #635bff; width: 16px; height: 16px; cursor: pointer; }
+    .proto-section-label { font-size: 11px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; margin-top: 4px; }
+    .proto-options { margin-top: 12px; padding-top: 12px; border-top: 1px solid #e5e7eb; }
   </style>
 </head>
 <body>
@@ -715,11 +734,14 @@
         Connect
         <img class="nav-item-chevron expanded" src="icons/chevronDown.svg" alt="">
       </a>
+      <a class="nav-sub-item" href="#">
+        Overview
+      </a>
       <a class="nav-sub-item active" href="lovable-network.html">
         Connected accounts
       </a>
       <a class="nav-sub-item" href="#">
-        Tax forms
+        Tax reporting
       </a>
       <a class="nav-item" href="#">
         <img src="icons/wallet.svg" alt="">
@@ -783,7 +805,7 @@
           <div class="acct-icon">📷</div>
           <div>
             <span class="acct-name">Sarah's Photography</span>
-            <span class="status-badge complete">Enabled</span>
+            <span class="status-badge enabled">Enabled</span>
           </div>
         </div>
         <div class="acct-header-actions">
@@ -796,7 +818,7 @@
       </div>
 
       <div class="acct-subtitle">
-        sarah@sarahsphotography.com<span>·</span>Payments active<span>·</span>Payouts active
+        sarah@example.com<span>·</span><span class="acct-warning">⚠ Payouts paused</span><span>·</span><span class="acct-warning">⚠ Payments paused</span><span>·</span><a class="acct-link" href="lovable-sarah-shared-access.html">Shared access</a>
       </div>
 
       <div class="detail-tabs">
@@ -817,14 +839,15 @@
             <div class="section-header">
               <div class="section-title">Account balances</div>
               <div style="display:flex;gap:8px;">
-                <a class="section-link" href="#">Edit transfers</a>
-                <a class="section-link" href="#">Edit</a>
+                <a class="section-link" href="#">Add funds</a>
+                <a class="section-link" href="#">Pull funds</a>
+                <button class="btn-dots-sm" style="width:28px;height:28px;font-size:14px;">···</button>
               </div>
             </div>
             <div class="balance-cards">
               <div class="balance-card">
                 <div class="balance-card-label">Total balance</div>
-                <div class="balance-card-value">$65.00 USD</div>
+                <div class="balance-card-value">$0.00 USD</div>
               </div>
               <div class="balance-card">
                 <div class="balance-card-label">In transit to bank</div>
@@ -839,71 +862,28 @@
               <div class="section-title">Money movement</div>
             </div>
             <div class="mm-tabs">
-              <div class="mm-tab active">Payments</div>
+              <div class="mm-tab">Payments</div>
               <div class="mm-tab">Transfers</div>
-              <div class="mm-tab">Payouts</div>
+              <div class="mm-tab active">Payouts</div>
               <div class="mm-tab">Collected fees</div>
             </div>
-            <table class="mm-table">
-              <thead>
-                <tr>
-                  <th>Amount</th>
-                  <th>Status</th>
-                  <th>Category</th>
-                  <th>Balance transaction</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>$65.00</td>
-                  <td><span class="mm-badge">Succeeded</span></td>
-                  <td>Charge &gt; DFT</td>
-                  <td style="font-family:'Menlo',monospace;font-size:12px;color:#6c7688;">txn_abc...7421</td>
-                  <td style="text-align:right;color:#9ca3af;cursor:pointer;">···</td>
-                </tr>
-              </tbody>
-            </table>
-            <a class="mm-link" href="#">Link ↗</a>
+            <div class="empty-state" style="margin-top:16px;border-style:dashed;">This account doesn't have any payouts.</div>
           </div>
 
           <!-- Payout information -->
           <div class="detail-section">
             <div class="section-header">
               <div class="section-title">Payout information</div>
+              <a class="section-link" href="#">Edit payout schedule</a>
             </div>
             <div class="payout-grid">
               <div class="label">Payout schedule</div>
-              <div class="value">Daily – 2 day rolling basis</div>
+              <div class="value">–</div>
               <div class="label">Default currency</div>
               <div class="value">USD</div>
               <div class="label">Payout statement descriptor</div>
-              <div class="value">SARAH PHOTO</div>
+              <div class="value">TBOX</div>
             </div>
-          </div>
-
-          <!-- External accounts -->
-          <div class="detail-section">
-            <div class="section-header">
-              <div class="section-title">External accounts</div>
-              <a class="section-link" href="#">Add</a>
-            </div>
-            <div class="ext-account">
-              <div class="ext-account-logo">WF</div>
-              <div class="ext-account-info">
-                <div class="name">Wells Fargo Bank ···1234</div>
-                <div class="sub">USD</div>
-              </div>
-              <span class="dots">···</span>
-            </div>
-          </div>
-
-          <!-- Support cases -->
-          <div class="detail-section">
-            <div class="section-header">
-              <div class="section-title">Support cases</div>
-            </div>
-            <div class="empty-state">This account doesn't have any support cases.</div>
           </div>
 
           <!-- API logs -->
@@ -916,35 +896,6 @@
             </div>
           </div>
 
-          <!-- Apps and extensions -->
-          <div class="detail-section">
-            <div class="section-header">
-              <div class="section-title">Apps and extensions</div>
-            </div>
-            <div class="app-row">
-              <div class="app-icon" style="background:#4f46e5;">SM</div>
-              <div class="app-info">
-                <div class="name">SuperMetrics</div>
-                <div class="sub">Application access: read and write · Approved on Feb 14, 2025</div>
-              </div>
-            </div>
-            <div class="app-row">
-              <div class="app-icon" style="background:#dc2626;">TT</div>
-              <div class="app-info">
-                <div class="name">TurboTools</div>
-                <div class="sub">Application access: read only · Approved on Sep 18, 2024</div>
-              </div>
-            </div>
-            <div class="app-row">
-              <div class="app-icon" style="background:#16a34a;">mB</div>
-              <div class="app-info">
-                <div class="name">megaBuzz</div>
-                <div class="sub">Application access: read and write · Approved on Mar 18, 2024</div>
-              </div>
-            </div>
-            <a class="mm-link" href="#">List all</a>
-          </div>
-
           <!-- Related -->
           <div class="detail-section">
             <div class="section-header">
@@ -953,12 +904,12 @@
             <div class="related-grid">
               <div class="related-card">
                 <h4>Reports</h4>
-                <p>View this account's balance activity, fees, and payout reconciliation.</p>
+                <p>View this account's balance activity, fees, and payout reports.</p>
                 <a href="#">View reports</a>
               </div>
               <div class="related-card">
                 <h4>Tax forms</h4>
-                <p>Create, manage, file, and deliver Sarah's Photography 1099 forms.</p>
+                <p>Create, manage, file, and deliver Toybox Lab's 1099 form.</p>
                 <a href="#">View tax forms</a>
               </div>
             </div>
@@ -974,11 +925,11 @@
               <div class="right-section-title">Capabilities</div>
               <a class="section-link" href="#">Edit</a>
             </div>
-            <div style="display:flex;gap:8px;">
-              <div style="display:flex;align-items:center;gap:4px;font-size:12px;color:#6c7688;">
-                <img src="icons/card.svg" alt="" style="width:14px;height:14px;opacity:0.6;">
-                Payments, Payouts
-              </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:13px;color:#353a44;">
+              <span style="color:#16a34a;">●</span> Active
+            </div>
+            <div style="font-size:13px;color:#353a44;margin-top:4px;">
+              <a href="#" style="color:#533afd;text-decoration:none;">Payments</a>, <a href="#" style="color:#533afd;text-decoration:none;">Payouts</a>
             </div>
           </div>
 
@@ -989,52 +940,33 @@
             </div>
             <div class="right-field">
               <div class="label">Account ID</div>
-              <div class="value mono">acct_Ly5pN5pGDWgtpa</div>
+              <div class="value mono">acct_1NhhXXAcTtsvugk0</div>
             </div>
             <div class="right-field">
               <div class="label">Connected on</div>
-              <div class="value">Mar 3, 2026</div>
+              <div class="value">Apr 4, 2025</div>
             </div>
             <div class="right-field">
               <div class="label">Terms accepted on</div>
-              <div class="value">Mar 2, 2026</div>
+              <div class="value">Apr 20, 2025</div>
             </div>
             <div class="right-field">
-              <div class="label">Doing business as</div>
-              <div class="value">Sarah's Photography</div>
+              <div class="label">Country</div>
+              <div class="value">🇺🇸 United States</div>
             </div>
             <div class="right-field">
               <div class="label">Email</div>
-              <div class="value"><a href="#">sarah@sarahsphotography.com</a></div>
+              <div class="value">sarah@example.com</div>
             </div>
             <div class="right-field">
               <div class="label">Phone number</div>
-              <div class="value">(555) 123-4567</div>
+              <div class="value">(208) 489-4895</div>
             </div>
-            <div class="right-field">
-              <div class="label">Website</div>
-              <div class="value"><a href="#">sarahsphotography.com</a></div>
-            </div>
-            <div class="right-field">
-              <div class="label">Address</div>
-              <div class="value">123 Oak St<br>Portland, OR 97201</div>
-            </div>
-            <div class="right-field">
-              <div class="label">Statement descriptor</div>
-              <div class="value">SARAH PHOTO</div>
+            <div style="margin-top:4px;">
+              <a href="lovable-sarah-shared-access.html" style="color:#533afd;font-size:13px;text-decoration:none;">Shared access</a>
             </div>
           </div>
 
-          <div class="right-section">
-            <div class="right-section-header">
-              <div class="right-section-title">Metadata</div>
-              <a class="section-link" href="#">Edit</a>
-            </div>
-            <div class="right-field">
-              <div class="label">Internal ID</div>
-              <div class="value">184098480804</div>
-            </div>
-          </div>
 
         </div>
       </div>
@@ -1058,7 +990,7 @@
         </div>
         <div class="drawer-field">
           <div class="label">Account ID</div>
-          <div class="value mono">acct_Ly5pN5pGDWgtpa</div>
+          <div class="value mono">acct_1NhhXXAcTtsvugk0</div>
         </div>
         <div class="drawer-field">
           <div class="label">Type</div>
@@ -1066,7 +998,7 @@
         </div>
         <div class="drawer-field">
           <div class="label">Terms acceptance date</div>
-          <div class="value">Mar 2, 2026</div>
+          <div class="value">Apr 20, 2025</div>
         </div>
         <div class="drawer-field">
           <div class="label">Terms agreement type</div>
@@ -1097,11 +1029,11 @@
         </div>
         <div class="drawer-field">
           <div class="label">Email</div>
-          <div class="value"><a href="#">sarah@sarahsphotography.com</a></div>
+          <div class="value"><a href="#">sarah@example.com</a></div>
         </div>
         <div class="drawer-field">
           <div class="label">Support phone number</div>
-          <div class="value">(555) 123-4567</div>
+          <div class="value">(208) 489-4895</div>
         </div>
         <div class="drawer-field">
           <div class="label">Country</div>
@@ -1109,7 +1041,7 @@
         </div>
         <div class="drawer-field">
           <div class="label">Statement descriptor</div>
-          <div class="value">SARAH PHOTO</div>
+          <div class="value">TBOX</div>
         </div>
         <div class="drawer-field">
           <div class="label">Industry <svg class="info-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></div>
@@ -1132,7 +1064,7 @@
         </div>
         <div class="drawer-field">
           <div class="label">Connected on</div>
-          <div class="value">Mar 3, 2026</div>
+          <div class="value">Apr 4, 2025</div>
         </div>
       </div>
 
@@ -1144,9 +1076,21 @@
 
   <div class="proto-switcher">
     <div class="proto-switcher-title">Prototype options</div>
-    <label><input type="radio" name="proto" value="sarah" onchange="if(this.checked) window.location.href='home.html'"> Sarah's photography</label>
-    <label><input type="radio" name="proto" value="lovable" checked onchange="if(this.checked) window.location.href='lovable-network.html'"> Lovable</label>
+    <div class="proto-section-label">Dashboard</div>
+    <label><input type="radio" name="proto" value="sarah" onchange="handleProtoChange(this)"> Sarah's photography</label>
+    <label><input type="radio" name="proto" value="lovable" checked onchange="handleProtoChange(this)"> Lovable</label>
+    <div class="proto-options" id="protoOptions">
+      <div class="proto-section-label">Options</div>
+      <label><input type="radio" name="lovable-view" value="m1" checked onchange="if(this.checked) window.location.href='lovable-apps-overview.html'"> M1</label>
+      <label><input type="radio" name="lovable-view" value="m2" onchange="if(this.checked) window.location.href='lovable-apps-overview-m2.html'"> M2</label>
+    </div>
   </div>
+  <script>
+  function handleProtoChange(el) {
+    if (el.value === 'sarah') { window.location.href = 'home.html'; }
+    else { window.location.href = 'lovable-apps-overview.html'; }
+  }
+  </script>
 
   <!-- Diagram Panel -->
   <style>

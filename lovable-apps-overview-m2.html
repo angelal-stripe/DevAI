@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apps overview – Stripe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #fff;
+      color: #353a44;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 220px;
+      background: #fff;
+      border-right: 1px solid #d8dee4;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      flex-shrink: 0;
+    }
+
+    .sidebar-brand {
+      padding: 20px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #353a44;
+    }
+
+    .sidebar-brand-logo {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #f97316, #ec4899);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .sidebar-brand-logo svg { width: 14px; height: 14px; }
+
+    .sidebar-nav { padding: 16px 0; flex: 1; overflow-y: auto; }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 9px 20px;
+      font-size: 13.5px;
+      font-weight: 400;
+      color: #596171;
+      cursor: pointer;
+      transition: all 0.1s;
+      text-decoration: none;
+    }
+
+    .nav-item:hover { color: #353a44; background: #f5f6f8; }
+    .nav-item.active { color: #353a44; font-weight: 500; }
+
+    .nav-item img { width: 16px; height: 16px; flex-shrink: 0; }
+
+    .nav-item img.nav-item-chevron {
+      margin-left: auto;
+      width: 8px;
+      height: 8px;
+      opacity: 0.4;
+    }
+
+    .nav-item img.nav-item-chevron.expanded { transform: rotate(180deg); }
+
+    .nav-section {
+      padding: 20px 20px 8px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #6c7688;
+      letter-spacing: 0.2px;
+    }
+
+    .nav-sub-item {
+      display: flex;
+      align-items: center;
+      padding: 7px 20px 7px 48px;
+      font-size: 13px;
+      font-weight: 400;
+      color: #596171;
+      cursor: pointer;
+      transition: all 0.1s;
+      text-decoration: none;
+    }
+
+    .nav-sub-item:hover { color: #353a44; background: #f5f6f8; }
+    .nav-sub-item.active { color: #635bff; font-weight: 500; }
+
+    .sidebar-footer { padding: 12px 0; }
+
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+    .topbar {
+      height: 56px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      gap: 16px;
+    }
+
+    .search-bar {
+      flex: 1;
+      max-width: 480px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 8px 12px;
+      cursor: text;
+    }
+
+    .search-bar svg { color: #9ca3af; flex-shrink: 0; }
+    .search-bar span { font-size: 13px; color: #9ca3af; }
+
+    .topbar-icons { margin-left: auto; display: flex; align-items: center; gap: 4px; }
+
+    .topbar-icon {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: #6b7280; transition: background 0.1s;
+    }
+
+    .topbar-icon:hover { background: #f3f4f6; }
+    .topbar-icon svg { width: 18px; height: 18px; }
+    .topbar-icon.create { background: #635bff; color: #fff; width: 32px; height: 32px; }
+    .topbar-icon.create:hover { background: #4f46e5; }
+
+    .content { flex: 1; overflow-y: auto; padding: 32px 40px; max-width: 1280px; margin: 0 auto; width: 100%; box-sizing: border-box; }
+
+    .page-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1a2c44;
+      margin-bottom: 16px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid #d8dee4;
+      margin-bottom: 24px;
+    }
+
+    .tab {
+      padding: 10px 2px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #6c7688;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-right: 20px;
+    }
+
+    .tab:hover { color: #353a44; }
+    .tab.active { color: #533afd; border-bottom-color: #533afd; }
+
+    .page-layout {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 40px;
+    }
+
+    .page-description {
+      font-size: 14px;
+      color: #1a2c44;
+      line-height: 20px;
+      margin-bottom: 24px;
+    }
+
+    .page-description a {
+      color: #533afd;
+      text-decoration: underline;
+    }
+
+    .page-description a:hover { text-decoration: none; }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1a2c44;
+      margin-bottom: 16px;
+    }
+
+    .permission-row {
+      display: flex;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .permission-row:last-child { border-bottom: none; }
+
+    .permission-checkbox {
+      width: 16px;
+      height: 16px;
+      border-radius: 3px;
+      border: 1.5px solid #b6c0cd;
+      margin-right: 12px;
+      flex-shrink: 0;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      background: #fff;
+      position: relative;
+    }
+
+    .permission-checkbox:checked {
+      background: #533afd;
+      border-color: #533afd;
+    }
+
+    .permission-checkbox:checked::after {
+      content: '';
+      position: absolute;
+      left: 4px;
+      top: 1px;
+      width: 5px;
+      height: 9px;
+      border: solid #fff;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+
+    .permission-label {
+      flex: 1;
+      font-size: 14px;
+      font-weight: 500;
+      color: #353a44;
+    }
+
+    .permission-access {
+      font-size: 13px;
+      color: #6c7688;
+    }
+
+    .guide-card {
+      background: #f7f8fa;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 20px;
+    }
+
+    .guide-card-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1a2c44;
+      margin-bottom: 8px;
+    }
+
+    .guide-card-text {
+      font-size: 13px;
+      color: #596171;
+      line-height: 18px;
+      margin-bottom: 12px;
+    }
+
+    .guide-card a {
+      font-size: 13px;
+      color: #533afd;
+      text-decoration: none;
+    }
+
+    .guide-card a:hover { text-decoration: underline; }
+
+    .proto-switcher {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #fff;
+      border: 1px solid #d8dee4;
+      border-radius: 12px;
+      padding: 16px 20px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      z-index: 9999;
+    }
+
+    .proto-switcher-title { font-size: 14px; font-weight: 600; color: #353a44; margin-bottom: 12px; }
+    .proto-switcher label { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #353a44; cursor: pointer; padding: 4px 0; }
+    .proto-switcher input[type="radio"] { accent-color: #635bff; width: 16px; height: 16px; cursor: pointer; }
+    .proto-section-label { font-size: 11px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; margin-top: 4px; }
+    .proto-options { margin-top: 12px; padding-top: 12px; border-top: 1px solid #e5e7eb; }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-brand-logo">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#fff"/></svg>
+      </div>
+      Cactus Practice
+    </div>
+    <div class="sidebar-nav">
+      <a class="nav-item" href="#">
+        <img src="icons/home.svg" alt="">
+        Home
+      </a>
+      <a class="nav-item" href="#">
+        <img src="icons/balance.svg" alt="">
+        Balances
+      </a>
+      <a class="nav-item" href="#">
+        <img src="icons/convert.svg" alt="">
+        Transactions
+      </a>
+      <a class="nav-item" href="#">
+        <img src="icons/customers.svg" alt="">
+        Network
+      </a>
+      <a class="nav-item" href="#">
+        <img src="icons/product.svg" alt="">
+        Catalog
+      </a>
+
+      <div class="nav-section">Products</div>
+      <a class="nav-item" href="#">
+        <img src="icons/platform.svg" alt="">
+        Connect
+        <img class="nav-item-chevron" src="icons/chevronDown.svg" alt="">
+      </a>
+      <a class="nav-item" href="#">
+        <img src="icons/wallet.svg" alt="">
+        Payments
+        <img class="nav-item-chevron" src="icons/chevronDown.svg" alt="">
+      </a>
+      <a class="nav-item" href="#">
+        <img src="icons/billing.svg" alt="">
+        Billing
+        <img class="nav-item-chevron" src="icons/chevronDown.svg" alt="">
+      </a>
+      <a class="nav-item" href="#">
+        <img src="icons/barChart.svg" alt="">
+        Reporting
+        <img class="nav-item-chevron" src="icons/chevronDown.svg" alt="">
+      </a>
+      <a class="nav-item active" href="#">
+        <img src="icons/apps.svg" alt="">
+        Apps
+        <img class="nav-item-chevron expanded" src="icons/chevronDown.svg" alt="">
+      </a>
+      <a class="nav-sub-item active" href="#">
+        Overview
+      </a>
+      <a class="nav-item" href="#">
+        <img src="icons/more.svg" alt="">
+        More
+        <img class="nav-item-chevron" src="icons/chevronDown.svg" alt="">
+      </a>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="search-bar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span>Search...</span>
+      </div>
+      <div class="topbar-icons">
+        <div class="topbar-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <div class="topbar-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        </div>
+        <div class="topbar-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </div>
+        <div class="topbar-icon create">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <h1 class="page-title">Apps overview</h1>
+
+      <div class="tabs">
+        <div class="tab">Installed</div>
+        <div class="tab">Created</div>
+        <div class="tab active">Connections</div>
+      </div>
+
+      <div class="page-layout">
+        <div>
+          <p class="page-description">Request access to other Stripe accounts to help them build their business. You are currently connected to <a href="lovable-m2-network.html">939 accounts</a>.</p>
+
+          <h2 class="section-title">Default permissions</h2>
+
+          <div class="permission-row">
+            <input type="checkbox" class="permission-checkbox" checked>
+            <span class="permission-label">Identity</span>
+            <span class="permission-access">Read and write</span>
+          </div>
+          <div class="permission-row">
+            <input type="checkbox" class="permission-checkbox" checked>
+            <span class="permission-label">Events</span>
+            <span class="permission-access">Read and write</span>
+          </div>
+          <div class="permission-row">
+            <input type="checkbox" class="permission-checkbox" checked>
+            <span class="permission-label">API keys</span>
+            <span class="permission-access">Read and write</span>
+          </div>
+          <div class="permission-row">
+            <input type="checkbox" class="permission-checkbox">
+            <span class="permission-label">Balances</span>
+            <span class="permission-access">Read</span>
+          </div>
+          <div class="permission-row">
+            <input type="checkbox" class="permission-checkbox">
+            <span class="permission-label">Payment activity</span>
+            <span class="permission-access">Read</span>
+          </div>
+          <div class="permission-row">
+            <input type="checkbox" class="permission-checkbox">
+            <span class="permission-label">Payout activity</span>
+            <span class="permission-access">Read</span>
+          </div>
+          <div class="permission-row">
+            <input type="checkbox" class="permission-checkbox">
+            <span class="permission-label">Products</span>
+            <span class="permission-access">Read</span>
+          </div>
+        </div>
+
+        <div>
+          <div class="guide-card">
+            <div class="guide-card-title">Integration guide</div>
+            <p class="guide-card-text">Follow this guide to allow users to review permissions.</p>
+            <a href="#">View docs</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="proto-switcher">
+    <div class="proto-switcher-title">Prototype options</div>
+    <div class="proto-section-label">Dashboard</div>
+    <label><input type="radio" name="proto" value="sarah" onchange="if(this.checked) window.location.href='home.html'"> Sarah's photography</label>
+    <label><input type="radio" name="proto" value="lovable" checked onchange="if(this.checked) window.location.href='lovable-apps-overview.html'"> Lovable</label>
+    <div class="proto-options">
+      <div class="proto-section-label">Options</div>
+      <label><input type="radio" name="lovable-view" value="m1" onchange="if(this.checked) window.location.href='lovable-apps-overview.html'"> M1</label>
+      <label><input type="radio" name="lovable-view" value="m2" checked onchange="if(this.checked) window.location.href='lovable-apps-overview-m2.html'"> M2</label>
+    </div>
+  </div>
+
+</body>
+</html>

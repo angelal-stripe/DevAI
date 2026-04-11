@@ -535,7 +535,7 @@
       </a>
       <a class="nav-item" href="#">
         <img src="icons/person.svg" alt="">
-        Network
+        Customers
       </a>
       <a class="nav-item" href="#">
         <img src="icons/product.svg" alt="">
@@ -844,6 +844,8 @@
       cursor: pointer;
       padding: 4px 0;
     }
+    .proto-section-label { font-size: 11px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; margin-top: 4px; }
+    .proto-options { margin-top: 12px; padding-top: 12px; border-top: 1px solid #e5e7eb; }
     .proto-switcher input[type="radio"] {
       accent-color: #533afd;
       width: 16px;
@@ -853,9 +855,25 @@
   </style>
   <div class="proto-switcher">
     <div class="proto-switcher-title">Prototype options</div>
-    <label><input type="radio" name="proto" value="sarah" checked onchange="if(this.checked) window.location.href='home.html'"> Sarah's photography</label>
-    <label><input type="radio" name="proto" value="lovable" onchange="if(this.checked) window.location.href='lovable-network.html'"> Lovable</label>
+    <div class="proto-section-label">Dashboard</div>
+    <label><input type="radio" name="proto" value="sarah" checked onchange="handleProtoChange(this)"> Sarah's photography</label>
+    <label><input type="radio" name="proto" value="lovable" onchange="handleProtoChange(this)"> Lovable</label>
+    <div class="proto-options" id="protoOptions">
+      <div class="proto-section-label">Options</div>
+      <label><input type="radio" name="sarah-view" value="settings" checked onchange="handleSarahViewChange(this)"> Settings</label>
+      <label><input type="radio" name="sarah-view" value="apps" onchange="handleSarahViewChange(this)"> App workload</label>
+    </div>
   </div>
+  <script>
+  function handleProtoChange(el) {
+    if (el.value === 'sarah') { window.location.href = 'home.html'; }
+    else { window.location.href = 'lovable-network.html'; }
+  }
+  function handleSarahViewChange(el) {
+    if (el.value === 'settings') { window.location.href = 'home.html'; }
+    else { window.location.href = 'sarah-apps.html'; }
+  }
+  </script>
 
   <!-- Diagram Panel -->
   <style>
