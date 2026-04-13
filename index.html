@@ -1891,6 +1891,7 @@
       resize: none; overflow: hidden;
     }
     .ob-permission-reason:focus { outline: none; border-color: #635bff; box-shadow: 0 0 0 3px rgba(99,91,255,0.12); }
+    .ob-reason-hidden { display: none; }
     .ob-guide-card {
       background: #f7f8fa; border: 1px solid #e5e7eb;
       border-radius: 8px; padding: 20px;
@@ -2457,37 +2458,37 @@
               <p class="ob-page-description">Request access to other Stripe accounts to help them build their business. You are currently connected to <a href="#">0 accounts</a>.</p>
               <h2 class="ob-section-title">Default permissions</h2>
               <div class="ob-permission-row has-reason">
-                <input type="checkbox" class="ob-permission-checkbox" checked>
+                <input type="checkbox" class="ob-permission-checkbox" checked disabled style="opacity:0.7; cursor:not-allowed;">
                 <span class="ob-permission-label">Identity</span>
                 <span class="ob-permission-access">Read and write</span>
                 <span class="ob-permission-reason-label">Reason</span>
-                <textarea class="ob-permission-reason" rows="2">Lovable needs to read and update your business details to configure payments, verify your identity, and keep your account compliant.</textarea>
+                <textarea class="ob-permission-reason" id="obIdentityReason" rows="2" placeholder=""></textarea>
               </div>
-              <div class="ob-permission-row has-reason">
-                <input type="checkbox" class="ob-permission-checkbox" checked>
+              <div class="ob-permission-row" data-perm="events">
+                <input type="checkbox" class="ob-permission-checkbox" id="obEventsCheckbox">
                 <span class="ob-permission-label">Events</span>
                 <span class="ob-permission-access">Read and write</span>
-                <span class="ob-permission-reason-label">Reason</span>
-                <textarea class="ob-permission-reason" rows="2">Lovable subscribes to payment, payout, and dispute events to keep your dashboard in sync and trigger automated workflows.</textarea>
+                <span class="ob-permission-reason-label ob-reason-hidden" data-reason-for="events">Reason</span>
+                <textarea class="ob-permission-reason ob-reason-hidden" data-reason-for="events" rows="2">Lovable subscribes to payment, payout, and dispute events to keep your dashboard in sync and trigger automated workflows.</textarea>
               </div>
-              <div class="ob-permission-row has-reason">
-                <input type="checkbox" class="ob-permission-checkbox" checked>
+              <div class="ob-permission-row" data-perm="apikeys">
+                <input type="checkbox" class="ob-permission-checkbox" id="obApiKeysCheckbox">
                 <span class="ob-permission-label">API keys</span>
                 <span class="ob-permission-access">Read and write</span>
-                <span class="ob-permission-reason-label">Reason</span>
-                <textarea class="ob-permission-reason" rows="2">Lovable manages restricted API keys on your behalf to securely process payments and integrate with your storefront.</textarea>
+                <span class="ob-permission-reason-label ob-reason-hidden" data-reason-for="apikeys">Reason</span>
+                <textarea class="ob-permission-reason ob-reason-hidden" data-reason-for="apikeys" rows="2">Lovable manages restricted API keys on your behalf to securely process payments and integrate with your storefront.</textarea>
               </div>
               <div class="ob-permission-row">
                 <input type="checkbox" class="ob-permission-checkbox">
                 <span class="ob-permission-label">Balances</span>
                 <span class="ob-permission-access">Read</span>
               </div>
-              <div class="ob-permission-row has-reason">
-                <input type="checkbox" class="ob-permission-checkbox" checked>
+              <div class="ob-permission-row" data-perm="payment_activity">
+                <input type="checkbox" class="ob-permission-checkbox" id="obPaymentActivityCheckbox">
                 <span class="ob-permission-label">Payment activity</span>
                 <span class="ob-permission-access">Read</span>
-                <span class="ob-permission-reason-label">Reason</span>
-                <textarea class="ob-permission-reason" rows="2">Lovable reads payment activity to display transaction history, generate reports, and power real-time sales analytics in your dashboard.</textarea>
+                <span class="ob-permission-reason-label ob-reason-hidden" data-reason-for="payment_activity">Reason</span>
+                <textarea class="ob-permission-reason ob-reason-hidden" data-reason-for="payment_activity" rows="2">Lovable reads payment activity to display transaction history, generate reports, and power real-time sales analytics in your dashboard.</textarea>
               </div>
               <div class="ob-permission-row">
                 <input type="checkbox" class="ob-permission-checkbox">
@@ -3610,6 +3611,21 @@
     document.getElementById('obEnableBtn').addEventListener('click', () => {
       document.getElementById('obEmptyState').style.display = 'none';
       document.getElementById('obEnabledState').style.display = 'block';
+    });
+
+    // Events checkbox: auto-select API keys & Payment activity, show all reasons
+    document.getElementById('obEventsCheckbox').addEventListener('change', function() {
+      if (this.checked) {
+        document.getElementById('obApiKeysCheckbox').checked = true;
+        document.getElementById('obPaymentActivityCheckbox').checked = true;
+        document.getElementById('obIdentityReason').value = 'Lovable needs to read and update your business details to configure payments, verify your identity, and keep your account compliant.';
+        document.querySelectorAll('#obEnabledState .ob-reason-hidden').forEach(function(el) {
+          el.classList.remove('ob-reason-hidden');
+        });
+        document.querySelectorAll('#obEnabledState .ob-permission-row[data-perm]').forEach(function(row) {
+          row.classList.add('has-reason');
+        });
+      }
     });
   </script>
 </body>
