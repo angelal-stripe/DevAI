@@ -1151,7 +1151,7 @@
               <button class="mode-btn">Live</button>
             </div>
             <div class="sandbox-link">
-              <a href="home.html">Stripe sandbox dashboard <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+              <a href="sarah-apps.html" target="_blank">Stripe dashboard <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
             </div>
           </div>
 
@@ -1439,13 +1439,35 @@
       z-index: 9999;
       font-family: 'Inter', -apple-system, sans-serif;
       display: block;
+      transition: padding 0.2s;
+    }
+    .claim-proto-switcher.collapsed { padding: 12px 16px; }
+    .claim-proto-switcher-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
     }
     .claim-proto-switcher-title {
       font-size: 14px;
       font-weight: 600;
       color: #353a44;
-      margin-bottom: 12px;
+      margin-bottom: 0;
     }
+    .proto-switcher-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #9ca3af;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      transition: transform 0.2s;
+    }
+    .claim-proto-switcher.collapsed .proto-switcher-toggle { transform: rotate(180deg); }
+    .claim-proto-switcher-body { margin-top: 12px; }
+    .claim-proto-switcher.collapsed .claim-proto-switcher-body { display: none; }
     .claim-proto-switcher label {
       display: flex;
       align-items: center;
@@ -2526,15 +2548,20 @@
   </div>
 
   <!-- Claim sandbox proto-switcher -->
-  <div class="claim-proto-switcher" id="claimProtoSwitcher">
-    <div class="claim-proto-switcher-title">Prototype options</div>
-    <div style="font-size:12px; font-weight:600; color:#596171; margin-bottom:4px; margin-top:4px;">Flow</div>
-    <label><input type="radio" name="claimProto" value="flexible" id="protoFlexible" checked> Flexible</label>
-    <label><input type="radio" name="claimProto" value="focused" id="protoFocused"> Focused</label>
-    <div style="font-size:12px; font-weight:600; color:#596171; margin-bottom:4px; margin-top:12px;">Branding</div>
-    <label><input type="radio" name="brandingProto" value="stripe" id="brandStripe" checked> Stripe</label>
-    <label><input type="radio" name="brandingProto" value="lovable" id="brandLovable"> Lovable</label>
-    <button onclick="location.reload()" style="margin-top:14px; width:100%; padding:8px; border:1px solid #d8dee4; border-radius:6px; background:#fff; font-size:13px; font-weight:500; color:#596171; cursor:pointer; font-family:inherit; transition:background .15s;">Reset</button>
+  <div class="claim-proto-switcher collapsed" id="claimProtoSwitcher">
+    <div class="claim-proto-switcher-header" onclick="this.parentElement.classList.toggle('collapsed')">
+      <div class="claim-proto-switcher-title">Prototype options</div>
+      <button class="proto-switcher-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+    </div>
+    <div class="claim-proto-switcher-body">
+      <div style="font-size:12px; font-weight:600; color:#596171; margin-bottom:4px; margin-top:4px;">Flow</div>
+      <label><input type="radio" name="claimProto" value="flexible" id="protoFlexible" checked> Flexible</label>
+      <label><input type="radio" name="claimProto" value="focused" id="protoFocused"> Focused</label>
+      <div style="font-size:12px; font-weight:600; color:#596171; margin-bottom:4px; margin-top:12px;">Branding</div>
+      <label><input type="radio" name="brandingProto" value="stripe" id="brandStripe" checked> Stripe</label>
+      <label><input type="radio" name="brandingProto" value="lovable" id="brandLovable"> Lovable</label>
+      <button onclick="event.stopPropagation(); location.reload()" style="margin-top:14px; width:100%; padding:8px; border:1px solid #d8dee4; border-radius:6px; background:#fff; font-size:13px; font-weight:500; color:#596171; cursor:pointer; font-family:inherit; transition:background .15s;">Reset</button>
+    </div>
   </div>
 
   <!-- Diagram Panel -->
