@@ -638,12 +638,27 @@
       }
     }
 
+    function applyPermissionStates() {
+      try {
+        var saved = JSON.parse(localStorage.getItem('lovablePermissions'));
+        if (!saved) return;
+        document.querySelectorAll('.review-accordion-item[data-perm]').forEach(function(item) {
+          var key = item.dataset.perm;
+          if (key in saved) {
+            var cb = item.querySelector('input[type="checkbox"]');
+            if (cb && !cb.disabled) cb.checked = saved[key];
+          }
+        });
+      } catch(ex) {}
+    }
+
     function openReviewDialog(name) {
       document.getElementById('reviewDialogTitle').textContent = 'Review permissions for ' + name;
       document.getElementById('reviewDialogAccess').textContent = name + ' has access to:';
       document.getElementById('reviewDialog').dataset.name = name;
       document.querySelectorAll('.review-accordion-item.expanded').forEach(function(el) { el.classList.remove('expanded'); });
       document.querySelectorAll('.review-accordion-detail.visible').forEach(function(el) { el.classList.remove('visible'); });
+      applyPermissionStates();
       document.getElementById('reviewDialog').classList.remove('hidden');
     }
     function closeReviewDialog() {
@@ -676,32 +691,41 @@
       <div style="padding: 0 16px 20px;">
         <p id="reviewDialogAccess" class="review-body-text">[name] has access to:</p>
         <div class="review-accordion" style="margin-top: 16px;">
-          <div class="review-accordion-item" onclick="toggleReviewAccordion(this)">
-            <input type="checkbox" checked disabled style="accent-color: #635bff; width: 15px; height: 15px; margin-right: 4px; cursor: not-allowed;" onclick="event.stopPropagation()">
+          <div class="review-accordion-item" data-perm="identity" onclick="toggleReviewAccordion(this)">
             <img class="review-accordion-trigger" src="icons/chevronRight.svg" width="12" height="12" alt="">
+            <input type="checkbox" checked disabled style="accent-color: #635bff; width: 15px; height: 15px; margin-right: 4px; cursor: not-allowed;" onclick="event.stopPropagation()">
             <span class="review-accordion-label">Identity info</span>
             <span class="review-accordion-badge">Write</span>
           </div>
           <div class="review-accordion-detail">
             <div class="review-accordion-reason">Lovable needs to read and update your business details to configure payments, verify your identity, and keep your account compliant.</div>
           </div>
-          <div class="review-accordion-item" onclick="toggleReviewAccordion(this)">
-            <input type="checkbox" checked disabled style="accent-color: #635bff; width: 15px; height: 15px; margin-right: 4px; cursor: not-allowed;" onclick="event.stopPropagation()">
+          <div class="review-accordion-item" data-perm="events" onclick="toggleReviewAccordion(this)">
             <img class="review-accordion-trigger" src="icons/chevronRight.svg" width="12" height="12" alt="">
+            <input type="checkbox" checked style="accent-color: #635bff; width: 15px; height: 15px; margin-right: 4px; cursor: pointer;" onclick="event.stopPropagation()">
             <span class="review-accordion-label">Events</span>
             <span class="review-accordion-badge">Write</span>
           </div>
           <div class="review-accordion-detail">
             <div class="review-accordion-reason">Lovable subscribes to payment, payout, and dispute events to keep your dashboard in sync and trigger automated workflows.</div>
           </div>
-          <div class="review-accordion-item" onclick="toggleReviewAccordion(this)">
-            <input type="checkbox" checked disabled style="accent-color: #635bff; width: 15px; height: 15px; margin-right: 4px; cursor: not-allowed;" onclick="event.stopPropagation()">
+          <div class="review-accordion-item" data-perm="apikeys" onclick="toggleReviewAccordion(this)">
             <img class="review-accordion-trigger" src="icons/chevronRight.svg" width="12" height="12" alt="">
+            <input type="checkbox" checked style="accent-color: #635bff; width: 15px; height: 15px; margin-right: 4px; cursor: pointer;" onclick="event.stopPropagation()">
             <span class="review-accordion-label">API keys</span>
             <span class="review-accordion-badge">Write</span>
           </div>
           <div class="review-accordion-detail">
             <div class="review-accordion-reason">Lovable manages restricted API keys on your behalf to securely process payments and integrate with your storefront.</div>
+          </div>
+          <div class="review-accordion-item" data-perm="payment_activity" onclick="toggleReviewAccordion(this)">
+            <img class="review-accordion-trigger" src="icons/chevronRight.svg" width="12" height="12" alt="">
+            <input type="checkbox" checked style="accent-color: #635bff; width: 15px; height: 15px; margin-right: 4px; cursor: pointer;" onclick="event.stopPropagation()">
+            <span class="review-accordion-label">Payment activity</span>
+            <span class="review-accordion-badge">Read</span>
+          </div>
+          <div class="review-accordion-detail">
+            <div class="review-accordion-reason">Lovable reads payment activity to display transaction history, generate reports, and power real-time sales analytics in your dashboard.</div>
           </div>
         </div>
         <label class="review-checkbox" style="margin-top: 20px;">

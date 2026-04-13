@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Connected accounts – Lovable – Stripe</title>
+  <title>Network – Lovable – Stripe</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -408,7 +408,7 @@
       vertical-align: middle;
     }
 
-    .accounts-table tr:hover { background: #f9fafb; cursor: pointer; }
+    .accounts-table tbody tr { pointer-events: none; }
 
     .account-name {
       font-weight: 500;
@@ -437,7 +437,43 @@
     .status-badge.rejected { background: #e3e8ef; color: #596171; }
     .status-badge.in-review { background: #fef3c7; color: #a16207; }
 
-    .td-balance { font-weight: 500; }
+    .th-checkbox, .td-checkbox {
+      width: 32px;
+      padding-left: 4px;
+      padding-right: 0;
+    }
+
+    .row-checkbox {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+      border: 1.5px solid #b6c0cd;
+      cursor: default;
+      pointer-events: none;
+      appearance: none;
+      -webkit-appearance: none;
+      background: #fff;
+      position: relative;
+      vertical-align: middle;
+    }
+
+    .row-checkbox:checked {
+      background: #533afd;
+      border-color: #533afd;
+    }
+
+    .row-checkbox:checked::after {
+      content: '';
+      position: absolute;
+      left: 3.5px;
+      top: 0.5px;
+      width: 4px;
+      height: 8px;
+      border: solid #fff;
+      border-width: 0 1.5px 1.5px 0;
+      transform: rotate(45deg);
+    }
+
     .td-dots { text-align: right; color: #9ca3af; cursor: pointer; font-size: 18px; }
 
     /* Pagination */
@@ -539,7 +575,7 @@
         <img src="icons/convert.svg" alt="">
         Transactions
       </a>
-      <a class="nav-item active" href="lovable-m2-network.html">
+      <a class="nav-item active" href="lovable-m2-network.html" style="color: #635bff;">
         <img src="icons/customers.svg" alt="">
         Network
       </a>
@@ -608,7 +644,7 @@
 
     <div class="content">
       <div class="page-header">
-        <div class="page-title">Connected accounts</div>
+        <div class="page-title">Network</div>
         <div class="header-actions">
           <button class="btn-primary">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -618,35 +654,12 @@
         </div>
       </div>
 
-      <div class="summary-cards">
-        <div class="summary-card active">
-          <div class="summary-card-label">All accounts</div>
-          <div class="summary-card-value">939</div>
-        </div>
-        <div class="summary-card">
-          <div class="summary-card-label">Restricted</div>
-          <div class="summary-card-value">20</div>
-        </div>
-        <div class="summary-card">
-          <div class="summary-card-label">Restricted soon</div>
-          <div class="summary-card-value">30</div>
-        </div>
-        <div class="summary-card">
-          <div class="summary-card-label">Enabled</div>
-          <div class="summary-card-value">850</div>
-        </div>
-        <div class="summary-card">
-          <div class="summary-card-label">In review</div>
-          <div class="summary-card-value">22</div>
-        </div>
-      </div>
-
       <div class="filter-row">
         <button class="filter-pill"><img src="icons/addCircle.svg" alt=""> Account status</button>
         <button class="filter-pill"><img src="icons/addCircle.svg" alt=""> Last active</button>
         <button class="filter-pill"><img src="icons/addCircle.svg" alt=""> Requirements</button>
         <button class="filter-pill applied">
-          <img src="icons/cancelCircle.svg" alt=""> Connections
+          <img src="icons/cancelCircle.svg" alt=""> Consent record
           <span class="filter-separator"></span>
           <span class="filter-value">Enabled</span>
           <img src="icons/chevronDown.svg" alt="" style="width:8px;height:8px;opacity:0.4;">
@@ -662,192 +675,150 @@
       <table class="accounts-table">
         <thead>
           <tr>
+            <th class="th-checkbox"><input type="checkbox" class="row-checkbox"></th>
             <th>Account</th>
-            <th></th>
-            <th>Balance</th>
-            <th>Last payout</th>
             <th>Volume</th>
             <th>Added</th>
             <th></th>
           </tr>
         </thead>
         <tbody>
-          <tr onclick="window.location.href='lovable-sarah-detail.html'">
-            <td class="account-name">Sarah's Photography</td>
-            <td><span class="status-badge complete">Enabled</span></td>
-            <td class="td-balance">$7,600.00</td>
-            <td>May 7, 12:24 PM</td>
+          <tr>
+            <td class="td-checkbox"><input type="checkbox" class="row-checkbox"></td>
+            <td class="account-name">Sarah's photography</td>
             <td>$8,300.30</td>
             <td>May 13, 2021</td>
             <td class="td-dots">···</td>
           </tr>
           <tr>
+            <td class="td-checkbox"><input type="checkbox" class="row-checkbox"></td>
             <td class="account-name">Boyer Group</td>
-            <td><span class="status-badge complete">Enabled</span></td>
-            <td class="td-balance">$0.00</td>
-            <td>May 7, 12:03 PM</td>
             <td>$27,559.10</td>
             <td>Apr 9, 2024</td>
             <td class="td-dots">···</td>
           </tr>
           <tr>
+            <td class="td-checkbox"><input type="checkbox" class="row-checkbox"></td>
             <td class="account-name">Sawayn Co.</td>
-            <td><span class="status-badge complete">Enabled</span></td>
-            <td class="td-balance">$4,000.50</td>
-            <td>May 7, 12:01 PM</td>
             <td>$27,056.64</td>
             <td>Jul 29, 2020</td>
             <td class="td-dots">···</td>
           </tr>
           <tr>
+            <td class="td-checkbox"><input type="checkbox" class="row-checkbox"></td>
             <td class="account-name">Legros Group</td>
-            <td><span class="status-badge complete">Enabled</span></td>
-            <td class="td-balance">$0.00</td>
-            <td>May 7, 11:54 AM</td>
             <td>$73,909.85</td>
             <td>Apr 9, 2024</td>
             <td class="td-dots">···</td>
           </tr>
           <tr>
+            <td class="td-checkbox"><input type="checkbox" class="row-checkbox"></td>
             <td class="account-name">Cassin Inc.</td>
-            <td><span class="status-badge restricted">Restricted</span></td>
-            <td class="td-balance">$1,309.55</td>
-            <td>May 7, 11:45 AM</td>
             <td>$21,920.19</td>
             <td>May 13, 2021</td>
             <td class="td-dots">···</td>
           </tr>
           <tr>
+            <td class="td-checkbox"><input type="checkbox" class="row-checkbox"></td>
             <td class="account-name">Legros Group</td>
-            <td><span class="status-badge complete">Enabled</span></td>
-            <td class="td-balance">$1,011.00</td>
-            <td>May 7, 11:44 AM</td>
             <td>$63,228.53</td>
             <td>Feb 12, 2023</td>
             <td class="td-dots">···</td>
           </tr>
           <tr>
+            <td class="td-checkbox"><input type="checkbox" class="row-checkbox"></td>
             <td class="account-name">Anderson Group</td>
-            <td><span class="status-badge complete">Enabled</span></td>
-            <td class="td-balance">$0.00</td>
-            <td>May 7, 11:39 AM</td>
             <td>$78,779.63</td>
             <td>Apr 9, 2024</td>
             <td class="td-dots">···</td>
           </tr>
           <tr>
+            <td class="td-checkbox"><input type="checkbox" class="row-checkbox"></td>
             <td class="account-name">Keebler LLC</td>
-            <td><span class="status-badge complete">Enabled</span></td>
-            <td class="td-balance">$0.00</td>
-            <td>May 7, 11:30 AM</td>
             <td>$82,852.04</td>
             <td>Jul 29, 2020</td>
             <td class="td-dots">···</td>
           </tr>
           <tr>
+            <td class="td-checkbox"><input type="checkbox" class="row-checkbox"></td>
             <td class="account-name">Mohr Inc.</td>
-            <td><span class="status-badge restricted">Restricted</span></td>
-            <td class="td-balance">$0.00</td>
-            <td>May 7, 10:55 AM</td>
             <td>$4,793.53</td>
             <td>Apr 11, 2021</td>
             <td class="td-dots">···</td>
           </tr>
           <tr>
+            <td class="td-checkbox"><input type="checkbox" class="row-checkbox"></td>
             <td class="account-name">Berge LLC</td>
-            <td><span class="status-badge restricted-soon">Restricted soon</span></td>
-            <td class="td-balance">$0.00</td>
-            <td>May 7, 10:45 AM</td>
             <td>$57,015.43</td>
             <td>Apr 9, 2024</td>
             <td class="td-dots">···</td>
           </tr>
           <tr>
+            <td class="td-checkbox"><input type="checkbox" class="row-checkbox"></td>
             <td class="account-name">Quigley Inc.</td>
-            <td><span class="status-badge restricted-soon">Restricted soon</span></td>
-            <td class="td-balance">$0.00</td>
-            <td>May 7, 10:29 AM</td>
             <td>$55,343.09</td>
             <td>Feb 12, 2023</td>
             <td class="td-dots">···</td>
           </tr>
           <tr>
+            <td class="td-checkbox"><input type="checkbox" class="row-checkbox"></td>
             <td class="account-name">Sauer Company</td>
-            <td><span class="status-badge complete">Enabled</span></td>
-            <td class="td-balance">$0.00</td>
-            <td>May 7, 10:23 AM</td>
             <td>$78,304.03</td>
             <td>May 13, 2021</td>
             <td class="td-dots">···</td>
           </tr>
           <tr>
+            <td class="td-checkbox"><input type="checkbox" class="row-checkbox"></td>
             <td class="account-name">Pfeffer LLC</td>
-            <td><span class="status-badge rejected">Rejected</span></td>
-            <td class="td-balance">$0.00</td>
-            <td>May 7, 10:15 AM</td>
             <td>$7,098.41</td>
             <td>Jul 29, 2020</td>
             <td class="td-dots">···</td>
           </tr>
           <tr>
+            <td class="td-checkbox"><input type="checkbox" class="row-checkbox"></td>
             <td class="account-name">Thiel Co.</td>
-            <td><span class="status-badge restricted-soon">Restricted soon</span></td>
-            <td class="td-balance">$0.00</td>
-            <td>May 7, 9:54 AM</td>
             <td>$19,601.60</td>
             <td>Apr 9, 2024</td>
             <td class="td-dots">···</td>
           </tr>
           <tr>
+            <td class="td-checkbox"><input type="checkbox" class="row-checkbox"></td>
             <td class="account-name">Wiegand Group</td>
-            <td><span class="status-badge restricted">Restricted</span></td>
-            <td class="td-balance">$0.00</td>
-            <td>May 7, 9:50 AM</td>
             <td>$12,530.88</td>
             <td>Feb 12, 2023</td>
             <td class="td-dots">···</td>
           </tr>
           <tr>
+            <td class="td-checkbox"><input type="checkbox" class="row-checkbox"></td>
             <td class="account-name">Raynor Co.</td>
-            <td><span class="status-badge restricted-soon">Restricted soon</span></td>
-            <td class="td-balance">$0.00</td>
-            <td>May 7, 9:40 AM</td>
             <td>$34,065.00</td>
             <td>Apr 20, 2021</td>
             <td class="td-dots">···</td>
           </tr>
           <tr>
+            <td class="td-checkbox"><input type="checkbox" class="row-checkbox"></td>
             <td class="account-name">Gibson Company</td>
-            <td><span class="status-badge restricted">Restricted</span></td>
-            <td class="td-balance">$0.00</td>
-            <td>May 7, 9:32 AM</td>
             <td>$19,843.02</td>
             <td>May 13, 2021</td>
             <td class="td-dots">···</td>
           </tr>
           <tr>
+            <td class="td-checkbox"><input type="checkbox" class="row-checkbox"></td>
             <td class="account-name">Franey Inc.</td>
-            <td><span class="status-badge restricted">Restricted</span></td>
-            <td class="td-balance">$0.00</td>
-            <td>May 7, 8:29 AM</td>
             <td>$28,850.02</td>
             <td>Feb 12, 2023</td>
             <td class="td-dots">···</td>
           </tr>
           <tr>
+            <td class="td-checkbox"><input type="checkbox" class="row-checkbox"></td>
             <td class="account-name">Kovacek Co.</td>
-            <td><span class="status-badge complete">Enabled</span></td>
-            <td class="td-balance">$0.00</td>
-            <td>May 7, 8:20 AM</td>
             <td>$50,204.42</td>
             <td>Jul 29, 2020</td>
             <td class="td-dots">···</td>
           </tr>
           <tr>
+            <td class="td-checkbox"><input type="checkbox" class="row-checkbox"></td>
             <td class="account-name">Hyatt LLC</td>
-            <td><span class="status-badge complete">Enabled</span></td>
-            <td class="td-balance">$0.00</td>
-            <td>May 7, 17:45 AM</td>
             <td>$12,710.14</td>
             <td>Apr 9, 2024</td>
             <td class="td-dots">···</td>

@@ -1376,6 +1376,9 @@
     .stripe-field input:focus{border-color:#533afd;box-shadow:0 0 0 3px rgba(99,91,255,.12)}
     .stripe-submit{width:100%;padding:11px;border:none;border-radius:6px;background:#7a6ef0;color:#fff;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:4px;transition:opacity .15s}
     .stripe-submit:hover{opacity:.88}
+    .perm-accordion-row { cursor: pointer; }
+    .perm-accordion-row .perm-chevron { transition: transform 0.15s; flex-shrink: 0; }
+    .perm-accordion-row.expanded .perm-chevron { transform: rotate(90deg); }
     .stripe-modal.lovable-brand .stripe-submit{background:#EC4899 !important;border-color:#EC4899 !important;}
     .stripe-modal.lovable-brand .stripe-field input:focus{border-color:#EC4899;box-shadow:0 0 0 3px rgba(236,72,153,.12)}
     .stripe-modal.lovable-brand .stripe-alt-link a{color:#EC4899 !important}
@@ -2503,20 +2506,53 @@
             </div>
 
             <div style="display:flex; flex-direction:column; gap:0; margin-bottom:24px;">
-              <div style="display:flex; align-items:center; height:48px; border-bottom:1px solid #d8dee4; gap:12px;">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6c7688" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-                <span style="flex:1; font-size:14px; color:#353a44; line-height:20px; letter-spacing:-0.15px;">Identity info</span>
-                <span style="font-size:12px; color:#596171; line-height:16px;">Write</span>
+              <div class="perm-accordion-row" data-perm="identity" onclick="togglePermReason(this)">
+                <div style="display:flex; align-items:center; min-height:48px; border-bottom:1px solid #d8dee4; gap:12px; padding:4px 0;">
+                  <svg class="perm-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6c7688" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                  <input type="checkbox" checked disabled style="width:14px; height:14px; accent-color:#675dff; cursor:not-allowed; flex-shrink:0; opacity:0.7;" onclick="event.stopPropagation()">
+                  <span style="flex:1; font-size:14px; color:#353a44; line-height:20px; letter-spacing:-0.15px;">Identity info</span>
+                  <span style="font-size:12px; color:#596171; line-height:16px;">Write</span>
+                </div>
+                <div class="perm-reason-panel" style="display:none; padding:8px 0 12px 38px; border-bottom:1px solid #d8dee4;">
+                  <div style="font-size:12px; font-weight:600; color:#353a44; margin-bottom:4px;">Reason</div>
+                  <div style="font-size:13px; color:#596171; line-height:18px;">Lovable needs to read and update your business details to configure payments, verify your identity, and keep your account compliant.</div>
+                </div>
               </div>
-              <div style="display:flex; align-items:center; height:48px; border-bottom:1px solid #d8dee4; gap:12px;">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6c7688" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-                <span style="flex:1; font-size:14px; color:#353a44; line-height:20px; letter-spacing:-0.15px;">Events</span>
-                <span style="font-size:12px; color:#596171; line-height:16px;">Write</span>
+              <div class="perm-accordion-row" data-perm="events" onclick="togglePermReason(this)">
+                <div style="display:flex; align-items:center; min-height:48px; border-bottom:1px solid #d8dee4; gap:12px; padding:4px 0;">
+                  <svg class="perm-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6c7688" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                  <input type="checkbox" checked style="width:14px; height:14px; accent-color:#675dff; cursor:pointer; flex-shrink:0;" onclick="event.stopPropagation()">
+                  <span style="flex:1; font-size:14px; color:#353a44; line-height:20px; letter-spacing:-0.15px;">Events</span>
+                  <span style="font-size:12px; color:#596171; line-height:16px;">Write</span>
+                </div>
+                <div class="perm-reason-panel" style="display:none; padding:8px 0 12px 38px; border-bottom:1px solid #d8dee4;">
+                  <div style="font-size:12px; font-weight:600; color:#353a44; margin-bottom:4px;">Reason</div>
+                  <div style="font-size:13px; color:#596171; line-height:18px;">Lovable subscribes to payment, payout, and dispute events to keep your dashboard in sync and trigger automated workflows.</div>
+                </div>
               </div>
-              <div style="display:flex; align-items:center; height:48px; border-bottom:1px solid #d8dee4; gap:12px;">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6c7688" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-                <span style="flex:1; font-size:14px; color:#353a44; line-height:20px; letter-spacing:-0.15px;">API keys</span>
-                <span style="font-size:12px; color:#596171; line-height:16px;">Write</span>
+              <div class="perm-accordion-row" data-perm="apikeys" onclick="togglePermReason(this)">
+                <div style="display:flex; align-items:center; min-height:48px; border-bottom:1px solid #d8dee4; gap:12px; padding:4px 0;">
+                  <svg class="perm-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6c7688" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                  <input type="checkbox" checked style="width:14px; height:14px; accent-color:#675dff; cursor:pointer; flex-shrink:0;" onclick="event.stopPropagation()">
+                  <span style="flex:1; font-size:14px; color:#353a44; line-height:20px; letter-spacing:-0.15px;">API keys</span>
+                  <span style="font-size:12px; color:#596171; line-height:16px;">Write</span>
+                </div>
+                <div class="perm-reason-panel" style="display:none; padding:8px 0 12px 38px; border-bottom:1px solid #d8dee4;">
+                  <div style="font-size:12px; font-weight:600; color:#353a44; margin-bottom:4px;">Reason</div>
+                  <div style="font-size:13px; color:#596171; line-height:18px;">Lovable manages restricted API keys on your behalf to securely process payments and integrate with your storefront.</div>
+                </div>
+              </div>
+              <div class="perm-accordion-row" data-perm="payment_activity" onclick="togglePermReason(this)">
+                <div style="display:flex; align-items:center; min-height:48px; border-bottom:1px solid #d8dee4; gap:12px; padding:4px 0;">
+                  <svg class="perm-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6c7688" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                  <input type="checkbox" checked style="width:14px; height:14px; accent-color:#675dff; cursor:pointer; flex-shrink:0;" onclick="event.stopPropagation()">
+                  <span style="flex:1; font-size:14px; color:#353a44; line-height:20px; letter-spacing:-0.15px;">Payment activity</span>
+                  <span style="font-size:12px; color:#596171; line-height:16px;">Read</span>
+                </div>
+                <div class="perm-reason-panel" style="display:none; padding:8px 0 12px 38px; border-bottom:1px solid #d8dee4;">
+                  <div style="font-size:12px; font-weight:600; color:#353a44; margin-bottom:4px;">Reason</div>
+                  <div style="font-size:13px; color:#596171; line-height:18px;">Lovable reads payment activity to display transaction history, generate reports, and power real-time sales analytics in your dashboard.</div>
+                </div>
               </div>
             </div>
 
@@ -3200,8 +3236,23 @@
       setTimeout(() => { resetToFirstStep(); }, 300);
     });
 
+    function togglePermReason(row) {
+      var panel = row.querySelector('.perm-reason-panel');
+      var isOpen = panel.style.display !== 'none';
+      panel.style.display = isOpen ? 'none' : 'block';
+      row.classList.toggle('expanded', !isOpen);
+    }
+
     document.getElementById('allowContinueBtn').addEventListener('click',(e)=>{
       e.preventDefault();
+
+      var permStates = {};
+      document.querySelectorAll('.perm-accordion-row[data-perm]').forEach(function(row) {
+        var cb = row.querySelector('input[type="checkbox"]');
+        permStates[row.dataset.perm] = cb.checked;
+      });
+      try { localStorage.setItem('lovablePermissions', JSON.stringify(permStates)); } catch(ex) {}
+
       showTransaction();
 
       // Always show consent record label
