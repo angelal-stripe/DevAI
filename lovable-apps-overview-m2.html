@@ -254,6 +254,39 @@
       color: #6c7688;
     }
 
+    .permission-reason-label {
+      width: 100%;
+      margin-top: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #353a44;
+    }
+
+    .permission-reason {
+      width: 100%;
+      padding: 8px 12px;
+      margin-top: 4px;
+      font-size: 13px;
+      font-family: inherit;
+      color: #353a44;
+      line-height: 18px;
+      background: #fff;
+      border: 1px solid #d8dee4;
+      border-radius: 6px;
+      resize: none;
+      overflow: hidden;
+    }
+
+    .permission-reason:focus {
+      outline: none;
+      border-color: #635bff;
+      box-shadow: 0 0 0 3px rgba(99,91,255,0.12);
+    }
+
+    .permission-row.has-reason {
+      flex-wrap: wrap;
+    }
+
     .guide-card {
       background: #f7f8fa;
       border: 1px solid #e5e7eb;
@@ -412,20 +445,26 @@
 
           <h2 class="section-title">Default permissions</h2>
 
-          <div class="permission-row">
+          <div class="permission-row has-reason">
             <input type="checkbox" class="permission-checkbox" checked>
             <span class="permission-label">Identity</span>
             <span class="permission-access">Read and write</span>
+            <span class="permission-reason-label">Reason</span>
+            <textarea class="permission-reason" rows="2">Lovable needs to read and update your business details to configure payments, verify your identity, and keep your account compliant.</textarea>
           </div>
-          <div class="permission-row">
+          <div class="permission-row has-reason">
             <input type="checkbox" class="permission-checkbox" checked>
             <span class="permission-label">Events</span>
             <span class="permission-access">Read and write</span>
+            <span class="permission-reason-label">Reason</span>
+            <textarea class="permission-reason" rows="2">Lovable subscribes to payment, payout, and dispute events to keep your dashboard in sync and trigger automated workflows.</textarea>
           </div>
-          <div class="permission-row">
+          <div class="permission-row has-reason">
             <input type="checkbox" class="permission-checkbox" checked>
             <span class="permission-label">API keys</span>
             <span class="permission-access">Read and write</span>
+            <span class="permission-reason-label">Reason</span>
+            <textarea class="permission-reason" rows="2">Lovable manages restricted API keys on your behalf to securely process payments and integrate with your storefront.</textarea>
           </div>
           <div class="permission-row">
             <input type="checkbox" class="permission-checkbox">
@@ -466,7 +505,7 @@
       <button class="proto-switcher-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
     </div>
     <div class="proto-section-label">Dashboard</div>
-    <label><input type="radio" name="proto" value="sarah" onchange="if(this.checked) window.location.href='home.html'"> Sarah's photography</label>
+    <label><input type="radio" name="proto" value="sarah" onchange="if(this.checked) window.location.href='sarah-apps.html'"> Sarah's photography</label>
     <label><input type="radio" name="proto" value="lovable" checked onchange="if(this.checked) window.location.href='lovable-apps-overview.html'"> Lovable</label>
     <div class="proto-options">
       <div class="proto-section-label">Options</div>
