@@ -1903,27 +1903,23 @@
 
     /* Empty state */
     .ob-empty-state {
-      text-align: center;
-      padding: 60px 20px;
-      border: 1px dashed #d8dee4;
+      padding: 56px 63px;
       border-radius: 12px;
-      background: #fafbfc;
+      background: #f5f6f8;
     }
-    .ob-empty-icon {
-      width: 48px; height: 48px; margin: 0 auto 16px;
-      background: #f0edff; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .ob-empty-icon svg { width: 24px; height: 24px; color: #533afd; }
-    .ob-empty-title { font-size: 16px; font-weight: 600; color: #1a2c44; margin-bottom: 8px; }
-    .ob-empty-text { font-size: 13px; color: #596171; line-height: 1.5; max-width: 360px; margin: 0 auto 20px; }
+    .ob-empty-title { font-size: 20px; font-weight: 700; color: #353a44; line-height: 28px; letter-spacing: 0.3px; margin-bottom: 8px; }
+    .ob-empty-text { font-size: 16px; color: #596171; line-height: 24px; letter-spacing: -0.31px; margin-bottom: 22px; }
+    .ob-empty-actions { display: flex; align-items: center; gap: 16px; }
     .ob-enable-btn {
       padding: 8px 20px; border: none; border-radius: 6px;
-      background: #533afd; font-size: 13px; font-weight: 500;
+      background: #533afd; font-size: 14px; font-weight: 600;
+      box-shadow: 0 1px 1px rgba(47, 14, 99, 0.32);
       color: #fff; cursor: pointer; font-family: inherit;
       transition: background 0.15s;
     }
     .ob-enable-btn:hover { background: #4f46e5; }
+    .ob-view-guide { font-size: 14px; font-weight: 600; color: #533afd; text-decoration: none; letter-spacing: -0.15px; }
+    .ob-view-guide:hover { text-decoration: underline; }
   </style>
 </head>
 <body class="onboarding-mode">
@@ -2445,12 +2441,12 @@
             <div id="obEmptyState">
               <p class="ob-page-description">Request access to other Stripe accounts to help them build their business.</p>
               <div class="ob-empty-state">
-                <div class="ob-empty-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+                <div class="ob-empty-title">Request access to other Stripe accounts</div>
+                <div class="ob-empty-text">Help build your users' business</div>
+                <div class="ob-empty-actions">
+                  <button class="ob-enable-btn" id="obEnableBtn">Enable connections</button>
+                  <a href="#" class="ob-view-guide">View guide</a>
                 </div>
-                <div class="ob-empty-title">No connections yet</div>
-                <div class="ob-empty-text">Enable connections to request access to other Stripe accounts and help them build their business.</div>
-                <button class="ob-enable-btn" id="obEnableBtn">Enable</button>
               </div>
             </div>
             <!-- Enabled state (after enable) -->
@@ -2502,7 +2498,7 @@
               </div>
             </div>
           </div>
-          <div>
+          <div id="obGuideCardWrap" style="display:none;">
             <div class="ob-guide-card">
               <div class="ob-guide-card-title">Integration guide</div>
               <p class="ob-guide-card-text">Follow this guide to allow users to review permissions.</p>
@@ -3611,6 +3607,7 @@
     document.getElementById('obEnableBtn').addEventListener('click', () => {
       document.getElementById('obEmptyState').style.display = 'none';
       document.getElementById('obEnabledState').style.display = 'block';
+      document.getElementById('obGuideCardWrap').style.display = '';
     });
 
     // Events checkbox: auto-select API keys & Payment activity, show all reasons

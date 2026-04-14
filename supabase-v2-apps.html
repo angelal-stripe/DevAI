@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home – Supabase – Stripe</title>
+  <title>Apps overview – Supabase for Lovable – Stripe</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -49,7 +49,7 @@
       width: 24px;
       height: 24px;
       border-radius: 6px;
-      background: linear-gradient(135deg, #3ECF8E, #2B9F6F);
+      background: linear-gradient(135deg, #4da3ff, #2b7de9);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -68,7 +68,6 @@
     }
     .sidebar-brand.open .sidebar-brand-chevron { transform: rotate(180deg); }
 
-    /* Account switcher dropdown */
     .acct-switcher {
       display: none;
       position: absolute;
@@ -94,7 +93,7 @@
 
     .acct-switcher-avatar {
       width: 40px; height: 40px; border-radius: 8px;
-      background: linear-gradient(135deg, #3ECF8E, #2B9F6F);
+      background: linear-gradient(135deg, #4da3ff, #2b7de9);
       display: flex; align-items: center; justify-content: center;
       margin-bottom: 8px;
     }
@@ -124,46 +123,28 @@
     .acct-switcher-action svg { width: 16px; height: 16px; color: #6c7688; flex-shrink: 0; }
     .acct-switcher-action .action-chevron { margin-left: auto; width: 12px; height: 12px; color: #9ca3af; }
 
-    .acct-switcher-search {
-      padding: 8px 12px;
-    }
+    .acct-switcher-search { padding: 8px 12px; }
     .acct-switcher-search input {
-      width: 100%;
-      padding: 7px 10px;
-      border: 1px solid #d8dee4;
-      border-radius: 6px;
-      font-size: 13px;
-      font-family: inherit;
-      color: #353a44;
-      outline: none;
+      width: 100%; padding: 7px 10px; border: 1px solid #d8dee4; border-radius: 6px;
+      font-size: 13px; font-family: inherit; color: #353a44; outline: none;
     }
     .acct-switcher-search input:focus { border-color: #635bff; box-shadow: 0 0 0 3px rgba(99,91,255,0.1); }
     .acct-switcher-search input::placeholder { color: #9ca3af; }
 
-    .acct-switcher-accounts {
-      padding: 4px 0;
-      border-bottom: 1px solid #e5e7eb;
-    }
+    .acct-switcher-accounts { padding: 4px 0; border-bottom: 1px solid #e5e7eb; }
 
     .acct-switcher-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 8px 16px;
-      cursor: pointer;
-      transition: background 0.1s;
-      text-decoration: none;
+      display: flex; align-items: center; gap: 10px; padding: 8px 16px;
+      cursor: pointer; transition: background 0.1s; text-decoration: none;
     }
     .acct-switcher-item:hover { background: #f5f6f8; }
 
     .acct-item-icon {
       width: 28px; height: 28px; border-radius: 6px;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     }
     .acct-item-icon.green { background: linear-gradient(135deg, #3ECF8E, #2B9F6F); }
     .acct-item-icon.blue { background: linear-gradient(135deg, #4da3ff, #2b7de9); }
-
     .acct-item-name { font-size: 13px; font-weight: 500; color: #353a44; flex: 1; }
 
     .acct-item-check {
@@ -172,20 +153,10 @@
     }
     .acct-item-check svg { width: 10px; height: 10px; }
 
-    .acct-switcher-footer {
-      padding: 8px 0;
-    }
-
+    .acct-switcher-footer { padding: 8px 0; }
     .acct-switcher-footer-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 8px 16px;
-      font-size: 13px;
-      font-weight: 400;
-      color: #353a44;
-      cursor: pointer;
-      transition: background 0.1s;
+      display: flex; align-items: center; gap: 10px; padding: 8px 16px;
+      font-size: 13px; font-weight: 400; color: #353a44; cursor: pointer; transition: background 0.1s;
     }
     .acct-switcher-footer-item:hover { background: #f5f6f8; }
     .acct-switcher-footer-item svg { width: 16px; height: 16px; color: #6c7688; }
@@ -193,188 +164,186 @@
     .sidebar-nav { padding: 16px 0; flex: 1; overflow-y: auto; }
 
     .nav-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 9px 20px;
-      font-size: 13.5px;
-      font-weight: 400;
-      color: #596171;
-      cursor: pointer;
-      transition: all 0.1s;
-      text-decoration: none;
+      display: flex; align-items: center; gap: 12px; padding: 9px 20px;
+      font-size: 13.5px; font-weight: 400; color: #596171;
+      cursor: pointer; transition: all 0.1s; text-decoration: none;
     }
-
     .nav-item:hover { color: #353a44; background: #f5f6f8; }
-    .nav-item.active { color: #353a44; font-weight: 500; }
-
+    .nav-item.active { color: #635bff; font-weight: 500; }
+    .nav-item.active img:not(.nav-item-chevron) {
+      filter: brightness(0) saturate(100%) invert(37%) sepia(91%) saturate(5535%) hue-rotate(238deg) brightness(101%) contrast(101%);
+    }
     .nav-item img { width: 16px; height: 16px; flex-shrink: 0; }
     .nav-item img.nav-item-chevron { margin-left: auto; width: 8px; height: 8px; opacity: 0.4; }
     .nav-item img.nav-item-chevron.expanded { transform: rotate(180deg); }
 
     .nav-section {
-      padding: 20px 20px 8px;
-      font-size: 12px;
-      font-weight: 500;
-      color: #6c7688;
-      letter-spacing: 0.2px;
+      padding: 20px 20px 8px; font-size: 12px; font-weight: 500;
+      color: #6c7688; letter-spacing: 0.2px;
     }
+
+    .nav-sub-item {
+      display: flex; align-items: center; padding: 7px 20px 7px 48px;
+      font-size: 13px; font-weight: 400; color: #596171;
+      cursor: pointer; transition: all 0.1s; text-decoration: none;
+    }
+    .nav-sub-item:hover { color: #353a44; background: #f5f6f8; }
+    .nav-sub-item.active { color: #635bff; font-weight: 500; }
 
     .sidebar-footer { padding: 12px 0; }
 
     .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
 
     .topbar {
-      height: 56px;
-      background: #fff;
-      display: flex;
-      align-items: center;
-      padding: 0 24px;
-      gap: 16px;
+      height: 56px; background: #fff; display: flex; align-items: center;
+      padding: 0 24px; gap: 16px;
     }
 
     .search-bar {
-      flex: 1;
-      max-width: 480px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: #f9fafb;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
-      padding: 8px 12px;
-      cursor: text;
+      flex: 1; max-width: 480px; display: flex; align-items: center; gap: 8px;
+      background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 8px 12px; cursor: text;
     }
-
     .search-bar svg { color: #9ca3af; flex-shrink: 0; }
     .search-bar span { font-size: 13px; color: #9ca3af; }
 
     .topbar-icons { margin-left: auto; display: flex; align-items: center; gap: 4px; }
-
     .topbar-icon {
       width: 36px; height: 36px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
       cursor: pointer; color: #6b7280; transition: background 0.1s;
     }
-
     .topbar-icon:hover { background: #f3f4f6; }
     .topbar-icon svg { width: 18px; height: 18px; }
     .topbar-icon.create { background: #635bff; color: #fff; width: 32px; height: 32px; }
     .topbar-icon.create:hover { background: #4f46e5; }
 
-    .content { flex: 1; overflow-y: auto; padding: 32px 40px; max-width: 1280px; margin: 0 auto; width: 100%; box-sizing: border-box; }
-
-    .page-title {
-      font-size: 28px;
-      font-weight: 700;
-      color: #1a1a1a;
-      margin-bottom: 24px;
+    .content {
+      flex: 1; overflow-y: auto; padding: 32px 40px;
+      max-width: 1280px; margin: 0 auto; width: 100%; box-sizing: border-box;
     }
 
-    /* Marketplace connection badge */
-    .marketplace-badge {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 16px;
-      background: #f4f7fa;
-      border: none;
-      border-radius: 8px;
-      margin-bottom: 28px;
+    .page-title { font-size: 28px; font-weight: 700; color: #1a1a1a; margin-bottom: 20px; }
+
+    .apps-tabs {
+      display: flex; gap: 24px; border-bottom: 1px solid #d8dee4; margin-bottom: 24px;
+    }
+    .apps-tab {
+      font-size: 14px; font-weight: 500; color: #596171; padding: 8px 0;
+      cursor: pointer; position: relative;
+    }
+    .apps-tab.active { color: #635bff; }
+    .apps-tab.active::after {
+      content: ''; position: absolute; bottom: -1px; left: 0; right: 0;
+      height: 2px; background: #635bff; border-radius: 2px 2px 0 0;
     }
 
-    .marketplace-badge-text { flex: 1; display: flex; flex-direction: column; gap: 4px; }
-    .marketplace-badge-title { font-size: 16px; font-weight: 700; color: #1a2c44; letter-spacing: -0.31px; line-height: 24px; }
-    .marketplace-badge-sub { font-size: 14px; font-weight: 400; color: #596171; letter-spacing: -0.15px; line-height: 20px; }
-
-    .marketplace-badge-action {
-      font-size: 14px; font-weight: 400; color: #635bff;
-      display: flex; align-items: center; flex-shrink: 0;
-      text-decoration: none; cursor: pointer;
+    .connections-list { display: flex; flex-direction: column; }
+    .connections-row {
+      display: flex; align-items: center; padding: 16px 8px; margin: 0 -8px;
+      border-bottom: 1px solid #ebeef1; border-radius: 6px;
+      cursor: pointer; transition: background 0.1s;
     }
-    .marketplace-badge-action:hover { text-decoration: underline; }
+    .connections-row:hover { background: #f4f7fa; }
 
-    .marketplace-badge-dismiss {
-      width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; cursor: pointer; border-radius: 6px; border: none; background: none;
-      color: #474e5a; padding: 0;
+    .connections-cell-name { flex: 1; display: flex; align-items: center; gap: 14px; }
+
+    .conn-icon {
+      width: 36px; height: 36px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; overflow: hidden;
     }
-    .marketplace-badge-dismiss:hover { background: #ecf1f6; }
+    .conn-name { font-size: 14px; font-weight: 500; color: #353a44; }
+    .conn-meta { font-size: 13px; color: #6c7688; margin-right: 16px; }
 
-    /* Summary cards */
-    .summary-cards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-bottom: 32px;
+    .conn-action {
+      width: 28px; height: 28px; border-radius: 6px; border: 1px solid #d8dee4;
+      background: #fff; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: #6c7688; flex-shrink: 0;
     }
+    .conn-action:hover { background: #f5f6f8; }
 
-    .summary-card {
-      padding: 20px;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
+    /* Dialogs */
+    .dialog-backdrop {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.4);
+      display: flex; align-items: center; justify-content: center; z-index: 10000;
     }
+    .dialog-backdrop.hidden { display: none; }
 
-    .summary-card-label {
-      font-size: 13px;
-      font-weight: 400;
-      color: #6c7688;
-      margin-bottom: 6px;
+    .dialog-box {
+      background: #fff; border-radius: 12px; width: 420px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.18); overflow: hidden;
     }
 
-    .summary-card-value {
-      font-size: 24px;
-      font-weight: 600;
-      color: #1a1a1a;
+    .dialog-header {
+      display: flex; align-items: center; justify-content: space-between; padding: 16px 16px 12px;
     }
+    .dialog-title { font-size: 16px; font-weight: 600; color: #1a1a1a; }
 
-    /* Recent activity */
-    .section-title {
-      font-size: 16px;
-      font-weight: 600;
-      color: #1a1a1a;
-      margin-bottom: 16px;
+    .dialog-close {
+      width: 24px; height: 24px; border: none; background: none;
+      cursor: pointer; color: #6c7688; display: flex; align-items: center;
+      justify-content: center; border-radius: 4px;
     }
+    .dialog-close:hover { background: #f3f4f6; }
 
-    .activity-table {
-      width: 100%;
-      border-collapse: collapse;
+    .dialog-body { padding: 0 16px 20px; font-size: 14px; color: #353a44; line-height: 20px; }
+
+    .dialog-footer { display: flex; justify-content: flex-end; gap: 8px; padding: 0 16px 16px; }
+
+    .dialog-btn {
+      height: 28px; padding: 4px 8px; border-radius: 6px;
+      font-size: 14px; font-weight: 600; font-family: inherit; cursor: pointer; line-height: 20px;
     }
-
-    .activity-table th {
-      text-align: left;
-      font-size: 12px;
-      font-weight: 500;
-      color: #6b7280;
-      padding: 10px 12px;
-      border-bottom: 1px solid #e5e7eb;
+    .dialog-btn-secondary {
+      background: #fff; color: #273951; border: none;
+      box-shadow: 0 1px 1px rgba(26,27,37,0.16), 0 0 0 1px #d5dbe1;
     }
+    .dialog-btn-secondary:hover { background: #f4f7fa; }
 
-    .activity-table td {
-      padding: 12px 12px;
-      font-size: 13px;
-      color: #374151;
-      border-bottom: 1px solid #f3f4f6;
+    .dialog-btn-destructive {
+      background: #e61947; color: #fff; border: none;
+      box-shadow: 0 1px 1px rgba(62,2,26,0.32), 0 0 0 1px #df1b41;
     }
+    .dialog-btn-destructive:hover { background: #d01540; }
 
-    .activity-table tr:hover { background: #f9fafb; }
+    .dialog-btn-primary {
+      background: #675dff; color: #fff; border: none;
+      box-shadow: 0 1px 1px rgba(20,19,78,0.32), 0 0 0 1px #625afa;
+    }
+    .dialog-btn-primary:hover { background: #5a51e6; }
 
-    .activity-amount { font-weight: 600; color: #1a1a1a; }
-    .activity-status { display: inline-flex; align-items: center; gap: 4px; }
-    .activity-status-dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; }
-    .activity-status-dot.pending { background: #f59e0b; }
+    .review-body-text { font-size: 14px; color: #353a44; line-height: 20px; margin-bottom: 4px; }
+
+    .review-accordion { display: flex; flex-direction: column; width: 100%; }
+    .review-accordion-item {
+      display: flex; align-items: center; gap: 12px; padding: 12px 0;
+      border-bottom: 1px solid #d8dee4; cursor: pointer;
+    }
+    .review-accordion-item:hover { background: #f9fafb; margin: 0 -4px; padding-left: 4px; padding-right: 4px; border-radius: 4px; }
+    .review-accordion-trigger { width: 12px; height: 12px; flex-shrink: 0; opacity: 0.6; transition: transform 0.15s; }
+    .review-accordion-item.expanded .review-accordion-trigger { transform: rotate(90deg); }
+    .review-accordion-label { flex: 1; font-size: 14px; color: #353a44; line-height: 20px; }
+    .review-accordion-badge { font-size: 12px; color: #596171; line-height: 16px; }
+    .review-accordion-detail { display: none; padding: 4px 0 12px 43px; border-bottom: 1px solid #d8dee4; }
+    .review-accordion-detail.visible { display: block; }
+    .review-accordion-reason { font-size: 13px; color: #596171; line-height: 1.5; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 10px 12px; margin-top: 4px; }
+
+    .dialog-footer-with-link {
+      display: flex; align-items: center; gap: 24px; padding: 0 16px 16px;
+    }
+    .dialog-disconnect-link {
+      font-size: 14px; color: #c0123c; line-height: 20px; cursor: pointer;
+      background: none; border: none; font-family: inherit; padding: 0;
+      flex: 1; text-align: left;
+    }
+    .dialog-disconnect-link:hover { text-decoration: underline; }
+    .dialog-footer-actions { display: flex; gap: 8px; align-items: center; }
 
     /* Proto switcher */
     .proto-switcher {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #fff;
-      border: 1px solid #d8dee4;
-      border-radius: 12px;
-      padding: 16px 20px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-      z-index: 9999;
+      position: fixed; bottom: 20px; right: 20px; background: #fff;
+      border: 1px solid #d8dee4; border-radius: 12px; padding: 16px 20px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08); z-index: 9999;
       font-family: 'Inter', -apple-system, sans-serif;
     }
     .proto-switcher-title { font-size: 14px; font-weight: 600; color: #353a44; margin-bottom: 0; }
@@ -397,21 +366,19 @@
         <svg viewBox="0 0 24 24" fill="none"><path d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0A2.704 2.704 0 003 15.546" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><path d="M5 12V7a2 2 0 012-2h10a2 2 0 012 2v5" stroke="#fff" stroke-width="1.5"/><path d="M9 9h6" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
       </div>
       <div class="sidebar-brand-info">
-        <div class="sidebar-brand-name">Supabase Inc</div>
-        <div class="sidebar-brand-sub">Direct account</div>
+        <div class="sidebar-brand-name">Supabase for Lovable</div>
+        <div class="sidebar-brand-sub">v2 account</div>
       </div>
       <svg class="sidebar-brand-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
 
-      <!-- Account switcher dropdown -->
       <div class="acct-switcher" id="acctSwitcher" onclick="event.stopPropagation()">
         <div class="acct-switcher-header">
           <div class="acct-switcher-avatar">
             <svg viewBox="0 0 24 24" fill="none"><path d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0A2.704 2.704 0 003 15.546" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><path d="M5 12V7a2 2 0 012-2h10a2 2 0 012 2v5" stroke="#fff" stroke-width="1.5"/><path d="M9 9h6" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
           </div>
-          <div class="acct-switcher-name">Supabase Inc</div>
-          <div class="acct-switcher-org">Direct account</div>
+          <div class="acct-switcher-name">Supabase for Lovable</div>
+          <div class="acct-switcher-org">v2 account</div>
         </div>
-
         <div class="acct-switcher-actions">
           <a class="acct-switcher-action" href="#">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
@@ -423,29 +390,24 @@
             <svg class="action-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
           </a>
         </div>
-
-        <div class="acct-switcher-search">
-          <input type="text" placeholder="Search">
-        </div>
-
+        <div class="acct-switcher-search"><input type="text" placeholder="Search"></div>
         <div class="acct-switcher-accounts">
           <a class="acct-switcher-item" href="supabase-home.html">
             <div class="acct-item-icon green">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0A2.704 2.704 0 003 15.546" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><path d="M5 12V7a2 2 0 012-2h10a2 2 0 012 2v5" stroke="#fff" stroke-width="1.5"/></svg>
             </div>
             <span class="acct-item-name">Supabase Inc</span>
-            <div class="acct-item-check">
-              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-            </div>
           </a>
           <a class="acct-switcher-item" href="supabase-v2-customers.html">
             <div class="acct-item-icon blue">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0A2.704 2.704 0 003 15.546" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><path d="M5 12V7a2 2 0 012-2h10a2 2 0 012 2v5" stroke="#fff" stroke-width="1.5"/></svg>
             </div>
             <span class="acct-item-name">Supabase for Lovable</span>
+            <div class="acct-item-check">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
           </a>
         </div>
-
         <div class="acct-switcher-actions" style="border-bottom: 1px solid #e5e7eb;">
           <a class="acct-switcher-action" href="#">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
@@ -457,7 +419,6 @@
             Create account
           </a>
         </div>
-
         <div class="acct-switcher-footer">
           <div class="acct-switcher-footer-item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
@@ -472,7 +433,7 @@
     </div>
 
     <div class="sidebar-nav">
-      <a class="nav-item active" href="#">
+      <a class="nav-item" href="#">
         <img src="icons/home.svg" alt="">
         Home
       </a>
@@ -484,7 +445,7 @@
         <img src="icons/convert.svg" alt="">
         Transactions
       </a>
-      <a class="nav-item" href="#">
+      <a class="nav-item" href="supabase-v2-customers.html">
         <img src="icons/customers.svg" alt="">
         Customers
       </a>
@@ -509,10 +470,13 @@
         Reporting
         <img class="nav-item-chevron" src="icons/chevronDown.svg" alt="">
       </a>
-      <a class="nav-item" href="supabase-apps.html">
+      <a class="nav-item active" href="supabase-v2-apps.html">
         <img src="icons/apps.svg" alt="">
         Apps
-        <img class="nav-item-chevron" src="icons/chevronDown.svg" alt="">
+        <img class="nav-item-chevron expanded" src="icons/chevronDown.svg" alt="">
+      </a>
+      <a class="nav-sub-item active" href="supabase-v2-apps.html">
+        Overview
       </a>
       <a class="nav-item" href="#">
         <img src="icons/more.svg" alt="">
@@ -551,104 +515,28 @@
     </div>
 
     <div class="content">
-      <div class="page-title">Home</div>
+      <div class="page-title">Apps overview</div>
 
-      <div class="marketplace-badge" id="marketplaceBadge">
-        <div class="marketplace-badge-text">
-          <div class="marketplace-badge-title">3 connected marketplaces</div>
-          <div class="marketplace-badge-sub">Lovable, Anthropic, and OpenAI have shared access to your billing resources</div>
-        </div>
-        <a class="marketplace-badge-action" href="supabase-apps.html">Manage</a>
-        <button class="marketplace-badge-dismiss" onclick="document.getElementById('marketplaceBadge').style.display='none'" aria-label="Dismiss">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
+      <div class="apps-tabs">
+        <div class="apps-tab">Installed</div>
+        <div class="apps-tab">Created</div>
+        <div class="apps-tab active">Connections</div>
       </div>
 
-      <div class="summary-cards">
-        <div class="summary-card">
-          <div class="summary-card-label">Today's revenue</div>
-          <div class="summary-card-value">$4,250.00</div>
-        </div>
-        <div class="summary-card">
-          <div class="summary-card-label">Available balance</div>
-          <div class="summary-card-value">$18,340.00</div>
-        </div>
-        <div class="summary-card">
-          <div class="summary-card-label">Pending</div>
-          <div class="summary-card-value">$2,100.00</div>
+      <p style="font-size: 13px; color: #596171; margin-bottom: 16px;">Marketplaces that have shared access to your billing resources via consent records.</p>
+
+      <div class="connections-list">
+        <div class="connections-row" onclick="openReviewDialog('Lovable')">
+          <div class="connections-cell-name">
+            <div class="conn-icon" style="background: linear-gradient(135deg, #ff6b6b, #f59e42, #a855f7);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 4C8 4 5 7 5 11c0 5 7 9 7 9s7-4 7-9c0-4-3-7-7-7z" fill="#fff" opacity="0.9"/></svg>
+            </div>
+            <span class="conn-name">Lovable</span>
+          </div>
+          <span class="conn-meta">Apr 10, 2026</span>
+          <button class="conn-action" onclick="event.stopPropagation(); openDisconnectDialog('Lovable')"><img src="icons/negativeCircle.svg" width="14" height="14" alt=""></button>
         </div>
       </div>
-
-      <div class="section-title">Recent payments</div>
-      <table class="activity-table">
-        <thead>
-          <tr>
-            <th>Amount</th>
-            <th>Status</th>
-            <th>Customer</th>
-            <th>Description</th>
-            <th>Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="activity-amount">$299.00</td>
-            <td><span class="activity-status"><span class="activity-status-dot"></span> Succeeded</span></td>
-            <td>Acme Corp</td>
-            <td>Supabase Pro — Monthly</td>
-            <td>Apr 13, 2026</td>
-          </tr>
-          <tr>
-            <td class="activity-amount">$1,250.00</td>
-            <td><span class="activity-status"><span class="activity-status-dot"></span> Succeeded</span></td>
-            <td>TechFlow Inc</td>
-            <td>Supabase Enterprise — Monthly</td>
-            <td>Apr 13, 2026</td>
-          </tr>
-          <tr>
-            <td class="activity-amount">$89.00</td>
-            <td><span class="activity-status"><span class="activity-status-dot"></span> Succeeded</span></td>
-            <td>DevStudio</td>
-            <td>Supabase Pro — Monthly</td>
-            <td>Apr 13, 2026</td>
-          </tr>
-          <tr>
-            <td class="activity-amount">$499.00</td>
-            <td><span class="activity-status"><span class="activity-status-dot"></span> Succeeded</span></td>
-            <td>MegaTech</td>
-            <td>Supabase Team — Monthly</td>
-            <td>Apr 12, 2026</td>
-          </tr>
-          <tr>
-            <td class="activity-amount">$2,100.00</td>
-            <td><span class="activity-status"><span class="activity-status-dot pending"></span> Pending</span></td>
-            <td>CloudNine Ltd</td>
-            <td>Supabase Enterprise — Annual</td>
-            <td>Apr 12, 2026</td>
-          </tr>
-          <tr>
-            <td class="activity-amount">$25.00</td>
-            <td><span class="activity-status"><span class="activity-status-dot"></span> Succeeded</span></td>
-            <td>Sarah's Photography</td>
-            <td>Supabase Pro — Monthly</td>
-            <td>Apr 12, 2026</td>
-          </tr>
-          <tr>
-            <td class="activity-amount">$149.00</td>
-            <td><span class="activity-status"><span class="activity-status-dot"></span> Succeeded</span></td>
-            <td>BuildFast Co</td>
-            <td>Supabase Team — Monthly</td>
-            <td>Apr 11, 2026</td>
-          </tr>
-          <tr>
-            <td class="activity-amount">$25.00</td>
-            <td><span class="activity-status"><span class="activity-status-dot"></span> Succeeded</span></td>
-            <td>IndieDev</td>
-            <td>Supabase Pro — Monthly</td>
-            <td>Apr 11, 2026</td>
-          </tr>
-        </tbody>
-      </table>
     </div>
   </div>
 
@@ -663,10 +551,11 @@
     <label><input type="radio" name="proto" value="supabase" checked onchange="handleProtoChange(this)"> Supabase</label>
     <div class="proto-options" id="protoOptions">
       <div class="proto-section-label">Options</div>
-      <label><input type="radio" name="supabase-view" value="direct" checked onchange="handleSupabaseViewChange(this)"> Direct account</label>
-      <label><input type="radio" name="supabase-view" value="v2" onchange="handleSupabaseViewChange(this)"> v2 account</label>
+      <label><input type="radio" name="supabase-view" value="direct" onchange="handleSupabaseViewChange(this)"> Direct account</label>
+      <label><input type="radio" name="supabase-view" value="v2" checked onchange="handleSupabaseViewChange(this)"> v2 account</label>
     </div>
   </div>
+
   <script>
   function handleProtoChange(el) {
     if (el.value === 'sarah') { window.location.href = 'sarah-apps.html'; }
@@ -692,7 +581,103 @@
       document.getElementById('acctSwitcher').classList.remove('open');
     }
   });
+
+  function toggleReviewAccordion(el) {
+    el.classList.toggle('expanded');
+    var detail = el.nextElementSibling;
+    if (detail && detail.classList.contains('review-accordion-detail')) {
+      detail.classList.toggle('visible');
+    }
+  }
+
+  function openReviewDialog(name) {
+    document.getElementById('reviewDialogTitle').textContent = 'Review permissions for ' + name;
+    document.getElementById('reviewDialogAccess').textContent = name + ' has access to:';
+    document.getElementById('reviewDialog').dataset.name = name;
+    document.querySelectorAll('.review-accordion-item.expanded').forEach(function(el) { el.classList.remove('expanded'); });
+    document.querySelectorAll('.review-accordion-detail.visible').forEach(function(el) { el.classList.remove('visible'); });
+    document.getElementById('reviewDialog').classList.remove('hidden');
+  }
+
+  function closeReviewDialog() {
+    document.getElementById('reviewDialog').classList.add('hidden');
+  }
+
+  function openDisconnectDialog(name) {
+    document.getElementById('dialogName').textContent = 'Disconnect ' + name;
+    document.getElementById('dialogBody').textContent = name + ' will lose shared access to your billing resources.';
+    document.getElementById('disconnectDialog').classList.remove('hidden');
+  }
+
+  function closeDisconnectDialog() {
+    document.getElementById('disconnectDialog').classList.add('hidden');
+  }
+
+  function reviewToDisconnect() {
+    var name = document.getElementById('reviewDialog').dataset.name;
+    closeReviewDialog();
+    openDisconnectDialog(name);
+  }
   </script>
+
+  <!-- Review permissions dialog -->
+  <div id="reviewDialog" class="dialog-backdrop hidden" onclick="if(event.target===this) closeReviewDialog()">
+    <div class="dialog-box">
+      <div class="dialog-header">
+        <div id="reviewDialogTitle" class="dialog-title">Review permissions for Lovable</div>
+        <button class="dialog-close" onclick="closeReviewDialog()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div style="padding: 0 16px 20px;">
+        <p id="reviewDialogAccess" class="review-body-text">Lovable has access to:</p>
+        <div class="review-accordion" style="margin-top: 16px;">
+          <div class="review-accordion-item" data-perm="identity" onclick="toggleReviewAccordion(this)">
+            <img class="review-accordion-trigger" src="icons/chevronRight.svg" width="12" height="12" alt="">
+            <input type="checkbox" checked disabled style="accent-color: #635bff; width: 15px; height: 15px; margin-right: 4px; cursor: not-allowed;" onclick="event.stopPropagation()">
+            <span class="review-accordion-label">Identity info</span>
+            <span class="review-accordion-badge">Read</span>
+          </div>
+          <div class="review-accordion-detail">
+            <div class="review-accordion-reason">Read your business details to verify your identity and display your account information on their marketplace listing.</div>
+          </div>
+          <div class="review-accordion-item" data-perm="payment_activity" onclick="toggleReviewAccordion(this)">
+            <img class="review-accordion-trigger" src="icons/chevronRight.svg" width="12" height="12" alt="">
+            <input type="checkbox" checked style="accent-color: #635bff; width: 15px; height: 15px; margin-right: 4px; cursor: pointer;" onclick="event.stopPropagation()">
+            <span class="review-accordion-label">Payment activity</span>
+            <span class="review-accordion-badge">Read</span>
+          </div>
+          <div class="review-accordion-detail">
+            <div class="review-accordion-reason">Read billing activity for customers and subscriptions they created on your account to compute marketplace invoices and display usage reports.</div>
+          </div>
+        </div>
+      </div>
+      <div class="dialog-footer-with-link">
+        <button class="dialog-disconnect-link" onclick="reviewToDisconnect()">Disconnect</button>
+        <div class="dialog-footer-actions">
+          <button class="dialog-btn dialog-btn-secondary" onclick="closeReviewDialog()">Cancel</button>
+          <button class="dialog-btn dialog-btn-primary" onclick="closeReviewDialog()">Done</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Disconnect dialog -->
+  <div id="disconnectDialog" class="dialog-backdrop hidden" onclick="if(event.target===this) closeDisconnectDialog()">
+    <div class="dialog-box">
+      <div class="dialog-header">
+        <div id="dialogName" class="dialog-title">Disconnect Lovable</div>
+        <button class="dialog-close" onclick="closeDisconnectDialog()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div id="dialogBody" class="dialog-body">Lovable will lose shared access to your billing resources.</div>
+      <div class="dialog-footer">
+        <button class="dialog-btn dialog-btn-secondary" onclick="closeDisconnectDialog()">Cancel</button>
+        <button class="dialog-btn dialog-btn-destructive" onclick="closeDisconnectDialog()">Disconnect</button>
+      </div>
+    </div>
+  </div>
 
 </body>
 </html>
