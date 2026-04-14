@@ -421,6 +421,7 @@
     <div class="proto-section-label">Dashboard</div>
     <label><input type="radio" name="proto" value="sarah" onchange="handleProtoChange(this)"> Sarah's photography</label>
     <label><input type="radio" name="proto" value="lovable" checked onchange="handleProtoChange(this)"> Lovable</label>
+    <label><input type="radio" name="proto" value="supabase" onchange="handleProtoChange(this)"> Supabase</label>
     <div class="proto-options" id="protoOptions">
       <div class="proto-section-label">Options</div>
       <label><input type="radio" name="lovable-view" value="cad" onchange="if(this.checked) window.location.href='lovable-network.html'"> CAD</label>
@@ -431,6 +432,7 @@
   <script>
   function handleProtoChange(el) {
     if (el.value === 'sarah') { window.location.href = 'sarah-apps.html'; }
+    else if (el.value === 'supabase') { window.location.href = 'supabase-home.html'; }
     else { window.location.href = 'lovable-apps-overview.html'; }
   }
 

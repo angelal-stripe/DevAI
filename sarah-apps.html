@@ -547,6 +547,7 @@
     <div class="proto-section-label">Dashboard</div>
     <label><input type="radio" name="proto" value="sarah" checked onchange="handleProtoChange(this)"> Sarah's photography</label>
     <label><input type="radio" name="proto" value="lovable" onchange="handleProtoChange(this)"> Lovable</label>
+    <label><input type="radio" name="proto" value="supabase" onchange="handleProtoChange(this)"> Supabase</label>
     <div class="proto-options" id="protoOptions">
       <div class="proto-section-label">Options</div>
       <label><input type="radio" name="sarah-view" value="apps" checked onchange="handleSarahViewChange(this)"> App workload</label>
@@ -556,6 +557,7 @@
   <script>
   function handleProtoChange(el) {
     if (el.value === 'sarah') { window.location.href = 'sarah-apps.html'; }
+    else if (el.value === 'supabase') { window.location.href = 'supabase-home.html'; }
     else { window.location.href = 'lovable-apps-overview.html'; }
   }
   function handleSarahViewChange(el) {
