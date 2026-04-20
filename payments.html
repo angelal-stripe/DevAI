@@ -1086,8 +1086,8 @@
     <div class="preview-panel">
       <div class="preview-toolbar">
         <div class="preview-tab-group">
-          <a href="index.html" class="preview-tab" style="text-decoration:none;">Preview</a>
-          <a href="index.html" class="preview-tab" style="text-decoration:none;">Code</a>
+          <a href="lovable.html" class="preview-tab" style="text-decoration:none;">Preview</a>
+          <a href="lovable.html" class="preview-tab" style="text-decoration:none;">Code</a>
           <button class="preview-tab active">Payments</button>
         </div>
         <div class="preview-url">
@@ -1140,7 +1140,7 @@
           <div style="display:flex; align-items:center; gap:16px;">
             <span class="payments-title">Payments</span>
           </div>
-          <button class="payments-close" onclick="window.location.href='index.html'">Close</button>
+          <button class="payments-close" onclick="window.location.href='lovable.html'">Close</button>
         </div>
 
         <div class="payments-body">
@@ -1451,7 +1451,10 @@
       justify-content: space-between;
       cursor: pointer;
       user-select: none;
+      gap: 8px;
     }
+    .proto-switcher-home { background: none; border: 1px solid #d8dee4; border-radius: 6px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #596171; transition: background 0.15s; flex-shrink: 0; text-decoration: none; }
+    .proto-switcher-home:hover { background: #f3f4f6; }
     .claim-proto-switcher-title {
       font-size: 14px;
       font-weight: 600;
@@ -2587,6 +2590,7 @@
   <div class="claim-proto-switcher collapsed" id="claimProtoSwitcher">
     <div class="claim-proto-switcher-header" onclick="this.parentElement.classList.toggle('collapsed')">
       <div class="claim-proto-switcher-title">Prototype options</div>
+      <a class="proto-switcher-home" href="index.html" onclick="event.stopPropagation()" title="Home"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></a>
       <button class="proto-switcher-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
     </div>
     <div class="claim-proto-switcher-body">

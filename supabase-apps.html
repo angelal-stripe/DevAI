@@ -344,7 +344,9 @@
       font-family: 'Inter', -apple-system, sans-serif;
     }
     .proto-switcher-title { font-size: 14px; font-weight: 600; color: #353a44; margin-bottom: 0; }
-    .proto-switcher-header { display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; }
+    .proto-switcher-header { display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; gap: 8px; }
+    .proto-switcher-home { background: none; border: 1px solid #d8dee4; border-radius: 6px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #596171; transition: background 0.15s; flex-shrink: 0; text-decoration: none; }
+    .proto-switcher-home:hover { background: #f3f4f6; }
     .proto-switcher-toggle { background: none; border: none; cursor: pointer; color: #9ca3af; padding: 0; display: flex; align-items: center; transition: transform 0.2s; }
     .proto-switcher.collapsed .proto-switcher-toggle { transform: rotate(180deg); }
     .proto-switcher.collapsed > :not(.proto-switcher-header) { display: none; }
@@ -523,6 +525,16 @@
       <p style="font-size: 13px; color: #596171; margin-bottom: 16px;">Marketplaces that have shared access to your billing resources via consent records.</p>
 
       <div class="connections-list">
+        <div class="connections-row" onclick="openReviewDialog('Vercel')">
+          <div class="connections-cell-name">
+            <div class="conn-icon" style="background: #000;">
+              <svg width="16" height="14" viewBox="0 0 76 65" fill="none"><path d="M37.5274 0L75.0548 65H0L37.5274 0Z" fill="#fff"/></svg>
+            </div>
+            <span class="conn-name">Vercel</span>
+          </div>
+          <span class="conn-meta">Apr 20, 2026</span>
+          <button class="conn-action" onclick="event.stopPropagation(); openDisconnectDialog('Vercel')"><img src="icons/negativeCircle.svg" width="14" height="14" alt=""></button>
+        </div>
         <div class="connections-row" onclick="openReviewDialog('Lovable')">
           <div class="connections-cell-name">
             <div class="conn-icon" style="background: linear-gradient(135deg, #ff6b6b, #f59e42, #a855f7);">
@@ -560,6 +572,7 @@
   <div class="proto-switcher">
     <div class="proto-switcher-header" onclick="this.parentElement.classList.toggle('collapsed')">
       <div class="proto-switcher-title">Prototype options</div>
+      <a class="proto-switcher-home" href="index.html" onclick="event.stopPropagation()" title="Home"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></a>
       <button class="proto-switcher-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
     </div>
     <div class="proto-section-label">Dashboard</div>
@@ -607,12 +620,42 @@
     }
   }
 
+  var permissionData = {
+    'Vercel': [
+      { label: 'Product catalog', badge: 'Read', reason: 'Read your product catalog data to display integration pricing and plan details within the Vercel Marketplace.' },
+      { label: 'Meter', badge: 'Read', reason: 'Read meter usage data to track consumption-based billing and display usage dashboards.' },
+      { label: 'Invoice line item', badge: 'Read', reason: 'Read invoice line items to reconcile marketplace partner payouts and display billing breakdowns.' },
+      { label: 'Webhook billing', badge: 'Read', reason: 'Subscribe to billing webhook events to keep subscription states in sync and trigger provisioning workflows.' }
+    ],
+    '_default': [
+      { label: 'Identity info', badge: 'Read', reason: 'Read your business details to verify your identity and display your account information on their marketplace listing.' },
+      { label: 'Payment activity', badge: 'Read', reason: 'Read billing activity for customers and subscriptions they created on your account to compute marketplace invoices and display usage reports.' }
+    ]
+  };
+
   function openReviewDialog(name) {
     document.getElementById('reviewDialogTitle').textContent = 'Review permissions for ' + name;
     document.getElementById('reviewDialogAccess').textContent = name + ' has access to:';
     document.getElementById('reviewDialog').dataset.name = name;
-    document.querySelectorAll('.review-accordion-item.expanded').forEach(function(el) { el.classList.remove('expanded'); });
-    document.querySelectorAll('.review-accordion-detail.visible').forEach(function(el) { el.classList.remove('visible'); });
+
+    var perms = permissionData[name] || permissionData['_default'];
+    var container = document.getElementById('reviewAccordionContent');
+    container.innerHTML = '';
+    perms.forEach(function(p) {
+      var item = document.createElement('div');
+      item.className = 'review-accordion-item';
+      item.onclick = function() { toggleReviewAccordion(this); };
+      item.innerHTML = '<img class="review-accordion-trigger" src="icons/chevronRight.svg" width="12" height="12" alt="">' +
+        '<input type="checkbox" checked style="accent-color: #635bff; width: 15px; height: 15px; margin-right: 4px; cursor: pointer;" onclick="event.stopPropagation()">' +
+        '<span class="review-accordion-label">' + p.label + '</span>' +
+        '<span class="review-accordion-badge">' + p.badge + '</span>';
+      container.appendChild(item);
+      var detail = document.createElement('div');
+      detail.className = 'review-accordion-detail';
+      detail.innerHTML = '<div class="review-accordion-reason">' + p.reason + '</div>';
+      container.appendChild(detail);
+    });
+
     document.getElementById('reviewDialog').classList.remove('hidden');
   }
 
@@ -648,26 +691,7 @@
       </div>
       <div style="padding: 0 16px 20px;">
         <p id="reviewDialogAccess" class="review-body-text">[name] has access to:</p>
-        <div class="review-accordion" style="margin-top: 16px;">
-          <div class="review-accordion-item" data-perm="identity" onclick="toggleReviewAccordion(this)">
-            <img class="review-accordion-trigger" src="icons/chevronRight.svg" width="12" height="12" alt="">
-            <input type="checkbox" checked disabled style="accent-color: #635bff; width: 15px; height: 15px; margin-right: 4px; cursor: not-allowed;" onclick="event.stopPropagation()">
-            <span class="review-accordion-label">Identity info</span>
-            <span class="review-accordion-badge">Read</span>
-          </div>
-          <div class="review-accordion-detail">
-            <div class="review-accordion-reason">Read your business details to verify your identity and display your account information on their marketplace listing.</div>
-          </div>
-          <div class="review-accordion-item" data-perm="payment_activity" onclick="toggleReviewAccordion(this)">
-            <img class="review-accordion-trigger" src="icons/chevronRight.svg" width="12" height="12" alt="">
-            <input type="checkbox" checked style="accent-color: #635bff; width: 15px; height: 15px; margin-right: 4px; cursor: pointer;" onclick="event.stopPropagation()">
-            <span class="review-accordion-label">Payment activity</span>
-            <span class="review-accordion-badge">Read</span>
-          </div>
-          <div class="review-accordion-detail">
-            <div class="review-accordion-reason">Read billing activity for customers and subscriptions they created on your account to compute marketplace invoices and display usage reports.</div>
-          </div>
-        </div>
+        <div class="review-accordion" id="reviewAccordionContent" style="margin-top: 16px;"></div>
       </div>
       <div class="dialog-footer-with-link">
         <button class="dialog-disconnect-link" onclick="reviewToDisconnect()">Disconnect</button>

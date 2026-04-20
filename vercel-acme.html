@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marketplace – Supabase – Vercel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #000;
+      color: #ededed;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      margin-right: 340px;
+      transition: margin-right 0.3s ease;
+    }
+
+    body.diagram-closed {
+      margin-right: 0;
+    }
+
+    /* Vercel dark sidebar */
+    .sidebar {
+      width: 220px;
+      background: #000;
+      border-right: 1px solid #1a1a1a;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      flex-shrink: 0;
+    }
+
+    .sidebar-brand {
+      padding: 20px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #ededed;
+    }
+
+    .sidebar-brand-logo {
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .sidebar-brand-logo svg { width: 18px; height: 16px; }
+
+    .sidebar-nav { padding: 8px 0; flex: 1; overflow-y: auto; }
+
+    .v-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 18px;
+      font-size: 13.5px;
+      font-weight: 400;
+      color: #888;
+      cursor: pointer;
+      transition: color 0.1s, background 0.1s;
+      text-decoration: none;
+      border-radius: 0;
+    }
+    .v-nav-item:hover { color: #ededed; background: #111; }
+    .v-nav-item.active { color: #fff; font-weight: 500; }
+    .v-nav-item svg { width: 16px; height: 16px; flex-shrink: 0; opacity: 0.6; }
+    .v-nav-item.active svg { opacity: 1; }
+
+    .v-nav-section {
+      padding: 20px 18px 6px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #555;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .sidebar-footer {
+      padding: 12px 0;
+      border-top: 1px solid #1a1a1a;
+    }
+
+    /* Main area */
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+    .topbar {
+      height: 52px;
+      background: #000;
+      border-bottom: 1px solid #1a1a1a;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      gap: 16px;
+    }
+
+    .topbar-breadcrumb {
+      font-size: 13px;
+      color: #666;
+    }
+    .topbar-breadcrumb span { color: #ededed; }
+
+    .topbar-icons { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+    .topbar-icon {
+      width: 32px; height: 32px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: #666; transition: color 0.1s;
+    }
+    .topbar-icon:hover { color: #ededed; }
+    .topbar-icon svg { width: 16px; height: 16px; }
+
+    .topbar-avatar {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: #e85d04;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 600; color: #fff;
+    }
+
+    .content {
+      flex: 1; overflow-y: auto; padding: 40px 48px;
+      max-width: 800px; width: 100%;
+    }
+
+    .page-title {
+      font-size: 24px; font-weight: 700; color: #ededed; margin-bottom: 8px;
+    }
+
+    .page-subtitle {
+      font-size: 14px; color: #888; line-height: 1.5; margin-bottom: 32px;
+    }
+
+    /* Supabase listing card */
+    .listing-card {
+      background: #111;
+      border: 1px solid #1a1a1a;
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 24px;
+    }
+
+    .listing-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .listing-logo {
+      width: 48px; height: 48px; border-radius: 10px;
+      background: #1a1a1a;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .listing-info { flex: 1; }
+    .listing-name { font-size: 18px; font-weight: 700; color: #ededed; }
+    .listing-publisher { font-size: 13px; color: #666; margin-top: 2px; }
+
+    .listing-badges {
+      display: flex; gap: 8px; margin-bottom: 20px;
+    }
+    .listing-badge {
+      padding: 4px 10px; border-radius: 4px;
+      font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.3px;
+      background: rgba(62, 207, 142, 0.1); color: #3ECF8E; border: 1px solid rgba(62, 207, 142, 0.2);
+    }
+
+    .listing-desc {
+      font-size: 14px; color: #888; line-height: 1.6; margin-bottom: 24px;
+    }
+
+    /* Pricing table */
+    .pricing-section-title {
+      font-size: 14px; font-weight: 600; color: #ededed; margin-bottom: 16px;
+    }
+
+    .pricing-table {
+      width: 100%;
+      border: 1px solid #1a1a1a;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 28px;
+    }
+
+    .pricing-row {
+      display: flex;
+      align-items: center;
+      padding: 14px 16px;
+      border-bottom: 1px solid #1a1a1a;
+      font-size: 14px;
+    }
+    .pricing-row:last-child { border-bottom: none; }
+    .pricing-row-header {
+      background: #0a0a0a;
+      font-weight: 600;
+      color: #666;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .pricing-plan { flex: 1; color: #ededed; font-weight: 500; }
+    .pricing-row-header .pricing-plan { color: #666; font-weight: 600; }
+    .pricing-detail { width: 140px; text-align: right; color: #888; }
+    .pricing-row-header .pricing-detail { color: #666; font-weight: 600; }
+    .pricing-price { width: 120px; text-align: right; color: #ededed; font-weight: 600; }
+    .pricing-row-header .pricing-price { color: #666; font-weight: 600; }
+
+    .subscribe-btn {
+      padding: 10px 24px;
+      background: #fff;
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .subscribe-btn:hover { background: #e5e5e5; }
+
+    .subscribe-btn.subscribed {
+      background: rgba(34, 197, 94, 0.1);
+      color: #22c55e;
+      border: 1px solid rgba(34, 197, 94, 0.2);
+      cursor: default;
+    }
+
+    /* Diagram panel */
+    .diagram-panel {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 340px;
+      height: 100vh;
+      background:
+        radial-gradient(circle, #d0d5dd 0.8px, transparent 0.8px);
+      background-size: 20px 20px;
+      background-color: #fff;
+      border-left: 1px solid #ddd;
+      display: flex;
+      flex-direction: column;
+      z-index: 300;
+      transition: transform 0.3s ease;
+    }
+
+    .diagram-panel.collapsed {
+      transform: translateX(100%);
+    }
+
+    .diagram-toggle {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 301;
+      width: 24px;
+      height: 48px;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-right: none;
+      border-radius: 6px 0 0 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #666;
+      transition: background 0.15s, right 0.3s ease;
+      box-shadow: -2px 0 4px rgba(0,0,0,0.08);
+      right: 340px;
+    }
+
+    .diagram-toggle:hover {
+      background: #eee;
+    }
+
+    .diagram-toggle.collapsed {
+      right: 0;
+    }
+
+    .diagram-toggle.collapsed svg {
+      transform: rotate(180deg);
+    }
+
+    .diagram-grid {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 20px;
+      gap: 0;
+    }
+
+    .diagram-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .diagram-connector {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      position: relative;
+    }
+
+    .diagram-connector-col {
+      width: 130px;
+      display: flex;
+      justify-content: center;
+      position: relative;
+    }
+
+    .dashed-line {
+      width: 3px;
+      height: 40px;
+      background: repeating-linear-gradient(
+        to bottom,
+        currentColor,
+        currentColor 6px,
+        transparent 6px,
+        transparent 12px
+      );
+    }
+
+    .dashed-line.blue-line { color: #2b7de9; }
+    .dashed-line.gray-line { color: #888; }
+
+    .connector-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: #555;
+      font-family: 'Inter', sans-serif;
+      padding: 2px 0;
+    }
+
+    .connector-split {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .diagram-box {
+      width: 130px;
+      min-height: 72px;
+      padding: 8px 4px;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1.4;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+
+    .diagram-box .diagram-box-sub {
+      font-weight: 400;
+      font-size: 11px;
+    }
+
+    .diagram-box.blue {
+      background: #4da3ff;
+      color: #fff;
+      border: 2px solid #4da3ff;
+    }
+
+    .diagram-box.white {
+      background: #fff;
+      color: #333;
+      border: 3px solid #888;
+    }
+
+    /* Animated reveal for the customer box */
+    .diag-reveal {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: max-height 0.6s ease, opacity 0.6s ease;
+    }
+    .diag-reveal.visible {
+      max-height: 200px;
+      opacity: 1;
+    }
+
+    /* Proto switcher */
+    .proto-switcher {
+      position: fixed; bottom: 24px; right: 24px; background: #fff;
+      border: 1px solid #d8dee4; border-radius: 12px; padding: 16px 20px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08); z-index: 9999;
+      font-family: 'Inter', -apple-system, sans-serif; color: #353a44;
+    }
+    .proto-switcher-title { font-size: 14px; font-weight: 600; color: #353a44; margin-bottom: 0; }
+    .proto-switcher-header { display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; gap: 8px; }
+    .proto-switcher-home { background: none; border: 1px solid #d8dee4; border-radius: 6px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #596171; transition: background 0.15s; flex-shrink: 0; text-decoration: none; }
+    .proto-switcher-home:hover { background: #f3f4f6; }
+    .proto-switcher-toggle { background: none; border: none; cursor: pointer; color: #9ca3af; padding: 0; display: flex; align-items: center; transition: transform 0.2s; }
+    .proto-switcher.collapsed .proto-switcher-toggle { transform: rotate(180deg); }
+    .proto-switcher.collapsed > :not(.proto-switcher-header) { display: none; }
+    .proto-switcher.collapsed { padding: 12px 16px; }
+    .proto-switcher label { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #353a44; cursor: pointer; padding: 4px 0; }
+    .proto-switcher input[type="radio"] { accent-color: #635bff; width: 16px; height: 16px; cursor: pointer; }
+    .proto-section-label { font-size: 11px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; margin-top: 4px; }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-brand-logo">
+        <svg viewBox="0 0 76 65" fill="none"><path d="M37.5274 0L75.0548 65H0L37.5274 0Z" fill="#fff"/></svg>
+      </div>
+      Vercel
+    </div>
+    <div class="sidebar-nav">
+      <a class="v-nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Overview
+      </a>
+      <a class="v-nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        Deployments
+      </a>
+      <a class="v-nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Analytics
+      </a>
+      <a class="v-nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        Storage
+      </a>
+      <div class="v-nav-section">Marketplace</div>
+      <a class="v-nav-item active" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Integrations
+      </a>
+      <a class="v-nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Settings
+      </a>
+    </div>
+    <div class="sidebar-footer">
+      <a class="v-nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        Help
+      </a>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-breadcrumb">
+        Marketplace / <span>Supabase</span>
+      </div>
+      <div class="topbar-icons">
+        <div class="topbar-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        </div>
+        <div class="topbar-avatar">A</div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="listing-card">
+        <div class="listing-header">
+          <div class="listing-logo">
+            <svg width="28" height="28" viewBox="0 0 109 113" fill="none">
+              <path d="M63.7076 110.284C60.8481 113.885 55.0502 111.912 54.9813 107.314L53.9738 40.0627L99.1935 40.0627C107.384 40.0627 111.952 49.5228 106.859 55.9374L63.7076 110.284Z" fill="url(#supabase-a)"/>
+              <path d="M45.317 2.07103C48.1765 -1.53037 53.9745 0.442937 54.0434 5.041L54.4849 72.2922H10.5328C2.34198 72.2922 -2.22561 62.8321 2.86674 56.4175L45.317 2.07103Z" fill="url(#supabase-b)"/>
+              <defs>
+                <linearGradient id="supabase-a" x1="53.9738" y1="54.974" x2="94.1635" y2="71.8295" gradientUnits="userSpaceOnUse"><stop stop-color="#249361"/><stop offset="1" stop-color="#3ECF8E"/></linearGradient>
+                <linearGradient id="supabase-b" x1="36.1558" y1="30.578" x2="54.4844" y2="65.0806" gradientUnits="userSpaceOnUse"><stop stop-color="#b8e0ce"/><stop offset="1" stop-color="#3ECF8E"/></linearGradient>
+              </defs>
+            </svg>
+          </div>
+          <div class="listing-info">
+            <div class="listing-name">Supabase</div>
+            <div class="listing-publisher">by Supabase Inc</div>
+          </div>
+        </div>
+
+        <div class="listing-badges">
+          <span class="listing-badge">Database</span>
+          <span class="listing-badge">Auth</span>
+          <span class="listing-badge">Storage</span>
+        </div>
+
+        <div class="listing-desc">
+          Supabase is an open source Firebase alternative. Start your project with a Postgres database, Authentication, instant APIs, Edge Functions, Realtime subscriptions, Storage, and Vector embeddings.
+        </div>
+
+        <div class="pricing-section-title">Pricing</div>
+        <div class="pricing-table">
+          <div class="pricing-row pricing-row-header">
+            <span class="pricing-plan">Plan</span>
+            <span class="pricing-detail">Included</span>
+            <span class="pricing-price">Price</span>
+          </div>
+          <div class="pricing-row">
+            <span class="pricing-plan">Free</span>
+            <span class="pricing-detail">500 MB database</span>
+            <span class="pricing-price">$0/mo</span>
+          </div>
+          <div class="pricing-row">
+            <span class="pricing-plan">Pro</span>
+            <span class="pricing-detail">8 GB database</span>
+            <span class="pricing-price">$25/mo</span>
+          </div>
+          <div class="pricing-row">
+            <span class="pricing-plan">Team</span>
+            <span class="pricing-detail">Unlimited</span>
+            <span class="pricing-price">$599/mo</span>
+          </div>
+        </div>
+
+        <button class="subscribe-btn" id="subscribeBtn">Subscribe</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Diagram panel -->
+  <div class="diagram-panel" id="diagramPanel">
+    <div class="diagram-grid" id="diagramGrid">
+      <!-- Row 1: Vercel (always visible) -->
+      <div class="diagram-row">
+        <div class="diagram-box blue">Vercel</div>
+      </div>
+
+      <!-- Connector: Vercel → Supabase with "Consent record" label -->
+      <div class="diagram-connector">
+        <div class="diagram-connector-col">
+          <div class="connector-split">
+            <div class="dashed-line blue-line" style="height:16px;"></div>
+            <span class="connector-label">Consent record</span>
+            <div class="dashed-line blue-line" style="height:16px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 2: Supabase direct account -->
+      <div class="diagram-row">
+        <div class="diagram-box white">Supabase<span class="diagram-box-sub">Direct account</span></div>
+      </div>
+
+      <!-- Connector: Supabase → Acme Corp (hidden initially) -->
+      <div class="diagram-connector diag-reveal" id="acmeConnector">
+        <div class="diagram-connector-col">
+          <div class="dashed-line gray-line"></div>
+        </div>
+      </div>
+
+      <!-- Row 3: Acme Corp customer (hidden initially) -->
+      <div class="diagram-row diag-reveal" id="acmeBox">
+        <div class="diagram-box white">Acme Corp<span class="diagram-box-sub">Customer</span></div>
+      </div>
+    </div>
+  </div>
+  <button class="diagram-toggle" id="diagramToggle" title="Toggle diagram panel">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+  </button>
+
+  <!-- Proto switcher -->
+  <div class="proto-switcher" id="protoSwitcher">
+    <div class="proto-switcher-header" onclick="this.parentElement.classList.toggle('collapsed')">
+      <div class="proto-switcher-title">Prototype options</div>
+      <a class="proto-switcher-home" href="index.html" onclick="event.stopPropagation()" title="Home"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></a>
+      <button class="proto-switcher-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+    </div>
+    <div class="proto-section-label">Perspective</div>
+    <label><input type="radio" name="perspective" value="vercel" onchange="handlePerspective(this)"> Vercel</label>
+    <label><input type="radio" name="perspective" value="supabase" onchange="handlePerspective(this)"> Supabase</label>
+    <label><input type="radio" name="perspective" value="acme" checked onchange="handlePerspective(this)"> Acme Corp</label>
+  </div>
+
+  <script>
+  function handlePerspective(el) {
+    if (el.value === 'vercel') {
+      window.location.href = 'vercel.html';
+    } else if (el.value === 'supabase') {
+      window.location.href = 'vercel-marketplace.html';
+    }
+  }
+
+  // Subscribe → reveal Acme Corp customer box in diagram
+  document.getElementById('subscribeBtn').addEventListener('click', function() {
+    if (this.classList.contains('subscribed')) return;
+
+    this.textContent = 'Subscribed';
+    this.classList.add('subscribed');
+
+    document.getElementById('acmeConnector').classList.add('visible');
+    document.getElementById('acmeBox').classList.add('visible');
+  });
+
+  // Diagram panel toggle
+  var diagramPanel = document.getElementById('diagramPanel');
+  var diagramToggle = document.getElementById('diagramToggle');
+
+  if (localStorage.getItem('diagramCollapsed') === 'true') {
+    diagramPanel.classList.add('collapsed');
+    diagramToggle.classList.add('collapsed');
+    document.body.classList.add('diagram-closed');
+  }
+
+  diagramToggle.addEventListener('click', function() {
+    diagramPanel.classList.toggle('collapsed');
+    diagramToggle.classList.toggle('collapsed');
+    document.body.classList.toggle('diagram-closed');
+    localStorage.setItem('diagramCollapsed', diagramPanel.classList.contains('collapsed'));
+  });
+  </script>
+
+</body>
+</html>

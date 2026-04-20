@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marketplace – Supabase Integration – Vercel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #000;
+      color: #ededed;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+    }
+
+    /* Vercel dark sidebar */
+    .sidebar {
+      width: 220px;
+      background: #000;
+      border-right: 1px solid #1a1a1a;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      flex-shrink: 0;
+    }
+
+    .sidebar-brand {
+      padding: 20px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #ededed;
+    }
+
+    .sidebar-brand-logo {
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .sidebar-brand-logo svg { width: 18px; height: 16px; }
+
+    .sidebar-nav { padding: 8px 0; flex: 1; overflow-y: auto; }
+
+    .v-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 18px;
+      font-size: 13.5px;
+      font-weight: 400;
+      color: #888;
+      cursor: pointer;
+      transition: color 0.1s, background 0.1s;
+      text-decoration: none;
+      border-radius: 0;
+    }
+    .v-nav-item:hover { color: #ededed; background: #111; }
+    .v-nav-item.active { color: #fff; font-weight: 500; }
+    .v-nav-item svg { width: 16px; height: 16px; flex-shrink: 0; opacity: 0.6; }
+    .v-nav-item.active svg { opacity: 1; }
+
+    .v-nav-section {
+      padding: 20px 18px 6px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #555;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .sidebar-footer {
+      padding: 12px 0;
+      border-top: 1px solid #1a1a1a;
+    }
+
+    /* Main area */
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+    .topbar {
+      height: 52px;
+      background: #000;
+      border-bottom: 1px solid #1a1a1a;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      gap: 16px;
+    }
+
+    .topbar-breadcrumb {
+      font-size: 13px;
+      color: #666;
+    }
+    .topbar-breadcrumb span { color: #ededed; }
+
+    .topbar-icons { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+    .topbar-icon {
+      width: 32px; height: 32px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: #666; transition: color 0.1s;
+    }
+    .topbar-icon:hover { color: #ededed; }
+    .topbar-icon svg { width: 16px; height: 16px; }
+
+    .topbar-avatar {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: linear-gradient(135deg, #3ECF8E, #2B9F6F);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 600; color: #fff;
+    }
+
+    .content {
+      flex: 1; overflow-y: auto; padding: 40px 48px;
+      max-width: 800px; width: 100%;
+    }
+
+    .page-title {
+      font-size: 24px; font-weight: 700; color: #ededed; margin-bottom: 8px;
+    }
+
+    .page-subtitle {
+      font-size: 14px; color: #888; line-height: 1.5; margin-bottom: 32px;
+    }
+
+    /* Revenue section */
+    .revenue-card {
+      background: #111;
+      border: 1px solid #1a1a1a;
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 24px;
+    }
+
+    .revenue-card-title {
+      font-size: 16px; font-weight: 600; color: #ededed; margin-bottom: 12px;
+    }
+
+    .revenue-card-text {
+      font-size: 14px; color: #888; line-height: 1.6; margin-bottom: 20px;
+    }
+
+    .revenue-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .revenue-stat {
+      background: #0a0a0a;
+      border: 1px solid #1a1a1a;
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .revenue-stat-label {
+      font-size: 11px; font-weight: 500; color: #555; text-transform: uppercase;
+      letter-spacing: 0.5px; margin-bottom: 6px;
+    }
+
+    .revenue-stat-value {
+      font-size: 20px; font-weight: 700; color: #ededed;
+    }
+
+    /* Payments setup section */
+    .payments-card {
+      background: #111;
+      border: 1px solid #1a1a1a;
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 24px;
+    }
+
+    .payments-card-title {
+      font-size: 16px; font-weight: 600; color: #ededed; margin-bottom: 8px;
+    }
+
+    .payments-card-text {
+      font-size: 14px; color: #888; line-height: 1.6; margin-bottom: 20px;
+    }
+
+    .setup-btn {
+      padding: 10px 20px;
+      background: #fff;
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .setup-btn:hover { background: #e5e5e5; }
+
+    .manage-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 20px;
+      background: transparent;
+      color: #ededed;
+      border: 1px solid #333;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+      text-decoration: none;
+    }
+    .manage-btn:hover { background: #111; border-color: #555; }
+
+    .success-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid rgba(34, 197, 94, 0.2);
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #22c55e;
+      margin-bottom: 16px;
+    }
+
+    /* Stripe modal overlay */
+    .stripe-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      backdrop-filter: blur(4px);
+    }
+
+    .stripe-overlay.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .stripe-modal {
+      width: 480px;
+      background: #fff;
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+      transform: scale(0.95) translateY(10px);
+      transition: transform 0.3s ease;
+      font-family: 'Inter', -apple-system, sans-serif;
+      color: #353a44;
+    }
+
+    .stripe-overlay.visible .stripe-modal {
+      transform: scale(1) translateY(0);
+    }
+
+    /* Browser window chrome */
+    .browser-chrome {
+      background: #2a2a2a;
+      padding: 10px 14px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .browser-chrome-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .browser-dots {
+      display: flex;
+      gap: 6px;
+    }
+    .browser-dot {
+      width: 12px; height: 12px; border-radius: 50%;
+    }
+    .browser-dot.red { background: #ff5f57; }
+    .browser-dot.yellow { background: #febc2e; }
+    .browser-dot.green { background: #28c840; }
+    .browser-chrome-title {
+      flex: 1;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 500;
+      color: #ccc;
+      margin-right: 44px;
+    }
+    .browser-url-bar {
+      background: #1a1a1a;
+      border-radius: 6px;
+      padding: 6px 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 0;
+    }
+    .browser-url-bar svg { color: #666; flex-shrink: 0; }
+    .browser-url-bar span {
+      font-size: 12px;
+      color: #999;
+    }
+
+    .stripe-modal-body { padding: 32px 36px 28px; }
+
+    .stripe-modal-title { font-size: 28px; font-weight: 800; color: #353a44; margin-bottom: 12px; }
+
+    .stripe-modal-subtitle {
+      font-size: 14px; color: #6c7688; margin-bottom: 24px;
+      padding: 10px 14px; background: #f5f6f8; border-radius: 6px; border: 1px solid #f0f0f0;
+      line-height: 1.5;
+    }
+
+    .stripe-field { margin-bottom: 16px; }
+    .stripe-field label { display: block; font-size: 14px; font-weight: 500; color: #353a44; margin-bottom: 6px; }
+    .stripe-field input {
+      width: 100%; padding: 12px 14px; border: 1px solid #d8dee4; border-radius: 8px;
+      font-size: 15px; font-family: inherit; color: #353a44; outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s; background: #fff;
+    }
+    .stripe-field input:focus { border-color: #533afd; box-shadow: 0 0 0 3px rgba(99, 91, 255, 0.12); }
+
+    .stripe-submit {
+      width: 100%; padding: 14px; border: none; border-radius: 8px;
+      background: #7c3aed; color: #fff; font-size: 16px; font-weight: 600;
+      cursor: pointer; font-family: inherit; margin-top: 4px; transition: opacity 0.15s;
+    }
+    .stripe-submit:hover { opacity: 0.92; }
+
+    .stripe-divider {
+      display: flex; align-items: center; gap: 12px; margin: 20px 0;
+      font-size: 12px; color: #6c7688; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .stripe-divider::before, .stripe-divider::after {
+      content: ''; flex: 1; height: 1px; background: #d8dee4;
+    }
+
+    .stripe-google-btn {
+      width: 100%; padding: 12px; border: 1px solid #d8dee4; border-radius: 8px;
+      background: #fff; font-size: 15px; font-weight: 500; color: #353a44;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      gap: 8px; transition: background 0.15s; font-family: inherit;
+    }
+    .stripe-google-btn:hover { background: #f5f6f8; }
+
+    .stripe-alt-link { text-align: center; margin-top: 18px; font-size: 13px; color: #6c7688; }
+    .stripe-alt-link a { color: #533afd; text-decoration: none; font-weight: 500; }
+    .stripe-alt-link a:hover { text-decoration: underline; }
+
+    .stripe-step { transition: opacity 0.25s ease, transform 0.25s ease; }
+    .stripe-step.step-hidden { display: none; }
+
+    /* Review permissions step */
+    .review-subtitle {
+      font-size: 15px; color: #6c7688; margin-bottom: 28px; line-height: 1.5;
+    }
+    .review-perm-list {
+      display: flex; flex-direction: column; margin-bottom: 24px;
+    }
+    .review-perm-item {
+      display: flex; align-items: center; gap: 10px; padding: 16px 0;
+      border-bottom: 1px solid #e5e7eb; cursor: pointer;
+    }
+    .review-perm-item:last-child { border-bottom: none; }
+    .review-perm-chevron {
+      width: 14px; height: 14px; color: #9ca3af; flex-shrink: 0;
+    }
+    .review-perm-checkbox {
+      width: 18px; height: 18px; border-radius: 4px; accent-color: #635bff; cursor: pointer;
+    }
+    .review-perm-label { flex: 1; font-size: 15px; font-weight: 500; color: #353a44; }
+    .review-perm-badge { font-size: 13px; color: #6c7688; }
+
+    .review-extra {
+      display: flex; align-items: flex-start; gap: 10px; padding: 16px 0;
+      font-size: 14px; color: #353a44; line-height: 1.5;
+    }
+    .review-extra input {
+      width: 18px; height: 18px; border-radius: 4px; accent-color: #635bff;
+      cursor: pointer; margin-top: 2px; flex-shrink: 0;
+    }
+
+    /* Proto switcher */
+    .proto-switcher {
+      position: fixed; bottom: 24px; right: 24px; background: #fff;
+      border: 1px solid #d8dee4; border-radius: 12px; padding: 16px 20px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08); z-index: 9999;
+      font-family: 'Inter', -apple-system, sans-serif; color: #353a44;
+    }
+    .proto-switcher-title { font-size: 14px; font-weight: 600; color: #353a44; margin-bottom: 0; }
+    .proto-switcher-header { display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; gap: 8px; }
+    .proto-switcher-home { background: none; border: 1px solid #d8dee4; border-radius: 6px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #596171; transition: background 0.15s; flex-shrink: 0; text-decoration: none; }
+    .proto-switcher-home:hover { background: #f3f4f6; }
+    .proto-switcher-toggle { background: none; border: none; cursor: pointer; color: #9ca3af; padding: 0; display: flex; align-items: center; transition: transform 0.2s; }
+    .proto-switcher.collapsed .proto-switcher-toggle { transform: rotate(180deg); }
+    .proto-switcher.collapsed > :not(.proto-switcher-header) { display: none; }
+    .proto-switcher.collapsed { padding: 12px 16px; }
+    .proto-switcher label { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #353a44; cursor: pointer; padding: 4px 0; }
+    .proto-switcher input[type="radio"] { accent-color: #635bff; width: 16px; height: 16px; cursor: pointer; }
+    .proto-section-label { font-size: 11px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; margin-top: 4px; }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-brand-logo">
+        <svg viewBox="0 0 76 65" fill="none"><path d="M37.5274 0L75.0548 65H0L37.5274 0Z" fill="#fff"/></svg>
+      </div>
+      Vercel
+    </div>
+    <div class="sidebar-nav">
+      <a class="v-nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Overview
+      </a>
+      <a class="v-nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        Deployments
+      </a>
+      <a class="v-nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Analytics
+      </a>
+      <a class="v-nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        Storage
+      </a>
+      <div class="v-nav-section">Marketplace</div>
+      <a class="v-nav-item active" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Integrations
+      </a>
+      <a class="v-nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Settings
+      </a>
+    </div>
+    <div class="sidebar-footer">
+      <a class="v-nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        Help
+      </a>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-breadcrumb">
+        Marketplace / <span>Supabase Integration</span>
+      </div>
+      <div class="topbar-icons">
+        <div class="topbar-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        </div>
+        <div class="topbar-avatar">S</div>
+      </div>
+    </div>
+
+    <div class="content">
+      <h1 class="page-title">Supabase Integration</h1>
+      <p class="page-subtitle">Manage your Supabase marketplace integration. When Vercel users add Supabase to their projects, you'll earn revenue through the marketplace billing system.</p>
+
+      <!-- Revenue section -->
+      <div class="revenue-card">
+        <div class="revenue-card-title">Revenue overview</div>
+        <div class="revenue-card-text">As a Vercel Marketplace partner, you earn revenue when Vercel customers use Supabase through the marketplace. Vercel handles billing and passes through your share automatically.</div>
+        <div class="revenue-stats">
+          <div class="revenue-stat">
+            <div class="revenue-stat-label">Monthly Revenue</div>
+            <div class="revenue-stat-value">$48.2k</div>
+          </div>
+          <div class="revenue-stat">
+            <div class="revenue-stat-label">Active Users</div>
+            <div class="revenue-stat-value">3,241</div>
+          </div>
+          <div class="revenue-stat">
+            <div class="revenue-stat-label">Revenue Share</div>
+            <div class="revenue-stat-value">85%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payments setup -->
+      <div class="payments-card" id="paymentsCard">
+        <div id="setupState">
+          <div class="payments-card-title">Payment setup</div>
+          <div class="payments-card-text">Connect your Stripe account to receive payouts from the Vercel Marketplace. Vercel will need access to your billing resources.</div>
+          <button class="setup-btn" id="setupBtn">Set up payments</button>
+        </div>
+        <div id="successState" style="display:none;">
+          <div class="success-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Stripe account connected
+          </div>
+          <div class="payments-card-title">Payment setup complete</div>
+          <div class="payments-card-text">Your Stripe account (Supabase Inc) is connected. Vercel will share billing data with you for reconciliation. You can manage the permissions Vercel has on your Stripe account at any time.</div>
+          <a href="supabase-apps.html" class="manage-btn">
+            Manage permissions in Stripe
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Proto switcher -->
+  <div class="proto-switcher" id="protoSwitcher">
+    <div class="proto-switcher-header" onclick="this.parentElement.classList.toggle('collapsed')">
+      <div class="proto-switcher-title">Prototype options</div>
+      <a class="proto-switcher-home" href="index.html" onclick="event.stopPropagation()" title="Home"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></a>
+      <button class="proto-switcher-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+    </div>
+    <div class="proto-section-label">Perspective</div>
+    <label><input type="radio" name="perspective" value="vercel" onchange="handlePerspective(this)"> Vercel</label>
+    <label><input type="radio" name="perspective" value="supabase" checked onchange="handlePerspective(this)"> Supabase</label>
+    <label><input type="radio" name="perspective" value="acme" onchange="handlePerspective(this)"> Acme Corp</label>
+  </div>
+
+  <!-- Stripe sign-in modal -->
+  <div class="stripe-overlay" id="stripeOverlay">
+    <div class="stripe-modal">
+      <!-- Browser window chrome -->
+      <div class="browser-chrome">
+        <div class="browser-chrome-top">
+          <div class="browser-dots">
+            <div class="browser-dot red"></div>
+            <div class="browser-dot yellow"></div>
+            <div class="browser-dot green"></div>
+          </div>
+          <div class="browser-chrome-title">Stripe</div>
+        </div>
+        <div class="browser-url-bar">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <span>stripe.com/embedded</span>
+        </div>
+      </div>
+
+      <div class="stripe-modal-body">
+        <!-- Step 1: Sign in -->
+        <div class="stripe-step" id="stripeStep1">
+          <div class="stripe-modal-title">Sign in to your account</div>
+          <div class="stripe-modal-subtitle">
+            Sign in to your Stripe account to connect with Vercel. Vercel will be able to read billing data from your account.
+          </div>
+
+          <div class="stripe-field">
+            <label>Email</label>
+            <input type="email" value="billing@example.com">
+          </div>
+
+          <div class="stripe-field">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <label style="margin-bottom:0;">Password</label>
+              <a href="#" style="font-size:13px; color:#533afd; text-decoration:none; font-weight:500;">Forgot your password?</a>
+            </div>
+            <input type="password" style="margin-top:6px;">
+          </div>
+
+          <div style="display:flex; align-items:center; gap:8px; margin:16px 0 20px;">
+            <input type="checkbox" style="width:18px; height:18px; accent-color:#533afd; cursor:pointer;">
+            <label style="font-size:14px; color:#596171; font-weight:400; margin:0;">Remember me on this device</label>
+          </div>
+
+          <button class="stripe-submit" id="stripeSignInBtn">Sign in</button>
+
+          <div class="stripe-divider" style="margin:24px 0;">OR</div>
+
+          <button class="stripe-google-btn" style="margin-bottom:10px;">
+            <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+            Sign in with Google
+          </button>
+          <button class="stripe-google-btn" style="margin-bottom:10px;">Sign in with passkey</button>
+          <button class="stripe-google-btn">Sign in with SSO</button>
+
+          <div class="stripe-alt-link" style="margin-top:24px;">
+            New to Stripe? <a href="#">Create account</a>
+          </div>
+        </div>
+
+        <!-- Step 2: Review permissions -->
+        <div class="stripe-step step-hidden" id="stripeStep2">
+          <div class="stripe-modal-title">Review permissions</div>
+          <div class="review-subtitle">Review the permissions Vercel will have access to</div>
+
+          <div class="review-perm-list">
+            <div class="review-perm-item">
+              <svg class="review-perm-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+              <input type="checkbox" class="review-perm-checkbox" checked>
+              <span class="review-perm-label">Invoice line item</span>
+              <span class="review-perm-badge">Read</span>
+            </div>
+            <div class="review-perm-item">
+              <svg class="review-perm-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+              <input type="checkbox" class="review-perm-checkbox" checked>
+              <span class="review-perm-label">Meter</span>
+              <span class="review-perm-badge">Read</span>
+            </div>
+            <div class="review-perm-item">
+              <svg class="review-perm-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+              <input type="checkbox" class="review-perm-checkbox" checked>
+              <span class="review-perm-label">Product catalog</span>
+              <span class="review-perm-badge">Read</span>
+            </div>
+            <div class="review-perm-item">
+              <svg class="review-perm-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+              <input type="checkbox" class="review-perm-checkbox" checked>
+              <span class="review-perm-label">Webhook billing</span>
+              <span class="review-perm-badge">Read</span>
+            </div>
+          </div>
+
+          <div class="review-extra">
+            <input type="checkbox" checked>
+            <span>Sync transaction and customer data with your account</span>
+          </div>
+
+          <button class="stripe-submit" id="stripeConfirmBtn" style="margin-top: 24px;">Continue</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  function handlePerspective(el) {
+    if (el.value === 'vercel') {
+      window.location.href = 'vercel.html';
+    } else if (el.value === 'acme') {
+      window.location.href = 'vercel-acme.html';
+    }
+  }
+
+  // Set up payments → open Stripe modal
+  document.getElementById('setupBtn').addEventListener('click', function() {
+    document.getElementById('stripeOverlay').classList.add('visible');
+  });
+
+  // Close modal on backdrop click
+  document.getElementById('stripeOverlay').addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('visible');
+  });
+
+  // Step 1 → Step 2
+  document.getElementById('stripeSignInBtn').addEventListener('click', function() {
+    document.getElementById('stripeStep1').classList.add('step-hidden');
+    document.getElementById('stripeStep2').classList.remove('step-hidden');
+  });
+
+  // Continue → close modal, show success
+  document.getElementById('stripeConfirmBtn').addEventListener('click', function() {
+    document.getElementById('stripeOverlay').classList.remove('visible');
+    document.getElementById('setupState').style.display = 'none';
+    document.getElementById('successState').style.display = 'block';
+    document.getElementById('stripeStep1').classList.remove('step-hidden');
+    document.getElementById('stripeStep2').classList.add('step-hidden');
+  });
+  </script>
+
+</body>
+</html>
