@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home – Supabase – Stripe</title>
+  <title>Customers – Supabase – Stripe</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -49,7 +49,7 @@
       width: 24px;
       height: 24px;
       border-radius: 6px;
-      background: linear-gradient(135deg, #3ECF8E, #2B9F6F);
+      background: linear-gradient(135deg, #4da3ff, #2b7de9);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -94,7 +94,7 @@
 
     .acct-switcher-avatar {
       width: 40px; height: 40px; border-radius: 8px;
-      background: linear-gradient(135deg, #3ECF8E, #2B9F6F);
+      background: linear-gradient(135deg, #4da3ff, #2b7de9);
       display: flex; align-items: center; justify-content: center;
       margin-bottom: 8px;
     }
@@ -206,7 +206,10 @@
     }
 
     .nav-item:hover { color: #353a44; background: #f5f6f8; }
-    .nav-item.active { color: #353a44; font-weight: 500; }
+    .nav-item.active { color: #635bff; font-weight: 500; }
+    .nav-item.active img:not(.nav-item-chevron) {
+      filter: brightness(0) saturate(100%) invert(37%) sepia(91%) saturate(5535%) hue-rotate(238deg) brightness(101%) contrast(101%);
+    }
 
     .nav-item img { width: 16px; height: 16px; flex-shrink: 0; }
     .nav-item img.nav-item-chevron { margin-left: auto; width: 8px; height: 8px; opacity: 0.4; }
@@ -264,15 +267,51 @@
 
     .content { flex: 1; overflow-y: auto; padding: 32px 40px; max-width: 1280px; margin: 0 auto; width: 100%; box-sizing: border-box; }
 
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
     .page-title {
       font-size: 28px;
       font-weight: 700;
       color: #1a1a1a;
+    }
+
+    .page-subtitle {
+      font-size: 14px;
+      color: #6c7688;
       margin-bottom: 24px;
     }
 
-    /* Marketplace connection badge */
-    .marketplace-badge {
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      background: #635bff;
+      font-size: 13px;
+      font-weight: 500;
+      color: #fff;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.1s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-primary:hover { background: #4f46e5; }
+
+    /* Consent info banner */
+    .consent-banner {
       display: flex;
       align-items: center;
       gap: 16px;
@@ -280,68 +319,95 @@
       background: #f4f7fa;
       border: none;
       border-radius: 8px;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
+      font-size: 14px;
+      color: #596171;
+      line-height: 20px;
+      letter-spacing: -0.15px;
     }
-
-    .marketplace-badge-text { flex: 1; display: flex; flex-direction: column; gap: 4px; }
-    .marketplace-badge-title { font-size: 16px; font-weight: 700; color: #1a2c44; letter-spacing: -0.31px; line-height: 24px; }
-    .marketplace-badge-sub { font-size: 14px; font-weight: 400; color: #596171; letter-spacing: -0.15px; line-height: 20px; }
-
-    .marketplace-badge-action {
+    .consent-banner-text { flex: 1; }
+    .consent-banner-action {
       font-size: 14px; font-weight: 400; color: #635bff;
-      display: flex; align-items: center; flex-shrink: 0;
-      text-decoration: none; cursor: pointer;
+      text-decoration: none; flex-shrink: 0; cursor: pointer;
     }
-    .marketplace-badge-action:hover { text-decoration: underline; }
-
-    .marketplace-badge-dismiss {
+    .consent-banner-action:hover { text-decoration: underline; }
+    .consent-banner-dismiss {
       width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;
       flex-shrink: 0; cursor: pointer; border-radius: 6px; border: none; background: none;
       color: #474e5a; padding: 0;
     }
-    .marketplace-badge-dismiss:hover { background: #ecf1f6; }
+    .consent-banner-dismiss:hover { background: #ecf1f6; }
 
-    /* Summary cards */
-    .summary-cards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-bottom: 32px;
-    }
-
-    .summary-card {
-      padding: 20px;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
-    }
-
-    .summary-card-label {
-      font-size: 13px;
-      font-weight: 400;
-      color: #6c7688;
-      margin-bottom: 6px;
-    }
-
-    .summary-card-value {
-      font-size: 24px;
-      font-weight: 600;
-      color: #1a1a1a;
-    }
-
-    /* Recent activity */
-    .section-title {
-      font-size: 16px;
-      font-weight: 600;
-      color: #1a1a1a;
+    /* Filter row */
+    .filter-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
       margin-bottom: 16px;
+      flex-wrap: wrap;
     }
 
-    .activity-table {
+    .filter-pill {
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #596171;
+      background: #fff;
+      border: 1px dashed #b6c0cd;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.1s;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .filter-pill:hover { background: #f9fafb; }
+
+    .filter-pill img {
+      width: 12px;
+      height: 12px;
+      opacity: 0.6;
+    }
+
+    .filter-actions {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .filter-btn {
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #374151;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      cursor: pointer;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .filter-btn:hover { background: #f9fafb; }
+
+    .filter-btn img {
+      width: 12px;
+      height: 12px;
+      opacity: 0.5;
+    }
+
+    /* Customers table */
+    .customers-table {
       width: 100%;
       border-collapse: collapse;
     }
 
-    .activity-table th {
+    .customers-table th {
       text-align: left;
       font-size: 12px;
       font-weight: 500;
@@ -350,19 +416,73 @@
       border-bottom: 1px solid #e5e7eb;
     }
 
-    .activity-table td {
+    .customers-table th:last-child { text-align: right; }
+
+    .customers-table td {
       padding: 12px 12px;
       font-size: 13px;
       color: #374151;
       border-bottom: 1px solid #f3f4f6;
+      vertical-align: middle;
     }
 
-    .activity-table tr:hover { background: #f9fafb; }
+    .customers-table tr:hover { background: #f9fafb; cursor: pointer; }
 
-    .activity-amount { font-weight: 600; color: #1a1a1a; }
-    .activity-status { display: inline-flex; align-items: center; gap: 4px; }
-    .activity-status-dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; }
-    .activity-status-dot.pending { background: #f59e0b; }
+    .customer-name { font-weight: 500; color: #1a1a1a; }
+
+    .subscription-items {
+      font-size: 12px;
+      color: #6c7688;
+      max-width: 240px;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 16px;
+    }
+
+    .status-badge.active { background: #d7f7c2; color: #006908; }
+    .status-badge.trialing { background: #c7d2fe; color: #4338ca; }
+    .status-badge.past-due { background: #fde2dd; color: #df1b41; }
+
+    .mrr-value { font-weight: 600; color: #1a1a1a; }
+
+    .td-dots { text-align: right; color: #9ca3af; cursor: pointer; font-size: 18px; }
+
+    /* Pagination */
+    .pagination {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 12px;
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    .pagination-buttons {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pagination button {
+      padding: 6px 14px;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      background: #fff;
+      cursor: pointer;
+      color: #374151;
+      font-size: 13px;
+      font-family: inherit;
+      font-weight: 500;
+    }
+
+    .pagination button:hover { background: #f9fafb; }
 
     /* Proto switcher */
     .proto-switcher {
@@ -395,7 +515,7 @@
 
   <div class="sidebar">
     <div class="sidebar-brand" id="sidebarBrand" onclick="toggleAcctSwitcher()">
-      <div class="sidebar-brand-logo">
+      <div class="sidebar-brand-logo" style="background: linear-gradient(135deg, #3ECF8E, #2B9F6F);">
         <svg viewBox="0 0 24 24" fill="none"><path d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0A2.704 2.704 0 003 15.546" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><path d="M5 12V7a2 2 0 012-2h10a2 2 0 012 2v5" stroke="#fff" stroke-width="1.5"/><path d="M9 9h6" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
       </div>
       <div class="sidebar-brand-info">
@@ -406,7 +526,7 @@
       <!-- Account switcher dropdown -->
       <div class="acct-switcher" id="acctSwitcher" onclick="event.stopPropagation()">
         <div class="acct-switcher-header">
-          <div class="acct-switcher-avatar">
+          <div class="acct-switcher-avatar" style="background: linear-gradient(135deg, #3ECF8E, #2B9F6F);">
             <svg viewBox="0 0 24 24" fill="none"><path d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0A2.704 2.704 0 003 15.546" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><path d="M5 12V7a2 2 0 012-2h10a2 2 0 012 2v5" stroke="#fff" stroke-width="1.5"/><path d="M9 9h6" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
           </div>
           <div class="acct-switcher-name">Supabase Inc</div>
@@ -438,7 +558,7 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
             </div>
           </a>
-          <a class="acct-switcher-item" href="supabase-v2-customers.html">
+          <a class="acct-switcher-item" id="vercelAcctItem" href="supabase-v2-customers.html">
             <div class="acct-item-icon blue">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0A2.704 2.704 0 003 15.546" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><path d="M5 12V7a2 2 0 012-2h10a2 2 0 012 2v5" stroke="#fff" stroke-width="1.5"/></svg>
             </div>
@@ -472,7 +592,7 @@
     </div>
 
     <div class="sidebar-nav">
-      <a class="nav-item active" href="#">
+      <a class="nav-item" href="supabase-home.html">
         <img src="icons/home.svg" alt="">
         Home
       </a>
@@ -484,7 +604,7 @@
         <img src="icons/convert.svg" alt="">
         Transactions
       </a>
-      <a class="nav-item" href="supabase-customers.html">
+      <a class="nav-item active" href="supabase-customers.html">
         <img src="icons/customers.svg" alt="">
         Customers
       </a>
@@ -551,104 +671,113 @@
     </div>
 
     <div class="content">
-      <div class="page-title">Home</div>
-
-      <div class="marketplace-badge" id="marketplaceBadge">
-        <div class="marketplace-badge-text">
-          <div class="marketplace-badge-title">3 connected marketplaces</div>
-          <div class="marketplace-badge-sub">Vercel, Anthropic, and OpenAI have shared access to your billing resources</div>
-        </div>
-        <a class="marketplace-badge-action" href="supabase-apps.html">Manage</a>
-        <button class="marketplace-badge-dismiss" onclick="document.getElementById('marketplaceBadge').style.display='none'" aria-label="Dismiss">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-      </div>
-
-      <div class="summary-cards">
-        <div class="summary-card">
-          <div class="summary-card-label">Today's revenue</div>
-          <div class="summary-card-value">$4,250.00</div>
-        </div>
-        <div class="summary-card">
-          <div class="summary-card-label">Available balance</div>
-          <div class="summary-card-value">$18,340.00</div>
-        </div>
-        <div class="summary-card">
-          <div class="summary-card-label">Pending</div>
-          <div class="summary-card-value">$2,100.00</div>
+      <div class="page-header">
+        <div class="page-title">Customers</div>
+        <div class="header-actions">
+          <button class="btn-primary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add customer
+          </button>
         </div>
       </div>
 
-      <div class="section-title">Recent payments</div>
-      <table class="activity-table">
+
+      <div class="filter-row">
+        <button class="filter-pill"><img src="icons/addCircle.svg" alt=""> Status</button>
+        <button class="filter-pill"><img src="icons/addCircle.svg" alt=""> Subscription</button>
+        <button class="filter-pill"><img src="icons/addCircle.svg" alt=""> Created</button>
+        <div class="filter-actions">
+          <button class="filter-btn"><img src="icons/export.svg" alt=""> Export</button>
+          <button class="filter-btn"><img src="icons/settings.svg" alt=""> Edit columns</button>
+        </div>
+      </div>
+
+      <table class="customers-table">
         <thead>
           <tr>
-            <th>Amount</th>
-            <th>Status</th>
             <th>Customer</th>
-            <th>Description</th>
-            <th>Date</th>
+            <th>Subscription</th>
+            <th>MRR</th>
+            <th>Status</th>
+            <th>Latest invoice</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td class="activity-amount">$299.00</td>
-            <td><span class="activity-status"><span class="activity-status-dot"></span> Succeeded</span></td>
-            <td>Acme Corp</td>
-            <td>Supabase Pro — Monthly</td>
-            <td>Apr 13, 2026</td>
+            <td class="customer-name">Acme Corp</td>
+            <td><span class="subscription-items">Pro + Compute + Auth + Edge + Storage</span></td>
+            <td class="mrr-value">$395.70</td>
+            <td><span class="status-badge active">Active</span></td>
+            <td>Apr 2026</td>
+            <td class="td-dots">···</td>
           </tr>
           <tr>
-            <td class="activity-amount">$1,250.00</td>
-            <td><span class="activity-status"><span class="activity-status-dot"></span> Succeeded</span></td>
-            <td>TechFlow Inc</td>
-            <td>Supabase Enterprise — Monthly</td>
-            <td>Apr 13, 2026</td>
+            <td class="customer-name">MegaTech</td>
+            <td><span class="subscription-items">Pro + Compute</span></td>
+            <td class="mrr-value">$820.00</td>
+            <td><span class="status-badge active">Active</span></td>
+            <td>Apr 2026</td>
+            <td class="td-dots">···</td>
           </tr>
           <tr>
-            <td class="activity-amount">$89.00</td>
-            <td><span class="activity-status"><span class="activity-status-dot"></span> Succeeded</span></td>
-            <td>DevStudio</td>
-            <td>Supabase Pro — Monthly</td>
-            <td>Apr 13, 2026</td>
+            <td class="customer-name">Sarah's Photography</td>
+            <td><span class="subscription-items">Pro</span></td>
+            <td class="mrr-value">$25.00</td>
+            <td><span class="status-badge active">Active</span></td>
+            <td>Apr 2026</td>
+            <td class="td-dots">···</td>
           </tr>
           <tr>
-            <td class="activity-amount">$499.00</td>
-            <td><span class="activity-status"><span class="activity-status-dot"></span> Succeeded</span></td>
-            <td>MegaTech</td>
-            <td>Supabase Team — Monthly</td>
-            <td>Apr 12, 2026</td>
+            <td class="customer-name">NewCo</td>
+            <td><span class="subscription-items">Pro</span></td>
+            <td class="mrr-value">$250.00</td>
+            <td><span class="status-badge active">Active</span></td>
+            <td>Apr 2026</td>
+            <td class="td-dots">···</td>
           </tr>
           <tr>
-            <td class="activity-amount">$2,100.00</td>
-            <td><span class="activity-status"><span class="activity-status-dot pending"></span> Pending</span></td>
-            <td>CloudNine Ltd</td>
-            <td>Supabase Enterprise — Annual</td>
-            <td>Apr 12, 2026</td>
+            <td class="customer-name">BuildFast Co</td>
+            <td><span class="subscription-items">Team + Compute + Auth</span></td>
+            <td class="mrr-value">$475.00</td>
+            <td><span class="status-badge active">Active</span></td>
+            <td>Apr 2026</td>
+            <td class="td-dots">···</td>
           </tr>
           <tr>
-            <td class="activity-amount">$25.00</td>
-            <td><span class="activity-status"><span class="activity-status-dot"></span> Succeeded</span></td>
-            <td>Sarah's Photography</td>
-            <td>Supabase Pro — Monthly</td>
-            <td>Apr 12, 2026</td>
+            <td class="customer-name">DevStudio</td>
+            <td><span class="subscription-items">Pro + Storage</span></td>
+            <td class="mrr-value">$89.00</td>
+            <td><span class="status-badge trialing">Trialing</span></td>
+            <td>—</td>
+            <td class="td-dots">···</td>
           </tr>
           <tr>
-            <td class="activity-amount">$149.00</td>
-            <td><span class="activity-status"><span class="activity-status-dot"></span> Succeeded</span></td>
-            <td>BuildFast Co</td>
-            <td>Supabase Team — Monthly</td>
-            <td>Apr 11, 2026</td>
+            <td class="customer-name">CloudNine Ltd</td>
+            <td><span class="subscription-items">Enterprise + Compute + Auth + Edge + Storage</span></td>
+            <td class="mrr-value">$2,100.00</td>
+            <td><span class="status-badge active">Active</span></td>
+            <td>Apr 2026</td>
+            <td class="td-dots">···</td>
           </tr>
           <tr>
-            <td class="activity-amount">$25.00</td>
-            <td><span class="activity-status"><span class="activity-status-dot"></span> Succeeded</span></td>
-            <td>IndieDev</td>
-            <td>Supabase Pro — Monthly</td>
-            <td>Apr 11, 2026</td>
+            <td class="customer-name">LaunchPad Inc</td>
+            <td><span class="subscription-items">Pro + Compute</span></td>
+            <td class="mrr-value">$112.50</td>
+            <td><span class="status-badge past-due">Past due</span></td>
+            <td>Mar 2026</td>
+            <td class="td-dots">···</td>
           </tr>
         </tbody>
       </table>
+
+      <div class="pagination">
+        <div>Viewing 8 of 8 results</div>
+        <div class="pagination-buttons">
+          <button>Previous</button>
+          <button>Next</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -659,12 +788,12 @@
       <button class="proto-switcher-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
     </div>
     <div class="proto-section-label">Options</div>
-    <label><input type="radio" name="supabase-view" value="v2" checked onchange="handleSupabaseViewChange(this)"> v2 account</label>
-    <label><input type="radio" name="supabase-view" value="direct" onchange="handleSupabaseViewChange(this)"> Direct account</label>
+    <label><input type="radio" name="supabase-view" value="v2" onchange="handleSupabaseViewChange(this)"> v2 account</label>
+    <label><input type="radio" name="supabase-view" value="direct" checked onchange="handleSupabaseViewChange(this)"> Direct account</label>
   </div>
   <script>
   function handleSupabaseViewChange(el) {
-    if (el.value === 'direct') { window.location.href = 'supabase-apps.html'; }
+    if (el.value === 'v2') { window.location.href = 'supabase-v2-customers.html'; }
   }
 
   function toggleAcctSwitcher() {

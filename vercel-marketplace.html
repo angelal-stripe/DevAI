@@ -513,7 +513,7 @@
           </div>
           <div class="payments-card-title">Payment setup complete</div>
           <div class="payments-card-text">Your Stripe account (Supabase Inc) is connected. Vercel will share billing data with you for reconciliation. You can manage the permissions Vercel has on your Stripe account at any time.</div>
-          <a href="supabase-apps.html" class="manage-btn">
+          <a href="supabase-apps.html" target="_blank" class="manage-btn">
             Manage permissions in Stripe
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
           </a>
@@ -626,11 +626,6 @@
               <span class="review-perm-label">Webhook billing</span>
               <span class="review-perm-badge">Read</span>
             </div>
-          </div>
-
-          <div class="review-extra">
-            <input type="checkbox" checked>
-            <span>Sync transaction and customer data with your account</span>
           </div>
 
           <button class="stripe-submit" id="stripeConfirmBtn" style="margin-top: 24px;">Continue</button>

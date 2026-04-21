@@ -206,9 +206,30 @@
     }
 
     .dialog-footer {
-      display: flex; align-items: center; gap: 8px;
+      display: flex; align-items: center; justify-content: flex-end; gap: 8px;
       padding: 16px 24px; border-top: 1px solid #e5e7eb; flex-shrink: 0;
     }
+
+    .dialog-btn {
+      height: 28px; padding: 4px 8px; border-radius: 6px;
+      font-size: 14px; font-weight: 600; font-family: inherit;
+      cursor: pointer; line-height: 20px;
+    }
+
+    .dialog-btn-secondary {
+      background: #fff; color: #273951; border: none;
+      box-shadow: 0 1px 1px rgba(26,27,37,0.16), 0 0 0 1px #d5dbe1;
+    }
+    .dialog-btn-secondary:hover { background: #f4f7fa; }
+
+    .dialog-btn-primary {
+      background: #675dff; color: #fff; border: none;
+      box-shadow: 0 1px 1px rgba(20,19,78,0.32), 0 0 0 1px #625afa;
+    }
+    .dialog-btn-primary:hover { background: #5a51e6; }
+
+    .dialog-step { display: flex; flex-direction: column; overflow: hidden; flex: 1; min-height: 0; }
+    .dialog-step.hidden { display: none; }
 
     /* Permission rows inside dialog */
     .permission-row {
@@ -407,7 +428,7 @@
       <!-- Enabled state -->
       <div id="enabledState" style="display:none;">
         <p class="page-description">Request access to other Stripe accounts to help them build their business. You are currently connected to <a href="#">0 accounts</a>.</p>
-        <button class="enable-btn" id="generateUrlBtn">Generate URL</button>
+        <button class="enable-btn" id="generateUrlBtn">Request access</button>
       </div>
     </div>
   </div>
@@ -425,81 +446,97 @@
     <label><input type="radio" name="perspective" value="acme" onchange="handlePerspective(this)"> Acme Corp</label>
   </div>
 
-  <!-- Generate URL dialog -->
+  <!-- Request access dialog -->
   <div id="generateDialog" class="dialog-backdrop hidden" onclick="if(event.target===this) closeGenerateDialog()">
     <div class="dialog-box">
       <div class="dialog-header">
-        <div class="dialog-title">Default permissions</div>
+        <div class="dialog-title" id="dialogTitleText">Request access</div>
         <button class="dialog-close" onclick="closeGenerateDialog()">&times;</button>
       </div>
-      <div class="dialog-body">
-        <div class="permission-row">
-          <input type="checkbox" class="permission-checkbox">
-          <span class="permission-label">API keys</span>
-          <span class="permission-access">Read and write</span>
-        </div>
-        <div class="permission-row">
-          <input type="checkbox" class="permission-checkbox">
-          <span class="permission-label">Balances</span>
-          <span class="permission-access">Read</span>
-        </div>
-        <div class="permission-row">
-          <input type="checkbox" class="permission-checkbox">
-          <span class="permission-label">Events</span>
-          <span class="permission-access">Read and write</span>
-        </div>
-        <div class="permission-row">
-          <input type="checkbox" class="permission-checkbox">
-          <span class="permission-label">Identity</span>
-          <span class="permission-access">Read and write</span>
-        </div>
-        <div class="permission-row has-reason">
-          <input type="checkbox" class="permission-checkbox" checked>
-          <span class="permission-label">Invoice line item</span>
-          <span class="permission-access">Read</span>
-          <span class="permission-reason-label">Reason</span>
-          <textarea class="permission-reason" rows="2">Vercel reads invoice line items to reconcile marketplace partner payouts and display billing breakdowns.</textarea>
-        </div>
-        <div class="permission-row has-reason">
-          <input type="checkbox" class="permission-checkbox" checked>
-          <span class="permission-label">Meter</span>
-          <span class="permission-access">Read</span>
-          <span class="permission-reason-label">Reason</span>
-          <textarea class="permission-reason" rows="2">Vercel reads meter usage data to track consumption-based billing and display usage dashboards for marketplace integrations.</textarea>
-        </div>
-        <div class="permission-row">
-          <input type="checkbox" class="permission-checkbox">
-          <span class="permission-label">Payment activity</span>
-          <span class="permission-access">Read</span>
-        </div>
-        <div class="permission-row">
-          <input type="checkbox" class="permission-checkbox">
-          <span class="permission-label">Payout activity</span>
-          <span class="permission-access">Read</span>
-        </div>
-        <div class="permission-row has-reason">
-          <input type="checkbox" class="permission-checkbox" checked>
-          <span class="permission-label">Product catalog</span>
-          <span class="permission-access">Read</span>
-          <span class="permission-reason-label">Reason</span>
-          <textarea class="permission-reason" rows="2">Vercel reads product catalog data to display integration pricing and plan details within the marketplace.</textarea>
-        </div>
-        <div class="permission-row">
-          <input type="checkbox" class="permission-checkbox">
-          <span class="permission-label">Products</span>
-          <span class="permission-access">Read</span>
-        </div>
-        <div class="permission-row has-reason">
-          <input type="checkbox" class="permission-checkbox" checked>
-          <span class="permission-label">Webhook billing</span>
-          <span class="permission-access">Read</span>
-          <span class="permission-reason-label">Reason</span>
-          <textarea class="permission-reason" rows="2">Vercel subscribes to billing webhook events to keep subscription states in sync and trigger provisioning workflows.</textarea>
-        </div>
 
-        <div class="url-row">
-          <input class="url-input" id="urlInput" type="text" readonly value="https://connect.stripe.com/consent/acct_vercel?permissions=product_catalog_read,meter_read,invoice_line_item_read,webhook_billing_read">
-          <button class="copy-btn" id="copyBtn">Copy</button>
+      <!-- Step 1: Permissions -->
+      <div class="dialog-step" id="dialogStep1">
+        <div class="dialog-body">
+          <div class="permission-row">
+            <input type="checkbox" class="permission-checkbox">
+            <span class="permission-label">API keys</span>
+            <span class="permission-access">Read and write</span>
+          </div>
+          <div class="permission-row">
+            <input type="checkbox" class="permission-checkbox">
+            <span class="permission-label">Balances</span>
+            <span class="permission-access">Read</span>
+          </div>
+          <div class="permission-row">
+            <input type="checkbox" class="permission-checkbox">
+            <span class="permission-label">Events</span>
+            <span class="permission-access">Read and write</span>
+          </div>
+          <div class="permission-row">
+            <input type="checkbox" class="permission-checkbox">
+            <span class="permission-label">Identity</span>
+            <span class="permission-access">Read and write</span>
+          </div>
+          <div class="permission-row has-reason">
+            <input type="checkbox" class="permission-checkbox" checked>
+            <span class="permission-label">Invoice line item</span>
+            <span class="permission-access">Read</span>
+            <span class="permission-reason-label">Reason</span>
+            <textarea class="permission-reason" rows="2">Vercel reads invoice line items to reconcile marketplace partner payouts and display billing breakdowns.</textarea>
+          </div>
+          <div class="permission-row has-reason">
+            <input type="checkbox" class="permission-checkbox" checked>
+            <span class="permission-label">Meter</span>
+            <span class="permission-access">Read</span>
+            <span class="permission-reason-label">Reason</span>
+            <textarea class="permission-reason" rows="2">Vercel reads meter usage data to track consumption-based billing and display usage dashboards for marketplace integrations.</textarea>
+          </div>
+          <div class="permission-row">
+            <input type="checkbox" class="permission-checkbox">
+            <span class="permission-label">Payment activity</span>
+            <span class="permission-access">Read</span>
+          </div>
+          <div class="permission-row">
+            <input type="checkbox" class="permission-checkbox">
+            <span class="permission-label">Payout activity</span>
+            <span class="permission-access">Read</span>
+          </div>
+          <div class="permission-row has-reason">
+            <input type="checkbox" class="permission-checkbox" checked>
+            <span class="permission-label">Product catalog</span>
+            <span class="permission-access">Read</span>
+            <span class="permission-reason-label">Reason</span>
+            <textarea class="permission-reason" rows="2">Vercel reads product catalog data to display integration pricing and plan details within the marketplace.</textarea>
+          </div>
+          <div class="permission-row">
+            <input type="checkbox" class="permission-checkbox">
+            <span class="permission-label">Products</span>
+            <span class="permission-access">Read</span>
+          </div>
+          <div class="permission-row has-reason">
+            <input type="checkbox" class="permission-checkbox" checked>
+            <span class="permission-label">Webhook billing</span>
+            <span class="permission-access">Read</span>
+            <span class="permission-reason-label">Reason</span>
+            <textarea class="permission-reason" rows="2">Vercel subscribes to billing webhook events to keep subscription states in sync and trigger provisioning workflows.</textarea>
+          </div>
+        </div>
+        <div class="dialog-footer">
+          <button class="dialog-btn dialog-btn-secondary" onclick="closeGenerateDialog()">Cancel</button>
+          <button class="dialog-btn dialog-btn-primary" id="requestBtn">Request</button>
+        </div>
+      </div>
+
+      <!-- Step 2: Generated URL -->
+      <div class="dialog-step hidden" id="dialogStep2">
+        <div class="dialog-body">
+          <div class="url-row" style="margin-top: 0; padding-top: 0; border-top: none;">
+            <input class="url-input" id="urlInput" type="text" readonly value="https://connect.stripe.com/consent/acct_vercel?permissions=product_catalog_read,meter_read,invoice_line_item_read,webhook_billing_read">
+            <button class="copy-btn" id="copyBtn">Copy</button>
+          </div>
+        </div>
+        <div class="dialog-footer">
+          <button class="dialog-btn dialog-btn-primary" id="doneBtn">Done</button>
         </div>
       </div>
     </div>
@@ -512,12 +549,29 @@
   });
 
   document.getElementById('generateUrlBtn').addEventListener('click', function() {
+    document.getElementById('dialogStep1').classList.remove('hidden');
+    document.getElementById('dialogStep2').classList.add('hidden');
+    document.getElementById('dialogTitleText').textContent = 'Request access';
     document.getElementById('generateDialog').classList.remove('hidden');
   });
 
   function closeGenerateDialog() {
     document.getElementById('generateDialog').classList.add('hidden');
+    document.getElementById('dialogStep1').classList.remove('hidden');
+    document.getElementById('dialogStep2').classList.add('hidden');
+    document.getElementById('dialogTitleText').textContent = 'Request access';
   }
+
+  document.getElementById('requestBtn').addEventListener('click', function() {
+    document.getElementById('dialogStep1').classList.add('hidden');
+    document.getElementById('dialogStep2').classList.remove('hidden');
+    document.getElementById('dialogTitleText').textContent = 'Request access';
+  });
+
+  document.getElementById('doneBtn').addEventListener('click', function() {
+    closeGenerateDialog();
+    document.getElementById('protoSwitcher').classList.add('visible');
+  });
 
   document.getElementById('copyBtn').addEventListener('click', function() {
     var input = document.getElementById('urlInput');
@@ -525,7 +579,6 @@
     document.execCommand('copy');
     this.textContent = 'Copied!';
     this.classList.add('copied');
-    document.getElementById('protoSwitcher').classList.add('visible');
     var btn = this;
     setTimeout(function() {
       btn.textContent = 'Copy';
