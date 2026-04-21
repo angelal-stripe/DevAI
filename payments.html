@@ -2671,7 +2671,6 @@
         </div>
       </div>
       <div class="diag-s4-only diag-resource-label" style="text-align:center;margin-top:6px;opacity:0;max-height:0;overflow:hidden;transition:opacity .6s ease, max-height .6s ease;">
-        <span class="connector-label" style="font-size:11px;">Resource sharing</span>
       </div>
     </div>
   </div>
@@ -3261,14 +3260,11 @@
         el.style.maxHeight = '40px';
       });
 
-      // Show resource sharing label only if checkbox is checked
-      var ackChecked = document.getElementById('allowAckCheckbox').checked;
-      if (ackChecked) {
-        document.querySelectorAll('.diag-resource-label').forEach(el => {
-          el.style.opacity = '1';
-          el.style.maxHeight = '40px';
-        });
-      }
+      // Always show resource sharing label
+      document.querySelectorAll('.diag-resource-label').forEach(el => {
+        el.style.opacity = '1';
+        el.style.maxHeight = '40px';
+      });
 
       // Create account flow: go to Verify Email after Review permissions
       if (activeFlow === 'createAccount') {

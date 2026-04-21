@@ -1918,8 +1918,20 @@
     }
     .ob-dialog-close:hover { background: #e5e7eb; }
     .ob-dialog-body { padding: 0 24px 24px; overflow-y: auto; flex: 1; }
+    .ob-dialog-step { display: flex; flex-direction: column; overflow: hidden; flex: 1; min-height: 0; }
+    .ob-dialog-step.hidden { display: none; }
+    .ob-dialog-footer { display: flex; justify-content: flex-end; gap: 8px; padding: 0 24px 20px; flex-shrink: 0; }
+    .ob-dialog-btn {
+      height: 28px; padding: 4px 8px; border-radius: 6px;
+      font-size: 13px; font-weight: 600; font-family: inherit;
+      cursor: pointer; border: none; transition: background 0.1s;
+    }
+    .ob-dialog-btn-secondary { background: #fff; color: #353a44; border: 1px solid #d8dee4; }
+    .ob-dialog-btn-secondary:hover { background: #f5f6f8; }
+    .ob-dialog-btn-primary { background: #635bff; color: #fff; }
+    .ob-dialog-btn-primary:hover { background: #4f46e5; }
     .ob-url-row {
-      margin-top: 20px; padding-top: 16px; border-top: 1px solid #e5e7eb;
+      margin-top: 0; padding-top: 0; border-top: none;
       display: flex; align-items: center; gap: 8px;
     }
     .ob-url-input {
@@ -2495,7 +2507,7 @@
             <!-- Enabled state (after enable) -->
             <div id="obEnabledState" style="display:none;">
               <p class="ob-page-description">Request access to other Stripe accounts to help them build their business. You are currently connected to <a href="#">0 accounts</a>.</p>
-              <button class="ob-enable-btn" id="obGenerateUrlBtn">Generate URL</button>
+              <button class="ob-enable-btn" id="obGenerateUrlBtn">Request access</button>
             </div>
           </div>
           <div id="obGuideCardWrap" style="display:none;">
@@ -2510,61 +2522,77 @@
     </div>
   </div>
 
-  <!-- Generate URL dialog (onboarding) -->
+  <!-- Request access dialog (onboarding) -->
   <div id="obGenerateDialog" class="ob-dialog-backdrop hidden" onclick="if(event.target===this) closeObGenerateDialog()">
     <div class="ob-dialog-box">
       <div class="ob-dialog-header">
-        <div class="ob-dialog-title">Default permissions</div>
+        <div class="ob-dialog-title" id="obDialogTitleText">Request access</div>
         <button class="ob-dialog-close" onclick="closeObGenerateDialog()">&times;</button>
       </div>
-      <div class="ob-dialog-body">
-        <div class="ob-permission-row has-reason">
-          <input type="checkbox" class="ob-permission-checkbox" checked>
-          <span class="ob-permission-label">API keys</span>
-          <span class="ob-permission-access">Read and write</span>
-          <span class="ob-permission-reason-label">Reason</span>
-          <textarea class="ob-permission-reason" rows="2">Lovable manages restricted API keys on your behalf to securely process payments and integrate with your storefront.</textarea>
-        </div>
-        <div class="ob-permission-row">
-          <input type="checkbox" class="ob-permission-checkbox">
-          <span class="ob-permission-label">Balances</span>
-          <span class="ob-permission-access">Read</span>
-        </div>
-        <div class="ob-permission-row has-reason">
-          <input type="checkbox" class="ob-permission-checkbox" checked>
-          <span class="ob-permission-label">Events</span>
-          <span class="ob-permission-access">Read and write</span>
-          <span class="ob-permission-reason-label">Reason</span>
-          <textarea class="ob-permission-reason" rows="2">Lovable subscribes to payment, payout, and dispute events to keep your dashboard in sync and trigger automated workflows.</textarea>
-        </div>
-        <div class="ob-permission-row has-reason">
-          <input type="checkbox" class="ob-permission-checkbox" checked disabled style="opacity:0.7; cursor:not-allowed;">
-          <span class="ob-permission-label">Identity</span>
-          <span class="ob-permission-access">Read and write</span>
-          <span class="ob-permission-reason-label">Reason</span>
-          <textarea class="ob-permission-reason" rows="2">Lovable needs to read and update your business details to configure payments, verify your identity, and keep your account compliant.</textarea>
-        </div>
-        <div class="ob-permission-row has-reason">
-          <input type="checkbox" class="ob-permission-checkbox" checked>
-          <span class="ob-permission-label">Payment activity</span>
-          <span class="ob-permission-access">Read</span>
-          <span class="ob-permission-reason-label">Reason</span>
-          <textarea class="ob-permission-reason" rows="2">Lovable reads payment activity to display transaction history, generate reports, and power real-time sales analytics in your dashboard.</textarea>
-        </div>
-        <div class="ob-permission-row">
-          <input type="checkbox" class="ob-permission-checkbox">
-          <span class="ob-permission-label">Payout activity</span>
-          <span class="ob-permission-access">Read</span>
-        </div>
-        <div class="ob-permission-row">
-          <input type="checkbox" class="ob-permission-checkbox">
-          <span class="ob-permission-label">Products</span>
-          <span class="ob-permission-access">Read</span>
-        </div>
 
-        <div class="ob-url-row">
-          <input class="ob-url-input" id="obUrlInput" type="text" readonly value="https://connect.stripe.com/consent/acct_lovable?permissions=identity_rw,events_rw,api_keys_rw,payment_activity_read">
-          <button class="ob-copy-btn" id="obCopyBtn">Copy</button>
+      <!-- Step 1: Permissions -->
+      <div class="ob-dialog-step" id="obDialogStep1">
+        <div class="ob-dialog-body">
+          <div class="ob-permission-row has-reason">
+            <input type="checkbox" class="ob-permission-checkbox" checked>
+            <span class="ob-permission-label">API keys</span>
+            <span class="ob-permission-access">Read and write</span>
+            <span class="ob-permission-reason-label">Reason</span>
+            <textarea class="ob-permission-reason" rows="2">Lovable manages restricted API keys on your behalf to securely process payments and integrate with your storefront.</textarea>
+          </div>
+          <div class="ob-permission-row">
+            <input type="checkbox" class="ob-permission-checkbox">
+            <span class="ob-permission-label">Balances</span>
+            <span class="ob-permission-access">Read</span>
+          </div>
+          <div class="ob-permission-row has-reason">
+            <input type="checkbox" class="ob-permission-checkbox" checked>
+            <span class="ob-permission-label">Events</span>
+            <span class="ob-permission-access">Read and write</span>
+            <span class="ob-permission-reason-label">Reason</span>
+            <textarea class="ob-permission-reason" rows="2">Lovable subscribes to payment, payout, and dispute events to keep your dashboard in sync and trigger automated workflows.</textarea>
+          </div>
+          <div class="ob-permission-row has-reason">
+            <input type="checkbox" class="ob-permission-checkbox" checked disabled style="opacity:0.7; cursor:not-allowed;">
+            <span class="ob-permission-label">Identity</span>
+            <span class="ob-permission-access">Read and write</span>
+            <span class="ob-permission-reason-label">Reason</span>
+            <textarea class="ob-permission-reason" rows="2">Lovable needs to read and update your business details to configure payments, verify your identity, and keep your account compliant.</textarea>
+          </div>
+          <div class="ob-permission-row has-reason">
+            <input type="checkbox" class="ob-permission-checkbox" checked>
+            <span class="ob-permission-label">Payment activity</span>
+            <span class="ob-permission-access">Read</span>
+            <span class="ob-permission-reason-label">Reason</span>
+            <textarea class="ob-permission-reason" rows="2">Lovable reads payment activity to display transaction history, generate reports, and power real-time sales analytics in your dashboard.</textarea>
+          </div>
+          <div class="ob-permission-row">
+            <input type="checkbox" class="ob-permission-checkbox">
+            <span class="ob-permission-label">Payout activity</span>
+            <span class="ob-permission-access">Read</span>
+          </div>
+          <div class="ob-permission-row">
+            <input type="checkbox" class="ob-permission-checkbox">
+            <span class="ob-permission-label">Products</span>
+            <span class="ob-permission-access">Read</span>
+          </div>
+        </div>
+        <div class="ob-dialog-footer">
+          <button class="ob-dialog-btn ob-dialog-btn-secondary" onclick="closeObGenerateDialog()">Cancel</button>
+          <button class="ob-dialog-btn ob-dialog-btn-primary" id="obRequestBtn">Request</button>
+        </div>
+      </div>
+
+      <!-- Step 2: Generated URL -->
+      <div class="ob-dialog-step hidden" id="obDialogStep2">
+        <div class="ob-dialog-body">
+          <div class="ob-url-row">
+            <input class="ob-url-input" id="obUrlInput" type="text" readonly value="https://connect.stripe.com/consent/acct_lovable?permissions=identity_rw,events_rw,api_keys_rw,payment_activity_read">
+            <button class="ob-copy-btn" id="obCopyBtn">Copy</button>
+          </div>
+        </div>
+        <div class="ob-dialog-footer">
+          <button class="ob-dialog-btn ob-dialog-btn-primary" id="obDoneBtn">Done</button>
         </div>
       </div>
     </div>
@@ -2613,7 +2641,6 @@
         <div class="diagram-box white">Sarah's Biz<span class="diagram-box-sub">Direct account</span></div>
       </div>
       <div class="diag-s4-only" style="text-align:center;margin-top:6px;">
-        <span class="connector-label" style="font-size:11px;">Resource sharing</span>
       </div>
     </div>
   </div>
@@ -3671,14 +3698,32 @@
       document.getElementById('obGuideCardWrap').style.display = '';
     });
 
-    // Generate URL button → open dialog
+    // Request access button → open dialog at step 1
     document.getElementById('obGenerateUrlBtn').addEventListener('click', function() {
+      document.getElementById('obDialogStep1').classList.remove('hidden');
+      document.getElementById('obDialogStep2').classList.add('hidden');
+      document.getElementById('obDialogTitleText').textContent = 'Request access';
       document.getElementById('obGenerateDialog').classList.remove('hidden');
     });
 
     function closeObGenerateDialog() {
       document.getElementById('obGenerateDialog').classList.add('hidden');
+      document.getElementById('obDialogStep1').classList.remove('hidden');
+      document.getElementById('obDialogStep2').classList.add('hidden');
+      document.getElementById('obDialogTitleText').textContent = 'Request access';
     }
+
+    // Step 1 → Step 2
+    document.getElementById('obRequestBtn').addEventListener('click', function() {
+      document.getElementById('obDialogStep1').classList.add('hidden');
+      document.getElementById('obDialogStep2').classList.remove('hidden');
+      document.getElementById('obDialogTitleText').textContent = 'Request access';
+    });
+
+    // Done button → close dialog
+    document.getElementById('obDoneBtn').addEventListener('click', function() {
+      closeObGenerateDialog();
+    });
 
     // Copy button inside dialog
     document.getElementById('obCopyBtn').addEventListener('click', function() {

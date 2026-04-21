@@ -396,6 +396,40 @@
       opacity: 1;
     }
 
+    .diag-reveal-h {
+      max-width: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: max-width 0.6s ease, opacity 0.6s ease;
+    }
+    .diag-reveal-h.visible {
+      max-width: 400px;
+      opacity: 1;
+    }
+
+    .diagram-h-row {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    .dashed-line-h {
+      height: 3px;
+      width: 40px;
+      background: repeating-linear-gradient(
+        to right,
+        #888,
+        #888 6px,
+        transparent 6px,
+        transparent 12px
+      );
+      flex-shrink: 0;
+    }
+
+    .diagram-grid.hidden { display: none; }
+
+    .proto-options { margin-top: 12px; padding-top: 12px; border-top: 1px solid #e5e7eb; }
+
     /* Proto switcher */
     .proto-switcher {
       position: fixed; bottom: 24px; right: 24px; background: #fff;
@@ -533,13 +567,43 @@
 
   <!-- Diagram panel -->
   <div class="diagram-panel" id="diagramPanel">
-    <div class="diagram-grid" id="diagramGrid">
-      <!-- Row 1: Vercel (always visible) -->
+
+    <!-- v2 account diagram -->
+    <div class="diagram-grid" id="diagramV2">
       <div class="diagram-row">
         <div class="diagram-box blue">Vercel</div>
       </div>
+      <div class="diagram-connector">
+        <div class="diagram-connector-col">
+          <div class="dashed-line blue-line"></div>
+        </div>
+      </div>
+      <div class="diagram-h-row">
+        <div class="diagram-box white">Supabase<span class="diagram-box-sub">v2 account</span></div>
+        <div class="diag-reveal-h" id="acmeConnectorV2" style="display:flex;align-items:center;">
+          <div class="dashed-line-h"></div>
+          <div class="diagram-box white">Acme Corp<span class="diagram-box-sub">Customer</span></div>
+        </div>
+      </div>
+      <div class="diagram-connector">
+        <div class="diagram-connector-col">
+          <div class="connector-split">
+            <div class="dashed-line gray-line" style="height:16px;"></div>
+            <span class="connector-label">Consent record</span>
+            <div class="dashed-line gray-line" style="height:16px;"></div>
+          </div>
+        </div>
+      </div>
+      <div class="diagram-row">
+        <div class="diagram-box white">Supabase<span class="diagram-box-sub">Direct account</span></div>
+      </div>
+    </div>
 
-      <!-- Connector: Vercel → Supabase with "Consent record" label -->
+    <!-- Direct account diagram -->
+    <div class="diagram-grid hidden" id="diagramDirect">
+      <div class="diagram-row">
+        <div class="diagram-box blue">Vercel</div>
+      </div>
       <div class="diagram-connector">
         <div class="diagram-connector-col">
           <div class="connector-split">
@@ -549,24 +613,19 @@
           </div>
         </div>
       </div>
-
-      <!-- Row 2: Supabase direct account -->
       <div class="diagram-row">
         <div class="diagram-box white">Supabase<span class="diagram-box-sub">Direct account</span></div>
       </div>
-
-      <!-- Connector: Supabase → Acme Corp (hidden initially) -->
-      <div class="diagram-connector diag-reveal" id="acmeConnector">
+      <div class="diagram-connector diag-reveal" id="acmeConnectorDirect">
         <div class="diagram-connector-col">
           <div class="dashed-line gray-line"></div>
         </div>
       </div>
-
-      <!-- Row 3: Acme Corp customer (hidden initially) -->
-      <div class="diagram-row diag-reveal" id="acmeBox">
+      <div class="diagram-row diag-reveal" id="acmeBoxDirect">
         <div class="diagram-box white">Acme Corp<span class="diagram-box-sub">Customer</span></div>
       </div>
     </div>
+
   </div>
   <button class="diagram-toggle" id="diagramToggle" title="Toggle diagram panel">
     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
@@ -583,9 +642,16 @@
     <label><input type="radio" name="perspective" value="vercel" onchange="handlePerspective(this)"> Vercel</label>
     <label><input type="radio" name="perspective" value="supabase" onchange="handlePerspective(this)"> Supabase</label>
     <label><input type="radio" name="perspective" value="acme" checked onchange="handlePerspective(this)"> Acme Corp</label>
+    <div class="proto-options">
+      <div class="proto-section-label">Options</div>
+      <label><input type="radio" name="acme-view" value="v2" checked onchange="handleAcmeView(this)"> v2 account</label>
+      <label><input type="radio" name="acme-view" value="direct" onchange="handleAcmeView(this)"> Direct account</label>
+    </div>
   </div>
 
   <script>
+  var currentView = 'v2';
+
   function handlePerspective(el) {
     if (el.value === 'vercel') {
       window.location.href = 'vercel.html';
@@ -594,15 +660,40 @@
     }
   }
 
-  // Subscribe → reveal Acme Corp customer box in diagram
+  function handleAcmeView(el) {
+    currentView = el.value;
+    var v2 = document.getElementById('diagramV2');
+    var direct = document.getElementById('diagramDirect');
+    var btn = document.getElementById('subscribeBtn');
+
+    btn.textContent = 'Subscribe';
+    btn.classList.remove('subscribed');
+
+    document.getElementById('acmeConnectorV2').classList.remove('visible');
+    document.getElementById('acmeConnectorDirect').classList.remove('visible');
+    document.getElementById('acmeBoxDirect').classList.remove('visible');
+
+    if (el.value === 'v2') {
+      v2.classList.remove('hidden');
+      direct.classList.add('hidden');
+    } else {
+      v2.classList.add('hidden');
+      direct.classList.remove('hidden');
+    }
+  }
+
   document.getElementById('subscribeBtn').addEventListener('click', function() {
     if (this.classList.contains('subscribed')) return;
 
     this.textContent = 'Subscribed';
     this.classList.add('subscribed');
 
-    document.getElementById('acmeConnector').classList.add('visible');
-    document.getElementById('acmeBox').classList.add('visible');
+    if (currentView === 'v2') {
+      document.getElementById('acmeConnectorV2').classList.add('visible');
+    } else {
+      document.getElementById('acmeConnectorDirect').classList.add('visible');
+      document.getElementById('acmeBoxDirect').classList.add('visible');
+    }
   });
 
   // Diagram panel toggle
