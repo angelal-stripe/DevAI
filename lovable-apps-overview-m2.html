@@ -195,97 +195,93 @@
 
     .page-description a:hover { text-decoration: none; }
 
-    .section-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: #1a2c44;
-      margin-bottom: 16px;
+    .request-access-btn {
+      margin-top: 8px;
+      padding: 8px 20px; border: none; border-radius: 6px;
+      background: #533afd; font-size: 14px; font-weight: 600;
+      color: #fff; cursor: pointer; font-family: inherit;
+      box-shadow: 0 1px 1px rgba(47, 14, 99, 0.32);
+      transition: background 0.15s;
     }
+    .request-access-btn:hover { background: #4f46e5; }
 
-    .permission-row {
-      display: flex;
-      align-items: center;
-      padding: 14px 0;
+    .gen-dialog-backdrop {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.4);
+      display: flex; align-items: center; justify-content: center; z-index: 10000;
+    }
+    .gen-dialog-backdrop.hidden { display: none; }
+    .gen-dialog-box {
+      background: #fff; border-radius: 12px; width: 560px; max-height: 85vh;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.18); overflow: hidden;
+      display: flex; flex-direction: column;
+    }
+    .gen-dialog-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 24px 16px; flex-shrink: 0;
+    }
+    .gen-dialog-title { font-size: 18px; font-weight: 700; color: #1a1a1a; }
+    .gen-dialog-close {
+      width: 28px; height: 28px; border: none; background: #f5f6f8;
+      cursor: pointer; color: #6c7688; display: flex; align-items: center;
+      justify-content: center; border-radius: 50%; font-size: 16px;
+    }
+    .gen-dialog-close:hover { background: #e5e7eb; }
+    .gen-dialog-body { padding: 0 24px 24px; overflow-y: auto; flex: 1; }
+    .gen-dialog-step { display: flex; flex-direction: column; overflow: hidden; flex: 1; min-height: 0; }
+    .gen-dialog-step.hidden { display: none; }
+    .gen-dialog-footer { display: flex; justify-content: flex-end; gap: 8px; padding: 0 24px 20px; flex-shrink: 0; }
+    .gen-dialog-btn {
+      height: 28px; padding: 4px 8px; border-radius: 6px;
+      font-size: 13px; font-weight: 600; font-family: inherit;
+      cursor: pointer; border: none; transition: background 0.1s;
+    }
+    .gen-dialog-btn-secondary { background: #fff; color: #353a44; border: 1px solid #d8dee4; }
+    .gen-dialog-btn-secondary:hover { background: #f5f6f8; }
+    .gen-dialog-btn-primary { background: #635bff; color: #fff; }
+    .gen-dialog-btn-primary:hover { background: #4f46e5; }
+
+    .gen-perm-row {
+      display: flex; align-items: center; padding: 14px 0;
       border-bottom: 1px solid #e5e7eb;
     }
-
-    .permission-row:last-child { border-bottom: none; }
-
-    .permission-checkbox {
-      width: 16px;
-      height: 16px;
-      border-radius: 3px;
-      border: 1.5px solid #b6c0cd;
-      margin-right: 12px;
-      flex-shrink: 0;
-      cursor: pointer;
-      appearance: none;
-      -webkit-appearance: none;
-      background: #fff;
-      position: relative;
+    .gen-perm-row:last-child { border-bottom: none; }
+    .gen-perm-checkbox {
+      width: 16px; height: 16px; border-radius: 3px;
+      border: 1.5px solid #b6c0cd; margin-right: 12px; flex-shrink: 0;
+      cursor: pointer; appearance: none; -webkit-appearance: none;
+      background: #fff; position: relative;
     }
-
-    .permission-checkbox:checked {
-      background: #533afd;
-      border-color: #533afd;
+    .gen-perm-checkbox:checked { background: #533afd; border-color: #533afd; }
+    .gen-perm-checkbox:checked::after {
+      content: ''; position: absolute; left: 4px; top: 1px;
+      width: 5px; height: 9px; border: solid #fff;
+      border-width: 0 2px 2px 0; transform: rotate(45deg);
     }
-
-    .permission-checkbox:checked::after {
-      content: '';
-      position: absolute;
-      left: 4px;
-      top: 1px;
-      width: 5px;
-      height: 9px;
-      border: solid #fff;
-      border-width: 0 2px 2px 0;
-      transform: rotate(45deg);
+    .gen-perm-label { flex: 1; font-size: 14px; font-weight: 500; color: #353a44; }
+    .gen-perm-access { font-size: 13px; color: #6c7688; }
+    .gen-perm-row.has-reason { flex-wrap: wrap; }
+    .gen-perm-reason-label { width: 100%; margin-top: 8px; font-size: 12px; font-weight: 600; color: #353a44; }
+    .gen-perm-reason {
+      width: 100%; padding: 8px 12px; margin-top: 4px;
+      font-size: 13px; font-family: inherit; color: #353a44; line-height: 18px;
+      background: #fff; border: 1px solid #d8dee4; border-radius: 6px;
+      resize: none; overflow: hidden;
     }
+    .gen-perm-reason:focus { outline: none; border-color: #635bff; box-shadow: 0 0 0 3px rgba(99,91,255,0.12); }
 
-    .permission-label {
-      flex: 1;
-      font-size: 14px;
-      font-weight: 500;
-      color: #353a44;
+    .gen-url-row { display: flex; align-items: center; gap: 8px; }
+    .gen-url-input {
+      flex: 1; padding: 8px 12px; font-size: 12px; font-family: 'SF Mono', 'Fira Code', monospace;
+      color: #353a44; background: #f9fafb; border: 1px solid #d8dee4; border-radius: 6px; outline: none;
     }
-
-    .permission-access {
-      font-size: 13px;
-      color: #6c7688;
+    .gen-url-input:focus { border-color: #635bff; box-shadow: 0 0 0 3px rgba(99,91,255,0.12); }
+    .gen-copy-btn {
+      padding: 8px 14px; font-size: 13px; font-weight: 600; font-family: inherit;
+      background: #635bff; color: #fff; border: none; border-radius: 6px; cursor: pointer;
+      transition: background 0.15s; white-space: nowrap;
     }
-
-    .permission-reason-label {
-      width: 100%;
-      margin-top: 8px;
-      font-size: 12px;
-      font-weight: 600;
-      color: #353a44;
-    }
-
-    .permission-reason {
-      width: 100%;
-      padding: 8px 12px;
-      margin-top: 4px;
-      font-size: 13px;
-      font-family: inherit;
-      color: #353a44;
-      line-height: 18px;
-      background: #fff;
-      border: 1px solid #d8dee4;
-      border-radius: 6px;
-      resize: none;
-      overflow: hidden;
-    }
-
-    .permission-reason:focus {
-      outline: none;
-      border-color: #635bff;
-      box-shadow: 0 0 0 3px rgba(99,91,255,0.12);
-    }
-
-    .permission-row.has-reason {
-      flex-wrap: wrap;
-    }
+    .gen-copy-btn:hover { background: #4f46e5; }
+    .gen-copy-btn.copied { background: #059669; }
 
     .guide-card {
       background: #f7f8fa;
@@ -445,51 +441,7 @@
         <div>
           <p class="page-description">Request access to other Stripe accounts to help them build their business. You are currently connected to <a href="lovable-m2-network.html">939 accounts</a>.</p>
 
-          <h2 class="section-title">Default permissions</h2>
-
-          <div class="permission-row has-reason">
-            <input type="checkbox" class="permission-checkbox" checked>
-            <span class="permission-label">Identity</span>
-            <span class="permission-access">Read and write</span>
-            <span class="permission-reason-label">Reason</span>
-            <textarea class="permission-reason" rows="2">Lovable needs to read and update your business details to configure payments, verify your identity, and keep your account compliant.</textarea>
-          </div>
-          <div class="permission-row has-reason">
-            <input type="checkbox" class="permission-checkbox" checked>
-            <span class="permission-label">Events</span>
-            <span class="permission-access">Read and write</span>
-            <span class="permission-reason-label">Reason</span>
-            <textarea class="permission-reason" rows="2">Lovable subscribes to payment, payout, and dispute events to keep your dashboard in sync and trigger automated workflows.</textarea>
-          </div>
-          <div class="permission-row has-reason">
-            <input type="checkbox" class="permission-checkbox" checked>
-            <span class="permission-label">API keys</span>
-            <span class="permission-access">Read and write</span>
-            <span class="permission-reason-label">Reason</span>
-            <textarea class="permission-reason" rows="2">Lovable manages restricted API keys on your behalf to securely process payments and integrate with your storefront.</textarea>
-          </div>
-          <div class="permission-row">
-            <input type="checkbox" class="permission-checkbox">
-            <span class="permission-label">Balances</span>
-            <span class="permission-access">Read</span>
-          </div>
-          <div class="permission-row has-reason">
-            <input type="checkbox" class="permission-checkbox" checked>
-            <span class="permission-label">Payment activity</span>
-            <span class="permission-access">Read</span>
-            <span class="permission-reason-label">Reason</span>
-            <textarea class="permission-reason" rows="2">Lovable reads payment activity to display transaction history, generate reports, and power real-time sales analytics in your dashboard.</textarea>
-          </div>
-          <div class="permission-row">
-            <input type="checkbox" class="permission-checkbox">
-            <span class="permission-label">Payout activity</span>
-            <span class="permission-access">Read</span>
-          </div>
-          <div class="permission-row">
-            <input type="checkbox" class="permission-checkbox">
-            <span class="permission-label">Products</span>
-            <span class="permission-access">Read</span>
-          </div>
+          <button class="request-access-btn" id="generateUrlBtn">Request access</button>
         </div>
 
         <div>
@@ -502,6 +454,108 @@
       </div>
     </div>
   </div>
+
+  <!-- Request access dialog -->
+  <div id="generateDialog" class="gen-dialog-backdrop hidden" onclick="if(event.target===this) closeGenDialog()">
+    <div class="gen-dialog-box">
+      <div class="gen-dialog-header">
+        <div class="gen-dialog-title" id="genDialogTitle">Request access</div>
+        <button class="gen-dialog-close" onclick="closeGenDialog()">&times;</button>
+      </div>
+      <div class="gen-dialog-step" id="genStep1">
+        <div class="gen-dialog-body">
+          <div class="gen-perm-row has-reason">
+            <input type="checkbox" class="gen-perm-checkbox" checked>
+            <span class="gen-perm-label">API keys</span>
+            <span class="gen-perm-access">Read and write</span>
+            <span class="gen-perm-reason-label">Reason</span>
+            <textarea class="gen-perm-reason" rows="2">Lovable manages restricted API keys on your behalf to securely process payments and integrate with your storefront.</textarea>
+          </div>
+          <div class="gen-perm-row">
+            <input type="checkbox" class="gen-perm-checkbox">
+            <span class="gen-perm-label">Balances</span>
+            <span class="gen-perm-access">Read</span>
+          </div>
+          <div class="gen-perm-row has-reason">
+            <input type="checkbox" class="gen-perm-checkbox" checked>
+            <span class="gen-perm-label">Events</span>
+            <span class="gen-perm-access">Read and write</span>
+            <span class="gen-perm-reason-label">Reason</span>
+            <textarea class="gen-perm-reason" rows="2">Lovable subscribes to payment, payout, and dispute events to keep your dashboard in sync and trigger automated workflows.</textarea>
+          </div>
+          <div class="gen-perm-row has-reason">
+            <input type="checkbox" class="gen-perm-checkbox" checked disabled style="opacity:0.7; cursor:not-allowed;">
+            <span class="gen-perm-label">Identity</span>
+            <span class="gen-perm-access">Read and write</span>
+            <span class="gen-perm-reason-label">Reason</span>
+            <textarea class="gen-perm-reason" rows="2">Lovable needs to read and update your business details to configure payments, verify your identity, and keep your account compliant.</textarea>
+          </div>
+          <div class="gen-perm-row has-reason">
+            <input type="checkbox" class="gen-perm-checkbox" checked>
+            <span class="gen-perm-label">Payment activity</span>
+            <span class="gen-perm-access">Read</span>
+            <span class="gen-perm-reason-label">Reason</span>
+            <textarea class="gen-perm-reason" rows="2">Lovable reads payment activity to display transaction history, generate reports, and power real-time sales analytics in your dashboard.</textarea>
+          </div>
+          <div class="gen-perm-row">
+            <input type="checkbox" class="gen-perm-checkbox">
+            <span class="gen-perm-label">Payout activity</span>
+            <span class="gen-perm-access">Read</span>
+          </div>
+          <div class="gen-perm-row">
+            <input type="checkbox" class="gen-perm-checkbox">
+            <span class="gen-perm-label">Products</span>
+            <span class="gen-perm-access">Read</span>
+          </div>
+        </div>
+        <div class="gen-dialog-footer">
+          <button class="gen-dialog-btn gen-dialog-btn-secondary" onclick="closeGenDialog()">Cancel</button>
+          <button class="gen-dialog-btn gen-dialog-btn-primary" id="genRequestBtn">Request</button>
+        </div>
+      </div>
+      <div class="gen-dialog-step hidden" id="genStep2">
+        <div class="gen-dialog-body">
+          <div class="gen-url-row">
+            <input class="gen-url-input" id="genUrlInput" type="text" readonly value="https://connect.stripe.com/consent/acct_lovable?permissions=identity_rw,events_rw,api_keys_rw,payment_activity_read">
+            <button class="gen-copy-btn" id="genCopyBtn">Copy</button>
+          </div>
+        </div>
+        <div class="gen-dialog-footer">
+          <button class="gen-dialog-btn gen-dialog-btn-primary" id="genDoneBtn">Done</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('generateUrlBtn').addEventListener('click', function() {
+      document.getElementById('genStep1').classList.remove('hidden');
+      document.getElementById('genStep2').classList.add('hidden');
+      document.getElementById('genDialogTitle').textContent = 'Request access';
+      document.getElementById('generateDialog').classList.remove('hidden');
+    });
+    function closeGenDialog() {
+      document.getElementById('generateDialog').classList.add('hidden');
+      document.getElementById('genStep1').classList.remove('hidden');
+      document.getElementById('genStep2').classList.add('hidden');
+      document.getElementById('genDialogTitle').textContent = 'Request access';
+    }
+    document.getElementById('genRequestBtn').addEventListener('click', function() {
+      document.getElementById('genStep1').classList.add('hidden');
+      document.getElementById('genStep2').classList.remove('hidden');
+      document.getElementById('genDialogTitle').textContent = 'Request access';
+    });
+    document.getElementById('genDoneBtn').addEventListener('click', function() { closeGenDialog(); });
+    document.getElementById('genCopyBtn').addEventListener('click', function() {
+      var input = document.getElementById('genUrlInput');
+      input.select();
+      document.execCommand('copy');
+      this.textContent = 'Copied!';
+      this.classList.add('copied');
+      var btn = this;
+      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  </script>
 
   <div class="proto-switcher">
     <div class="proto-switcher-header" onclick="this.parentElement.classList.toggle('collapsed')">
