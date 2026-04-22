@@ -428,6 +428,13 @@
 
     .diagram-grid.hidden { display: none; }
 
+    .diagram-grid.expanded { align-items: flex-start; }
+    .diagram-grid.expanded > .diagram-row,
+    .diagram-grid.expanded > .diagram-connector {
+      width: 130px;
+      justify-content: center;
+    }
+
     .proto-options { margin-top: 12px; padding-top: 12px; border-top: 1px solid #e5e7eb; }
 
     /* Proto switcher */
@@ -670,6 +677,7 @@
     btn.classList.remove('subscribed');
 
     document.getElementById('acmeConnectorV2').classList.remove('visible');
+    document.getElementById('diagramV2').classList.remove('expanded');
     document.getElementById('acmeConnectorDirect').classList.remove('visible');
     document.getElementById('acmeBoxDirect').classList.remove('visible');
 
@@ -689,6 +697,7 @@
     this.classList.add('subscribed');
 
     if (currentView === 'v2') {
+      document.getElementById('diagramV2').classList.add('expanded');
       document.getElementById('acmeConnectorV2').classList.add('visible');
     } else {
       document.getElementById('acmeConnectorDirect').classList.add('visible');

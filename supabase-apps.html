@@ -585,6 +585,11 @@
     <div class="proto-section-label">Options</div>
     <label><input type="radio" name="supabase-view" value="v2" checked onchange="handleSupabaseViewChange(this)"> v2 account</label>
     <label><input type="radio" name="supabase-view" value="direct" onchange="handleSupabaseViewChange(this)"> Direct account</label>
+    <div class="proto-options">
+      <div class="proto-section-label">State</div>
+      <label><input type="radio" name="supabase-state" value="network" checked onchange="handleStateChange(this)"> Network</label>
+      <label><input type="radio" name="supabase-state" value="customer" onchange="handleStateChange(this)"> Customer</label>
+    </div>
   </div>
 
   <script>
@@ -595,6 +600,7 @@
     } else {
       vercelItem.style.display = 'none';
     }
+    applyState(sessionStorage.getItem('supabaseState') || 'network');
   }
 
   function toggleAcctSwitcher() {
@@ -685,6 +691,43 @@
     closeReviewDialog();
     openDisconnectDialog(name);
   }
+
+  function handleStateChange(el) {
+    sessionStorage.setItem('supabaseState', el.value);
+    applyState(el.value);
+  }
+
+  function applyState(state) {
+    var viewEl = document.querySelector('input[name="supabase-view"]:checked');
+    var view = viewEl ? viewEl.value : 'v2';
+    var listUrl = view === 'v2' ? 'supabase-v2-customers.html' : 'supabase-customers.html';
+    var navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach(function(item) {
+      var img = item.querySelector('img[src="icons/customers.svg"]');
+      if (img) {
+        var textNodes = [];
+        item.childNodes.forEach(function(n) {
+          if (n.nodeType === 3 && n.textContent.trim()) textNodes.push(n);
+        });
+        if (textNodes.length > 0) {
+          textNodes[0].textContent = state === 'network' ? '\n        Network\n      ' : '\n        Customers\n      ';
+        }
+        item.setAttribute('href', listUrl);
+      }
+    });
+  }
+
+  (function() {
+    var state = sessionStorage.getItem('supabaseState') || 'network';
+    if (state === 'customer') {
+      var radios = document.querySelectorAll('input[name="supabase-state"]');
+      radios.forEach(function(r) { r.checked = (r.value === 'customer'); });
+    } else {
+      var radios2 = document.querySelectorAll('input[name="supabase-state"]');
+      radios2.forEach(function(r) { r.checked = (r.value === 'network'); });
+    }
+    applyState(state);
+  })();
   </script>
 
   <!-- Review permissions dialog -->

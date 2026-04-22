@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Network – Acme Corp – Supabase – Stripe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #fff;
+      color: #353a44;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 220px;
+      background: #fff;
+      border-right: 1px solid #d8dee4;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      flex-shrink: 0;
+    }
+
+    .sidebar-brand {
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #353a44;
+      cursor: pointer;
+      position: relative;
+      user-select: none;
+      transition: background 0.1s;
+    }
+
+    .sidebar-brand:hover { background: #f5f6f8; }
+
+    .sidebar-brand-logo {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #3ECF8E, #2B9F6F);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .sidebar-brand-logo svg { width: 14px; height: 14px; }
+
+    .sidebar-brand-info { flex: 1; min-width: 0; }
+    .sidebar-brand-name { font-size: 14px; font-weight: 600; color: #353a44; line-height: 1.3; }
+    .sidebar-brand-sub { font-size: 11px; font-weight: 400; color: #6c7688; line-height: 1.3; }
+
+    .sidebar-brand-chevron {
+      width: 16px; height: 16px; flex-shrink: 0; color: #9ca3af;
+      transition: transform 0.2s;
+    }
+    .sidebar-brand.open .sidebar-brand-chevron { transform: rotate(180deg); }
+
+    .acct-switcher {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 8px;
+      right: -60px;
+      background: #fff;
+      border: 1px solid #d8dee4;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.14);
+      z-index: 1000;
+      overflow: hidden;
+    }
+    .acct-switcher.open { display: block; }
+
+    .acct-switcher-header {
+      padding: 20px 16px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .acct-switcher-avatar {
+      width: 40px; height: 40px; border-radius: 8px;
+      background: linear-gradient(135deg, #3ECF8E, #2B9F6F);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 8px;
+    }
+    .acct-switcher-avatar svg { width: 20px; height: 20px; }
+
+    .acct-switcher-name { font-size: 14px; font-weight: 600; color: #353a44; }
+    .acct-switcher-org { font-size: 12px; color: #6c7688; }
+
+    .acct-switcher-actions { padding: 8px 0; border-bottom: 1px solid #e5e7eb; }
+
+    .acct-switcher-action {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 400;
+      color: #353a44;
+      cursor: pointer;
+      transition: background 0.1s;
+      text-decoration: none;
+    }
+    .acct-switcher-action:hover { background: #f5f6f8; }
+    .acct-switcher-action svg { width: 16px; height: 16px; color: #6c7688; flex-shrink: 0; }
+    .acct-switcher-action .action-chevron { margin-left: auto; width: 12px; height: 12px; color: #9ca3af; }
+
+    .acct-switcher-search { padding: 8px 12px; }
+    .acct-switcher-search input {
+      width: 100%;
+      padding: 7px 10px;
+      border: 1px solid #d8dee4;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: inherit;
+      color: #353a44;
+      outline: none;
+    }
+    .acct-switcher-search input:focus { border-color: #635bff; box-shadow: 0 0 0 3px rgba(99,91,255,0.1); }
+    .acct-switcher-search input::placeholder { color: #9ca3af; }
+
+    .acct-switcher-accounts { padding: 4px 0; border-bottom: 1px solid #e5e7eb; }
+
+    .acct-switcher-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 16px;
+      cursor: pointer;
+      transition: background 0.1s;
+      text-decoration: none;
+    }
+    .acct-switcher-item:hover { background: #f5f6f8; }
+
+    .acct-item-icon {
+      width: 28px; height: 28px; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .acct-item-icon.green { background: linear-gradient(135deg, #3ECF8E, #2B9F6F); }
+    .acct-item-icon.blue { background: linear-gradient(135deg, #4da3ff, #2b7de9); }
+
+    .acct-item-name { font-size: 13px; font-weight: 500; color: #353a44; flex: 1; }
+
+    .acct-item-check {
+      width: 18px; height: 18px; border-radius: 50%;
+      background: #635bff; display: flex; align-items: center; justify-content: center;
+    }
+    .acct-item-check svg { width: 10px; height: 10px; }
+
+    .acct-switcher-footer { padding: 8px 0; }
+
+    .acct-switcher-footer-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 400;
+      color: #353a44;
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+    .acct-switcher-footer-item:hover { background: #f5f6f8; }
+    .acct-switcher-footer-item svg { width: 16px; height: 16px; color: #6c7688; }
+
+    .sidebar-nav { padding: 16px 0; flex: 1; overflow-y: auto; }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 9px 20px;
+      font-size: 13.5px;
+      font-weight: 400;
+      color: #596171;
+      cursor: pointer;
+      transition: all 0.1s;
+      text-decoration: none;
+    }
+
+    .nav-item:hover { color: #353a44; background: #f5f6f8; }
+    .nav-item.active { color: #635bff; font-weight: 500; }
+    .nav-item.active img:not(.nav-item-chevron) {
+      filter: brightness(0) saturate(100%) invert(37%) sepia(91%) saturate(5535%) hue-rotate(238deg) brightness(101%) contrast(101%);
+    }
+
+    .nav-item img { width: 16px; height: 16px; flex-shrink: 0; }
+    .nav-item img.nav-item-chevron { margin-left: auto; width: 8px; height: 8px; opacity: 0.4; }
+    .nav-item img.nav-item-chevron.expanded { transform: rotate(180deg); }
+
+    .nav-section {
+      padding: 20px 20px 8px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #6c7688;
+      letter-spacing: 0.2px;
+    }
+
+    .sidebar-footer { padding: 12px 0; }
+
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+    .topbar {
+      height: 56px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      gap: 16px;
+    }
+
+    .search-bar {
+      flex: 1;
+      max-width: 480px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 8px 12px;
+      cursor: text;
+    }
+
+    .search-bar svg { color: #9ca3af; flex-shrink: 0; }
+    .search-bar span { font-size: 13px; color: #9ca3af; }
+
+    .topbar-icons { margin-left: auto; display: flex; align-items: center; gap: 4px; }
+
+    .topbar-icon {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: #6b7280; transition: background 0.1s;
+    }
+
+    .topbar-icon:hover { background: #f3f4f6; }
+    .topbar-icon svg { width: 18px; height: 18px; }
+    .topbar-icon.create { background: #635bff; color: #fff; width: 32px; height: 32px; }
+    .topbar-icon.create:hover { background: #4f46e5; }
+
+    .content { flex: 1; overflow-y: auto; padding: 32px 40px; max-width: 1280px; margin: 0 auto; width: 100%; box-sizing: border-box; }
+
+    .breadcrumb { font-size: 13px; margin-bottom: 20px; }
+    .breadcrumb a { color: #635bff; text-decoration: none; font-weight: 500; }
+    .breadcrumb a:hover { text-decoration: underline; }
+
+    .customer-detail-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px; gap: 16px; flex-wrap: wrap; }
+    .customer-detail-titles { flex: 1; min-width: 0; }
+    .page-title { font-size: 28px; font-weight: 700; color: #1a1a1a; }
+    .page-title-sub { font-size: 13px; color: #6c7688; margin-top: 4px; }
+    .header-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+    .btn-outline {
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #374151;
+      background: #fff;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-outline:hover { background: #f9fafb; }
+    .btn-ghost {
+      width: 32px; height: 32px; padding: 0;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      background: #fff;
+      cursor: pointer;
+      font-size: 18px;
+      line-height: 1;
+      color: #6b7280;
+    }
+    .btn-ghost:hover { background: #f9fafb; }
+
+    .metric-row {
+      display: flex; gap: 8px; margin-bottom: 32px;
+      background: #f4f7fa; border-radius: 16px; padding: 8px;
+    }
+    .metric-card {
+      flex: 1;
+      min-width: 192px;
+      background: #fff;
+      border: none;
+      border-radius: 8px;
+      height: 72px;
+      padding: 12px 16px 12px 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .metric-label { font-size: 14px; font-weight: 400; color: #50617a; margin-bottom: 2px; padding-left: 4px; letter-spacing: -0.15px; line-height: 16px; }
+    .metric-value { font-size: 20px; font-weight: 400; color: #273951; letter-spacing: -0.2px; line-height: 24px; padding-left: 3px; }
+
+    .detail-grid { display: grid; grid-template-columns: 1fr 300px; gap: 32px; align-items: start; }
+    @media (max-width: 1024px) { .detail-grid { grid-template-columns: 1fr; } }
+
+    .section-block { margin-bottom: 32px; }
+    .section-header-row {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 12px; gap: 8px;
+    }
+    .section-title {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 16px; font-weight: 600; color: #1a1a1a;
+    }
+    .section-chevron { color: #9ca3af; width: 16px; height: 16px; }
+
+    .btn-icon-add {
+      width: 28px; height: 28px; border: 1px solid #e5e7eb; border-radius: 6px;
+      background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    }
+    .btn-icon-add:hover { background: #f9fafb; }
+
+    .tabs-row { display: flex; gap: 0; border-bottom: 1px solid #e5e7eb; margin-bottom: 0; }
+    .tab {
+      padding: 10px 0; margin-right: 24px; font-size: 14px; font-weight: 500; color: #6b7280;
+      background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; font-family: inherit;
+    }
+    .tab:hover { color: #374151; }
+    .tab.active { color: #1a1a1a; border-bottom-color: #635bff; }
+
+    .customers-table { width: 100%; border-collapse: collapse; }
+    .customers-table th {
+      text-align: left; font-size: 12px; font-weight: 500; color: #6b7280;
+      padding: 10px 12px; border-bottom: 1px solid #e5e7eb; white-space: nowrap;
+    }
+    .customers-table th:last-child { text-align: right; }
+    .customers-table td {
+      padding: 12px 12px; font-size: 13px; color: #374151;
+      border-bottom: 1px solid #f3f4f6; vertical-align: middle;
+    }
+    .customers-table tr:hover { background: #f9fafb; }
+    .td-numeric { text-align: right; }
+    .td-numeric-head { text-align: right; }
+
+    .status-badge {
+      display: inline-flex; align-items: center;
+      padding: 2px 8px; border-radius: 4px;
+      font-size: 12px; font-weight: 400; line-height: 16px;
+    }
+    .status-badge.succeeded, .status-badge.paid, .status-badge.active { background: #d7f7c2; color: #006908; }
+
+    .pm-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .pm-pill-icon {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 28px; height: 18px; border-radius: 3px;
+      background: linear-gradient(135deg, #eb001b 0%, #f79e1b 100%);
+      flex-shrink: 0;
+    }
+    .pm-pill-icon svg { width: 20px; height: 13px; }
+
+    .pm-section-header {
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;
+    }
+    .pm-card {
+      border: 1px solid #e5e7eb; border-radius: 8px; padding: 14px 16px; background: #fff;
+    }
+    .pm-card-row {
+      display: flex; align-items: center; gap: 16px; font-size: 14px; color: #1a1a1a;
+    }
+    .pm-card-icon {
+      width: 36px; height: 24px; border-radius: 4px; background: #1a1a1a;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      overflow: hidden;
+    }
+    .pm-card-icon-mc {
+      background: linear-gradient(135deg, #eb001b 0%, #f79e1b 100%);
+      border-radius: 4px;
+    }
+    .pm-card-name { font-weight: 500; white-space: nowrap; }
+    .pm-card-country { color: #3c4257; white-space: nowrap; }
+    .pm-card-expiry { color: #3c4257; white-space: nowrap; }
+    .pm-card-badges { display: flex; gap: 6px; margin-left: auto; align-items: center; }
+    .pm-dots { color: #9ca3af; cursor: pointer; font-size: 18px; padding: 0 4px; }
+
+    .badge-pill { display: inline-flex; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; white-space: nowrap; }
+    .badge-pill.default { border: 1px solid #c7d2fe; color: #3730a3; background: #fff; }
+    .badge-pill.verified { border: 1px solid #86efac; color: #006908; background: #fff; }
+
+    .pagination { display: flex; align-items: center; justify-content: space-between; padding: 14px 12px; font-size: 13px; color: #6b7280; }
+    .pagination-buttons { display: flex; align-items: center; gap: 8px; }
+    .pagination button {
+      padding: 6px 14px; border: 1px solid #e5e7eb; border-radius: 6px; background: #fff;
+      cursor: pointer; color: #374151; font-size: 13px; font-family: inherit; font-weight: 500;
+    }
+    .pagination button:hover { background: #f9fafb; }
+    .pagination button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .detail-panel { background: #fff; padding: 0; }
+    .detail-panel-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-bottom: 16px; border-bottom: 1px solid #e5e7eb; margin-bottom: 20px;
+    }
+    .detail-panel-title { font-size: 16px; font-weight: 700; color: #1a2332; }
+    .detail-panel-link { font-size: 13px; font-weight: 500; color: #635bff; text-decoration: none; }
+    .detail-panel-link:hover { text-decoration: underline; }
+    .detail-field { margin-bottom: 20px; font-size: 14px; }
+    .detail-field-label { color: #1a2332; font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+    .detail-field-value { color: #3c4257; line-height: 1.6; font-size: 14px; }
+    .detail-field-value.with-copy { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .icon-copy { cursor: pointer; color: #9ca3af; flex-shrink: 0; }
+    .icon-copy:hover { color: #635bff; }
+    .metadata-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 8px; padding-top: 20px; border-top: 1px solid #e5e7eb;
+      margin-bottom: 20px;
+    }
+    .metadata-title { font-size: 16px; font-weight: 700; color: #1a2332; }
+    .icon-edit { cursor: pointer; color: #9ca3af; }
+    .icon-edit:hover { color: #635bff; }
+
+    .proto-switcher {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #fff;
+      border: 1px solid #d8dee4;
+      border-radius: 12px;
+      padding: 16px 20px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      z-index: 9999;
+      font-family: 'Inter', -apple-system, sans-serif;
+    }
+    .proto-switcher-title { font-size: 14px; font-weight: 600; color: #353a44; margin-bottom: 0; }
+    .proto-switcher-header { display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; gap: 8px; }
+    .proto-switcher-home { background: none; border: 1px solid #d8dee4; border-radius: 6px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #596171; transition: background 0.15s; flex-shrink: 0; text-decoration: none; }
+    .proto-switcher-home:hover { background: #f3f4f6; }
+    .proto-switcher-toggle { background: none; border: none; cursor: pointer; color: #9ca3af; padding: 0; display: flex; align-items: center; transition: transform 0.2s; }
+    .proto-switcher.collapsed .proto-switcher-toggle { transform: rotate(180deg); }
+    .proto-switcher.collapsed > :not(.proto-switcher-header) { display: none; }
+    .proto-switcher.collapsed { padding: 12px 16px; }
+    .proto-switcher label { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #353a44; cursor: pointer; padding: 4px 0; }
+    .proto-switcher input[type="radio"] { accent-color: #635bff; width: 16px; height: 16px; cursor: pointer; }
+    .proto-section-label { font-size: 11px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; margin-top: 4px; }
+    .proto-options { margin-top: 12px; padding-top: 12px; border-top: 1px solid #e5e7eb; }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <div class="sidebar-brand" id="sidebarBrand" onclick="toggleAcctSwitcher()">
+      <div class="sidebar-brand-logo">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0A2.704 2.704 0 003 15.546" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><path d="M5 12V7a2 2 0 012-2h10a2 2 0 012 2v5" stroke="#fff" stroke-width="1.5"/><path d="M9 9h6" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <div class="sidebar-brand-info">
+        <div class="sidebar-brand-name">Supabase Inc</div>
+      </div>
+      <svg class="sidebar-brand-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+
+      <div class="acct-switcher" id="acctSwitcher" onclick="event.stopPropagation()">
+        <div class="acct-switcher-header">
+          <div class="acct-switcher-avatar" style="background: linear-gradient(135deg, #3ECF8E, #2B9F6F);">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0A2.704 2.704 0 003 15.546" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><path d="M5 12V7a2 2 0 012-2h10a2 2 0 012 2v5" stroke="#fff" stroke-width="1.5"/><path d="M9 9h6" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div class="acct-switcher-name">Supabase Inc</div>
+        </div>
+
+        <div class="acct-switcher-actions">
+          <a class="acct-switcher-action" href="#">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            Settings
+          </a>
+          <a class="acct-switcher-action" href="#">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            Switch to sandbox
+            <svg class="action-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+        </div>
+
+        <div class="acct-switcher-search">
+          <input type="text" placeholder="Search">
+        </div>
+
+        <div class="acct-switcher-accounts">
+          <a class="acct-switcher-item" href="supabase-home.html">
+            <div class="acct-item-icon green">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0A2.704 2.704 0 003 15.546" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><path d="M5 12V7a2 2 0 012-2h10a2 2 0 012 2v5" stroke="#fff" stroke-width="1.5"/></svg>
+            </div>
+            <span class="acct-item-name">Supabase Inc</span>
+            <div class="acct-item-check">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+          </a>
+          <a class="acct-switcher-item" id="vercelAcctItem" href="supabase-v2-customers.html">
+            <div class="acct-item-icon blue">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0A2.704 2.704 0 003 15.546" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><path d="M5 12V7a2 2 0 012-2h10a2 2 0 012 2v5" stroke="#fff" stroke-width="1.5"/></svg>
+            </div>
+            <span class="acct-item-name">Supabase for Vercel</span>
+          </a>
+        </div>
+
+        <div class="acct-switcher-actions" style="border-bottom: 1px solid #e5e7eb;">
+          <a class="acct-switcher-action" href="#">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            Other accounts
+            <svg class="action-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+          <a class="acct-switcher-action" href="#">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Create account
+          </a>
+        </div>
+
+        <div class="acct-switcher-footer">
+          <div class="acct-switcher-footer-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Supabase Admin
+          </div>
+          <div class="acct-switcher-footer-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Sign out
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-nav">
+      <a class="nav-item" href="supabase-home.html">
+        <img src="icons/home.svg" alt="">
+        Home
+      </a>
+      <a class="nav-item" href="#">
+        <img src="icons/balance.svg" alt="">
+        Balances
+      </a>
+      <a class="nav-item" href="#">
+        <img src="icons/convert.svg" alt="">
+        Transactions
+      </a>
+      <a class="nav-item active" href="supabase-customers.html">
+        <img src="icons/customers.svg" alt="">
+        Network
+      </a>
+      <a class="nav-item" href="#">
+        <img src="icons/product.svg" alt="">
+        Catalog
+      </a>
+
+      <div class="nav-section">Products</div>
+      <a class="nav-item" href="#">
+        <img src="icons/wallet.svg" alt="">
+        Payments
+        <img class="nav-item-chevron" src="icons/chevronDown.svg" alt="">
+      </a>
+      <a class="nav-item" href="#">
+        <img src="icons/billing.svg" alt="">
+        Billing
+        <img class="nav-item-chevron" src="icons/chevronDown.svg" alt="">
+      </a>
+      <a class="nav-item" href="#">
+        <img src="icons/barChart.svg" alt="">
+        Reporting
+        <img class="nav-item-chevron" src="icons/chevronDown.svg" alt="">
+      </a>
+      <a class="nav-item" href="supabase-apps.html">
+        <img src="icons/apps.svg" alt="">
+        Apps
+        <img class="nav-item-chevron" src="icons/chevronDown.svg" alt="">
+      </a>
+      <a class="nav-item" href="#">
+        <img src="icons/more.svg" alt="">
+        More
+        <img class="nav-item-chevron" src="icons/chevronDown.svg" alt="">
+      </a>
+    </div>
+    <div class="sidebar-footer">
+      <a class="nav-item" href="#">
+        <img src="icons/terminal.svg" alt="">
+        Developers
+      </a>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="search-bar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span>Search...</span>
+      </div>
+      <div class="topbar-icons">
+        <div class="topbar-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <div class="topbar-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        </div>
+        <div class="topbar-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </div>
+        <div class="topbar-icon create">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="breadcrumb">
+        <a href="supabase-customers.html">Network</a> &gt;
+      </div>
+
+      <div class="customer-detail-header">
+        <div class="customer-detail-titles">
+          <h1 class="page-title">Acme Corp</h1>
+          <p class="page-title-sub">hello@acmecorp.a.com</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn-outline" type="button">Copy ID</button>
+          <button class="btn-ghost" type="button" title="More">···</button>
+        </div>
+      </div>
+
+      <div class="metric-row">
+        <div class="metric-card">
+          <div class="metric-label">Total spend</div>
+          <div class="metric-value">$86.36K</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Monthly recurring revenue</div>
+          <div class="metric-value">$3.40K</div>
+        </div>
+      </div>
+
+      <div class="detail-grid">
+        <div class="detail-main">
+          <div class="section-block">
+            <div class="section-header-row">
+              <div class="section-title">Payments
+                <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <table class="customers-table">
+              <thead>
+                <tr>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Payment method</th>
+                  <th>Description</th>
+                  <th>Invoice number</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>$1,100.00 USD</td>
+                  <td><span class="status-badge succeeded">Succeeded</span></td>
+                  <td><span class="pm-pill"><span class="pm-pill-icon"><svg viewBox="0 0 24 16" fill="none"><circle cx="9" cy="8" r="6" fill="#eb001b" opacity="0.9"/><circle cx="15" cy="8" r="6" fill="#f79e1b" opacity="0.9"/><path d="M12 3.2a6 6 0 010 9.6 6 6 0 000-9.6z" fill="#ff5f00"/></svg></span> 4280</span></td>
+                  <td>Dec '26 invoice</td>
+                  <td>F-06785</td>
+                  <td>Dec 13, 12:39 PM</td>
+                </tr>
+                <tr>
+                  <td>$1,700.00 USD</td>
+                  <td><span class="status-badge succeeded">Succeeded</span></td>
+                  <td><span class="pm-pill"><span class="pm-pill-icon"><svg viewBox="0 0 24 16" fill="none"><circle cx="9" cy="8" r="6" fill="#eb001b" opacity="0.9"/><circle cx="15" cy="8" r="6" fill="#f79e1b" opacity="0.9"/><path d="M12 3.2a6 6 0 010 9.6 6 6 0 000-9.6z" fill="#ff5f00"/></svg></span> 4280</span></td>
+                  <td>Nov '26 invoice</td>
+                  <td>F-06785</td>
+                  <td>Nov 13, 12:39 PM</td>
+                </tr>
+                <tr>
+                  <td>$3,400.00 USD</td>
+                  <td><span class="status-badge succeeded">Succeeded</span></td>
+                  <td><span class="pm-pill"><span class="pm-pill-icon"><svg viewBox="0 0 24 16" fill="none"><circle cx="9" cy="8" r="6" fill="#eb001b" opacity="0.9"/><circle cx="15" cy="8" r="6" fill="#f79e1b" opacity="0.9"/><path d="M12 3.2a6 6 0 010 9.6 6 6 0 000-9.6z" fill="#ff5f00"/></svg></span> 4280</span></td>
+                  <td>Oct '26 invoice</td>
+                  <td>F-98191</td>
+                  <td>Oct 13, 12:30 PM</td>
+                </tr>
+                <tr>
+                  <td>$2,480.02 USD</td>
+                  <td><span class="status-badge succeeded">Succeeded</span></td>
+                  <td><span class="pm-pill"><span class="pm-pill-icon"><svg viewBox="0 0 24 16" fill="none"><circle cx="9" cy="8" r="6" fill="#eb001b" opacity="0.9"/><circle cx="15" cy="8" r="6" fill="#f79e1b" opacity="0.9"/><path d="M12 3.2a6 6 0 010 9.6 6 6 0 000-9.6z" fill="#ff5f00"/></svg></span> 4280</span></td>
+                  <td>Sept '26 invoice</td>
+                  <td>F-46910</td>
+                  <td>Sept 13, 12:39 PM</td>
+                </tr>
+                <tr>
+                  <td>$6,200.08 USD</td>
+                  <td><span class="status-badge succeeded">Succeeded</span></td>
+                  <td><span class="pm-pill"><span class="pm-pill-icon"><svg viewBox="0 0 24 16" fill="none"><circle cx="9" cy="8" r="6" fill="#eb001b" opacity="0.9"/><circle cx="15" cy="8" r="6" fill="#f79e1b" opacity="0.9"/><path d="M12 3.2a6 6 0 010 9.6 6 6 0 000-9.6z" fill="#ff5f00"/></svg></span> 4280</span></td>
+                  <td>Aug '26 invoice</td>
+                  <td>F-66765</td>
+                  <td>Aug 13, 12:39 PM</td>
+                </tr>
+                <tr>
+                  <td>$4,200.18 USD</td>
+                  <td><span class="status-badge succeeded">Succeeded</span></td>
+                  <td><span class="pm-pill"><span class="pm-pill-icon"><svg viewBox="0 0 24 16" fill="none"><circle cx="9" cy="8" r="6" fill="#eb001b" opacity="0.9"/><circle cx="15" cy="8" r="6" fill="#f79e1b" opacity="0.9"/><path d="M12 3.2a6 6 0 010 9.6 6 6 0 000-9.6z" fill="#ff5f00"/></svg></span> 4280</span></td>
+                  <td>Jul '26 invoice</td>
+                  <td>F-96765</td>
+                  <td>Jul 13, 12:32 PM</td>
+                </tr>
+                <tr>
+                  <td>$3,389.00 USD</td>
+                  <td><span class="status-badge succeeded">Succeeded</span></td>
+                  <td><span class="pm-pill"><span class="pm-pill-icon"><svg viewBox="0 0 24 16" fill="none"><circle cx="9" cy="8" r="6" fill="#eb001b" opacity="0.9"/><circle cx="15" cy="8" r="6" fill="#f79e1b" opacity="0.9"/><path d="M12 3.2a6 6 0 010 9.6 6 6 0 000-9.6z" fill="#ff5f00"/></svg></span> 4280</span></td>
+                  <td>Jun '26 invoice</td>
+                  <td>F-96191</td>
+                  <td>Jun 13, 12:32 PM</td>
+                </tr>
+                <tr>
+                  <td>$2,480.18 USD</td>
+                  <td><span class="status-badge succeeded">Succeeded</span></td>
+                  <td><span class="pm-pill"><span class="pm-pill-icon"><svg viewBox="0 0 24 16" fill="none"><circle cx="9" cy="8" r="6" fill="#eb001b" opacity="0.9"/><circle cx="15" cy="8" r="6" fill="#f79e1b" opacity="0.9"/><path d="M12 3.2a6 6 0 010 9.6 6 6 0 000-9.6z" fill="#ff5f00"/></svg></span> 4280</span></td>
+                  <td>May '26 invoice</td>
+                  <td>F-96765</td>
+                  <td>May 15, 12:03 PM</td>
+                </tr>
+                <tr>
+                  <td>$1,005.68 USD</td>
+                  <td><span class="status-badge succeeded">Succeeded</span></td>
+                  <td><span class="pm-pill"><span class="pm-pill-icon"><svg viewBox="0 0 24 16" fill="none"><circle cx="9" cy="8" r="6" fill="#eb001b" opacity="0.9"/><circle cx="15" cy="8" r="6" fill="#f79e1b" opacity="0.9"/><path d="M12 3.2a6 6 0 010 9.6 6 6 0 000-9.6z" fill="#ff5f00"/></svg></span> 4280</span></td>
+                  <td>Apr '26 invoice</td>
+                  <td>F-96191</td>
+                  <td>Apr 13, 12:30 PM</td>
+                </tr>
+                <tr>
+                  <td>$3,643.68 USD</td>
+                  <td><span class="status-badge succeeded">Succeeded</span></td>
+                  <td><span class="pm-pill"><span class="pm-pill-icon"><svg viewBox="0 0 24 16" fill="none"><circle cx="9" cy="8" r="6" fill="#eb001b" opacity="0.9"/><circle cx="15" cy="8" r="6" fill="#f79e1b" opacity="0.9"/><path d="M12 3.2a6 6 0 010 9.6 6 6 0 000-9.6z" fill="#ff5f00"/></svg></span> 4280</span></td>
+                  <td>Mar '26 invoice</td>
+                  <td>F-96765</td>
+                  <td>Mar 13, 13:30 PM</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="pagination">
+              <div>1-10 of 12 results</div>
+              <div class="pagination-buttons">
+                <button type="button" disabled>Previous</button>
+                <button type="button">Next</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-block">
+            <div class="pm-section-header">
+              <div class="section-title">Payment methods</div>
+              <button class="btn-ghost" type="button" title="More">···</button>
+            </div>
+            <div class="pm-card">
+              <div class="pm-card-row">
+                <div class="pm-card-icon pm-card-icon-mc">
+                  <svg width="24" height="16" viewBox="0 0 24 16" fill="none">
+                    <circle cx="9" cy="8" r="6" fill="#eb001b" opacity="0.9"/>
+                    <circle cx="15" cy="8" r="6" fill="#f79e1b" opacity="0.9"/>
+                    <path d="M12 3.2a6 6 0 010 9.6 6 6 0 000-9.6z" fill="#ff5f00"/>
+                  </svg>
+                </div>
+                <span class="pm-card-name">Mastercard •••• 4280</span>
+                <span class="pm-card-country">🇺🇸 United States</span>
+                <span class="pm-card-expiry">Expires Sep 2027</span>
+                <div class="pm-card-badges">
+                  <span class="badge-pill default">Default</span>
+                  <span class="badge-pill verified">Verified</span>
+                  <span class="pm-dots" role="button" tabindex="0">···</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-block" style="margin-bottom: 0;">
+            <div class="section-header-row">
+              <div class="section-title">Invoices</div>
+              <button class="btn-icon-add" type="button" title="Add invoice">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </button>
+            </div>
+            <div class="tabs-row">
+              <button class="tab active" type="button">Invoices</button>
+              <button class="tab" type="button">Pending invoice items</button>
+            </div>
+            <table class="customers-table" style="margin-top: 12px;">
+              <thead>
+                <tr>
+                  <th>Amount</th>
+                  <th>Due</th>
+                  <th>Invoice number</th>
+                  <th>Name</th>
+                  <th>Created</th>
+                  <th class="td-numeric-head"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>$3,643.68 USD</td>
+                  <td>Dec 1, 2025</td>
+                  <td>F-10982</td>
+                  <td>Usage-based billing meter ID 29818</td>
+                  <td>Dec 8, 2025</td>
+                  <td class="td-numeric"><span class="status-badge paid">Paid</span></td>
+                </tr>
+                <tr>
+                  <td>$3,200.00 USD</td>
+                  <td>Nov 1, 2025</td>
+                  <td>F-10918</td>
+                  <td>Usage-based billing meter ID 29818</td>
+                  <td>Nov 8, 2025</td>
+                  <td class="td-numeric"><span class="status-badge paid">Paid</span></td>
+                </tr>
+                <tr>
+                  <td>$2,980.50 USD</td>
+                  <td>Oct 1, 2025</td>
+                  <td>F-10820</td>
+                  <td>Usage-based billing meter ID 29818</td>
+                  <td>Oct 6, 2025</td>
+                  <td class="td-numeric"><span class="status-badge paid">Paid</span></td>
+                </tr>
+                <tr>
+                  <td>$2,650.00 USD</td>
+                  <td>Sept 1, 2025</td>
+                  <td>F-10720</td>
+                  <td>Usage-based billing meter ID 29818</td>
+                  <td>Sept 4, 2025</td>
+                  <td class="td-numeric"><span class="status-badge paid">Paid</span></td>
+                </tr>
+                <tr>
+                  <td>$2,500.00 USD</td>
+                  <td>Aug 1, 2025</td>
+                  <td>F-10600</td>
+                  <td>Usage-based billing meter ID 29818</td>
+                  <td>Aug 5, 2025</td>
+                  <td class="td-numeric"><span class="status-badge paid">Paid</span></td>
+                </tr>
+                <tr>
+                  <td>$2,400.00 USD</td>
+                  <td>Jul 1, 2025</td>
+                  <td>F-10500</td>
+                  <td>Usage-based billing meter ID 29818</td>
+                  <td>Jul 2, 2025</td>
+                  <td class="td-numeric"><span class="status-badge paid">Paid</span></td>
+                </tr>
+                <tr>
+                  <td>$2,800.00 USD</td>
+                  <td>Jun 1, 2025</td>
+                  <td>F-10400</td>
+                  <td>Usage-based billing meter ID 29818</td>
+                  <td>Jun 2, 2025</td>
+                  <td class="td-numeric"><span class="status-badge paid">Paid</span></td>
+                </tr>
+                <tr>
+                  <td>$2,340.08 USD</td>
+                  <td>May 1, 2025</td>
+                  <td>F-10220</td>
+                  <td>Usage-based billing meter ID 29818</td>
+                  <td>May 1, 2025</td>
+                  <td class="td-numeric"><span class="status-badge paid">Paid</span></td>
+                </tr>
+                <tr>
+                  <td>$2,900.00 USD</td>
+                  <td>Apr 1, 2025</td>
+                  <td>F-10100</td>
+                  <td>Usage-based billing meter ID 29818</td>
+                  <td>Apr 1, 2025</td>
+                  <td class="td-numeric"><span class="status-badge paid">Paid</span></td>
+                </tr>
+                <tr>
+                  <td>$2,500.00 USD</td>
+                  <td>Mar 1, 2025</td>
+                  <td>F-10000</td>
+                  <td>Usage-based billing meter ID 29818</td>
+                  <td>Mar 1, 2025</td>
+                  <td class="td-numeric"><span class="status-badge paid">Paid</span></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="pagination">
+              <div>1-4 of 50 results</div>
+              <div class="pagination-buttons">
+                <button type="button" disabled>Previous</button>
+                <button type="button">Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-aside">
+          <div class="detail-panel">
+            <div class="detail-panel-header">
+              <div class="detail-panel-title">Details</div>
+              <a href="#" class="detail-panel-link">View all</a>
+            </div>
+            <div class="detail-field">
+              <div class="detail-field-label">Customer ID</div>
+              <div class="detail-field-value with-copy">acct_Ly5pN5pGDWgtpa
+                <svg class="icon-copy" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              </div>
+            </div>
+            <div class="detail-field">
+              <div class="detail-field-label">Created</div>
+              <div class="detail-field-value">Jul 10, 2024</div>
+            </div>
+            <div class="detail-field">
+              <div class="detail-field-label">Billing emails</div>
+              <div class="detail-field-value with-copy">hello@acmecorp.com
+                <svg class="icon-copy" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              </div>
+            </div>
+            <div class="detail-field">
+              <div class="detail-field-label">Business name</div>
+              <div class="detail-field-value" style="color: #9ca3af;">—</div>
+            </div>
+            <div class="detail-field">
+              <div class="detail-field-label">Individual name</div>
+              <div class="detail-field-value">Jenny Rosen</div>
+            </div>
+            <div class="detail-field">
+              <div class="detail-field-label">Billing details</div>
+              <div class="detail-field-value">Attn: Jenny, Acme Corp<br>354 Oyster Point Boulevard<br>South San Francisco, CA 94080 US 🇺🇸</div>
+            </div>
+            <div class="detail-field">
+              <div class="detail-field-label">Language</div>
+              <div class="detail-field-value">English (United States)</div>
+            </div>
+            <div class="detail-field">
+              <div class="detail-field-label">Tax location status</div>
+              <div class="detail-field-value">Valid (United States)</div>
+            </div>
+            <div class="detail-field" style="margin-bottom: 0;">
+              <div class="detail-field-label">Tax status and IDs</div>
+              <div class="detail-field-value">Taxable</div>
+            </div>
+            <div class="metadata-header">
+              <div class="metadata-title">Metadata</div>
+              <svg class="icon-edit" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            </div>
+            <div class="detail-field" style="margin-bottom: 0;">
+              <div class="detail-field-label">Customer segment</div>
+              <div class="detail-field-value">Starter</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="proto-switcher">
+    <div class="proto-switcher-header" onclick="this.parentElement.classList.toggle('collapsed')">
+      <div class="proto-switcher-title">Prototype options</div>
+      <a class="proto-switcher-home" href="index.html" onclick="event.stopPropagation()" title="Home"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></a>
+      <button class="proto-switcher-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+    </div>
+    <div class="proto-section-label">Options</div>
+    <label><input type="radio" name="supabase-view" value="v2" onchange="handleSupabaseViewChange(this)"> v2 account</label>
+    <label><input type="radio" name="supabase-view" value="direct" checked onchange="handleSupabaseViewChange(this)"> Direct account</label>
+    <div class="proto-options">
+      <div class="proto-section-label">State</div>
+      <label><input type="radio" name="supabase-state" value="network" checked onchange="handleStateChange(this)"> Network</label>
+      <label><input type="radio" name="supabase-state" value="customer" onchange="handleStateChange(this)"> Customer</label>
+    </div>
+  </div>
+  <script>
+  function handleSupabaseViewChange(el) {
+    if (el.value === 'v2') { window.location.href = 'supabase-v2-customers.html'; return; }
+    applyState(sessionStorage.getItem('supabaseState') || 'network');
+  }
+
+  function toggleAcctSwitcher() {
+    var brand = document.getElementById('sidebarBrand');
+    var switcher = document.getElementById('acctSwitcher');
+    brand.classList.toggle('open');
+    switcher.classList.toggle('open');
+  }
+
+  document.addEventListener('click', function(e) {
+    var brand = document.getElementById('sidebarBrand');
+    if (!brand.contains(e.target)) {
+      brand.classList.remove('open');
+      document.getElementById('acctSwitcher').classList.remove('open');
+    }
+  });
+
+  function handleStateChange(el) {
+    sessionStorage.setItem('supabaseState', el.value);
+    applyState(el.value);
+  }
+
+  function applyState(state) {
+    var viewEl = document.querySelector('input[name="supabase-view"]:checked');
+    var view = viewEl ? viewEl.value : 'direct';
+    var listUrl = view === 'v2' ? 'supabase-v2-customers.html' : 'supabase-customers.html';
+    var navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach(function(item) {
+      var img = item.querySelector('img[src="icons/customers.svg"]');
+      if (img) {
+        var textNodes = [];
+        item.childNodes.forEach(function(n) {
+          if (n.nodeType === 3 && n.textContent.trim()) textNodes.push(n);
+        });
+        if (textNodes.length > 0) {
+          textNodes[0].textContent = state === 'network' ? '\n        Network\n      ' : '\n        Customers\n      ';
+        }
+        item.setAttribute('href', listUrl);
+      }
+    });
+  }
+
+  (function() {
+    var state = sessionStorage.getItem('supabaseState') || 'network';
+    if (state === 'customer') {
+      var radios = document.querySelectorAll('input[name="supabase-state"]');
+      radios.forEach(function(r) { r.checked = (r.value === 'customer'); });
+    } else {
+      var radios2 = document.querySelectorAll('input[name="supabase-state"]');
+      radios2.forEach(function(r) { r.checked = (r.value === 'network'); });
+    }
+    applyState(state);
+  })();
+  </script>
+
+</body>
+</html>

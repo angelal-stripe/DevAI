@@ -430,29 +430,48 @@
 
     .customer-name { font-weight: 500; color: #1a1a1a; }
 
-    .subscription-items {
-      font-size: 12px;
-      color: #6c7688;
-      max-width: 240px;
-    }
+    .th-check, .td-check { width: 32px; text-align: center; }
+    .td-check input, .th-check input { accent-color: #635bff; }
 
-    .status-badge {
+    .td-email { color: #6b7280; }
+
+    .td-payment { color: #374151; white-space: nowrap; }
+
+    .visa-badge {
       display: inline-flex;
       align-items: center;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 12px;
-      font-weight: 400;
-      line-height: 16px;
+      justify-content: center;
+      background: #1a1f71;
+      color: #fff;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      padding: 2px 5px;
+      border-radius: 3px;
+      vertical-align: middle;
+      margin-right: 4px;
     }
 
-    .status-badge.active { background: #d7f7c2; color: #006908; }
-    .status-badge.trialing { background: #c7d2fe; color: #4338ca; }
-    .status-badge.past-due { background: #fde2dd; color: #df1b41; }
+    .guest-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 500;
+      color: #6b7280;
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      border-radius: 4px;
+      padding: 1px 6px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
 
-    .mrr-value { font-weight: 600; color: #1a1a1a; }
+    .td-country { color: #374151; white-space: nowrap; }
+    .flag { margin-right: 4px; }
 
-    .td-dots { text-align: right; color: #9ca3af; cursor: pointer; font-size: 18px; }
+    .td-created { color: #374151; white-space: nowrap; text-align: right; }
+
+    .th-created { text-align: right; white-space: nowrap; }
+    .sort-arrow { color: #374151; margin-left: 2px; }
 
     /* Pagination */
     .pagination {
@@ -672,9 +691,9 @@
 
     <div class="content">
       <div class="page-header">
-        <div class="page-title">Customers</div>
+        <div class="page-title" id="pageTitle">Customers</div>
         <div class="header-actions">
-          <button class="btn-primary">
+          <button class="btn-primary" id="addBtn">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             Add customer
           </button>
@@ -683,11 +702,14 @@
 
 
       <div class="filter-row">
-        <button class="filter-pill"><img src="icons/addCircle.svg" alt=""> Status</button>
-        <button class="filter-pill"><img src="icons/addCircle.svg" alt=""> Subscription</button>
-        <button class="filter-pill"><img src="icons/addCircle.svg" alt=""> Created</button>
+        <button class="filter-pill"><img src="icons/addCircle.svg" alt=""> Email</button>
+        <button class="filter-pill"><img src="icons/addCircle.svg" alt=""> Name</button>
+        <button class="filter-pill"><img src="icons/addCircle.svg" alt=""> Created date</button>
+        <button class="filter-pill"><img src="icons/addCircle.svg" alt=""> Type</button>
+        <button class="filter-pill"><img src="icons/addCircle.svg" alt=""> More filters</button>
         <div class="filter-actions">
           <button class="filter-btn"><img src="icons/export.svg" alt=""> Export</button>
+          <button class="filter-btn">&#x2728; Analyze</button>
           <button class="filter-btn"><img src="icons/settings.svg" alt=""> Edit columns</button>
         </div>
       </div>
@@ -695,84 +717,180 @@
       <table class="customers-table">
         <thead>
           <tr>
+            <th class="th-check"><input type="checkbox"></th>
             <th>Customer</th>
-            <th>Subscription</th>
-            <th>MRR</th>
-            <th>Status</th>
-            <th>Latest invoice</th>
-            <th></th>
+            <th>Email</th>
+            <th>Primary payment method</th>
+            <th>Country</th>
+            <th class="th-created">Created <span class="sort-arrow">&#x2193;</span></th>
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr id="acmeRow" style="cursor:pointer;" onclick="window.location.href=document.getElementById('acmeRow').dataset.href">
+            <td class="td-check"><input type="checkbox"></td>
             <td class="customer-name">Acme Corp</td>
-            <td><span class="subscription-items">Pro + Compute + Auth + Edge + Storage</span></td>
-            <td class="mrr-value">$395.70</td>
-            <td><span class="status-badge active">Active</span></td>
-            <td>Apr 2026</td>
-            <td class="td-dots">···</td>
+            <td class="td-email">hello@acmecorp.com</td>
+            <td class="td-payment"><span class="visa-badge">VISA</span> •••• 4180</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> United States</td>
+            <td class="td-created">Apr 21, 9:26 PM</td>
           </tr>
           <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Meters test customer</td>
+            <td class="td-email">billing_meters_test_customer@example.com</td>
+            <td class="td-payment">—</td>
+            <td class="td-country">—</td>
+            <td class="td-created">Apr 21, 9:26 PM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">test@stripe.com</td>
+            <td class="td-email">test@stripe.com</td>
+            <td class="td-payment">—</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> United States</td>
+            <td class="td-created">Apr 13, 3:35 AM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
             <td class="customer-name">MegaTech</td>
-            <td><span class="subscription-items">Pro + Compute</span></td>
-            <td class="mrr-value">$820.00</td>
-            <td><span class="status-badge active">Active</span></td>
-            <td>Apr 2026</td>
-            <td class="td-dots">···</td>
+            <td class="td-email">billing@megatech.io</td>
+            <td class="td-payment">—</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> United States</td>
+            <td class="td-created">Mar 25, 5:17 PM</td>
           </tr>
           <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Rohit Chaudhry</td>
+            <td class="td-email">rohitc@stripe.com</td>
+            <td class="td-payment">—</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> United States</td>
+            <td class="td-created">Mar 17, 6:37 AM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Furever</td>
+            <td class="td-email">furever@example.com</td>
+            <td class="td-payment">—</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> United States</td>
+            <td class="td-created">Mar 12, 7:43 PM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">cfsdcds@sdnids.com</td>
+            <td class="td-email">cfsdcds@sdnids.com</td>
+            <td class="td-payment">—</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> United States</td>
+            <td class="td-created">Feb 4, 10:08 PM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Julia Wang</td>
+            <td class="td-email">joeye@stripe.com</td>
+            <td class="td-payment"><span class="visa-badge">VISA</span> •••• 5831</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> United States</td>
+            <td class="td-created">Jan 14, 11:54 PM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">mirtan+test@stripe.com</td>
+            <td class="td-email">mirtan+test@stripe.com</td>
+            <td class="td-payment">—</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> United States</td>
+            <td class="td-created">Dec 22, 2025, 5:09 PM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Jenny Rosen</td>
+            <td class="td-email">jenny.rosen@example.com</td>
+            <td class="td-payment">—</td>
+            <td class="td-country">—</td>
+            <td class="td-created">Dec 15, 2025, 8:39 PM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Jenny Rosen</td>
+            <td class="td-email">jenny.rosen@example.com</td>
+            <td class="td-payment">—</td>
+            <td class="td-country">—</td>
+            <td class="td-created">Dec 15, 2025, 8:36 PM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Jenny Rosen</td>
+            <td class="td-email">jenny.rosen@example.com</td>
+            <td class="td-payment">—</td>
+            <td class="td-country">—</td>
+            <td class="td-created">Dec 15, 2025, 8:23 PM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">test@stripe.com</td>
+            <td class="td-email">test@stripe.com</td>
+            <td class="td-payment">—</td>
+            <td class="td-country">—</td>
+            <td class="td-created">Oct 29, 2025, 7:14 PM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Evan</td>
+            <td class="td-email">ewood@stripe.com</td>
+            <td class="td-payment">—</td>
+            <td class="td-country">—</td>
+            <td class="td-created">Oct 24, 2025, 3:55 PM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Claire Rock</td>
+            <td class="td-email">fakeemail@stripe.com</td>
+            <td class="td-payment">—</td>
+            <td class="td-country">—</td>
+            <td class="td-created">Jul 29, 2025, 6:40 PM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Claire CMKTest</td>
+            <td class="td-email">clairekluge+checkouttest@stripe.com</td>
+            <td class="td-payment">—</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> United States</td>
+            <td class="td-created">Apr 30, 2025, 8:05 PM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
             <td class="customer-name">Sarah's Photography</td>
-            <td><span class="subscription-items">Pro</span></td>
-            <td class="mrr-value">$25.00</td>
-            <td><span class="status-badge active">Active</span></td>
-            <td>Apr 2026</td>
-            <td class="td-dots">···</td>
+            <td class="td-email">sarah@photography.co</td>
+            <td class="td-payment">—</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> United States</td>
+            <td class="td-created">Apr 15, 2025, 2:10 PM</td>
           </tr>
           <tr>
-            <td class="customer-name">NewCo</td>
-            <td><span class="subscription-items">Pro</span></td>
-            <td class="mrr-value">$250.00</td>
-            <td><span class="status-badge active">Active</span></td>
-            <td>Apr 2026</td>
-            <td class="td-dots">···</td>
-          </tr>
-          <tr>
+            <td class="td-check"><input type="checkbox"></td>
             <td class="customer-name">BuildFast Co</td>
-            <td><span class="subscription-items">Team + Compute + Auth</span></td>
-            <td class="mrr-value">$475.00</td>
-            <td><span class="status-badge active">Active</span></td>
-            <td>Apr 2026</td>
-            <td class="td-dots">···</td>
+            <td class="td-email">admin@buildfast.co</td>
+            <td class="td-payment"><span class="visa-badge">VISA</span> •••• 9012</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> United States</td>
+            <td class="td-created">Mar 28, 2025, 11:22 AM</td>
           </tr>
           <tr>
+            <td class="td-check"><input type="checkbox"></td>
             <td class="customer-name">DevStudio</td>
-            <td><span class="subscription-items">Pro + Storage</span></td>
-            <td class="mrr-value">$89.00</td>
-            <td><span class="status-badge trialing">Trialing</span></td>
-            <td>—</td>
-            <td class="td-dots">···</td>
+            <td class="td-email">team@devstudio.io</td>
+            <td class="td-payment">—</td>
+            <td class="td-country">—</td>
+            <td class="td-created">Feb 14, 2025, 9:48 AM</td>
           </tr>
           <tr>
+            <td class="td-check"><input type="checkbox"></td>
             <td class="customer-name">CloudNine Ltd</td>
-            <td><span class="subscription-items">Enterprise + Compute + Auth + Edge + Storage</span></td>
-            <td class="mrr-value">$2,100.00</td>
-            <td><span class="status-badge active">Active</span></td>
-            <td>Apr 2026</td>
-            <td class="td-dots">···</td>
-          </tr>
-          <tr>
-            <td class="customer-name">LaunchPad Inc</td>
-            <td><span class="subscription-items">Pro + Compute</span></td>
-            <td class="mrr-value">$112.50</td>
-            <td><span class="status-badge past-due">Past due</span></td>
-            <td>Mar 2026</td>
-            <td class="td-dots">···</td>
+            <td class="td-email">ops@cloudnine.com</td>
+            <td class="td-payment"><span class="visa-badge">VISA</span> •••• 3344</td>
+            <td class="td-country"><span class="flag">&#x1F1EC;&#x1F1E7;</span> United Kingdom</td>
+            <td class="td-created">Jan 5, 2025, 4:15 PM</td>
           </tr>
         </tbody>
       </table>
 
       <div class="pagination">
-        <div>Viewing 8 of 8 results</div>
+        <div>1-20 of 34 results</div>
         <div class="pagination-buttons">
           <button>Previous</button>
           <button>Next</button>
@@ -790,10 +908,16 @@
     <div class="proto-section-label">Options</div>
     <label><input type="radio" name="supabase-view" value="v2" checked onchange="handleSupabaseViewChange(this)"> v2 account</label>
     <label><input type="radio" name="supabase-view" value="direct" onchange="handleSupabaseViewChange(this)"> Direct account</label>
+    <div class="proto-options">
+      <div class="proto-section-label">State</div>
+      <label><input type="radio" name="supabase-state" value="network" checked onchange="handleStateChange(this)"> Network</label>
+      <label><input type="radio" name="supabase-state" value="customer" onchange="handleStateChange(this)"> Customer</label>
+    </div>
   </div>
   <script>
   function handleSupabaseViewChange(el) {
-    if (el.value === 'direct') { window.location.href = 'supabase-apps.html'; }
+    if (el.value === 'direct') { window.location.href = 'supabase-apps.html'; return; }
+    applyState(sessionStorage.getItem('supabaseState') || 'network');
   }
 
   function toggleAcctSwitcher() {
@@ -810,6 +934,47 @@
       document.getElementById('acctSwitcher').classList.remove('open');
     }
   });
+
+  function handleStateChange(el) {
+    sessionStorage.setItem('supabaseState', el.value);
+    applyState(el.value);
+  }
+
+  function applyState(state) {
+    var viewEl = document.querySelector('input[name="supabase-view"]:checked');
+    var view = viewEl ? viewEl.value : 'v2';
+    var listUrl = view === 'v2' ? 'supabase-v2-customers.html' : 'supabase-customers.html';
+    var navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach(function(item) {
+      var img = item.querySelector('img[src="icons/customers.svg"]');
+      if (img) {
+        var textNodes = [];
+        item.childNodes.forEach(function(n) {
+          if (n.nodeType === 3 && n.textContent.trim()) textNodes.push(n);
+        });
+        if (textNodes.length > 0) {
+          textNodes[0].textContent = state === 'network' ? '\n        Network\n      ' : '\n        Customers\n      ';
+        }
+        item.setAttribute('href', listUrl);
+      }
+    });
+    var pageTitle = document.getElementById('pageTitle');
+    if (pageTitle) pageTitle.textContent = state === 'network' ? 'Network' : 'Customers';
+    var acmeRow = document.getElementById('acmeRow');
+    if (acmeRow) acmeRow.dataset.href = state === 'network' ? 'supabase-network-detail.html' : 'supabase-customer-detail.html';
+  }
+
+  (function() {
+    var state = sessionStorage.getItem('supabaseState') || 'network';
+    if (state === 'customer') {
+      var radios = document.querySelectorAll('input[name="supabase-state"]');
+      radios.forEach(function(r) { r.checked = (r.value === 'customer'); });
+    } else {
+      var radios2 = document.querySelectorAll('input[name="supabase-state"]');
+      radios2.forEach(function(r) { r.checked = (r.value === 'network'); });
+    }
+    applyState(state);
+  })();
   </script>
 
 </body>
