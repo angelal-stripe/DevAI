@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home – Supabase – Stripe</title>
+  <title>Network – Vercel – Stripe</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -49,7 +49,7 @@
       width: 24px;
       height: 24px;
       border-radius: 6px;
-      background: linear-gradient(135deg, #3ECF8E, #2B9F6F);
+      background: linear-gradient(135deg, #4da3ff, #2b7de9);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -94,7 +94,7 @@
 
     .acct-switcher-avatar {
       width: 40px; height: 40px; border-radius: 8px;
-      background: linear-gradient(135deg, #3ECF8E, #2B9F6F);
+      background: linear-gradient(135deg, #4da3ff, #2b7de9);
       display: flex; align-items: center; justify-content: center;
       margin-bottom: 8px;
     }
@@ -206,7 +206,10 @@
     }
 
     .nav-item:hover { color: #353a44; background: #f5f6f8; }
-    .nav-item.active { color: #353a44; font-weight: 500; }
+    .nav-item.active { color: #635bff; font-weight: 500; }
+    .nav-item.active img:not(.nav-item-chevron) {
+      filter: brightness(0) saturate(100%) invert(37%) sepia(91%) saturate(5535%) hue-rotate(238deg) brightness(101%) contrast(101%);
+    }
 
     .nav-item img { width: 16px; height: 16px; flex-shrink: 0; }
     .nav-item img.nav-item-chevron { margin-left: auto; width: 8px; height: 8px; opacity: 0.4; }
@@ -264,15 +267,51 @@
 
     .content { flex: 1; overflow-y: auto; padding: 32px 40px; max-width: 1280px; margin: 0 auto; width: 100%; box-sizing: border-box; }
 
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
     .page-title {
       font-size: 28px;
       font-weight: 700;
       color: #1a1a1a;
+    }
+
+    .page-subtitle {
+      font-size: 14px;
+      color: #6c7688;
       margin-bottom: 24px;
     }
 
-    /* Marketplace connection badge */
-    .marketplace-badge {
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      background: #635bff;
+      font-size: 13px;
+      font-weight: 500;
+      color: #fff;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.1s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-primary:hover { background: #4f46e5; }
+
+    /* Consent info banner */
+    .consent-banner {
       display: flex;
       align-items: center;
       gap: 16px;
@@ -280,68 +319,95 @@
       background: #f4f7fa;
       border: none;
       border-radius: 8px;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
+      font-size: 14px;
+      color: #596171;
+      line-height: 20px;
+      letter-spacing: -0.15px;
     }
-
-    .marketplace-badge-text { flex: 1; display: flex; flex-direction: column; gap: 4px; }
-    .marketplace-badge-title { font-size: 16px; font-weight: 700; color: #1a2c44; letter-spacing: -0.31px; line-height: 24px; }
-    .marketplace-badge-sub { font-size: 14px; font-weight: 400; color: #596171; letter-spacing: -0.15px; line-height: 20px; }
-
-    .marketplace-badge-action {
+    .consent-banner-text { flex: 1; }
+    .consent-banner-action {
       font-size: 14px; font-weight: 400; color: #635bff;
-      display: flex; align-items: center; flex-shrink: 0;
-      text-decoration: none; cursor: pointer;
+      text-decoration: none; flex-shrink: 0; cursor: pointer;
     }
-    .marketplace-badge-action:hover { text-decoration: underline; }
-
-    .marketplace-badge-dismiss {
+    .consent-banner-action:hover { text-decoration: underline; }
+    .consent-banner-dismiss {
       width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;
       flex-shrink: 0; cursor: pointer; border-radius: 6px; border: none; background: none;
       color: #474e5a; padding: 0;
     }
-    .marketplace-badge-dismiss:hover { background: #ecf1f6; }
+    .consent-banner-dismiss:hover { background: #ecf1f6; }
 
-    /* Summary cards */
-    .summary-cards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-bottom: 32px;
-    }
-
-    .summary-card {
-      padding: 20px;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
-    }
-
-    .summary-card-label {
-      font-size: 13px;
-      font-weight: 400;
-      color: #6c7688;
-      margin-bottom: 6px;
-    }
-
-    .summary-card-value {
-      font-size: 24px;
-      font-weight: 600;
-      color: #1a1a1a;
-    }
-
-    /* Recent activity */
-    .section-title {
-      font-size: 16px;
-      font-weight: 600;
-      color: #1a1a1a;
+    /* Filter row */
+    .filter-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
       margin-bottom: 16px;
+      flex-wrap: wrap;
     }
 
-    .activity-table {
+    .filter-pill {
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #596171;
+      background: #fff;
+      border: 1px dashed #b6c0cd;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.1s;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .filter-pill:hover { background: #f9fafb; }
+
+    .filter-pill img {
+      width: 12px;
+      height: 12px;
+      opacity: 0.6;
+    }
+
+    .filter-actions {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .filter-btn {
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #374151;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      cursor: pointer;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .filter-btn:hover { background: #f9fafb; }
+
+    .filter-btn img {
+      width: 12px;
+      height: 12px;
+      opacity: 0.5;
+    }
+
+    /* Customers table */
+    .customers-table {
       width: 100%;
       border-collapse: collapse;
     }
 
-    .activity-table th {
+    .customers-table th {
       text-align: left;
       font-size: 12px;
       font-weight: 500;
@@ -350,19 +416,92 @@
       border-bottom: 1px solid #e5e7eb;
     }
 
-    .activity-table td {
+    .customers-table th:last-child { text-align: right; }
+
+    .customers-table td {
       padding: 12px 12px;
       font-size: 13px;
       color: #374151;
       border-bottom: 1px solid #f3f4f6;
+      vertical-align: middle;
     }
 
-    .activity-table tr:hover { background: #f9fafb; }
+    .customers-table tr:hover { background: #f9fafb; cursor: pointer; }
 
-    .activity-amount { font-weight: 600; color: #1a1a1a; }
-    .activity-status { display: inline-flex; align-items: center; gap: 4px; }
-    .activity-status-dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; }
-    .activity-status-dot.pending { background: #f59e0b; }
+    .customer-name { font-weight: 500; color: #1a1a1a; }
+
+    .th-check, .td-check { width: 32px; text-align: center; }
+    .td-check input, .th-check input { accent-color: #635bff; }
+
+    .td-email { color: #6b7280; }
+
+    .td-payment { color: #374151; white-space: nowrap; }
+
+    .visa-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #1a1f71;
+      color: #fff;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      padding: 2px 5px;
+      border-radius: 3px;
+      vertical-align: middle;
+      margin-right: 4px;
+    }
+
+    .guest-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 500;
+      color: #6b7280;
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      border-radius: 4px;
+      padding: 1px 6px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    .td-country { color: #374151; white-space: nowrap; }
+    .flag { margin-right: 4px; }
+
+    .td-created { color: #374151; white-space: nowrap; text-align: right; }
+
+    .th-created { text-align: right; white-space: nowrap; }
+    .sort-arrow { color: #374151; margin-left: 2px; }
+
+    /* Pagination */
+    .pagination {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 12px;
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    .pagination-buttons {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pagination button {
+      padding: 6px 14px;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      background: #fff;
+      cursor: pointer;
+      color: #374151;
+      font-size: 13px;
+      font-family: inherit;
+      font-weight: 500;
+    }
+
+    .pagination button:hover { background: #f9fafb; }
 
     /* Proto switcher */
     .proto-switcher {
@@ -394,85 +533,18 @@
 <body>
 
   <div class="sidebar">
-    <div class="sidebar-brand" id="sidebarBrand" onclick="toggleAcctSwitcher()">
-      <div class="sidebar-brand-logo">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0A2.704 2.704 0 003 15.546" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><path d="M5 12V7a2 2 0 012-2h10a2 2 0 012 2v5" stroke="#fff" stroke-width="1.5"/><path d="M9 9h6" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <div class="sidebar-brand" id="sidebarBrand" style="cursor:default;" onclick="">
+      <div class="sidebar-brand-logo" style="background:#000;">
+        <svg viewBox="0 0 76 65" fill="none" style="width:12px;height:12px;"><path d="M37.5274 0L75.0548 65H0L37.5274 0Z" fill="#fff"/></svg>
       </div>
       <div class="sidebar-brand-info">
-        <div class="sidebar-brand-name">Supabase Inc</div>
+        <div class="sidebar-brand-name">Vercel</div>
       </div>
-      <svg class="sidebar-brand-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
 
-      <!-- Account switcher dropdown -->
-      <div class="acct-switcher" id="acctSwitcher" onclick="event.stopPropagation()">
-        <div class="acct-switcher-header">
-          <div class="acct-switcher-avatar">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0A2.704 2.704 0 003 15.546" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><path d="M5 12V7a2 2 0 012-2h10a2 2 0 012 2v5" stroke="#fff" stroke-width="1.5"/><path d="M9 9h6" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
-          </div>
-          <div class="acct-switcher-name">Supabase Inc</div>
-        </div>
-
-        <div class="acct-switcher-actions">
-          <a class="acct-switcher-action" href="#">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-            Settings
-          </a>
-          <a class="acct-switcher-action" href="#">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-            Switch to sandbox
-            <svg class="action-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-          </a>
-        </div>
-
-        <div class="acct-switcher-search">
-          <input type="text" placeholder="Search">
-        </div>
-
-        <div class="acct-switcher-accounts">
-          <a class="acct-switcher-item" href="supabase-home.html">
-            <div class="acct-item-icon green">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0A2.704 2.704 0 003 15.546" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><path d="M5 12V7a2 2 0 012-2h10a2 2 0 012 2v5" stroke="#fff" stroke-width="1.5"/></svg>
-            </div>
-            <span class="acct-item-name">Supabase Inc</span>
-            <div class="acct-item-check">
-              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-            </div>
-          </a>
-          <a class="acct-switcher-item" href="supabase-v2-customers.html">
-            <div class="acct-item-icon blue">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0A2.704 2.704 0 003 15.546" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><path d="M5 12V7a2 2 0 012-2h10a2 2 0 012 2v5" stroke="#fff" stroke-width="1.5"/></svg>
-            </div>
-            <span class="acct-item-name">Supabase for Vercel</span>
-          </a>
-        </div>
-
-        <div class="acct-switcher-actions" style="border-bottom: 1px solid #e5e7eb;">
-          <a class="acct-switcher-action" href="#">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-            Other accounts
-            <svg class="action-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-          </a>
-          <a class="acct-switcher-action" href="#">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            Create account
-          </a>
-        </div>
-
-        <div class="acct-switcher-footer">
-          <div class="acct-switcher-footer-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            Supabase Admin
-          </div>
-          <div class="acct-switcher-footer-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-            Sign out
-          </div>
-        </div>
-      </div>
     </div>
 
     <div class="sidebar-nav">
-      <a class="nav-item active" href="#">
+      <a class="nav-item" href="#">
         <img src="icons/home.svg" alt="">
         Home
       </a>
@@ -484,9 +556,9 @@
         <img src="icons/convert.svg" alt="">
         Transactions
       </a>
-      <a class="nav-item" href="supabase-customers.html">
+      <a class="nav-item active" href="vercel-stripe-network.html">
         <img src="icons/customers.svg" alt="">
-        Customers
+        Network
       </a>
       <a class="nav-item" href="#">
         <img src="icons/product.svg" alt="">
@@ -509,7 +581,7 @@
         Reporting
         <img class="nav-item-chevron" src="icons/chevronDown.svg" alt="">
       </a>
-      <a class="nav-item" href="supabase-apps.html">
+      <a class="nav-item" href="vercel-stripe-apps.html">
         <img src="icons/apps.svg" alt="">
         Apps
         <img class="nav-item-chevron" src="icons/chevronDown.svg" alt="">
@@ -551,104 +623,212 @@
     </div>
 
     <div class="content">
-      <div class="page-title">Home</div>
-
-      <div class="marketplace-badge" id="marketplaceBadge">
-        <div class="marketplace-badge-text">
-          <div class="marketplace-badge-title">3 connected marketplaces</div>
-          <div class="marketplace-badge-sub">Vercel, Anthropic, and OpenAI have shared access to your billing resources</div>
-        </div>
-        <a class="marketplace-badge-action" href="supabase-apps.html">Manage</a>
-        <button class="marketplace-badge-dismiss" onclick="document.getElementById('marketplaceBadge').style.display='none'" aria-label="Dismiss">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-      </div>
-
-      <div class="summary-cards">
-        <div class="summary-card">
-          <div class="summary-card-label">Today's revenue</div>
-          <div class="summary-card-value">$4,250.00</div>
-        </div>
-        <div class="summary-card">
-          <div class="summary-card-label">Available balance</div>
-          <div class="summary-card-value">$18,340.00</div>
-        </div>
-        <div class="summary-card">
-          <div class="summary-card-label">Pending</div>
-          <div class="summary-card-value">$2,100.00</div>
+      <div class="page-header">
+        <div class="page-title" id="pageTitle">Network</div>
+        <div class="header-actions">
+          <button class="btn-primary" id="addBtn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add customer
+          </button>
         </div>
       </div>
 
-      <div class="section-title">Recent payments</div>
-      <table class="activity-table">
+
+      <div class="filter-row">
+        <button class="filter-pill"><img src="icons/addCircle.svg" alt=""> Email</button>
+        <button class="filter-pill"><img src="icons/addCircle.svg" alt=""> Name</button>
+        <button class="filter-pill"><img src="icons/addCircle.svg" alt=""> Created date</button>
+        <button class="filter-pill"><img src="icons/addCircle.svg" alt=""> Type</button>
+        <button class="filter-pill"><img src="icons/addCircle.svg" alt=""> More filters</button>
+        <div class="filter-actions">
+          <button class="filter-btn"><img src="icons/export.svg" alt=""> Export</button>
+          <button class="filter-btn">&#x2728; Analyze</button>
+          <button class="filter-btn"><img src="icons/settings.svg" alt=""> Edit columns</button>
+        </div>
+      </div>
+
+      <table class="customers-table">
         <thead>
           <tr>
-            <th>Amount</th>
-            <th>Status</th>
+            <th class="th-check"><input type="checkbox"></th>
             <th>Customer</th>
-            <th>Description</th>
-            <th>Date</th>
+            <th>Email</th>
+            <th>Primary payment method</th>
+            <th>Country</th>
+            <th class="th-created">Created <span class="sort-arrow">&#x2193;</span></th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td class="activity-amount">$299.00</td>
-            <td><span class="activity-status"><span class="activity-status-dot"></span> Succeeded</span></td>
-            <td>Acme Corp</td>
-            <td>Supabase Pro — Monthly</td>
-            <td>Apr 13, 2026</td>
+          <tr id="supabaseRow" style="cursor:pointer;" onclick="window.location.href='vercel-network-detail.html'">
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Supabase Inc</td>
+            <td class="td-email">billing@supabase.io</td>
+            <td class="td-payment"><span class="visa-badge">VISA</span> •••• 4180</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> United States</td>
+            <td class="td-created">Apr 21, 9:26 PM</td>
           </tr>
           <tr>
-            <td class="activity-amount">$1,250.00</td>
-            <td><span class="activity-status"><span class="activity-status-dot"></span> Succeeded</span></td>
-            <td>TechFlow Inc</td>
-            <td>Supabase Enterprise — Monthly</td>
-            <td>Apr 13, 2026</td>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Meters test customer</td>
+            <td class="td-email">billing_meters_test_customer@example.com</td>
+            <td class="td-payment">—</td>
+            <td class="td-country">—</td>
+            <td class="td-created">Apr 21, 9:26 PM</td>
           </tr>
           <tr>
-            <td class="activity-amount">$89.00</td>
-            <td><span class="activity-status"><span class="activity-status-dot"></span> Succeeded</span></td>
-            <td>DevStudio</td>
-            <td>Supabase Pro — Monthly</td>
-            <td>Apr 13, 2026</td>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">test@stripe.com</td>
+            <td class="td-email">test@stripe.com</td>
+            <td class="td-payment">—</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> United States</td>
+            <td class="td-created">Apr 13, 3:35 AM</td>
           </tr>
           <tr>
-            <td class="activity-amount">$499.00</td>
-            <td><span class="activity-status"><span class="activity-status-dot"></span> Succeeded</span></td>
-            <td>MegaTech</td>
-            <td>Supabase Team — Monthly</td>
-            <td>Apr 12, 2026</td>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">MegaTech</td>
+            <td class="td-email">billing@megatech.io</td>
+            <td class="td-payment">—</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> United States</td>
+            <td class="td-created">Mar 25, 5:17 PM</td>
           </tr>
           <tr>
-            <td class="activity-amount">$2,100.00</td>
-            <td><span class="activity-status"><span class="activity-status-dot pending"></span> Pending</span></td>
-            <td>CloudNine Ltd</td>
-            <td>Supabase Enterprise — Annual</td>
-            <td>Apr 12, 2026</td>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Rohit Chaudhry</td>
+            <td class="td-email">rohitc@stripe.com</td>
+            <td class="td-payment">—</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> United States</td>
+            <td class="td-created">Mar 17, 6:37 AM</td>
           </tr>
           <tr>
-            <td class="activity-amount">$25.00</td>
-            <td><span class="activity-status"><span class="activity-status-dot"></span> Succeeded</span></td>
-            <td>Sarah's Photography</td>
-            <td>Supabase Pro — Monthly</td>
-            <td>Apr 12, 2026</td>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Furever</td>
+            <td class="td-email">furever@example.com</td>
+            <td class="td-payment">—</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> United States</td>
+            <td class="td-created">Mar 12, 7:43 PM</td>
           </tr>
           <tr>
-            <td class="activity-amount">$149.00</td>
-            <td><span class="activity-status"><span class="activity-status-dot"></span> Succeeded</span></td>
-            <td>BuildFast Co</td>
-            <td>Supabase Team — Monthly</td>
-            <td>Apr 11, 2026</td>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">cfsdcds@sdnids.com</td>
+            <td class="td-email">cfsdcds@sdnids.com</td>
+            <td class="td-payment">—</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> United States</td>
+            <td class="td-created">Feb 4, 10:08 PM</td>
           </tr>
           <tr>
-            <td class="activity-amount">$25.00</td>
-            <td><span class="activity-status"><span class="activity-status-dot"></span> Succeeded</span></td>
-            <td>IndieDev</td>
-            <td>Supabase Pro — Monthly</td>
-            <td>Apr 11, 2026</td>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Julia Wang</td>
+            <td class="td-email">joeye@stripe.com</td>
+            <td class="td-payment"><span class="visa-badge">VISA</span> •••• 5831</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> United States</td>
+            <td class="td-created">Jan 14, 11:54 PM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">mirtan+test@stripe.com</td>
+            <td class="td-email">mirtan+test@stripe.com</td>
+            <td class="td-payment">—</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> United States</td>
+            <td class="td-created">Dec 22, 2025, 5:09 PM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Jenny Rosen</td>
+            <td class="td-email">jenny.rosen@example.com</td>
+            <td class="td-payment">—</td>
+            <td class="td-country">—</td>
+            <td class="td-created">Dec 15, 2025, 8:39 PM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Jenny Rosen</td>
+            <td class="td-email">jenny.rosen@example.com</td>
+            <td class="td-payment">—</td>
+            <td class="td-country">—</td>
+            <td class="td-created">Dec 15, 2025, 8:36 PM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Jenny Rosen</td>
+            <td class="td-email">jenny.rosen@example.com</td>
+            <td class="td-payment">—</td>
+            <td class="td-country">—</td>
+            <td class="td-created">Dec 15, 2025, 8:23 PM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">test@stripe.com</td>
+            <td class="td-email">test@stripe.com</td>
+            <td class="td-payment">—</td>
+            <td class="td-country">—</td>
+            <td class="td-created">Oct 29, 2025, 7:14 PM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Evan</td>
+            <td class="td-email">ewood@stripe.com</td>
+            <td class="td-payment">—</td>
+            <td class="td-country">—</td>
+            <td class="td-created">Oct 24, 2025, 3:55 PM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Claire Rock</td>
+            <td class="td-email">fakeemail@stripe.com</td>
+            <td class="td-payment">—</td>
+            <td class="td-country">—</td>
+            <td class="td-created">Jul 29, 2025, 6:40 PM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Claire CMKTest</td>
+            <td class="td-email">clairekluge+checkouttest@stripe.com</td>
+            <td class="td-payment">—</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> United States</td>
+            <td class="td-created">Apr 30, 2025, 8:05 PM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Sarah's Photography</td>
+            <td class="td-email">sarah@photography.co</td>
+            <td class="td-payment">—</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> United States</td>
+            <td class="td-created">Apr 15, 2025, 2:10 PM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">BuildFast Co</td>
+            <td class="td-email">admin@buildfast.co</td>
+            <td class="td-payment"><span class="visa-badge">VISA</span> •••• 9012</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> United States</td>
+            <td class="td-created">Mar 28, 2025, 11:22 AM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">DevStudio</td>
+            <td class="td-email">team@devstudio.io</td>
+            <td class="td-payment">—</td>
+            <td class="td-country">—</td>
+            <td class="td-created">Feb 14, 2025, 9:48 AM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">CloudNine Ltd</td>
+            <td class="td-email">ops@cloudnine.com</td>
+            <td class="td-payment"><span class="visa-badge">VISA</span> •••• 3344</td>
+            <td class="td-country"><span class="flag">&#x1F1EC;&#x1F1E7;</span> United Kingdom</td>
+            <td class="td-created">Jan 5, 2025, 4:15 PM</td>
           </tr>
         </tbody>
       </table>
+
+      <div class="pagination">
+        <div>1-20 of 34 results</div>
+        <div class="pagination-buttons">
+          <button>Previous</button>
+          <button>Next</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -659,82 +839,29 @@
       <button class="proto-switcher-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
     </div>
     <div class="proto-section-label">Perspective</div>
-    <label><input type="radio" name="supabase-perspective" value="supabase" checked onchange="handleSupabasePerspective(this)"> Supabase</label>
-    <label><input type="radio" name="supabase-perspective" value="vercel" onchange="handleSupabasePerspective(this)"> Vercel</label>
-    <div class="proto-options">
-    <div class="proto-section-label">Options</div>
-    <label><input type="radio" name="supabase-view" value="v2" onchange="handleSupabaseViewChange(this)"> Near term</label>
-    <label><input type="radio" name="supabase-view" value="direct" checked onchange="handleSupabaseViewChange(this)"> Long term</label>
+    <label><input type="radio" name="supabase-perspective" value="supabase" onchange="handleSupabasePerspective(this)"> Supabase</label>
+    <label><input type="radio" name="supabase-perspective" value="vercel" checked onchange="handleSupabasePerspective(this)"> Vercel</label>
     <div class="proto-options">
       <div class="proto-section-label">Network tab enabled</div>
       <label><input type="radio" name="supabase-state" value="yes" checked onchange="handleStateChange(this)"> Yes</label>
       <label><input type="radio" name="supabase-state" value="no" onchange="handleStateChange(this)"> No</label>
     </div>
-    </div>
   </div>
   <script>
   function handleSupabasePerspective(el) {
-    if (el.value === 'vercel') { window.location.href = 'vercel-stripe-apps.html'; }
-  }
-
-  function handleSupabaseViewChange(el) {
-    localStorage.setItem('supabaseView', el.value);
-    if (el.value === 'direct') { window.location.href = 'supabase-apps.html'; return; }
-    applyState(localStorage.getItem('supabaseState') || 'yes');
-  }
-
-  function toggleAcctSwitcher() {
-    var brand = document.getElementById('sidebarBrand');
-    var switcher = document.getElementById('acctSwitcher');
-    brand.classList.toggle('open');
-    switcher.classList.toggle('open');
-  }
-
-  document.addEventListener('click', function(e) {
-    var brand = document.getElementById('sidebarBrand');
-    if (!brand.contains(e.target)) {
-      brand.classList.remove('open');
-      document.getElementById('acctSwitcher').classList.remove('open');
+    if (el.value === 'supabase') {
+      window.location.href = 'supabase-apps.html';
     }
-  });
+  }
 
   function handleStateChange(el) {
     localStorage.setItem('supabaseState', el.value);
-    applyState(el.value);
-  }
-
-  function applyState(state) {
-    var listUrl = 'supabase-customers.html';
-    var navItems = document.querySelectorAll('.nav-item');
-    navItems.forEach(function(item) {
-      var img = item.querySelector('img[src="icons/customers.svg"]');
-      if (img) {
-        var textNodes = [];
-        item.childNodes.forEach(function(n) {
-          if (n.nodeType === 3 && n.textContent.trim()) textNodes.push(n);
-        });
-        if (textNodes.length > 0) {
-          textNodes[0].textContent = state === 'yes' ? '\n        Network\n      ' : '\n        Customers\n      ';
-        }
-        item.setAttribute('href', listUrl);
-      }
-    });
   }
 
   (function() {
-    var view = localStorage.getItem('supabaseView') || 'direct';
-    var viewRadios = document.querySelectorAll('input[name="supabase-view"]');
-    viewRadios.forEach(function(r) { r.checked = (r.value === view); });
-
     var state = localStorage.getItem('supabaseState') || 'yes';
-    if (state === 'no') {
-      var radios = document.querySelectorAll('input[name="supabase-state"]');
-      radios.forEach(function(r) { r.checked = (r.value === 'no'); });
-    } else {
-      var radios2 = document.querySelectorAll('input[name="supabase-state"]');
-      radios2.forEach(function(r) { r.checked = (r.value === 'yes'); });
-    }
-    applyState(state);
+    var radios = document.querySelectorAll('input[name="supabase-state"]');
+    radios.forEach(function(r) { r.checked = (r.value === state); });
   })();
   </script>
 

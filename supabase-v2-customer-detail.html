@@ -928,6 +928,10 @@
       <a class="proto-switcher-home" href="index.html" onclick="event.stopPropagation()" title="Home"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></a>
       <button class="proto-switcher-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
     </div>
+    <div class="proto-section-label">Perspective</div>
+    <label><input type="radio" name="supabase-perspective" value="supabase" checked onchange="handleSupabasePerspective(this)"> Supabase</label>
+    <label><input type="radio" name="supabase-perspective" value="vercel" onchange="handleSupabasePerspective(this)"> Vercel</label>
+    <div class="proto-options">
     <div class="proto-section-label">Options</div>
     <label><input type="radio" name="supabase-view" value="v2" checked onchange="handleSupabaseViewChange(this)"> Near term</label>
     <label><input type="radio" name="supabase-view" value="direct" onchange="handleSupabaseViewChange(this)"> Long term</label>
@@ -936,12 +940,17 @@
       <label><input type="radio" name="supabase-state" value="yes" onchange="handleStateChange(this)"> Yes</label>
       <label><input type="radio" name="supabase-state" value="no" checked onchange="handleStateChange(this)"> No</label>
     </div>
+    </div>
   </div>
   <script>
+  function handleSupabasePerspective(el) {
+    if (el.value === 'vercel') { window.location.href = 'vercel-stripe-apps.html'; }
+  }
+
   function handleSupabaseViewChange(el) {
     localStorage.setItem('supabaseView', el.value);
     if (el.value === 'direct') { window.location.href = 'supabase-customers.html'; return; }
-    applyState(sessionStorage.getItem('supabaseState') || 'no');
+    applyState(localStorage.getItem('supabaseState') || 'no');
   }
 
   function toggleAcctSwitcher() {
@@ -960,7 +969,7 @@
   });
 
   function handleStateChange(el) {
-    sessionStorage.setItem('supabaseState', el.value);
+    localStorage.setItem('supabaseState', el.value);
     applyState(el.value);
   }
 
@@ -987,7 +996,7 @@
     var viewRadios = document.querySelectorAll('input[name="supabase-view"]');
     viewRadios.forEach(function(r) { r.checked = (r.value === view); });
 
-    var state = sessionStorage.getItem('supabaseState') || 'no';
+    var state = localStorage.getItem('supabaseState') || 'no';
     if (state === 'yes') {
       var radios2 = document.querySelectorAll('input[name="supabase-state"]');
       radios2.forEach(function(r) { r.checked = (r.value === 'yes'); });

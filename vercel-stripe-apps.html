@@ -414,28 +414,11 @@
         <div class="tab active">Connections</div>
       </div>
 
-      <!-- Empty state -->
-      <div id="emptyState">
-        <p class="page-description">Request access to other Stripe accounts to help them build their business.</p>
-        <div class="empty-state">
-          <div class="empty-state-title">Request access to other Stripe accounts</div>
-          <div class="empty-state-text">Help build your users' business</div>
-          <div class="empty-state-actions">
-            <button class="enable-btn" id="enableBtn">Enable connections</button>
-            <a href="#" class="view-guide">View guide</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Enabled state -->
-      <div id="enabledState" style="display:none;">
-        <p class="page-description">Request access to other Stripe accounts to help them build their business. You are currently connected to <a href="#">0 accounts</a>.</p>
-        <button class="enable-btn" id="generateUrlBtn">Request access</button>
-      </div>
+      <p class="page-description">Request access to other Stripe accounts to help them build their business. You are currently connected to <a href="vercel-stripe-network.html" id="accountsLink">194 accounts</a>.</p>
+      <button class="enable-btn" id="generateUrlBtn">Request access</button>
     </div>
   </div>
 
-  <!-- Proto switcher (hidden until Copy is clicked) -->
   <div class="proto-switcher" id="protoSwitcher">
     <div class="proto-switcher-header" onclick="this.parentElement.classList.toggle('collapsed')">
       <div class="proto-switcher-title">Prototype options</div>
@@ -443,9 +426,8 @@
       <button class="proto-switcher-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
     </div>
     <div class="proto-section-label">Perspective</div>
-    <label><input type="radio" name="perspective" value="vercel" checked onchange="handlePerspective(this)"> Vercel</label>
-    <label><input type="radio" name="perspective" value="supabase" onchange="handlePerspective(this)"> Supabase</label>
-    <label><input type="radio" name="perspective" value="acme" onchange="handlePerspective(this)"> Acme Corp</label>
+    <label><input type="radio" name="supabase-perspective" value="supabase" onchange="handleSupabasePerspective(this)"> Supabase</label>
+    <label><input type="radio" name="supabase-perspective" value="vercel" checked onchange="handleSupabasePerspective(this)"> Vercel</label>
     <div class="proto-options">
       <div class="proto-section-label">Network tab enabled</div>
       <label><input type="radio" name="network-tab" value="yes" checked onchange="handleNetworkTab(this)"> Yes</label>
@@ -453,174 +435,36 @@
     </div>
   </div>
 
-  <!-- Request access dialog -->
-  <div id="generateDialog" class="dialog-backdrop hidden" onclick="if(event.target===this) closeGenerateDialog()">
-    <div class="dialog-box">
-      <div class="dialog-header">
-        <div class="dialog-title" id="dialogTitleText">Request access</div>
-        <button class="dialog-close" onclick="closeGenerateDialog()">&times;</button>
-      </div>
-
-      <!-- Step 1: Permissions -->
-      <div class="dialog-step" id="dialogStep1">
-        <div class="dialog-body">
-          <div class="permission-row">
-            <input type="checkbox" class="permission-checkbox">
-            <span class="permission-label">API keys</span>
-            <span class="permission-access">Read and write</span>
-          </div>
-          <div class="permission-row">
-            <input type="checkbox" class="permission-checkbox">
-            <span class="permission-label">Balances</span>
-            <span class="permission-access">Read</span>
-          </div>
-          <div class="permission-row">
-            <input type="checkbox" class="permission-checkbox">
-            <span class="permission-label">Events</span>
-            <span class="permission-access">Read and write</span>
-          </div>
-          <div class="permission-row">
-            <input type="checkbox" class="permission-checkbox">
-            <span class="permission-label">Identity</span>
-            <span class="permission-access">Read and write</span>
-          </div>
-          <div class="permission-row has-reason">
-            <input type="checkbox" class="permission-checkbox" checked>
-            <span class="permission-label">Meter</span>
-            <span class="permission-access">Read</span>
-            <span class="permission-reason-label">Reason</span>
-            <textarea class="permission-reason" rows="2">Vercel reads meter usage data to track consumption-based billing and display usage dashboards for marketplace integrations.</textarea>
-          </div>
-          <div class="permission-row">
-            <input type="checkbox" class="permission-checkbox">
-            <span class="permission-label">Payment activity</span>
-            <span class="permission-access">Read</span>
-          </div>
-          <div class="permission-row">
-            <input type="checkbox" class="permission-checkbox">
-            <span class="permission-label">Payout activity</span>
-            <span class="permission-access">Read</span>
-          </div>
-          <div class="permission-row has-reason">
-            <input type="checkbox" class="permission-checkbox" checked>
-            <span class="permission-label">Product catalog</span>
-            <span class="permission-access">Read</span>
-            <span class="permission-reason-label">Reason</span>
-            <textarea class="permission-reason" rows="2">Vercel reads product catalog data to display integration pricing and plan details within the marketplace.</textarea>
-          </div>
-          <div class="permission-row">
-            <input type="checkbox" class="permission-checkbox">
-            <span class="permission-label">Products</span>
-            <span class="permission-access">Read</span>
-          </div>
-          <div class="permission-row has-reason">
-            <input type="checkbox" class="permission-checkbox" checked>
-            <span class="permission-label">Webhook billing</span>
-            <span class="permission-access">Read</span>
-            <span class="permission-reason-label">Reason</span>
-            <textarea class="permission-reason" rows="2">Vercel subscribes to billing webhook events to keep subscription states in sync and trigger provisioning workflows.</textarea>
-          </div>
-        </div>
-        <div class="dialog-footer">
-          <button class="dialog-btn dialog-btn-secondary" onclick="closeGenerateDialog()">Cancel</button>
-          <button class="dialog-btn dialog-btn-primary" id="requestBtn">Request</button>
-        </div>
-      </div>
-
-      <!-- Step 2: Generated URL -->
-      <div class="dialog-step hidden" id="dialogStep2">
-        <div class="dialog-body">
-          <div class="url-row" style="margin-top: 0; padding-top: 0; border-top: none;">
-            <input class="url-input" id="urlInput" type="text" readonly value="https://connect.stripe.com/consent/acct_vercel?permissions=product_catalog_read,meter_read,webhook_billing_read">
-            <button class="copy-btn" id="copyBtn">Copy</button>
-          </div>
-        </div>
-        <div class="dialog-footer">
-          <button class="dialog-btn dialog-btn-primary" id="doneBtn">Done</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <script>
-  document.getElementById('enableBtn').addEventListener('click', function() {
-    document.getElementById('emptyState').style.display = 'none';
-    document.getElementById('enabledState').style.display = 'block';
-  });
-
-  document.getElementById('generateUrlBtn').addEventListener('click', function() {
-    document.getElementById('dialogStep1').classList.remove('hidden');
-    document.getElementById('dialogStep2').classList.add('hidden');
-    document.getElementById('dialogTitleText').textContent = 'Request access';
-    document.getElementById('generateDialog').classList.remove('hidden');
-  });
-
-  function closeGenerateDialog() {
-    document.getElementById('generateDialog').classList.add('hidden');
-    document.getElementById('dialogStep1').classList.remove('hidden');
-    document.getElementById('dialogStep2').classList.add('hidden');
-    document.getElementById('dialogTitleText').textContent = 'Request access';
-  }
-
-  document.getElementById('requestBtn').addEventListener('click', function() {
-    document.getElementById('dialogStep1').classList.add('hidden');
-    document.getElementById('dialogStep2').classList.remove('hidden');
-    document.getElementById('dialogTitleText').textContent = 'Request access';
-  });
-
-  document.getElementById('doneBtn').addEventListener('click', function() {
-    closeGenerateDialog();
-  });
-
-  document.getElementById('copyBtn').addEventListener('click', function() {
-    var input = document.getElementById('urlInput');
-    input.select();
-    document.execCommand('copy');
-    this.textContent = 'Copied!';
-    this.classList.add('copied');
-    var btn = this;
-    setTimeout(function() {
-      btn.textContent = 'Copy';
-      btn.classList.remove('copied');
-    }, 2000);
-  });
-
-  function handlePerspective(el) {
+  function handleSupabasePerspective(el) {
     if (el.value === 'supabase') {
-      window.location.href = 'vercel-marketplace.html';
-    } else if (el.value === 'acme') {
-      window.location.href = 'vercel-acme.html';
+      window.location.href = 'supabase-apps.html';
     }
   }
 
   function handleNetworkTab(el) {
-    sessionStorage.setItem('vercelNetworkTab', el.value);
+    localStorage.setItem('supabaseState', el.value);
     applyNetworkTab(el.value);
   }
 
   function applyNetworkTab(state) {
     var navCustomers = document.getElementById('navCustomers');
     var navCustomersLabel = document.getElementById('navCustomersLabel');
-    var navConnect = document.getElementById('navConnect');
+    var accountsLink = document.getElementById('accountsLink');
 
     if (state === 'yes') {
       navCustomersLabel.textContent = 'Network';
-      navCustomers.href = 'vercel-network.html';
-      navCustomers.classList.remove('disabled');
-      navConnect.href = '#';
-      navConnect.classList.remove('active');
-      navConnect.style.pointerEvents = '';
+      navCustomers.href = 'vercel-stripe-network.html';
+      if (accountsLink) accountsLink.href = 'vercel-stripe-network.html';
     } else {
       navCustomersLabel.textContent = 'Customers';
       navCustomers.href = '#';
-      navCustomers.classList.remove('disabled');
-      navConnect.href = 'vercel-connected-accounts.html';
-      navConnect.style.pointerEvents = '';
+      if (accountsLink) accountsLink.href = '#';
     }
   }
 
   (function() {
-    var state = sessionStorage.getItem('vercelNetworkTab') || 'yes';
+    var state = localStorage.getItem('supabaseState') || 'yes';
     var radios = document.querySelectorAll('input[name="network-tab"]');
     radios.forEach(function(r) { r.checked = (r.value === state); });
     applyNetworkTab(state);

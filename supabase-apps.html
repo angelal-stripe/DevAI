@@ -582,6 +582,10 @@
       <a class="proto-switcher-home" href="index.html" onclick="event.stopPropagation()" title="Home"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></a>
       <button class="proto-switcher-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
     </div>
+    <div class="proto-section-label">Perspective</div>
+    <label><input type="radio" name="supabase-perspective" value="supabase" checked onchange="handleSupabasePerspective(this)"> Supabase</label>
+    <label><input type="radio" name="supabase-perspective" value="vercel" onchange="handleSupabasePerspective(this)"> Vercel</label>
+    <div class="proto-options">
     <div class="proto-section-label">Options</div>
     <label><input type="radio" name="supabase-view" value="v2" onchange="handleSupabaseViewChange(this)"> Near term</label>
     <label><input type="radio" name="supabase-view" value="direct" checked onchange="handleSupabaseViewChange(this)"> Long term</label>
@@ -590,9 +594,14 @@
       <label><input type="radio" name="supabase-state" value="yes" checked onchange="handleStateChange(this)"> Yes</label>
       <label><input type="radio" name="supabase-state" value="no" onchange="handleStateChange(this)"> No</label>
     </div>
+    </div>
   </div>
 
   <script>
+  function handleSupabasePerspective(el) {
+    if (el.value === 'vercel') { window.location.href = 'vercel-stripe-apps.html'; }
+  }
+
   function handleSupabaseViewChange(el) {
     localStorage.setItem('supabaseView', el.value);
     var vercelItem = document.getElementById('vercelAcctItem');
@@ -601,7 +610,7 @@
     } else {
       vercelItem.style.display = 'none';
     }
-    applyState(sessionStorage.getItem('supabaseState') || 'yes');
+    applyState(localStorage.getItem('supabaseState') || 'yes');
   }
 
   function toggleAcctSwitcher() {
@@ -631,7 +640,6 @@
     'Vercel': [
       { label: 'Product catalog', badge: 'Read', reason: 'Read your product catalog data to display integration pricing and plan details within the Vercel Marketplace.' },
       { label: 'Meter', badge: 'Read', reason: 'Read meter usage data to track consumption-based billing and display usage dashboards.' },
-      { label: 'Invoice line item', badge: 'Read', reason: 'Read invoice line items to reconcile marketplace partner payouts and display billing breakdowns.' },
       { label: 'Webhook billing', badge: 'Read', reason: 'Subscribe to billing webhook events to keep subscription states in sync and trigger provisioning workflows.' }
     ],
     '_default': [
@@ -694,7 +702,7 @@
   }
 
   function handleStateChange(el) {
-    sessionStorage.setItem('supabaseState', el.value);
+    localStorage.setItem('supabaseState', el.value);
     applyState(el.value);
   }
 
@@ -723,7 +731,7 @@
     var vercelItem = document.getElementById('vercelAcctItem');
     if (vercelItem) vercelItem.style.display = view === 'v2' ? '' : 'none';
 
-    var state = sessionStorage.getItem('supabaseState') || 'yes';
+    var state = localStorage.getItem('supabaseState') || 'yes';
     if (state === 'no') {
       var radios = document.querySelectorAll('input[name="supabase-state"]');
       radios.forEach(function(r) { r.checked = (r.value === 'no'); });
