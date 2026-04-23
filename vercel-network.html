@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Network – Vercel – Stripe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #fff;
+      color: #353a44;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 220px;
+      background: #fff;
+      border-right: 1px solid #d8dee4;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      flex-shrink: 0;
+    }
+
+    .sidebar-brand {
+      padding: 20px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #353a44;
+    }
+
+    .sidebar-brand-logo {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .sidebar-brand-logo svg { width: 12px; height: 12px; }
+
+    .sidebar-nav { padding: 16px 0; flex: 1; overflow-y: auto; }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 9px 20px;
+      font-size: 13.5px;
+      font-weight: 400;
+      color: #596171;
+      cursor: pointer;
+      transition: all 0.1s;
+      text-decoration: none;
+    }
+
+    .nav-item:hover { color: #353a44; background: #f5f6f8; }
+    .nav-item.active { color: #635bff; font-weight: 500; }
+    .nav-item.active img:not(.nav-item-chevron) {
+      filter: brightness(0) saturate(100%) invert(37%) sepia(91%) saturate(5535%) hue-rotate(238deg) brightness(101%) contrast(101%);
+    }
+    .nav-item img { width: 16px; height: 16px; flex-shrink: 0; }
+    .nav-item img.nav-item-chevron { margin-left: auto; width: 8px; height: 8px; opacity: 0.4; }
+    .nav-item img.nav-item-chevron.expanded { transform: rotate(180deg); }
+
+    .nav-section {
+      padding: 20px 20px 8px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #6c7688;
+      letter-spacing: 0.2px;
+    }
+
+    .nav-sub-item {
+      display: flex;
+      align-items: center;
+      padding: 7px 20px 7px 48px;
+      font-size: 13px;
+      font-weight: 400;
+      color: #596171;
+      cursor: pointer;
+      transition: all 0.1s;
+      text-decoration: none;
+    }
+    .nav-sub-item:hover { color: #353a44; background: #f5f6f8; }
+    .nav-sub-item.active { color: #635bff; font-weight: 500; }
+
+    .sidebar-footer { padding: 12px 0; }
+
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+    .topbar {
+      height: 56px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      gap: 16px;
+    }
+
+    .search-bar {
+      flex: 1; max-width: 480px; display: flex; align-items: center; gap: 8px;
+      background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 8px 12px; cursor: text;
+    }
+    .search-bar svg { color: #9ca3af; flex-shrink: 0; }
+    .search-bar span { font-size: 13px; color: #9ca3af; }
+
+    .topbar-icons { margin-left: auto; display: flex; align-items: center; gap: 4px; }
+    .topbar-icon {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: #6b7280; transition: background 0.1s;
+    }
+    .topbar-icon:hover { background: #f3f4f6; }
+    .topbar-icon svg { width: 18px; height: 18px; }
+    .topbar-icon.create { background: #635bff; color: #fff; width: 32px; height: 32px; }
+    .topbar-icon.create:hover { background: #4f46e5; }
+
+    .content { flex: 1; overflow-y: auto; padding: 32px 40px; max-width: 1280px; margin: 0 auto; width: 100%; box-sizing: border-box; }
+
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+
+    .page-title { font-size: 28px; font-weight: 700; color: #1a1a1a; }
+
+    .header-actions { display: flex; align-items: center; gap: 8px; }
+
+    .btn-primary {
+      padding: 8px 16px; border: none; border-radius: 6px;
+      background: #635bff; font-size: 13px; font-weight: 500; color: #fff;
+      cursor: pointer; font-family: inherit; transition: all 0.1s;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .btn-primary:hover { background: #4f46e5; }
+
+    .filter-row {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;
+    }
+
+    .filter-pill {
+      padding: 5px 12px; border-radius: 999px; font-size: 12px; font-weight: 600;
+      color: #596171; background: #fff; border: 1px dashed #b6c0cd;
+      cursor: pointer; font-family: inherit; transition: all 0.1s;
+      display: inline-flex; align-items: center; gap: 4px;
+    }
+    .filter-pill:hover { background: #f9fafb; }
+    .filter-pill img { width: 12px; height: 12px; opacity: 0.6; }
+
+    .filter-actions { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+
+    .filter-btn {
+      padding: 5px 12px; border-radius: 6px; font-size: 12px; font-weight: 500;
+      color: #374151; background: #fff; border: 1px solid #e5e7eb;
+      cursor: pointer; font-family: inherit; display: inline-flex; align-items: center; gap: 4px;
+    }
+    .filter-btn:hover { background: #f9fafb; }
+    .filter-btn img { width: 12px; height: 12px; opacity: 0.5; }
+
+    .customers-table { width: 100%; border-collapse: collapse; }
+    .customers-table th {
+      text-align: left; font-size: 12px; font-weight: 500; color: #6b7280;
+      padding: 10px 12px; border-bottom: 1px solid #e5e7eb;
+    }
+    .customers-table th:last-child { text-align: right; }
+    .customers-table td {
+      padding: 12px 12px; font-size: 13px; color: #374151;
+      border-bottom: 1px solid #f3f4f6; vertical-align: middle;
+    }
+    .customers-table tr:hover { background: #f9fafb; cursor: pointer; }
+
+    .customer-name { font-weight: 500; color: #1a1a1a; }
+    .th-check, .td-check { width: 32px; text-align: center; }
+    .td-check input, .th-check input { accent-color: #635bff; }
+    .td-email { color: #6b7280; }
+    .td-payment { color: #374151; white-space: nowrap; }
+
+    .visa-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: #1a1f71; color: #fff; font-size: 9px; font-weight: 700;
+      letter-spacing: 0.5px; padding: 2px 5px; border-radius: 3px;
+      vertical-align: middle; margin-right: 4px;
+    }
+
+    .td-country { color: #374151; white-space: nowrap; }
+    .flag { margin-right: 4px; }
+    .td-created { color: #374151; white-space: nowrap; text-align: right; }
+    .th-created { text-align: right; white-space: nowrap; }
+    .sort-arrow { color: #374151; margin-left: 2px; }
+
+    .pagination {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 12px; font-size: 13px; color: #6b7280;
+    }
+    .pagination-buttons { display: flex; align-items: center; gap: 8px; }
+    .pagination button {
+      padding: 6px 14px; border: 1px solid #e5e7eb; border-radius: 6px;
+      background: #fff; cursor: pointer; color: #374151; font-size: 13px;
+      font-family: inherit; font-weight: 500;
+    }
+    .pagination button:hover { background: #f9fafb; }
+
+    .proto-switcher {
+      position: fixed; bottom: 24px; right: 24px; background: #fff;
+      border: 1px solid #d8dee4; border-radius: 12px; padding: 16px 20px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08); z-index: 9999;
+      font-family: 'Inter', -apple-system, sans-serif;
+    }
+    .proto-switcher-title { font-size: 14px; font-weight: 600; color: #353a44; margin-bottom: 0; }
+    .proto-switcher-header { display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; gap: 8px; }
+    .proto-switcher-home { background: none; border: 1px solid #d8dee4; border-radius: 6px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #596171; transition: background 0.15s; flex-shrink: 0; text-decoration: none; }
+    .proto-switcher-home:hover { background: #f3f4f6; }
+    .proto-switcher-toggle { background: none; border: none; cursor: pointer; color: #9ca3af; padding: 0; display: flex; align-items: center; transition: transform 0.2s; }
+    .proto-switcher.collapsed .proto-switcher-toggle { transform: rotate(180deg); }
+    .proto-switcher.collapsed > :not(.proto-switcher-header) { display: none; }
+    .proto-switcher.collapsed { padding: 12px 16px; }
+    .proto-switcher label { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #353a44; cursor: pointer; padding: 4px 0; }
+    .proto-switcher input[type="radio"] { accent-color: #635bff; width: 16px; height: 16px; cursor: pointer; }
+    .proto-section-label { font-size: 11px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; margin-top: 4px; }
+    .proto-options { margin-top: 12px; padding-top: 12px; border-top: 1px solid #e5e7eb; }
+    .nav-item.disabled { color: #b6c0cd; cursor: default; pointer-events: none; }
+    .nav-item.disabled:hover { background: none; color: #b6c0cd; }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-brand-logo">
+        <svg viewBox="0 0 76 65" fill="none"><path d="M37.5274 0L75.0548 65H0L37.5274 0Z" fill="#fff"/></svg>
+      </div>
+      Vercel
+    </div>
+    <div class="sidebar-nav">
+      <a class="nav-item" href="#">
+        <img src="icons/home.svg" alt="">
+        Home
+      </a>
+      <a class="nav-item" href="#">
+        <img src="icons/balance.svg" alt="">
+        Balances
+      </a>
+      <a class="nav-item" href="#">
+        <img src="icons/convert.svg" alt="">
+        Transactions
+      </a>
+      <a class="nav-item active" href="vercel-network.html" id="navCustomers">
+        <img src="icons/customers.svg" alt="">
+        <span id="navCustomersLabel">Network</span>
+      </a>
+      <a class="nav-item" href="#">
+        <img src="icons/product.svg" alt="">
+        Catalog
+      </a>
+
+      <div class="nav-section">Products</div>
+      <a class="nav-item" href="#" id="navConnect">
+        <img src="icons/platform.svg" alt="">
+        Connect
+        <img class="nav-item-chevron" src="icons/chevronDown.svg" alt="">
+      </a>
+      <a class="nav-item" href="#">
+        <img src="icons/wallet.svg" alt="">
+        Payments
+        <img class="nav-item-chevron" src="icons/chevronDown.svg" alt="">
+      </a>
+      <a class="nav-item" href="#">
+        <img src="icons/billing.svg" alt="">
+        Billing
+        <img class="nav-item-chevron" src="icons/chevronDown.svg" alt="">
+      </a>
+      <a class="nav-item" href="#">
+        <img src="icons/barChart.svg" alt="">
+        Reporting
+        <img class="nav-item-chevron" src="icons/chevronDown.svg" alt="">
+      </a>
+      <a class="nav-item" href="vercel.html">
+        <img src="icons/apps.svg" alt="">
+        Apps
+        <img class="nav-item-chevron" src="icons/chevronDown.svg" alt="">
+      </a>
+      <a class="nav-item" href="#">
+        <img src="icons/more.svg" alt="">
+        More
+        <img class="nav-item-chevron" src="icons/chevronDown.svg" alt="">
+      </a>
+    </div>
+    <div class="sidebar-footer">
+      <a class="nav-item" href="#">
+        <img src="icons/terminal.svg" alt="">
+        Developers
+      </a>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="search-bar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span>Search...</span>
+      </div>
+      <div class="topbar-icons">
+        <div class="topbar-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <div class="topbar-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        </div>
+        <div class="topbar-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </div>
+        <div class="topbar-icon create">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="page-header">
+        <div class="page-title">Network</div>
+        <div class="header-actions">
+          <button class="btn-primary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add account
+          </button>
+        </div>
+      </div>
+
+      <div class="filter-row">
+        <button class="filter-pill"><img src="icons/addCircle.svg" alt=""> Email</button>
+        <button class="filter-pill"><img src="icons/addCircle.svg" alt=""> Name</button>
+        <button class="filter-pill"><img src="icons/addCircle.svg" alt=""> Created date</button>
+        <button class="filter-pill"><img src="icons/addCircle.svg" alt=""> Type</button>
+        <button class="filter-pill"><img src="icons/addCircle.svg" alt=""> More filters</button>
+        <div class="filter-actions">
+          <button class="filter-btn"><img src="icons/export.svg" alt=""> Export</button>
+          <button class="filter-btn"><img src="icons/settings.svg" alt=""> Edit columns</button>
+        </div>
+      </div>
+
+      <table class="customers-table">
+        <thead>
+          <tr>
+            <th class="th-check"><input type="checkbox"></th>
+            <th>Account</th>
+            <th>Email</th>
+            <th>Primary payment method</th>
+            <th>Country</th>
+            <th class="th-created">Created <span class="sort-arrow">&#x2193;</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr onclick="window.location.href='vercel-network-detail.html'" style="cursor:pointer;">
+            <td class="td-check"><input type="checkbox" onclick="event.stopPropagation()"></td>
+            <td class="customer-name">Supabase</td>
+            <td class="td-email">billing@supabase.io</td>
+            <td class="td-payment"><span class="visa-badge">VISA</span> •••• 7842</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> United States</td>
+            <td class="td-created">Apr 21, 9:26 PM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Neon</td>
+            <td class="td-email">billing@neon.tech</td>
+            <td class="td-payment"><span class="visa-badge">VISA</span> •••• 3291</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> United States</td>
+            <td class="td-created">Apr 18, 3:14 PM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Upstash</td>
+            <td class="td-email">finance@upstash.com</td>
+            <td class="td-payment"><span class="visa-badge">VISA</span> •••• 8104</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> United States</td>
+            <td class="td-created">Apr 15, 11:02 AM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Sanity</td>
+            <td class="td-email">accounts@sanity.io</td>
+            <td class="td-payment">—</td>
+            <td class="td-country"><span class="flag">&#x1F1F3;&#x1F1F4;</span> Norway</td>
+            <td class="td-created">Apr 10, 5:47 PM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Convex</td>
+            <td class="td-email">billing@convex.dev</td>
+            <td class="td-payment"><span class="visa-badge">VISA</span> •••• 5520</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> United States</td>
+            <td class="td-created">Mar 28, 10:33 AM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">PlanetScale</td>
+            <td class="td-email">finance@planetscale.com</td>
+            <td class="td-payment"><span class="visa-badge">VISA</span> •••• 4401</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> United States</td>
+            <td class="td-created">Mar 22, 2:18 PM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Axiom</td>
+            <td class="td-email">billing@axiom.co</td>
+            <td class="td-payment">—</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> United States</td>
+            <td class="td-created">Mar 15, 9:05 AM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Sentry</td>
+            <td class="td-email">accounts@sentry.io</td>
+            <td class="td-payment"><span class="visa-badge">VISA</span> •••• 6789</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> United States</td>
+            <td class="td-created">Mar 8, 4:22 PM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Contentful</td>
+            <td class="td-email">billing@contentful.com</td>
+            <td class="td-payment">—</td>
+            <td class="td-country"><span class="flag">&#x1F1E9;&#x1F1EA;</span> Germany</td>
+            <td class="td-created">Feb 25, 11:48 AM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Clerk</td>
+            <td class="td-email">finance@clerk.com</td>
+            <td class="td-payment"><span class="visa-badge">VISA</span> •••• 2210</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> United States</td>
+            <td class="td-created">Feb 14, 8:30 AM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Resend</td>
+            <td class="td-email">billing@resend.com</td>
+            <td class="td-payment">—</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> United States</td>
+            <td class="td-created">Feb 3, 6:15 PM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">LaunchDarkly</td>
+            <td class="td-email">accounts@launchdarkly.com</td>
+            <td class="td-payment"><span class="visa-badge">VISA</span> •••• 9032</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> United States</td>
+            <td class="td-created">Jan 20, 3:42 PM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Grafbase</td>
+            <td class="td-email">billing@grafbase.com</td>
+            <td class="td-payment">—</td>
+            <td class="td-country"><span class="flag">&#x1F1EC;&#x1F1E7;</span> United Kingdom</td>
+            <td class="td-created">Jan 10, 10:20 AM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Inngest</td>
+            <td class="td-email">finance@inngest.com</td>
+            <td class="td-payment"><span class="visa-badge">VISA</span> •••• 1178</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> United States</td>
+            <td class="td-created">Dec 28, 2025, 7:55 PM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Turso</td>
+            <td class="td-email">billing@turso.tech</td>
+            <td class="td-payment">—</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> United States</td>
+            <td class="td-created">Dec 15, 2025, 2:10 PM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Doppler</td>
+            <td class="td-email">accounts@doppler.com</td>
+            <td class="td-payment"><span class="visa-badge">VISA</span> •••• 5567</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> United States</td>
+            <td class="td-created">Nov 30, 2025, 4:38 PM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Splitbee</td>
+            <td class="td-email">billing@splitbee.io</td>
+            <td class="td-payment">—</td>
+            <td class="td-country"><span class="flag">&#x1F1E6;&#x1F1F9;</span> Austria</td>
+            <td class="td-created">Nov 18, 2025, 9:12 AM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Checkly</td>
+            <td class="td-email">finance@checkly.com</td>
+            <td class="td-payment"><span class="visa-badge">VISA</span> •••• 8834</td>
+            <td class="td-country"><span class="flag">&#x1F1E9;&#x1F1EA;</span> Germany</td>
+            <td class="td-created">Oct 25, 2025, 1:40 PM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Fauna</td>
+            <td class="td-email">billing@fauna.com</td>
+            <td class="td-payment">—</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> United States</td>
+            <td class="td-created">Oct 10, 2025, 11:05 AM</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Trigger.dev</td>
+            <td class="td-email">accounts@trigger.dev</td>
+            <td class="td-payment"><span class="visa-badge">VISA</span> •••• 3345</td>
+            <td class="td-country"><span class="flag">&#x1F1EC;&#x1F1E7;</span> United Kingdom</td>
+            <td class="td-created">Sep 22, 2025, 6:30 PM</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="pagination">
+        <div>1-20 of 42 results</div>
+        <div class="pagination-buttons">
+          <button>Previous</button>
+          <button>Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="proto-switcher" id="protoSwitcher">
+    <div class="proto-switcher-header" onclick="this.parentElement.classList.toggle('collapsed')">
+      <div class="proto-switcher-title">Prototype options</div>
+      <a class="proto-switcher-home" href="index.html" onclick="event.stopPropagation()" title="Home"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></a>
+      <button class="proto-switcher-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+    </div>
+    <div class="proto-section-label">Perspective</div>
+    <label><input type="radio" name="perspective" value="vercel" checked onchange="handlePerspective(this)"> Vercel</label>
+    <label><input type="radio" name="perspective" value="supabase" onchange="handlePerspective(this)"> Supabase</label>
+    <label><input type="radio" name="perspective" value="acme" onchange="handlePerspective(this)"> Acme Corp</label>
+    <div class="proto-options">
+      <div class="proto-section-label">Network tab enabled</div>
+      <label><input type="radio" name="network-tab" value="yes" checked onchange="handleNetworkTab(this)"> Yes</label>
+      <label><input type="radio" name="network-tab" value="no" onchange="handleNetworkTab(this)"> No</label>
+    </div>
+  </div>
+
+  <script>
+  function handlePerspective(el) {
+    if (el.value === 'supabase') {
+      window.location.href = 'vercel-marketplace.html';
+    } else if (el.value === 'acme') {
+      window.location.href = 'vercel-acme.html';
+    }
+  }
+
+  function handleNetworkTab(el) {
+    sessionStorage.setItem('vercelNetworkTab', el.value);
+    if (el.value === 'no') {
+      window.location.href = 'vercel.html';
+    }
+  }
+
+  (function() {
+    var state = sessionStorage.getItem('vercelNetworkTab') || 'yes';
+    var radios = document.querySelectorAll('input[name="network-tab"]');
+    radios.forEach(function(r) { r.checked = (r.value === state); });
+    if (state === 'no') {
+      window.location.href = 'vercel.html';
+    }
+  })();
+  </script>
+
+</body>
+</html>

@@ -291,9 +291,8 @@
       border: 1px solid #d8dee4; border-radius: 12px; padding: 16px 20px;
       box-shadow: 0 4px 16px rgba(0,0,0,0.08); z-index: 9999;
       font-family: 'Inter', -apple-system, sans-serif;
-      display: none;
+      display: block;
     }
-    .proto-switcher.visible { display: block; }
     .proto-switcher-title { font-size: 14px; font-weight: 600; color: #353a44; margin-bottom: 0; }
     .proto-switcher-header { display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; gap: 8px; }
     .proto-switcher-home { background: none; border: 1px solid #d8dee4; border-radius: 6px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #596171; transition: background 0.15s; flex-shrink: 0; text-decoration: none; }
@@ -305,6 +304,9 @@
     .proto-switcher label { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #353a44; cursor: pointer; padding: 4px 0; }
     .proto-switcher input[type="radio"] { accent-color: #635bff; width: 16px; height: 16px; cursor: pointer; }
     .proto-section-label { font-size: 11px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; margin-top: 4px; }
+    .proto-options { margin-top: 12px; padding-top: 12px; border-top: 1px solid #e5e7eb; }
+    .nav-item.disabled { color: #b6c0cd; cursor: default; pointer-events: none; }
+    .nav-item.disabled:hover { background: none; color: #b6c0cd; }
   </style>
 </head>
 <body>
@@ -329,9 +331,9 @@
         <img src="icons/convert.svg" alt="">
         Transactions
       </a>
-      <a class="nav-item" href="#">
+      <a class="nav-item" href="#" id="navCustomers">
         <img src="icons/customers.svg" alt="">
-        Customers
+        <span id="navCustomersLabel">Customers</span>
       </a>
       <a class="nav-item" href="#">
         <img src="icons/product.svg" alt="">
@@ -339,7 +341,7 @@
       </a>
 
       <div class="nav-section">Products</div>
-      <a class="nav-item" href="#">
+      <a class="nav-item" href="#" id="navConnect">
         <img src="icons/platform.svg" alt="">
         Connect
         <img class="nav-item-chevron" src="icons/chevronDown.svg" alt="">
@@ -444,6 +446,11 @@
     <label><input type="radio" name="perspective" value="vercel" checked onchange="handlePerspective(this)"> Vercel</label>
     <label><input type="radio" name="perspective" value="supabase" onchange="handlePerspective(this)"> Supabase</label>
     <label><input type="radio" name="perspective" value="acme" onchange="handlePerspective(this)"> Acme Corp</label>
+    <div class="proto-options">
+      <div class="proto-section-label">Network tab enabled</div>
+      <label><input type="radio" name="network-tab" value="yes" checked onchange="handleNetworkTab(this)"> Yes</label>
+      <label><input type="radio" name="network-tab" value="no" onchange="handleNetworkTab(this)"> No</label>
+    </div>
   </div>
 
   <!-- Request access dialog -->
@@ -570,7 +577,6 @@
 
   document.getElementById('doneBtn').addEventListener('click', function() {
     closeGenerateDialog();
-    document.getElementById('protoSwitcher').classList.add('visible');
   });
 
   document.getElementById('copyBtn').addEventListener('click', function() {
@@ -593,6 +599,39 @@
       window.location.href = 'vercel-acme.html';
     }
   }
+
+  function handleNetworkTab(el) {
+    sessionStorage.setItem('vercelNetworkTab', el.value);
+    applyNetworkTab(el.value);
+  }
+
+  function applyNetworkTab(state) {
+    var navCustomers = document.getElementById('navCustomers');
+    var navCustomersLabel = document.getElementById('navCustomersLabel');
+    var navConnect = document.getElementById('navConnect');
+
+    if (state === 'yes') {
+      navCustomersLabel.textContent = 'Network';
+      navCustomers.href = 'vercel-network.html';
+      navCustomers.classList.remove('disabled');
+      navConnect.href = '#';
+      navConnect.classList.remove('active');
+      navConnect.style.pointerEvents = '';
+    } else {
+      navCustomersLabel.textContent = 'Customers';
+      navCustomers.href = '#';
+      navCustomers.classList.remove('disabled');
+      navConnect.href = 'vercel-connected-accounts.html';
+      navConnect.style.pointerEvents = '';
+    }
+  }
+
+  (function() {
+    var state = sessionStorage.getItem('vercelNetworkTab') || 'yes';
+    var radios = document.querySelectorAll('input[name="network-tab"]');
+    radios.forEach(function(r) { r.checked = (r.value === state); });
+    applyNetworkTab(state);
+  })();
   </script>
 
 </body>

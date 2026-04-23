@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Network – Supabase – Vercel – Stripe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #fff;
+      color: #353a44;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 220px;
+      background: #fff;
+      border-right: 1px solid #d8dee4;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      flex-shrink: 0;
+    }
+
+    .sidebar-brand {
+      padding: 20px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #353a44;
+    }
+
+    .sidebar-brand-logo {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .sidebar-brand-logo svg { width: 12px; height: 12px; }
+
+    .sidebar-nav { padding: 16px 0; flex: 1; overflow-y: auto; }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 9px 20px;
+      font-size: 13.5px;
+      font-weight: 400;
+      color: #596171;
+      cursor: pointer;
+      transition: all 0.1s;
+      text-decoration: none;
+    }
+    .nav-item:hover { color: #353a44; background: #f5f6f8; }
+    .nav-item.active { color: #635bff; font-weight: 500; }
+    .nav-item.active img:not(.nav-item-chevron) {
+      filter: brightness(0) saturate(100%) invert(37%) sepia(91%) saturate(5535%) hue-rotate(238deg) brightness(101%) contrast(101%);
+    }
+    .nav-item img { width: 16px; height: 16px; flex-shrink: 0; }
+    .nav-item img.nav-item-chevron { margin-left: auto; width: 8px; height: 8px; opacity: 0.4; }
+    .nav-item img.nav-item-chevron.expanded { transform: rotate(180deg); }
+
+    .nav-section {
+      padding: 20px 20px 8px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #6c7688;
+      letter-spacing: 0.2px;
+    }
+
+    .sidebar-footer { padding: 12px 0; }
+
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+    .topbar {
+      height: 56px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      gap: 16px;
+    }
+
+    .search-bar {
+      flex: 1; max-width: 480px; display: flex; align-items: center; gap: 8px;
+      background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 8px 12px; cursor: text;
+    }
+    .search-bar svg { color: #9ca3af; flex-shrink: 0; }
+    .search-bar span { font-size: 13px; color: #9ca3af; }
+
+    .topbar-icons { margin-left: auto; display: flex; align-items: center; gap: 4px; }
+    .topbar-icon {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: #6b7280; transition: background 0.1s;
+    }
+    .topbar-icon:hover { background: #f3f4f6; }
+    .topbar-icon svg { width: 18px; height: 18px; }
+    .topbar-icon.create { background: #635bff; color: #fff; width: 32px; height: 32px; }
+    .topbar-icon.create:hover { background: #4f46e5; }
+
+    .content { flex: 1; overflow-y: auto; padding: 32px 40px; max-width: 1280px; margin: 0 auto; width: 100%; box-sizing: border-box; }
+
+    .breadcrumb { font-size: 13px; margin-bottom: 20px; }
+    .breadcrumb a { color: #635bff; text-decoration: none; font-weight: 500; }
+    .breadcrumb a:hover { text-decoration: underline; }
+
+    .customer-detail-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 4px; gap: 16px; }
+    .customer-detail-left { display: flex; align-items: center; gap: 12px; }
+    .customer-logo {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, #3ECF8E, #2B9F6F);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; overflow: hidden;
+    }
+    .customer-logo svg { width: 18px; height: 18px; }
+    .page-title { font-size: 28px; font-weight: 700; color: #1a1a1a; }
+    .enabled-badge {
+      display: inline-flex; align-items: center; padding: 2px 8px;
+      background: #d7f7c2; color: #006908; border-radius: 4px;
+      font-size: 12px; font-weight: 400; margin-left: 8px; vertical-align: middle;
+    }
+    .page-title-sub { font-size: 13px; color: #6c7688; margin-top: 4px; padding-left: 48px; }
+    .page-title-sub .dot { color: #16a34a; }
+
+    .header-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .btn-outline {
+      padding: 6px 12px; font-size: 12px; font-weight: 500; color: #374151;
+      background: #fff; border: 1px solid #d1d5db; border-radius: 6px;
+      cursor: pointer; font-family: inherit; display: inline-flex; align-items: center; gap: 6px;
+      box-shadow: 0 1px 1px rgba(26,27,37,0.08);
+    }
+    .btn-outline:hover { background: #f9fafb; }
+    .btn-ghost {
+      width: 32px; height: 32px; padding: 0; border: 1px solid #d1d5db;
+      border-radius: 6px; background: #fff; cursor: pointer; font-size: 18px;
+      line-height: 1; color: #6b7280; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 1px 1px rgba(26,27,37,0.08);
+    }
+    .btn-ghost:hover { background: #f9fafb; }
+
+    /* Detail tabs */
+    .detail-tabs {
+      display: flex; gap: 0; border-bottom: 1px solid #e5e7eb; margin-bottom: 28px;
+    }
+    .detail-tab {
+      padding: 10px 0; margin-right: 24px; font-size: 14px; font-weight: 500;
+      color: #6b7280; background: none; border: none;
+      border-bottom: 2px solid transparent; cursor: pointer; font-family: inherit;
+    }
+    .detail-tab:hover { color: #374151; }
+    .detail-tab.active { color: #1a1a1a; border-bottom-color: #635bff; }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* Detail grid */
+    .detail-grid { display: grid; grid-template-columns: 1fr 280px; gap: 32px; align-items: start; }
+
+    /* Section blocks */
+    .section-block { margin-bottom: 32px; }
+    .section-header-row {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 12px; gap: 8px;
+    }
+    .section-title {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 16px; font-weight: 600; color: #1a1a1a;
+    }
+
+    .btn-icon-add {
+      width: 28px; height: 28px; border: 1px solid #e5e7eb; border-radius: 6px;
+      background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 1px 1px rgba(26,27,37,0.08);
+    }
+    .btn-icon-add:hover { background: #f9fafb; }
+
+    /* Sub-tabs */
+    .tabs-row { display: flex; gap: 0; border-bottom: 1px solid #e5e7eb; margin-bottom: 0; }
+    .tab {
+      padding: 10px 0; margin-right: 24px; font-size: 14px; font-weight: 500; color: #6b7280;
+      background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; font-family: inherit;
+    }
+    .tab:hover { color: #374151; }
+    .tab.active { color: #1a1a1a; border-bottom-color: #635bff; }
+
+    /* Tables */
+    .data-table { width: 100%; border-collapse: collapse; }
+    .data-table th {
+      text-align: left; font-size: 12px; font-weight: 500; color: #6b7280;
+      padding: 10px 12px; border-bottom: 1px solid #e5e7eb; white-space: nowrap;
+    }
+    .data-table td {
+      padding: 12px 12px; font-size: 13px; color: #374151;
+      border-bottom: 1px solid #f3f4f6; vertical-align: middle;
+    }
+    .data-table tr:hover { background: #f9fafb; }
+    .td-numeric { text-align: right; }
+
+    .status-badge {
+      display: inline-flex; align-items: center;
+      padding: 2px 8px; border-radius: 4px;
+      font-size: 12px; font-weight: 400; line-height: 16px;
+    }
+    .status-badge.succeeded { background: #d7f7c2; color: #006908; }
+    .status-badge.active { background: #d7f7c2; color: #006908; }
+    .status-badge.canceled { background: #f3f4f6; color: #6b7280; }
+    .status-badge.refunded { background: #fef3c7; color: #92400e; }
+
+    .pm-pill { display: inline-flex; align-items: center; gap: 6px; }
+    .pm-pill-icon {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 28px; height: 18px; border-radius: 3px;
+      background: linear-gradient(135deg, #eb001b 0%, #f79e1b 100%);
+      flex-shrink: 0;
+    }
+    .pm-pill-icon svg { width: 20px; height: 13px; }
+
+    .visa-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: #1a1f71; color: #fff; font-size: 9px; font-weight: 700;
+      letter-spacing: 0.5px; padding: 2px 5px; border-radius: 3px;
+      vertical-align: middle; margin-right: 4px;
+    }
+
+    /* Payment methods card */
+    .pm-section-header {
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;
+    }
+    .pm-card {
+      border: 1px solid #e5e7eb; border-radius: 8px; padding: 14px 16px; background: #fff;
+    }
+    .pm-card-row {
+      display: flex; align-items: center; gap: 16px; font-size: 14px; color: #1a1a1a;
+    }
+    .pm-card-icon {
+      width: 36px; height: 24px; border-radius: 4px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      overflow: hidden;
+    }
+    .pm-card-icon-visa { background: #1a1f71; }
+    .pm-card-name { font-weight: 500; white-space: nowrap; }
+    .pm-card-detail { color: #3c4257; white-space: nowrap; }
+    .pm-card-badges { display: flex; gap: 6px; margin-left: auto; align-items: center; }
+    .badge-pill { display: inline-flex; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; white-space: nowrap; }
+    .badge-pill.default { border: 1px solid #c7d2fe; color: #3730a3; background: #fff; }
+    .badge-pill.verified { border: 1px solid #86efac; color: #006908; background: #fff; }
+    .pm-dots { color: #9ca3af; cursor: pointer; font-size: 18px; padding: 0 4px; }
+
+    /* Related cards */
+    .related-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;
+    }
+    .related-card {
+      border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px;
+    }
+    .related-card h4 { font-size: 14px; font-weight: 700; color: #1a1a1a; margin-bottom: 6px; }
+    .related-card p { font-size: 12px; color: #6c7688; margin-bottom: 8px; line-height: 1.4; }
+    .related-card a { font-size: 13px; color: #635bff; text-decoration: none; font-weight: 500; }
+    .related-card a:hover { text-decoration: underline; }
+
+    .pagination { display: flex; align-items: center; justify-content: space-between; padding: 14px 12px; font-size: 13px; color: #6b7280; }
+    .pagination-buttons { display: flex; align-items: center; gap: 8px; }
+    .pagination button {
+      padding: 6px 14px; border: 1px solid #e5e7eb; border-radius: 6px; background: #fff;
+      cursor: pointer; color: #374151; font-size: 13px; font-family: inherit; font-weight: 500;
+    }
+    .pagination button:hover { background: #f9fafb; }
+    .pagination button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* Right sidebar */
+    .detail-panel { background: #fff; padding: 0; }
+    .detail-panel-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-bottom: 16px; border-bottom: 1px solid #e5e7eb; margin-bottom: 20px;
+    }
+    .detail-panel-title { font-size: 16px; font-weight: 700; color: #1a2332; }
+    .detail-panel-link { font-size: 13px; font-weight: 500; color: #635bff; text-decoration: none; }
+    .detail-panel-link:hover { text-decoration: underline; }
+    .detail-field { margin-bottom: 20px; font-size: 14px; }
+    .detail-field-label { color: #1a2332; font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+    .detail-field-value { color: #3c4257; line-height: 1.6; font-size: 14px; }
+    .detail-field-value.with-copy { display: flex; align-items: center; gap: 8px; }
+    .icon-copy { cursor: pointer; color: #9ca3af; flex-shrink: 0; }
+    .icon-copy:hover { color: #635bff; }
+
+    .verifications-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 8px; padding-top: 20px; border-top: 1px solid #e5e7eb;
+      margin-bottom: 20px;
+    }
+    .verifications-title { font-size: 16px; font-weight: 700; color: #1a2332; }
+
+    /* Proto switcher */
+    .proto-switcher {
+      position: fixed; bottom: 24px; right: 24px; background: #fff;
+      border: 1px solid #d8dee4; border-radius: 12px; padding: 16px 20px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08); z-index: 9999;
+    }
+    .proto-switcher-title { font-size: 14px; font-weight: 600; color: #353a44; margin-bottom: 0; }
+    .proto-switcher-header { display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; gap: 8px; }
+    .proto-switcher-home { background: none; border: 1px solid #d8dee4; border-radius: 6px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #596171; transition: background 0.15s; flex-shrink: 0; text-decoration: none; }
+    .proto-switcher-home:hover { background: #f3f4f6; }
+    .proto-switcher-toggle { background: none; border: none; cursor: pointer; color: #9ca3af; padding: 0; display: flex; align-items: center; transition: transform 0.2s; }
+    .proto-switcher.collapsed .proto-switcher-toggle { transform: rotate(180deg); }
+    .proto-switcher.collapsed > :not(.proto-switcher-header) { display: none; }
+    .proto-switcher.collapsed { padding: 12px 16px; }
+    .proto-switcher label { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #353a44; cursor: pointer; padding: 4px 0; }
+    .proto-switcher input[type="radio"] { accent-color: #635bff; width: 16px; height: 16px; cursor: pointer; }
+    .proto-section-label { font-size: 11px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; margin-top: 4px; }
+    .proto-options { margin-top: 12px; padding-top: 12px; border-top: 1px solid #e5e7eb; }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-brand-logo">
+        <svg viewBox="0 0 76 65" fill="none"><path d="M37.5274 0L75.0548 65H0L37.5274 0Z" fill="#fff"/></svg>
+      </div>
+      Vercel
+    </div>
+    <div class="sidebar-nav">
+      <a class="nav-item" href="#">
+        <img src="icons/home.svg" alt="">
+        Home
+      </a>
+      <a class="nav-item" href="#">
+        <img src="icons/balance.svg" alt="">
+        Balances
+      </a>
+      <a class="nav-item" href="#">
+        <img src="icons/convert.svg" alt="">
+        Transactions
+      </a>
+      <a class="nav-item active" href="vercel-network.html">
+        <img src="icons/customers.svg" alt="">
+        Network
+      </a>
+      <a class="nav-item" href="#">
+        <img src="icons/product.svg" alt="">
+        Catalog
+      </a>
+
+      <div class="nav-section">Products</div>
+      <a class="nav-item" href="#">
+        <img src="icons/platform.svg" alt="">
+        Connect
+        <img class="nav-item-chevron" src="icons/chevronDown.svg" alt="">
+      </a>
+      <a class="nav-item" href="#">
+        <img src="icons/wallet.svg" alt="">
+        Payments
+        <img class="nav-item-chevron" src="icons/chevronDown.svg" alt="">
+      </a>
+      <a class="nav-item" href="#">
+        <img src="icons/billing.svg" alt="">
+        Billing
+        <img class="nav-item-chevron" src="icons/chevronDown.svg" alt="">
+      </a>
+      <a class="nav-item" href="#">
+        <img src="icons/barChart.svg" alt="">
+        Reporting
+        <img class="nav-item-chevron" src="icons/chevronDown.svg" alt="">
+      </a>
+      <a class="nav-item" href="vercel.html">
+        <img src="icons/apps.svg" alt="">
+        Apps
+        <img class="nav-item-chevron" src="icons/chevronDown.svg" alt="">
+      </a>
+      <a class="nav-item" href="#">
+        <img src="icons/more.svg" alt="">
+        More
+        <img class="nav-item-chevron" src="icons/chevronDown.svg" alt="">
+      </a>
+    </div>
+    <div class="sidebar-footer">
+      <a class="nav-item" href="#">
+        <img src="icons/terminal.svg" alt="">
+        Developers
+      </a>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="search-bar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span>Search...</span>
+      </div>
+      <div class="topbar-icons">
+        <div class="topbar-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <div class="topbar-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        </div>
+        <div class="topbar-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </div>
+        <div class="topbar-icon create">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="breadcrumb">
+        <a href="vercel-network.html">Network</a> &gt;
+      </div>
+
+      <div class="customer-detail-header">
+        <div class="customer-detail-left">
+          <div class="customer-logo">
+            <svg viewBox="0 0 109 113" fill="none"><path d="M63.7076 110.284C60.8481 113.885 55.0502 111.912 54.9813 107.314L53.9738 40.0627L99.1935 40.0627C107.384 40.0627 111.952 49.5228 106.859 55.9374L63.7076 110.284Z" fill="url(#paint0_linear)"/><path d="M63.7076 110.284C60.8481 113.885 55.0502 111.912 54.9813 107.314L53.9738 40.0627L99.1935 40.0627C107.384 40.0627 111.952 49.5228 106.859 55.9374L63.7076 110.284Z" fill="url(#paint1_linear)" fill-opacity="0.2"/><path d="M45.317 2.07103C48.1765 -1.53037 53.9745 0.442937 54.0434 5.041L54.4849 40.0627H9.83113C1.64038 40.0627 -2.92775 30.6026 2.16513 24.188L45.317 2.07103Z" fill="#3ECF8E"/><defs><linearGradient id="paint0_linear" x1="53.9738" y1="54.974" x2="94.1635" y2="71.8295" gradientUnits="userSpaceOnUse"><stop stop-color="#249361"/><stop offset="1" stop-color="#3ECF8E"/></linearGradient><linearGradient id="paint1_linear" x1="36.1558" y1="30.578" x2="54.4844" y2="65.0806" gradientUnits="userSpaceOnUse"><stop/><stop offset="1" stop-opacity="0"/></linearGradient></defs></svg>
+          </div>
+          <div>
+            <span class="page-title">Supabase</span>
+            <span class="enabled-badge">Enabled</span>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button class="btn-outline" type="button">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy ID
+          </button>
+          <button class="btn-outline" type="button">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4"/></svg>
+            Settings
+          </button>
+          <button class="btn-ghost" type="button" title="More">···</button>
+        </div>
+      </div>
+
+      <p class="page-title-sub">
+        15 hello@example.com · <span class="dot">●</span> Payouts active · <span class="dot">●</span> Payments active
+      </p>
+
+      <div class="detail-tabs">
+        <button class="detail-tab" data-tab="financial">Financial overview</button>
+        <button class="detail-tab" data-tab="as-customer">As your customer</button>
+        <button class="detail-tab active" data-tab="as-business">As a business</button>
+      </div>
+
+      <!-- As a business tab -->
+      <div class="tab-content active" id="tab-as-business">
+        <div class="detail-grid">
+          <div class="detail-main">
+
+            <div class="section-block">
+              <div class="section-header-row">
+                <div class="section-title">Money movement</div>
+                <button class="btn-ghost" type="button" style="width:28px;height:28px;font-size:14px;">···</button>
+              </div>
+              <div class="tabs-row">
+                <button class="tab active mm-tab">Payments</button>
+                <button class="tab mm-tab">Payouts</button>
+              </div>
+              <table class="data-table" style="margin-top:0;">
+                <thead>
+                  <tr>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Payment method</th>
+                    <th>Description</th>
+                    <th>Invoice number</th>
+                    <th>Frequency</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>$869.08 USD</td>
+                    <td><span class="status-badge succeeded">Succeeded</span></td>
+                    <td><span class="visa-badge">VISA</span> 7842</td>
+                    <td>–</td>
+                    <td>F-98786</td>
+                    <td>↻ Monthly</td>
+                    <td>Jul 12, 12:03 PM</td>
+                  </tr>
+                  <tr>
+                    <td>$1,730.68 USD</td>
+                    <td><span class="status-badge succeeded">Succeeded</span></td>
+                    <td>External payment</td>
+                    <td>–</td>
+                    <td>F-96191</td>
+                    <td>↻ Monthly</td>
+                    <td>Jul 12, 9:30 AM</td>
+                  </tr>
+                  <tr>
+                    <td>$989.08 USD</td>
+                    <td><span class="status-badge canceled">Failed</span></td>
+                    <td><span class="pm-pill"><span class="pm-pill-icon"><svg viewBox="0 0 24 16" fill="none"><circle cx="9" cy="8" r="6" fill="#eb001b" opacity="0.9"/><circle cx="15" cy="8" r="6" fill="#f79e1b" opacity="0.9"/><path d="M12 3.2a6 6 0 010 9.6 6 6 0 000-9.6z" fill="#ff5f00"/></svg></span> 2307</span></td>
+                    <td>–</td>
+                    <td>F-46291</td>
+                    <td>–</td>
+                    <td>Sep 28, 10:05 AM</td>
+                  </tr>
+                  <tr>
+                    <td>$2000.08 USD</td>
+                    <td><span class="status-badge succeeded">Succeeded</span></td>
+                    <td><span class="visa-badge">VISA</span> 8103</td>
+                    <td>Subscription updates</td>
+                    <td>F-98765</td>
+                    <td>↻ Daily</td>
+                    <td>Jul 10, 7:36 PM</td>
+                  </tr>
+                  <tr>
+                    <td>$845.08 USD</td>
+                    <td><span class="status-badge succeeded">Succeeded</span></td>
+                    <td><span class="visa-badge">VISA</span> 4148</td>
+                    <td>Subscription updates</td>
+                    <td>F-96191</td>
+                    <td>↻ Weekly</td>
+                    <td>Jul 9, 10:10 AM</td>
+                  </tr>
+                  <tr>
+                    <td>$839.48 USD</td>
+                    <td><span class="status-badge succeeded">Succeeded</span></td>
+                    <td>–</td>
+                    <td>–</td>
+                    <td>F-64765</td>
+                    <td>–</td>
+                    <td>Jul 8, 3:04 PM</td>
+                  </tr>
+                  <tr>
+                    <td>$1,398.88 USD</td>
+                    <td><span class="status-badge refunded">Refunded</span></td>
+                    <td><span class="visa-badge">VISA</span> 3,036</td>
+                    <td>–</td>
+                    <td>F-98798</td>
+                    <td>↻ Yearly</td>
+                    <td>Jul 7, 4:43 PM</td>
+                  </tr>
+                  <tr>
+                    <td>$866.28 USD</td>
+                    <td><span class="status-badge succeeded">Succeeded</span></td>
+                    <td><span class="visa-badge">VISA</span> 5839</td>
+                    <td>Subscription updates</td>
+                    <td>F-98191</td>
+                    <td>–</td>
+                    <td>Jul 6, 1:20 PM</td>
+                  </tr>
+                  <tr>
+                    <td>$1,065.08 USD</td>
+                    <td><span class="status-badge succeeded">Succeeded</span></td>
+                    <td><span class="visa-badge">VISA</span> 8779</td>
+                    <td>Subscription updates</td>
+                    <td>F-98785</td>
+                    <td>↻ Monthly</td>
+                    <td>Jul 5, 8:48 AM</td>
+                  </tr>
+                  <tr>
+                    <td>$671.18 USD</td>
+                    <td><span class="status-badge succeeded">Succeeded</span></td>
+                    <td><span class="visa-badge">VISA</span> 8694</td>
+                    <td>–</td>
+                    <td>F-98186</td>
+                    <td>–</td>
+                    <td>Jul 4, 1:39 PM</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="pagination">
+                <div>1-10 of 489 results</div>
+                <div class="pagination-buttons">
+                  <button type="button" disabled>Previous</button>
+                  <button type="button">Next</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-block">
+              <div class="section-header-row">
+                <div class="section-title">Subscriptions</div>
+                <button class="btn-icon-add" type="button" title="Add">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </button>
+              </div>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Status</th>
+                    <th>Price</th>
+                    <th>Customer</th>
+                    <th>Created</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="font-weight:500;color:#1a1a1a;">Supabase Pro</td>
+                    <td><span class="status-badge active">Active</span></td>
+                    <td>$25.00 / mo</td>
+                    <td style="color:#6b7280;">Acme Corp</td>
+                    <td>Apr 18, 2026</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:500;color:#1a1a1a;">Supabase Team</td>
+                    <td><span class="status-badge active">Active</span></td>
+                    <td>$599.00 / mo</td>
+                    <td style="color:#6b7280;">MegaTech</td>
+                    <td>Mar 30, 2026</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:500;color:#1a1a1a;">Supabase Enterprise</td>
+                    <td><span class="status-badge active">Active</span></td>
+                    <td>Custom</td>
+                    <td style="color:#6b7280;">Furever</td>
+                    <td>Feb 20, 2026</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:500;color:#1a1a1a;">Supabase Pro</td>
+                    <td><span class="status-badge active">Active</span></td>
+                    <td>$25.00 / mo</td>
+                    <td style="color:#6b7280;">BuildFast Co</td>
+                    <td>Apr 12, 2026</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:500;color:#1a1a1a;">Supabase Pro</td>
+                    <td><span class="status-badge canceled">Canceled</span></td>
+                    <td>$25.00 / mo</td>
+                    <td style="color:#6b7280;">Jenny Rosen</td>
+                    <td>Feb 10, 2026</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="pagination">
+                <div>1-5 of 480 results</div>
+                <div class="pagination-buttons">
+                  <button type="button" disabled>Previous</button>
+                  <button type="button">Next</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-block">
+              <div class="section-header-row">
+                <div class="section-title">Meters</div>
+                <button class="btn-icon-add" type="button" title="Add">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </button>
+              </div>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Meter name</th>
+                    <th>Event name</th>
+                    <th>Aggregation</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="font-weight:500;color:#1a1a1a;">Database storage</td>
+                    <td>db_storage_gb</td>
+                    <td>Sum</td>
+                    <td><span class="status-badge active">Active</span></td>
+                    <td>Jan 5, 2026</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:500;color:#1a1a1a;">Auth MAUs</td>
+                    <td>auth_monthly_active_users</td>
+                    <td>Count unique</td>
+                    <td><span class="status-badge active">Active</span></td>
+                    <td>Jan 5, 2026</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:500;color:#1a1a1a;">Edge function invocations</td>
+                    <td>edge_function_invocations</td>
+                    <td>Sum</td>
+                    <td><span class="status-badge active">Active</span></td>
+                    <td>Jan 5, 2026</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:500;color:#1a1a1a;">Realtime connections</td>
+                    <td>realtime_peak_connections</td>
+                    <td>Max</td>
+                    <td><span class="status-badge active">Active</span></td>
+                    <td>Jan 5, 2026</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:500;color:#1a1a1a;">Bandwidth</td>
+                    <td>bandwidth_gb</td>
+                    <td>Sum</td>
+                    <td><span class="status-badge active">Active</span></td>
+                    <td>Jan 5, 2026</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="pagination">
+                <div>1-5 of 7 results</div>
+                <div class="pagination-buttons">
+                  <button type="button" disabled>Previous</button>
+                  <button type="button">Next</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-block">
+              <div class="section-header-row">
+                <div class="section-title">Products</div>
+                <button class="btn-icon-add" type="button" title="Add">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </button>
+              </div>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Pricing</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="font-weight:500;color:#1a1a1a;">Supabase Pro</td>
+                    <td>$25.00 / mo</td>
+                    <td><span class="status-badge active">Active</span></td>
+                    <td>Sep 12, 2024</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:500;color:#1a1a1a;">Supabase Team</td>
+                    <td>$599.00 / mo</td>
+                    <td><span class="status-badge active">Active</span></td>
+                    <td>Sep 12, 2024</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:500;color:#1a1a1a;">Supabase Enterprise</td>
+                    <td>Custom</td>
+                    <td><span class="status-badge active">Active</span></td>
+                    <td>Nov 3, 2024</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:500;color:#1a1a1a;">Supabase Free</td>
+                    <td>$0.00 / mo</td>
+                    <td><span class="status-badge active">Active</span></td>
+                    <td>Sep 12, 2024</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="pagination">
+                <div>1-4 of 4 results</div>
+                <div class="pagination-buttons">
+                  <button type="button" disabled>Previous</button>
+                  <button type="button" disabled>Next</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-block">
+              <div class="section-header-row">
+                <div class="section-title">Customers</div>
+                <button class="btn-icon-add" type="button" title="Add">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </button>
+              </div>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Created</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="font-weight:500;color:#1a1a1a;">Acme Corp</td>
+                    <td style="color:#6b7280;">hello@acmecorp.com</td>
+                    <td>Jul 10, 2024</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:500;color:#1a1a1a;">BuildFast Co</td>
+                    <td style="color:#6b7280;">team@buildfast.co</td>
+                    <td>Aug 22, 2024</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:500;color:#1a1a1a;">MegaTech</td>
+                    <td style="color:#6b7280;">billing@megatech.io</td>
+                    <td>Sep 5, 2024</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:500;color:#1a1a1a;">Furever</td>
+                    <td style="color:#6b7280;">accounts@furever.pet</td>
+                    <td>Oct 14, 2024</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:500;color:#1a1a1a;">Jenny Rosen</td>
+                    <td style="color:#6b7280;">jenny@rosen.com</td>
+                    <td>Nov 1, 2024</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="pagination">
+                <div>1-5 of 186 results</div>
+                <div class="pagination-buttons">
+                  <button type="button" disabled>Previous</button>
+                  <button type="button">Next</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-block">
+              <div class="section-header-row">
+                <div class="section-title">Resources</div>
+              </div>
+              <div class="related-grid">
+                <div class="related-card">
+                  <h4>Reports</h4>
+                  <p>View this account's balance activity, fees, and payout reports.</p>
+                  <a href="#">View reports</a>
+                </div>
+                <div class="related-card">
+                  <h4>Tax forms</h4>
+                  <p>Create, manage, file, and deliver Toybox Lab's 1099 form.</p>
+                  <a href="#">View tax forms</a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="detail-aside">
+            <div class="detail-panel">
+              <div class="detail-panel-header">
+                <div class="detail-panel-title">Metadata</div>
+                <svg style="cursor:pointer;color:#9ca3af;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+              </div>
+              <div class="detail-field">
+                <div class="detail-field-label">Name ID</div>
+                <div class="detail-field-value with-copy">AC-8028
+                  <svg class="icon-copy" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                </div>
+              </div>
+              <div class="detail-field">
+                <div class="detail-field-label">Stripe/partner source</div>
+                <div class="detail-field-value">Google web</div>
+              </div>
+              <div class="detail-field">
+                <div class="detail-field-label">Consent set</div>
+                <div class="detail-field-value">–</div>
+              </div>
+              <div class="detail-field">
+                <div class="detail-field-label">Account manager</div>
+                <div class="detail-field-value">Unassigned</div>
+              </div>
+
+              <div class="verifications-header">
+                <div class="verifications-title">Verifications</div>
+                <a href="#" class="detail-panel-link">View all</a>
+              </div>
+              <div class="detail-field">
+                <div class="detail-field-label">Status</div>
+                <div class="detail-field-value">Verified</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="proto-switcher" id="protoSwitcher">
+    <div class="proto-switcher-header" onclick="this.parentElement.classList.toggle('collapsed')">
+      <div class="proto-switcher-title">Prototype options</div>
+      <a class="proto-switcher-home" href="index.html" onclick="event.stopPropagation()" title="Home"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></a>
+      <button class="proto-switcher-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+    </div>
+    <div class="proto-section-label">Perspective</div>
+    <label><input type="radio" name="perspective" value="vercel" checked onchange="handlePerspective(this)"> Vercel</label>
+    <label><input type="radio" name="perspective" value="supabase" onchange="handlePerspective(this)"> Supabase</label>
+    <label><input type="radio" name="perspective" value="acme" onchange="handlePerspective(this)"> Acme Corp</label>
+    <div class="proto-options">
+      <div class="proto-section-label">Network tab enabled</div>
+      <label><input type="radio" name="network-tab" value="yes" checked onchange="handleNetworkTab(this)"> Yes</label>
+      <label><input type="radio" name="network-tab" value="no" onchange="handleNetworkTab(this)"> No</label>
+    </div>
+  </div>
+
+  <script>
+  function handlePerspective(el) {
+    if (el.value === 'supabase') {
+      window.location.href = 'vercel-marketplace.html';
+    } else if (el.value === 'acme') {
+      window.location.href = 'vercel-acme.html';
+    }
+  }
+
+  function handleNetworkTab(el) {
+    sessionStorage.setItem('vercelNetworkTab', el.value);
+    if (el.value === 'no') {
+      window.location.href = 'vercel.html';
+    }
+  }
+
+  document.querySelectorAll('.detail-tab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.detail-tab').forEach(function(t) { t.classList.remove('active'); });
+      document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
+      tab.classList.add('active');
+      var target = document.getElementById('tab-' + tab.dataset.tab);
+      if (target) target.classList.add('active');
+    });
+  });
+
+  document.querySelectorAll('.mm-tab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.mm-tab').forEach(function(t) { t.classList.remove('active'); });
+      tab.classList.add('active');
+    });
+  });
+
+  (function() {
+    var state = sessionStorage.getItem('vercelNetworkTab') || 'yes';
+    var radios = document.querySelectorAll('input[name="network-tab"]');
+    radios.forEach(function(r) { r.checked = (r.value === state); });
+    if (state === 'no') {
+      window.location.href = 'vercel.html';
+    }
+  })();
+  </script>
+
+</body>
+</html>
