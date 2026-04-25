@@ -249,6 +249,24 @@
       color: #9ca3af;
       line-height: 1.5;
     }
+
+    .proto-switcher {
+      position: fixed; bottom: 24px; right: 24px; background: #fff;
+      border: 1px solid #d8dee4; border-radius: 12px; padding: 16px 20px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08); z-index: 9999;
+      font-family: 'Inter', -apple-system, sans-serif;
+    }
+    .proto-switcher-title { font-size: 14px; font-weight: 600; color: #353a44; margin-bottom: 0; }
+    .proto-switcher-header { display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; gap: 8px; }
+    .proto-switcher-home { background: none; border: 1px solid #d8dee4; border-radius: 6px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #596171; transition: background 0.15s; flex-shrink: 0; text-decoration: none; }
+    .proto-switcher-home:hover { background: #f3f4f6; }
+    .proto-switcher-toggle { background: none; border: none; cursor: pointer; color: #9ca3af; padding: 0; display: flex; align-items: center; transition: transform 0.2s; }
+    .proto-switcher.collapsed .proto-switcher-toggle { transform: rotate(180deg); }
+    .proto-switcher.collapsed > :not(.proto-switcher-header) { display: none; }
+    .proto-switcher.collapsed { padding: 12px 16px; }
+    .proto-switcher label { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #353a44; cursor: pointer; padding: 4px 0; }
+    .proto-switcher input[type="radio"] { accent-color: #635bff; width: 16px; height: 16px; cursor: pointer; }
+    .proto-section-label { font-size: 11px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; margin-top: 4px; }
   </style>
 </head>
 <body>
@@ -424,7 +442,22 @@
     </div>
   </div>
 
+  <div class="proto-switcher" id="protoSwitcher">
+    <div class="proto-switcher-header" onclick="this.parentElement.classList.toggle('collapsed')">
+      <div class="proto-switcher-title">Prototype options</div>
+      <a class="proto-switcher-home" href="index.html" onclick="event.stopPropagation()" title="Home"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></a>
+      <button class="proto-switcher-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+    </div>
+    <label><input type="radio" name="account-model" value="supabase" checked onchange="handleAccountModel(this)"> Supabase</label>
+    <label><input type="radio" name="account-model" value="vercel" onchange="handleAccountModel(this)"> Vercel</label>
+  </div>
+
   <script>
+    function handleAccountModel(el) {
+      if (el.value === 'vercel') {
+        window.location.href = 'sharable-v2-vercel-network.html';
+      }
+    }
     function toggleAcctSwitcher() {
       var brand = document.getElementById('sidebarBrand');
       var switcher = document.getElementById('acctSwitcher');
