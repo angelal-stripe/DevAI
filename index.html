@@ -18,7 +18,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       padding: 40px 24px;
     }
 
@@ -125,6 +125,27 @@
     .card.disabled .card-arrow {
       color: #6b7385;
     }
+
+    .section {
+      max-width: 720px;
+      width: 100%;
+      margin-bottom: 40px;
+    }
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #6b7385;
+      margin-bottom: 16px;
+      padding-left: 4px;
+    }
+
+    .card-icon.sharable {
+      background: #0ea5e9;
+      color: #fff;
+    }
   </style>
 </head>
 <body>
@@ -133,20 +154,41 @@
     <p>Choose a prototype to explore</p>
   </div>
 
-  <div class="cards">
-    <a href="lovable.html" class="card">
-      <div class="card-icon lovable">L</div>
-      <div class="card-title">Lovable</div>
-      <div class="card-description">Sarah builds a a site for her photography business with Lovable and connects Stripe for payments.</div>
-      <div class="card-arrow">Open prototype <span>&rarr;</span></div>
-    </a>
+  <div class="section">
+    <div class="cards">
+      <a href="lovable.html" target="_blank" class="card">
+        <div class="card-icon lovable">L</div>
+        <div class="card-title">Lovable</div>
+        <div class="card-description">Sarah builds a a site for her photography business with Lovable and connects Stripe for payments.</div>
+        <div class="card-arrow">Open prototype <span>&rarr;</span></div>
+      </a>
 
-    <a href="vercel.html" class="card">
-      <div class="card-icon vercel">V</div>
-      <div class="card-title">Vercel</div>
-      <div class="card-description">Supabase sets up as a Vercel marketplace partner and charges fees with Stripe.</div>
-      <div class="card-arrow">Open prototype <span>&rarr;</span></div>
-    </a>
+      <a href="vercel.html" target="_blank" class="card">
+        <div class="card-icon vercel">V</div>
+        <div class="card-title">Vercel</div>
+        <div class="card-description">Supabase sets up as a Vercel marketplace partner and charges fees with Stripe.</div>
+        <div class="card-arrow">Open prototype <span>&rarr;</span></div>
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Sharable</div>
+    <div class="cards">
+      <a href="sharable-direct-home.html" target="_blank" class="card">
+        <div class="card-icon sharable">V2</div>
+        <div class="card-title">V2 Account Model</div>
+        <div class="card-description">Description coming soon.</div>
+        <div class="card-arrow">Open prototype <span>&rarr;</span></div>
+      </a>
+
+      <a href="direct-home.html" target="_blank" class="card">
+        <div class="card-icon sharable">D</div>
+        <div class="card-title">Direct Account Model</div>
+        <div class="card-description">Supabase uses a single direct Stripe account with marketplace apps sharing billing access.</div>
+        <div class="card-arrow">Open prototype <span>&rarr;</span></div>
+      </a>
+    </div>
   </div>
 </body>
 </html>

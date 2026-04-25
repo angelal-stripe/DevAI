@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Network – Supabase for Vercel – Stripe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #fff;
+      color: #353a44;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 220px;
+      background: #fff;
+      border-right: 1px solid #d8dee4;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      flex-shrink: 0;
+    }
+
+    .sidebar-brand {
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #353a44;
+      cursor: pointer;
+      position: relative;
+      user-select: none;
+      transition: background 0.1s;
+    }
+
+    .sidebar-brand:hover { background: #f5f6f8; }
+
+    .sidebar-brand-logo {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #4da3ff, #2b7de9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .sidebar-brand-logo svg { width: 14px; height: 14px; }
+
+    .sidebar-brand-info { flex: 1; min-width: 0; }
+    .sidebar-brand-name { font-size: 14px; font-weight: 600; color: #353a44; line-height: 1.3; }
+
+    .sidebar-brand-chevron {
+      width: 16px; height: 16px; flex-shrink: 0; color: #9ca3af;
+      transition: transform 0.2s;
+    }
+    .sidebar-brand.open .sidebar-brand-chevron { transform: rotate(180deg); }
+
+    .acct-switcher {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 8px;
+      right: -60px;
+      background: #fff;
+      border: 1px solid #d8dee4;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.14);
+      z-index: 1000;
+      overflow: hidden;
+    }
+    .acct-switcher.open { display: block; }
+
+    .acct-switcher-header {
+      padding: 20px 16px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .acct-switcher-avatar {
+      width: 40px; height: 40px; border-radius: 8px;
+      background: linear-gradient(135deg, #4da3ff, #2b7de9);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 8px;
+    }
+    .acct-switcher-avatar svg { width: 20px; height: 20px; }
+
+    .acct-switcher-name { font-size: 14px; font-weight: 600; color: #353a44; }
+
+    .acct-switcher-actions {
+      padding: 8px 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .acct-switcher-action {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 400;
+      color: #353a44;
+      cursor: pointer;
+      transition: background 0.1s;
+      text-decoration: none;
+    }
+    .acct-switcher-action:hover { background: #f5f6f8; }
+    .acct-switcher-action svg { width: 16px; height: 16px; color: #6c7688; flex-shrink: 0; }
+    .acct-switcher-action .action-chevron { margin-left: auto; width: 12px; height: 12px; color: #9ca3af; }
+
+    .acct-switcher-search { padding: 8px 12px; }
+    .acct-switcher-search input {
+      width: 100%;
+      padding: 7px 10px;
+      border: 1px solid #d8dee4;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: inherit;
+      color: #353a44;
+      outline: none;
+    }
+    .acct-switcher-search input:focus { border-color: #635bff; box-shadow: 0 0 0 3px rgba(99,91,255,0.1); }
+    .acct-switcher-search input::placeholder { color: #9ca3af; }
+
+    .acct-switcher-accounts {
+      padding: 4px 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .acct-switcher-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 16px;
+      cursor: pointer;
+      transition: background 0.1s;
+      text-decoration: none;
+    }
+    .acct-switcher-item:hover { background: #f5f6f8; }
+
+    .acct-item-icon {
+      width: 28px; height: 28px; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .acct-item-icon.green { background: linear-gradient(135deg, #3ECF8E, #2B9F6F); }
+    .acct-item-icon.blue { background: linear-gradient(135deg, #4da3ff, #2b7de9); }
+
+    .acct-item-name { font-size: 13px; font-weight: 500; color: #353a44; flex: 1; }
+
+    .acct-item-check {
+      width: 18px; height: 18px; border-radius: 50%;
+      background: #635bff; display: flex; align-items: center; justify-content: center;
+    }
+    .acct-item-check svg { width: 10px; height: 10px; }
+
+    .acct-switcher-footer { padding: 8px 0; }
+
+    .acct-switcher-footer-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 400;
+      color: #353a44;
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+    .acct-switcher-footer-item:hover { background: #f5f6f8; }
+    .acct-switcher-footer-item svg { width: 16px; height: 16px; color: #6c7688; }
+
+    .sidebar-nav { padding: 16px 0; flex: 1; overflow-y: auto; }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 9px 20px;
+      font-size: 13.5px;
+      font-weight: 400;
+      color: #596171;
+      cursor: pointer;
+      transition: all 0.1s;
+      text-decoration: none;
+    }
+
+    .nav-item:hover { color: #353a44; background: #f5f6f8; }
+    .nav-item.active { color: #635bff; font-weight: 500; }
+    .nav-item.active img:not(.nav-item-chevron) {
+      filter: brightness(0) saturate(100%) invert(37%) sepia(91%) saturate(5535%) hue-rotate(238deg) brightness(101%) contrast(101%);
+    }
+
+    .nav-item img { width: 16px; height: 16px; flex-shrink: 0; }
+    .nav-item img.nav-item-chevron { margin-left: auto; width: 8px; height: 8px; opacity: 0.4; }
+    .nav-item img.nav-item-chevron.expanded { transform: rotate(180deg); }
+
+    .nav-section {
+      padding: 20px 20px 8px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #6c7688;
+      letter-spacing: 0.2px;
+    }
+
+    .sidebar-footer { padding: 12px 0; }
+
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+    .topbar {
+      height: 56px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      gap: 16px;
+    }
+
+    .search-bar {
+      flex: 1;
+      max-width: 480px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 8px 12px;
+      cursor: text;
+    }
+
+    .search-bar svg { color: #9ca3af; flex-shrink: 0; }
+    .search-bar span { font-size: 13px; color: #9ca3af; }
+
+    .topbar-icons { margin-left: auto; display: flex; align-items: center; gap: 4px; }
+
+    .topbar-icon {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: #6b7280; transition: background 0.1s;
+    }
+
+    .topbar-icon:hover { background: #f3f4f6; }
+    .topbar-icon svg { width: 18px; height: 18px; }
+    .topbar-icon.create { background: #635bff; color: #fff; width: 32px; height: 32px; }
+    .topbar-icon.create:hover { background: #4f46e5; }
+
+    .content { flex: 1; overflow-y: auto; padding: 32px 40px; max-width: 1280px; margin: 0 auto; width: 100%; box-sizing: border-box; }
+
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .page-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: #1a1a1a;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      background: #635bff;
+      font-size: 13px;
+      font-weight: 500;
+      color: #fff;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.1s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-primary:hover { background: #4f46e5; }
+
+    .filter-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .filter-pill {
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #596171;
+      background: #fff;
+      border: 1px dashed #b6c0cd;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.1s;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .filter-pill:hover { background: #f9fafb; }
+
+    .filter-pill img {
+      width: 12px;
+      height: 12px;
+      opacity: 0.6;
+    }
+
+    .filter-actions {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .filter-btn {
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #374151;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      cursor: pointer;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .filter-btn:hover { background: #f9fafb; }
+
+    .filter-btn img {
+      width: 12px;
+      height: 12px;
+      opacity: 0.5;
+    }
+
+    .customers-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .customers-table th {
+      text-align: left;
+      font-size: 12px;
+      font-weight: 500;
+      color: #6b7280;
+      padding: 10px 12px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .customers-table th:last-child { text-align: right; }
+
+    .customers-table td {
+      padding: 12px 12px;
+      font-size: 13px;
+      color: #374151;
+      border-bottom: 1px solid #f3f4f6;
+      vertical-align: middle;
+    }
+
+    .customers-table tr:hover { background: #f9fafb; }
+
+    .customers-table tr.row-clickable { cursor: pointer; }
+
+    .customer-name { font-weight: 500; color: #1a1a1a; }
+
+    .th-check, .td-check { width: 32px; text-align: center; }
+    .td-check input, .th-check input { accent-color: #635bff; }
+
+    .td-email { color: #6b7280; }
+
+    .td-payment { color: #374151; white-space: nowrap; }
+
+    .visa-badge {
+      display: inline-flex;
+      background: #1a1f71;
+      color: #fff;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      padding: 2px 5px;
+      border-radius: 3px;
+      margin-right: 4px;
+    }
+
+    .td-country { color: #374151; white-space: nowrap; }
+    .flag { margin-right: 4px; }
+
+    .td-created { color: #374151; white-space: nowrap; }
+
+    .th-created { text-align: left; white-space: nowrap; }
+    .td-created-by { color: #374151; white-space: nowrap; text-align: right; }
+    .th-created-by { text-align: right; white-space: nowrap; }
+    .sort-arrow { color: #374151; margin-left: 2px; }
+
+    .pagination {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 12px;
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    .pagination-buttons {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pagination button {
+      padding: 6px 14px;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      background: #fff;
+      cursor: pointer;
+      color: #374151;
+      font-size: 13px;
+      font-family: inherit;
+      font-weight: 500;
+    }
+
+    .pagination button:hover { background: #f9fafb; }
+
+    .proto-switcher {
+      position: fixed; bottom: 24px; right: 24px; background: #fff;
+      border: 1px solid #d8dee4; border-radius: 12px; padding: 16px 20px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08); z-index: 9999;
+      font-family: 'Inter', -apple-system, sans-serif;
+    }
+    .proto-switcher-title { font-size: 14px; font-weight: 600; color: #353a44; margin-bottom: 0; }
+    .proto-switcher-header { display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; gap: 8px; }
+    .proto-switcher-home { background: none; border: 1px solid #d8dee4; border-radius: 6px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #596171; transition: background 0.15s; flex-shrink: 0; text-decoration: none; }
+    .proto-switcher-home:hover { background: #f3f4f6; }
+    .proto-switcher-toggle { background: none; border: none; cursor: pointer; color: #9ca3af; padding: 0; display: flex; align-items: center; transition: transform 0.2s; }
+    .proto-switcher.collapsed .proto-switcher-toggle { transform: rotate(180deg); }
+    .proto-switcher.collapsed > :not(.proto-switcher-header) { display: none; }
+    .proto-switcher.collapsed { padding: 12px 16px; }
+    .proto-switcher label { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #353a44; cursor: pointer; padding: 4px 0; }
+    .proto-switcher input[type="radio"] { accent-color: #635bff; width: 16px; height: 16px; cursor: pointer; }
+    .proto-section-label { font-size: 11px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; margin-top: 4px; }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <div class="sidebar-brand" id="sidebarBrand" onclick="toggleAcctSwitcher()">
+      <div class="sidebar-brand-logo">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0A2.704 2.704 0 003 15.546" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><path d="M5 12V7a2 2 0 012-2h10a2 2 0 012 2v5" stroke="#fff" stroke-width="1.5"/><path d="M9 9h6" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <div class="sidebar-brand-info">
+        <div class="sidebar-brand-name">Supabase for Vercel</div>
+      </div>
+      <svg class="sidebar-brand-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+
+      <div class="acct-switcher" id="acctSwitcher" onclick="event.stopPropagation()">
+        <div class="acct-switcher-header">
+          <div class="acct-switcher-avatar">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0A2.704 2.704 0 003 15.546" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><path d="M5 12V7a2 2 0 012-2h10a2 2 0 012 2v5" stroke="#fff" stroke-width="1.5"/><path d="M9 9h6" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div class="acct-switcher-name">Supabase for Vercel</div>
+        </div>
+
+        <div class="acct-switcher-actions">
+          <a class="acct-switcher-action" href="#">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            Settings
+          </a>
+          <a class="acct-switcher-action" href="#">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            Switch to sandbox
+            <svg class="action-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+        </div>
+
+        <div class="acct-switcher-search">
+          <input type="text" placeholder="Search">
+        </div>
+
+        <div class="acct-switcher-accounts">
+          <a class="acct-switcher-item" href="sharable-direct-home.html">
+            <div class="acct-item-icon green">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0A2.704 2.704 0 003 15.546" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><path d="M5 12V7a2 2 0 012-2h10a2 2 0 012 2v5" stroke="#fff" stroke-width="1.5"/></svg>
+            </div>
+            <span class="acct-item-name">Supabase Inc</span>
+          </a>
+          <a class="acct-switcher-item" href="sharable-v2-home.html">
+            <div class="acct-item-icon blue">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0A2.704 2.704 0 003 15.546" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><path d="M5 12V7a2 2 0 012-2h10a2 2 0 012 2v5" stroke="#fff" stroke-width="1.5"/></svg>
+            </div>
+            <span class="acct-item-name">Supabase for Vercel</span>
+            <div class="acct-item-check">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+          </a>
+        </div>
+
+        <div class="acct-switcher-actions" style="border-bottom: 1px solid #e5e7eb;">
+          <a class="acct-switcher-action" href="#">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            Other accounts
+            <svg class="action-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+          <a class="acct-switcher-action" href="#">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Create account
+          </a>
+        </div>
+
+        <div class="acct-switcher-footer">
+          <div class="acct-switcher-footer-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Supabase Admin
+          </div>
+          <div class="acct-switcher-footer-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Sign out
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-nav">
+      <a class="nav-item" href="sharable-v2-home.html">
+        <img src="icons/home.svg" alt="">
+        Home
+      </a>
+      <a class="nav-item" href="#">
+        <img src="icons/balance.svg" alt="">
+        Balances
+      </a>
+      <a class="nav-item" href="#">
+        <img src="icons/convert.svg" alt="">
+        Transactions
+      </a>
+      <a class="nav-item active" href="sharable-v2-network.html">
+        <img src="icons/customers.svg" alt="">
+        Network
+      </a>
+      <a class="nav-item" href="#">
+        <img src="icons/product.svg" alt="">
+        Catalog
+      </a>
+
+      <div class="nav-section">Products</div>
+      <a class="nav-item" href="#">
+        <img src="icons/wallet.svg" alt="">
+        Payments
+        <img class="nav-item-chevron" src="icons/chevronDown.svg" alt="">
+      </a>
+      <a class="nav-item" href="sharable-v2-billing.html">
+        <img src="icons/billing.svg" alt="">
+        Billing
+        <img class="nav-item-chevron" src="icons/chevronDown.svg" alt="">
+      </a>
+      <a class="nav-item" href="#">
+        <img src="icons/barChart.svg" alt="">
+        Reporting
+        <img class="nav-item-chevron" src="icons/chevronDown.svg" alt="">
+      </a>
+      <a class="nav-item" href="sharable-v2-apps.html">
+        <img src="icons/apps.svg" alt="">
+        Apps
+        <img class="nav-item-chevron" src="icons/chevronDown.svg" alt="">
+      </a>
+      <a class="nav-item" href="#">
+        <img src="icons/more.svg" alt="">
+        More
+        <img class="nav-item-chevron" src="icons/chevronDown.svg" alt="">
+      </a>
+    </div>
+    <div class="sidebar-footer">
+      <a class="nav-item" href="#">
+        <img src="icons/terminal.svg" alt="">
+        Developers
+      </a>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="search-bar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span>Search...</span>
+      </div>
+      <div class="topbar-icons">
+        <div class="topbar-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <div class="topbar-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        </div>
+        <div class="topbar-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </div>
+        <div class="topbar-icon create">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="page-header">
+        <div class="page-title">Network</div>
+        <div class="header-actions">
+          <button class="btn-primary" type="button">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add customer
+          </button>
+        </div>
+      </div>
+
+      <div class="filter-row">
+        <button class="filter-pill"><img src="icons/addCircle.svg" alt=""> Email</button>
+        <button class="filter-pill"><img src="icons/addCircle.svg" alt=""> Name</button>
+        <button class="filter-pill"><img src="icons/addCircle.svg" alt=""> Created date</button>
+        <button class="filter-pill"><img src="icons/addCircle.svg" alt=""> Type</button>
+        <button class="filter-pill"><img src="icons/addCircle.svg" alt=""> More filters</button>
+        <div class="filter-actions">
+          <button class="filter-btn"><img src="icons/export.svg" alt=""> Export</button>
+          <button class="filter-btn">&#x2728; Analyze</button>
+          <button class="filter-btn"><img src="icons/settings.svg" alt=""> Edit columns</button>
+        </div>
+      </div>
+
+      <table class="customers-table">
+        <thead>
+          <tr>
+            <th class="th-check"><input type="checkbox"></th>
+            <th>Customer</th>
+            <th>Email</th>
+            <th>Primary payment method</th>
+            <th>Country</th>
+            <th class="th-created">Created <span class="sort-arrow">&#x2193;</span></th>
+            <th class="th-created-by">Created by</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-clickable" onclick="window.location.href='sharable-v2-network-detail.html'">
+            <td class="td-check"><input type="checkbox" onclick="event.stopPropagation()"></td>
+            <td class="customer-name">Acme Corp</td>
+            <td class="td-email">hello@acmecorp.com</td>
+            <td class="td-payment"><span class="visa-badge">VISA</span> •••• 4180</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> US</td>
+            <td class="td-created">Apr 21, 9:26 PM</td>
+            <td class="td-created-by">Vercel</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Pinnacle Software</td>
+            <td class="td-email">billing@pinnacle.io</td>
+            <td class="td-payment">—</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> US</td>
+            <td class="td-created">Apr 19, 2:30 PM</td>
+            <td class="td-created-by">Vercel</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Forge Analytics</td>
+            <td class="td-email">team@forgeanalytics.com</td>
+            <td class="td-payment"><span class="visa-badge">VISA</span> •••• 7721</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> US</td>
+            <td class="td-created">Apr 16, 10:15 AM</td>
+            <td class="td-created-by">Vercel</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Brightpath Labs</td>
+            <td class="td-email">ops@brightpath.dev</td>
+            <td class="td-payment">—</td>
+            <td class="td-country"><span class="flag">&#x1F1EC;&#x1F1E7;</span> UK</td>
+            <td class="td-created">Apr 14, 5:45 PM</td>
+            <td class="td-created-by">Vercel</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Wavelength Inc</td>
+            <td class="td-email">admin@wavelength.io</td>
+            <td class="td-payment"><span class="visa-badge">VISA</span> •••• 5588</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> US</td>
+            <td class="td-created">Apr 11, 8:20 AM</td>
+            <td class="td-created-by">Vercel</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Summit Digital</td>
+            <td class="td-email">hello@summitdigital.co</td>
+            <td class="td-payment">—</td>
+            <td class="td-country"><span class="flag">&#x1F1FA;&#x1F1F8;</span> US</td>
+            <td class="td-created">Apr 8, 3:10 PM</td>
+            <td class="td-created-by">Vercel</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Atlas Ventures</td>
+            <td class="td-email">finance@atlasventures.com</td>
+            <td class="td-payment">—</td>
+            <td class="td-country"><span class="flag">&#x1F1E9;&#x1F1EA;</span> Germany</td>
+            <td class="td-created">Apr 5, 11:55 AM</td>
+            <td class="td-created-by">Vercel</td>
+          </tr>
+          <tr>
+            <td class="td-check"><input type="checkbox"></td>
+            <td class="customer-name">Horizon Tech</td>
+            <td class="td-email">billing@horizontech.io</td>
+            <td class="td-payment"><span class="visa-badge">VISA</span> •••• 2290</td>
+            <td class="td-country"><span class="flag">&#x1F1E8;&#x1F1E6;</span> Canada</td>
+            <td class="td-created">Apr 2, 9:40 AM</td>
+            <td class="td-created-by">Vercel</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="pagination">
+        <div>1-8 of 8 results</div>
+        <div class="pagination-buttons">
+          <button type="button">Previous</button>
+          <button type="button">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="proto-switcher" id="protoSwitcher">
+    <div class="proto-switcher-header" onclick="this.parentElement.classList.toggle('collapsed')">
+      <div class="proto-switcher-title">Prototype options</div>
+      <a class="proto-switcher-home" href="index.html" onclick="event.stopPropagation()" title="Home"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></a>
+      <button class="proto-switcher-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+    </div>
+    <div class="proto-section-label">Account model</div>
+    <label><input type="radio" name="account-model" value="supabase" checked onchange="handleAccountModel(this)"> Supabase</label>
+    <label><input type="radio" name="account-model" value="vercel" onchange="handleAccountModel(this)"> Vercel</label>
+  </div>
+
+  <script>
+  function toggleAcctSwitcher() {
+    var brand = document.getElementById('sidebarBrand');
+    var switcher = document.getElementById('acctSwitcher');
+    brand.classList.toggle('open');
+    switcher.classList.toggle('open');
+  }
+  document.addEventListener('click', function(e) {
+    var brand = document.getElementById('sidebarBrand');
+    if (!brand.contains(e.target)) {
+      brand.classList.remove('open');
+      document.getElementById('acctSwitcher').classList.remove('open');
+    }
+  });
+  function handleAccountModel(el) {
+    if (el.value === 'vercel') {
+      window.location.href = 'sharable-v2-vercel-network.html';
+    }
+  }
+  </script>
+</body>
+</html>
