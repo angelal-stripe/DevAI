@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subscriptions – Supabase for Vercel – Stripe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #fff;
+      color: #353a44;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 220px;
+      background: #fff;
+      border-right: 1px solid #d8dee4;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      flex-shrink: 0;
+    }
+
+    .sidebar-brand {
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #353a44;
+      cursor: pointer;
+      position: relative;
+      user-select: none;
+      transition: background 0.1s;
+    }
+    .sidebar-brand:hover { background: #f5f6f8; }
+
+    .sidebar-brand-logo {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #4da3ff, #2b7de9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .sidebar-brand-logo svg { width: 14px; height: 14px; }
+
+    .sidebar-brand-info { flex: 1; min-width: 0; }
+    .sidebar-brand-name { font-size: 14px; font-weight: 600; color: #353a44; line-height: 1.3; }
+
+    .sidebar-brand-chevron {
+      width: 16px; height: 16px; flex-shrink: 0; color: #9ca3af;
+      transition: transform 0.2s;
+    }
+    .sidebar-brand.open .sidebar-brand-chevron { transform: rotate(180deg); }
+
+    .acct-switcher {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 8px;
+      right: -60px;
+      background: #fff;
+      border: 1px solid #d8dee4;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.14);
+      z-index: 1000;
+      overflow: hidden;
+    }
+    .acct-switcher.open { display: block; }
+
+    .acct-switcher-header {
+      padding: 20px 16px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .acct-switcher-avatar {
+      width: 40px; height: 40px; border-radius: 8px;
+      background: linear-gradient(135deg, #4da3ff, #2b7de9);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 8px;
+    }
+    .acct-switcher-avatar svg { width: 20px; height: 20px; }
+    .acct-switcher-name { font-size: 14px; font-weight: 600; color: #353a44; }
+
+    .acct-switcher-actions { padding: 8px 0; border-bottom: 1px solid #e5e7eb; }
+    .acct-switcher-action {
+      display: flex; align-items: center; gap: 10px; padding: 8px 16px;
+      font-size: 13px; font-weight: 400; color: #353a44;
+      cursor: pointer; transition: background 0.1s; text-decoration: none;
+    }
+    .acct-switcher-action:hover { background: #f5f6f8; }
+    .acct-switcher-action svg { width: 16px; height: 16px; color: #6c7688; flex-shrink: 0; }
+    .acct-switcher-action .action-chevron { margin-left: auto; width: 12px; height: 12px; color: #9ca3af; }
+
+    .acct-switcher-search { padding: 8px 12px; }
+    .acct-switcher-search input {
+      width: 100%; padding: 7px 10px; border: 1px solid #d8dee4; border-radius: 6px;
+      font-size: 13px; font-family: inherit; color: #353a44; outline: none;
+    }
+    .acct-switcher-search input:focus { border-color: #635bff; box-shadow: 0 0 0 3px rgba(99,91,255,0.1); }
+    .acct-switcher-search input::placeholder { color: #9ca3af; }
+
+    .acct-switcher-accounts { padding: 4px 0; border-bottom: 1px solid #e5e7eb; }
+    .acct-switcher-item {
+      display: flex; align-items: center; gap: 10px; padding: 8px 16px;
+      cursor: pointer; transition: background 0.1s; text-decoration: none;
+    }
+    .acct-switcher-item:hover { background: #f5f6f8; }
+    .acct-item-icon {
+      width: 28px; height: 28px; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .acct-item-icon.green { background: linear-gradient(135deg, #3ECF8E, #2B9F6F); }
+    .acct-item-icon.blue { background: linear-gradient(135deg, #4da3ff, #2b7de9); }
+    .acct-item-name { font-size: 13px; font-weight: 500; color: #353a44; flex: 1; }
+    .acct-item-check {
+      width: 18px; height: 18px; border-radius: 50%;
+      background: #635bff; display: flex; align-items: center; justify-content: center;
+    }
+    .acct-item-check svg { width: 10px; height: 10px; }
+
+    .acct-switcher-footer { padding: 8px 0; }
+    .acct-switcher-footer-item {
+      display: flex; align-items: center; gap: 10px; padding: 8px 16px;
+      font-size: 13px; font-weight: 400; color: #353a44; cursor: pointer; transition: background 0.1s;
+    }
+    .acct-switcher-footer-item:hover { background: #f5f6f8; }
+    .acct-switcher-footer-item svg { width: 16px; height: 16px; color: #6c7688; }
+
+    .sidebar-nav { padding: 16px 0; flex: 1; overflow-y: auto; }
+
+    .nav-item {
+      display: flex; align-items: center; gap: 12px; padding: 9px 20px;
+      font-size: 13.5px; font-weight: 400; color: #596171;
+      cursor: pointer; transition: all 0.1s; text-decoration: none;
+    }
+    .nav-item:hover { color: #353a44; background: #f5f6f8; }
+    .nav-item.active { color: #635bff; font-weight: 500; }
+    .nav-item.active img:not(.nav-item-chevron) {
+      filter: brightness(0) saturate(100%) invert(37%) sepia(91%) saturate(5535%) hue-rotate(238deg) brightness(101%) contrast(101%);
+    }
+    .nav-item img { width: 16px; height: 16px; flex-shrink: 0; }
+    .nav-item img.nav-item-chevron { margin-left: auto; width: 8px; height: 8px; opacity: 0.4; filter: none !important; }
+    .nav-item img.nav-item-chevron.expanded { transform: rotate(180deg); }
+
+    .nav-section {
+      padding: 20px 20px 8px; font-size: 12px; font-weight: 500;
+      color: #6c7688; letter-spacing: 0.2px;
+    }
+
+    .nav-sub-item {
+      display: flex; align-items: center; padding: 7px 20px 7px 48px;
+      font-size: 13px; font-weight: 400; color: #596171;
+      cursor: pointer; transition: all 0.1s; text-decoration: none;
+    }
+    .nav-sub-item:hover { color: #353a44; background: #f5f6f8; }
+    .nav-sub-item.active { color: #635bff; font-weight: 500; }
+
+    .sidebar-footer { padding: 12px 0; }
+
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+    .topbar {
+      height: 56px; background: #fff; display: flex; align-items: center;
+      padding: 0 24px; gap: 16px;
+    }
+    .search-bar {
+      flex: 1; max-width: 480px; display: flex; align-items: center; gap: 8px;
+      background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 8px 12px; cursor: text;
+    }
+    .search-bar svg { color: #9ca3af; flex-shrink: 0; }
+    .search-bar span { font-size: 13px; color: #9ca3af; }
+    .topbar-icons { margin-left: auto; display: flex; align-items: center; gap: 4px; }
+    .topbar-icon {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: #6b7280; transition: background 0.1s;
+    }
+    .topbar-icon:hover { background: #f3f4f6; }
+    .topbar-icon svg { width: 18px; height: 18px; }
+    .topbar-icon.create { background: #635bff; color: #fff; width: 32px; height: 32px; }
+    .topbar-icon.create:hover { background: #4f46e5; }
+
+    .content {
+      flex: 1; overflow-y: auto; padding: 32px 40px;
+      max-width: 1280px; margin: 0 auto; width: 100%; box-sizing: border-box;
+    }
+
+    .page-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .page-title { font-size: 28px; font-weight: 700; color: #1a1a1a; }
+    .header-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      color: #fff;
+      background: #635bff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.1s;
+    }
+    .btn-primary:hover { background: #4f46e5; }
+
+    .btn-ghost {
+      width: 36px;
+      height: 36px;
+      border-radius: 6px;
+      border: 1px solid #d8dee4;
+      background: #fff;
+      font-size: 16px;
+      line-height: 1;
+      color: #596171;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-ghost:hover { background: #f5f6f8; }
+
+    .catalog-banner {
+      display: flex; align-items: center; gap: 16px; padding: 16px;
+      background: #f4f7fa; border: none; border-radius: 8px; margin-bottom: 24px;
+    }
+    .catalog-banner-icon {
+      width: 40px; height: 40px; border-radius: 8px;
+      background: linear-gradient(135deg, #3ECF8E, #2B9F6F);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .catalog-banner-icon svg { width: 20px; height: 20px; }
+    .catalog-banner-text { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+    .catalog-banner-title { font-size: 14px; font-weight: 600; color: #1a2c44; line-height: 20px; }
+    .catalog-banner-sub { font-size: 13px; font-weight: 400; color: #596171; line-height: 18px; }
+    .catalog-banner-action {
+      font-size: 13px; font-weight: 500; color: #635bff;
+      display: flex; align-items: center; flex-shrink: 0; text-decoration: none; cursor: pointer; white-space: nowrap;
+    }
+    .catalog-banner-action:hover { text-decoration: underline; }
+
+    .table-controls {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 16px;
+    }
+    .table-search {
+      flex: 1; max-width: 280px; display: flex; align-items: center; gap: 8px;
+      background: #fff; border: 1px solid #d8dee4; border-radius: 6px; padding: 6px 10px;
+    }
+    .table-search svg { color: #9ca3af; flex-shrink: 0; }
+    .table-search input {
+      border: none; outline: none; font-size: 13px; font-family: inherit; color: #353a44; width: 100%;
+    }
+    .table-search input::placeholder { color: #9ca3af; }
+    .table-btn {
+      display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px;
+      font-size: 13px; font-weight: 500; color: #596171; background: #fff;
+      border: 1px solid #d8dee4; border-radius: 6px; cursor: pointer; font-family: inherit;
+    }
+    .table-btn:hover { background: #f9fafb; }
+    .table-btn svg { width: 14px; height: 14px; }
+
+    .subs-table-wrap { background: #fff; }
+    table.subs-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .subs-table th {
+      text-align: left;
+      font-size: 12px;
+      font-weight: 500;
+      color: #6b7280;
+      padding: 8px 12px 8px 0;
+      border-bottom: 1px solid #e5e7eb;
+      white-space: nowrap;
+    }
+    .subs-table td {
+      padding: 14px 12px 14px 0;
+      border-bottom: 1px solid #f0f2f5;
+      color: #374151;
+      vertical-align: middle;
+      font-size: 13px;
+    }
+    .subs-table tbody tr:last-child td { border-bottom: none; }
+    .subs-table tbody tr:hover { background: #f9fafb; }
+    .customer-cell-name { font-weight: 500; color: #635bff; cursor: pointer; }
+    .customer-cell-name:hover { text-decoration: underline; }
+    .customer-cell-email { font-size: 12px; color: #6b7280; margin-top: 2px; }
+    .plan-name { font-weight: 500; color: #1a1a1a; }
+    .plan-id { font-size: 11px; color: #9ca3af; font-family: 'SF Mono', SFMono-Regular, ui-monospace, Menlo, Consolas, monospace; }
+    .billing-amount { font-weight: 500; color: #1a1a1a; }
+    .billing-interval { font-size: 12px; color: #6b7280; }
+
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+    .badge.active { background: #d7f7c2; color: #006908; }
+    .badge.trialing { background: #e0e7ff; color: #3730a3; }
+    .badge.past-due { background: #fee2e2; color: #991b1b; }
+
+    .meter-pill {
+      display: inline-block;
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: #f0f2f5;
+      color: #596171;
+      font-weight: 500;
+      margin-right: 4px;
+      margin-bottom: 2px;
+      white-space: nowrap;
+    }
+
+    .mrr-main { font-weight: 500; color: #1a1a1a; }
+    .mrr-sub { font-size: 11px; color: #6b7280; }
+
+    /* Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5); z-index: 2000;
+      align-items: center; justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: #fff; border-radius: 12px; width: 560px; max-height: 90vh;
+      display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+    .modal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 24px 24px 0;
+    }
+    .modal-title { font-size: 18px; font-weight: 600; color: #1a1a1a; }
+    .modal-close {
+      width: 32px; height: 32px; border-radius: 6px; border: 1px solid #d8dee4;
+      background: #fff; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: #596171; font-size: 16px; line-height: 1;
+    }
+    .modal-close:hover { background: #f5f6f8; }
+
+    .modal-steps {
+      display: flex; align-items: center; padding: 20px 24px 16px; gap: 0;
+    }
+    .modal-step {
+      display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; color: #9ca3af;
+    }
+    .modal-step.active { color: #635bff; }
+    .modal-step.completed { color: #3ECF8E; }
+    .step-num {
+      width: 24px; height: 24px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 600; border: 2px solid #d8dee4; background: #fff;
+    }
+    .modal-step.active .step-num { border-color: #635bff; background: #635bff; color: #fff; }
+    .modal-step.completed .step-num { border-color: #3ECF8E; background: #3ECF8E; color: #fff; }
+    .step-line { flex: 1; height: 2px; background: #d8dee4; margin: 0 8px; min-width: 40px; }
+    .step-line.completed { background: #3ECF8E; }
+
+    .modal-body { flex: 1; overflow-y: auto; padding: 0 24px 24px; }
+
+    .modal-footer {
+      display: flex; align-items: center; justify-content: flex-end; gap: 8px;
+      padding: 16px 24px; border-top: 1px solid #e5e7eb;
+    }
+    .modal-footer .btn-back {
+      margin-right: auto;
+      padding: 8px 16px; font-size: 13px; font-weight: 500; color: #596171;
+      background: #fff; border: 1px solid #d8dee4; border-radius: 6px; cursor: pointer; font-family: inherit;
+    }
+    .modal-footer .btn-back:hover { background: #f5f6f8; }
+    .modal-footer .btn-cancel {
+      padding: 8px 16px; font-size: 13px; font-weight: 500; color: #596171;
+      background: #fff; border: 1px solid #d8dee4; border-radius: 6px; cursor: pointer; font-family: inherit;
+    }
+    .modal-footer .btn-cancel:hover { background: #f5f6f8; }
+    .modal-footer .btn-next {
+      padding: 8px 20px; font-size: 13px; font-weight: 500; color: #fff;
+      background: #635bff; border: none; border-radius: 6px; cursor: pointer; font-family: inherit;
+      display: inline-flex; align-items: center; gap: 4px;
+    }
+    .modal-footer .btn-next:hover { background: #4f46e5; }
+
+    .customer-list { border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; }
+    .customer-option {
+      display: flex; align-items: center; gap: 12px; padding: 12px 16px;
+      cursor: pointer; transition: background 0.1s; border-bottom: 1px solid #f0f2f5;
+    }
+    .customer-option:last-child { border-bottom: none; }
+    .customer-option:hover { background: #f9fafb; }
+    .customer-option.selected { background: #f0f0ff; }
+    .customer-option-avatar {
+      width: 36px; height: 36px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; color: #fff; flex-shrink: 0;
+    }
+    .customer-option-info { flex: 1; }
+    .customer-option-name { font-size: 14px; font-weight: 500; color: #1a1a1a; }
+    .customer-option-email { font-size: 12px; color: #6b7280; }
+    .customer-option-check {
+      width: 22px; height: 22px; border-radius: 50%;
+      border: 2px solid #d8dee4; display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: all 0.15s;
+    }
+    .customer-option.selected .customer-option-check {
+      border-color: #635bff; background: #635bff;
+    }
+
+    .billing-period-toggle { display: flex; gap: 12px; margin-top: 20px; }
+    .period-option {
+      flex: 1; padding: 14px 16px; border: 2px solid #e5e7eb; border-radius: 8px;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .period-option.selected { border-color: #635bff; }
+    .period-option-title { font-size: 14px; font-weight: 600; color: #1a1a1a; margin-bottom: 2px; }
+    .period-option-sub { font-size: 12px; color: #6b7280; }
+    .period-option .customer-option-check { float: right; margin-top: -2px; }
+
+    .section-label { font-size: 14px; font-weight: 600; color: #1a1a1a; margin-bottom: 12px; margin-top: 20px; }
+
+    .catalog-info {
+      display: flex; align-items: center; gap: 12px; padding: 14px 16px;
+      background: #f0f9f4; border-radius: 8px; margin-bottom: 20px;
+    }
+    .catalog-info-icon {
+      width: 36px; height: 36px; border-radius: 8px;
+      background: linear-gradient(135deg, #3ECF8E, #2B9F6F);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .catalog-info-icon svg { width: 18px; height: 18px; }
+    .catalog-info-text { flex: 1; }
+    .catalog-info-title { font-size: 13px; font-weight: 600; color: #065f46; }
+    .catalog-info-sub { font-size: 12px; color: #047857; }
+
+    .plan-list { display: flex; flex-direction: column; gap: 8px; }
+    .plan-option {
+      display: flex; align-items: center; gap: 12px; padding: 14px 16px;
+      border: 2px solid #e5e7eb; border-radius: 8px; cursor: pointer; transition: all 0.15s;
+    }
+    .plan-option.selected { border-color: #635bff; }
+    .plan-option-radio {
+      width: 18px; height: 18px; border-radius: 50%; border: 2px solid #d8dee4;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .plan-option.selected .plan-option-radio { border-color: #635bff; }
+    .plan-option.selected .plan-option-radio::after {
+      content: ''; width: 8px; height: 8px; border-radius: 50%; background: #635bff;
+    }
+    .plan-option-icon {
+      width: 28px; height: 28px; border-radius: 6px; background: #f0f2f5;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .plan-option-icon svg { width: 14px; height: 14px; }
+    .plan-option-info { flex: 1; }
+    .plan-option-name { font-size: 14px; font-weight: 600; color: #1a1a1a; }
+    .plan-option-desc { font-size: 12px; color: #6b7280; }
+    .plan-option-price { text-align: right; flex-shrink: 0; }
+    .plan-option-amount { font-size: 16px; font-weight: 600; color: #1a1a1a; }
+    .plan-option-interval { font-size: 12px; color: #6b7280; }
+
+    .meter-list { display: flex; flex-direction: column; gap: 8px; }
+    .meter-option {
+      display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px;
+      border: 2px solid #e5e7eb; border-radius: 8px; cursor: pointer; transition: all 0.15s;
+    }
+    .meter-option.selected { border-color: #635bff; }
+    .meter-option-check {
+      width: 18px; height: 18px; border-radius: 4px; border: 2px solid #d8dee4;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px;
+    }
+    .meter-option.selected .meter-option-check {
+      border-color: #635bff; background: #635bff;
+    }
+    .meter-option-icon {
+      width: 28px; height: 28px; border-radius: 6px; background: #f0f2f5;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .meter-option-icon svg { width: 14px; height: 14px; color: #596171; }
+    .meter-option-info { flex: 1; }
+    .meter-option-name { font-size: 14px; font-weight: 600; color: #1a1a1a; }
+    .meter-option-meta { font-size: 11px; color: #9ca3af; font-family: 'SF Mono', SFMono-Regular, ui-monospace, Menlo, Consolas, monospace; }
+    .meter-option-unit { font-size: 12px; color: #6b7280; text-align: right; flex-shrink: 0; white-space: nowrap; }
+    .meter-price-input {
+      display: flex; align-items: center; gap: 8px; margin-top: 10px; padding-left: 30px;
+    }
+    .meter-price-input input {
+      width: 90px; padding: 6px 10px; border: 1px solid #d8dee4; border-radius: 6px;
+      font-size: 13px; font-family: inherit; color: #353a44; outline: none;
+    }
+    .meter-price-input input:focus { border-color: #635bff; box-shadow: 0 0 0 3px rgba(99,91,255,0.1); }
+    .meter-price-input span { font-size: 12px; color: #6b7280; }
+
+    .review-card {
+      border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden;
+    }
+    .review-card-header {
+      padding: 16px 20px; font-size: 14px; font-weight: 600; color: #1a1a1a;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .review-row {
+      display: flex; justify-content: space-between; padding: 10px 20px;
+      font-size: 13px;
+    }
+    .review-row + .review-row { border-top: 1px solid #f0f2f5; }
+    .review-label { color: #6b7280; }
+    .review-value { color: #1a1a1a; font-weight: 500; text-align: right; }
+    .review-section-label {
+      padding: 12px 20px 4px; font-size: 13px; font-weight: 600; color: #1a1a1a;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    .review-callout-green {
+      display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px;
+      background: #f0f9f4; border-radius: 8px; margin-top: 16px;
+    }
+    .review-callout-green .catalog-info-icon { width: 32px; height: 32px; }
+    .review-callout-green .catalog-info-icon svg { width: 16px; height: 16px; }
+    .review-callout-green-text { flex: 1; }
+    .review-callout-green-title { font-size: 13px; font-weight: 600; color: #065f46; }
+    .review-callout-green-sub { font-size: 12px; color: #047857; line-height: 1.5; }
+
+    .review-callout-yellow {
+      display: flex; align-items: flex-start; gap: 10px; padding: 14px 16px;
+      background: #fffbeb; border-radius: 8px; margin-top: 12px;
+      font-size: 12px; color: #92400e; line-height: 1.5;
+    }
+    .review-callout-yellow svg { flex-shrink: 0; margin-top: 1px; }
+
+    .success-screen {
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+      padding: 48px 24px;
+    }
+    .success-check {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: #ecfdf5; display: flex; align-items: center; justify-content: center;
+      margin-bottom: 24px;
+    }
+    .success-check svg { width: 36px; height: 36px; color: #10b981; }
+    .success-title { font-size: 20px; font-weight: 600; color: #1a1a1a; margin-bottom: 8px; }
+    .success-sub { font-size: 14px; color: #6b7280; margin-bottom: 24px; }
+    .success-summary {
+      width: 100%; background: #f9fafb; border-radius: 8px; text-align: left;
+      overflow: hidden;
+    }
+    .success-row {
+      display: flex; justify-content: space-between; padding: 10px 20px;
+      font-size: 13px; border-bottom: 1px solid #e5e7eb;
+    }
+    .success-row:last-child { border-bottom: none; }
+    .success-row .review-value.status-active { color: #059669; }
+
+    .success-footer { padding: 24px; }
+    .btn-done {
+      padding: 8px 24px; font-size: 13px; font-weight: 500; color: #fff;
+      background: #635bff; border: none; border-radius: 6px; cursor: pointer; font-family: inherit;
+    }
+    .btn-done:hover { background: #4f46e5; }
+
+    .proto-switcher {
+      position: fixed; bottom: 24px; right: 24px; background: #fff;
+      border: 1px solid #d8dee4; border-radius: 12px; padding: 16px 20px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08); z-index: 9999;
+      font-family: 'Inter', -apple-system, sans-serif;
+    }
+    .proto-switcher-title { font-size: 14px; font-weight: 600; color: #353a44; margin-bottom: 0; }
+    .proto-switcher-header { display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; gap: 8px; }
+    .proto-switcher-home { background: none; border: 1px solid #d8dee4; border-radius: 6px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #596171; transition: background 0.15s; flex-shrink: 0; text-decoration: none; }
+    .proto-switcher-home:hover { background: #f3f4f6; }
+    .proto-switcher-toggle { background: none; border: none; cursor: pointer; color: #9ca3af; padding: 0; display: flex; align-items: center; transition: transform 0.2s; }
+    .proto-switcher.collapsed .proto-switcher-toggle { transform: rotate(180deg); }
+    .proto-switcher.collapsed > :not(.proto-switcher-header) { display: none; }
+    .proto-switcher.collapsed { padding: 12px 16px; }
+    .proto-switcher label { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #353a44; cursor: pointer; padding: 4px 0; }
+    .proto-switcher input[type="radio"] { accent-color: #635bff; width: 16px; height: 16px; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <div class="sidebar-brand" id="sidebarBrand" onclick="toggleAcctSwitcher()">
+      <div class="sidebar-brand-logo">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0A2.704 2.704 0 003 15.546" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><path d="M5 12V7a2 2 0 012-2h10a2 2 0 012 2v5" stroke="#fff" stroke-width="1.5"/><path d="M9 9h6" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <div class="sidebar-brand-info">
+        <div class="sidebar-brand-name">Supabase for Vercel</div>
+      </div>
+      <svg class="sidebar-brand-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+
+      <div class="acct-switcher" id="acctSwitcher" onclick="event.stopPropagation()">
+        <div class="acct-switcher-header">
+          <div class="acct-switcher-avatar">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0A2.704 2.704 0 003 15.546" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><path d="M5 12V7a2 2 0 012-2h10a2 2 0 012 2v5" stroke="#fff" stroke-width="1.5"/><path d="M9 9h6" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div class="acct-switcher-name">Supabase for Vercel</div>
+        </div>
+        <div class="acct-switcher-actions">
+          <a class="acct-switcher-action" href="#">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            Settings
+          </a>
+          <a class="acct-switcher-action" href="#">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            Switch to sandbox
+            <svg class="action-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+        </div>
+        <div class="acct-switcher-search"><input type="text" placeholder="Search"></div>
+        <div class="acct-switcher-accounts">
+          <a class="acct-switcher-item" href="sharable-direct-home.html">
+            <div class="acct-item-icon green">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0A2.704 2.704 0 003 15.546" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><path d="M5 12V7a2 2 0 012-2h10a2 2 0 012 2v5" stroke="#fff" stroke-width="1.5"/></svg>
+            </div>
+            <span class="acct-item-name">Supabase Inc</span>
+          </a>
+          <a class="acct-switcher-item" href="sharable-v2-home.html">
+            <div class="acct-item-icon blue">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0A2.704 2.704 0 003 15.546" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><path d="M5 12V7a2 2 0 012-2h10a2 2 0 012 2v5" stroke="#fff" stroke-width="1.5"/></svg>
+            </div>
+            <span class="acct-item-name">Supabase for Vercel</span>
+            <div class="acct-item-check">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+          </a>
+        </div>
+        <div class="acct-switcher-actions" style="border-bottom: 1px solid #e5e7eb;">
+          <a class="acct-switcher-action" href="#">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            Other accounts
+            <svg class="action-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+          <a class="acct-switcher-action" href="#">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Create account
+          </a>
+        </div>
+        <div class="acct-switcher-footer">
+          <div class="acct-switcher-footer-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Supabase Admin
+          </div>
+          <div class="acct-switcher-footer-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Sign out
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-nav">
+      <a class="nav-item" href="sharable-v2-home.html">
+        <img src="icons/home.svg" alt="">
+        Home
+      </a>
+      <a class="nav-item" href="#">
+        <img src="icons/balance.svg" alt="">
+        Balances
+      </a>
+      <a class="nav-item" href="#">
+        <img src="icons/convert.svg" alt="">
+        Transactions
+      </a>
+      <a class="nav-item" href="sharable-v2-network.html">
+        <img src="icons/customers.svg" alt="">
+        Network
+      </a>
+      <a class="nav-item" href="#">
+        <img src="icons/product.svg" alt="">
+        Catalog
+      </a>
+
+      <div class="nav-section">Products</div>
+      <a class="nav-item" href="#">
+        <img src="icons/wallet.svg" alt="">
+        Payments
+        <img class="nav-item-chevron" src="icons/chevronDown.svg" alt="">
+      </a>
+      <a class="nav-item" href="#">
+        <img src="icons/billing.svg" alt="">
+        Billing
+        <img class="nav-item-chevron expanded" src="icons/chevronDown.svg" alt="">
+      </a>
+      <a class="nav-sub-item" href="#">Overview</a>
+      <a class="nav-sub-item active" href="sharable-v2-subscriptions.html">Subscriptions</a>
+      <a class="nav-sub-item" href="#">Invoices</a>
+      <a class="nav-sub-item" href="sharable-v2-billing.html">Usage-based</a>
+      <a class="nav-item" href="#">
+        <img src="icons/barChart.svg" alt="">
+        Reporting
+        <img class="nav-item-chevron" src="icons/chevronDown.svg" alt="">
+      </a>
+      <a class="nav-item" href="sharable-v2-apps.html">
+        <img src="icons/apps.svg" alt="">
+        Apps
+        <img class="nav-item-chevron" src="icons/chevronDown.svg" alt="">
+      </a>
+      <a class="nav-item" href="#">
+        <img src="icons/more.svg" alt="">
+        More
+        <img class="nav-item-chevron" src="icons/chevronDown.svg" alt="">
+      </a>
+    </div>
+    <div class="sidebar-footer">
+      <a class="nav-item" href="#">
+        <img src="icons/terminal.svg" alt="">
+        Developers
+      </a>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="search-bar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span>Search...</span>
+      </div>
+      <div class="topbar-icons">
+        <div class="topbar-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <div class="topbar-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        </div>
+        <div class="topbar-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </div>
+        <div class="topbar-icon create">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="page-header">
+        <div class="page-title">Subscriptions</div>
+        <div class="header-actions">
+          <button type="button" class="btn-primary" onclick="openModal()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Create subscription
+          </button>
+          <button type="button" class="btn-ghost" aria-label="More actions">···</button>
+        </div>
+      </div>
+
+      <div class="catalog-banner">
+        <div class="catalog-banner-icon">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0A2.704 2.704 0 003 15.546" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><path d="M5 12V7a2 2 0 012-2h10a2 2 0 012 2v5" stroke="#fff" stroke-width="1.5"/><path d="M9 9h6" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="catalog-banner-text">
+          <div class="catalog-banner-title">Products, prices, & meters from Supabase Inc</div>
+          <div class="catalog-banner-sub">Subscriptions in this account use the catalog and meters defined in the Supabase Inc direct account.</div>
+        </div>
+        <a class="catalog-banner-action" href="sharable-direct-billing.html">View →</a>
+      </div>
+
+      <div class="table-controls">
+        <div class="table-search">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" placeholder="Search subscriptions...">
+        </div>
+        <button class="table-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+          Filter
+        </button>
+        <button class="table-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export
+        </button>
+      </div>
+
+      <div class="subs-table-wrap">
+        <table class="subs-table">
+          <thead>
+            <tr>
+              <th>Customer</th>
+              <th>Status</th>
+              <th>Plan</th>
+              <th>Billing</th>
+              <th>Usage meters</th>
+              <th>Current period</th>
+              <th>MRR</th>
+              <th>Created</th>
+            </tr>
+          </thead>
+          <tbody id="subsTableBody">
+            <tr>
+              <td><div class="customer-cell-name">Vercel Inc</div><div class="customer-cell-email">payments@example.com</div></td>
+              <td><span class="badge active">Active</span></td>
+              <td><div class="plan-name">Pro</div><div class="plan-id">price_SupPro25mo</div></td>
+              <td><div class="billing-amount">Monthly</div><div class="billing-interval">$25.00/mo</div></td>
+              <td><span class="meter-pill">DB Storage</span><span class="meter-pill">Edge Fns</span></td>
+              <td>Apr 1 – May 1</td>
+              <td><div class="mrr-main">$25.00</div><div class="mrr-sub">+ usage</div></td>
+              <td>Apr 1, 2026</td>
+            </tr>
+            <tr>
+              <td><div class="customer-cell-name">Linear</div><div class="customer-cell-email">finance@example.com</div></td>
+              <td><span class="badge active">Active</span></td>
+              <td><div class="plan-name">Team</div><div class="plan-id">price_SupTeam599mo</div></td>
+              <td><div class="billing-amount">Monthly</div><div class="billing-interval">$599.00/mo</div></td>
+              <td><span class="meter-pill">DB Storage</span><span class="meter-pill">Realtime</span></td>
+              <td>Mar 15 – Apr 15</td>
+              <td><div class="mrr-main">$599.00</div><div class="mrr-sub">+ usage</div></td>
+              <td>Mar 15, 2026</td>
+            </tr>
+            <tr>
+              <td><div class="customer-cell-name">Figma</div><div class="customer-cell-email">accounts@example.com</div></td>
+              <td><span class="badge trialing">Trialing</span></td>
+              <td><div class="plan-name">Pro</div><div class="plan-id">price_SupPro25mo</div></td>
+              <td><div class="billing-amount">Monthly</div><div class="billing-interval">$25.00/mo</div></td>
+              <td><span class="meter-pill">DB Storage</span></td>
+              <td>Apr 15 – May 15</td>
+              <td><div class="mrr-main">$25.00</div><div class="mrr-sub">trial</div></td>
+              <td>Apr 15, 2026</td>
+            </tr>
+            <tr>
+              <td><div class="customer-cell-name">Notion</div><div class="customer-cell-email">billing@example.com</div></td>
+              <td><span class="badge active">Active</span></td>
+              <td><div class="plan-name">Enterprise</div><div class="plan-id">price_SupEntCustom</div></td>
+              <td><div class="billing-amount">Annual</div><div class="billing-interval">Custom</div></td>
+              <td><span class="meter-pill">DB Storage</span><span class="meter-pill">Edge Fns</span><span class="meter-pill">Realtime</span></td>
+              <td>Jan 1 – Dec 31</td>
+              <td><div class="mrr-main">Custom</div><div class="mrr-sub">+ usage</div></td>
+              <td>Jan 1, 2026</td>
+            </tr>
+            <tr>
+              <td><div class="customer-cell-name">Acme Corp</div><div class="customer-cell-email">hello@example.com</div></td>
+              <td><span class="badge past-due">Past due</span></td>
+              <td><div class="plan-name">Pro</div><div class="plan-id">price_SupPro25mo</div></td>
+              <td><div class="billing-amount">Monthly</div><div class="billing-interval">$25.00/mo</div></td>
+              <td><span style="color:#9ca3af;font-size:12px">None</span></td>
+              <td>Mar 22 – Apr 22</td>
+              <td><div class="mrr-main">$25.00</div><div class="mrr-sub">past due</div></td>
+              <td>Mar 22, 2026</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Subscription Modal -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">Create subscription</div>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+
+      <div class="modal-steps">
+        <div class="modal-step active" id="step1indicator">
+          <span class="step-num">1</span> Customer
+        </div>
+        <div class="step-line" id="line1"></div>
+        <div class="modal-step" id="step2indicator">
+          <span class="step-num">2</span> Plan & meters
+        </div>
+        <div class="step-line" id="line2"></div>
+        <div class="modal-step" id="step3indicator">
+          <span class="step-num">3</span> Review
+        </div>
+      </div>
+
+      <div class="modal-body" id="modalBody">
+        <!-- Step content rendered by JS -->
+      </div>
+
+      <div class="modal-footer" id="modalFooter">
+        <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+        <button class="btn-next" id="btnNext" onclick="nextStep()">Next ></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="proto-switcher" id="protoSwitcher">
+    <div class="proto-switcher-header" onclick="this.parentElement.classList.toggle('collapsed')">
+      <div class="proto-switcher-title">Prototype options</div>
+      <a class="proto-switcher-home" href="index.html" onclick="event.stopPropagation()" title="Home"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></a>
+      <button class="proto-switcher-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+    </div>
+    <label><input type="radio" name="account-model" value="supabase" checked onchange="handleAccountModel(this)"> Supabase</label>
+    <label><input type="radio" name="account-model" value="vercel" onchange="handleAccountModel(this)"> Vercel</label>
+  </div>
+
+  <script>
+    function handleAccountModel(el) {
+      if (el.value === 'vercel') {
+        window.location.href = 'sharable-v2-vercel-network.html';
+      }
+    }
+
+    function toggleAcctSwitcher() {
+      var brand = document.getElementById('sidebarBrand');
+      var switcher = document.getElementById('acctSwitcher');
+      brand.classList.toggle('open');
+      switcher.classList.toggle('open');
+    }
+    document.addEventListener('click', function(e) {
+      var brand = document.getElementById('sidebarBrand');
+      if (!brand.contains(e.target)) {
+        brand.classList.remove('open');
+        document.getElementById('acctSwitcher').classList.remove('open');
+      }
+    });
+
+    var customers = [
+      { name: 'Stripe', email: 'billing@stripe.com', color: '#635bff', initials: 'ST' },
+      { name: 'Acme Corp', email: 'hello@example.com', color: '#3ECF8E', initials: 'AC' },
+      { name: 'Linear', email: 'finance@example.com', color: '#5E6AD2', initials: 'LI' },
+      { name: 'Notion', email: 'billing@example.com', color: '#1a1a1a', initials: 'NO' },
+      { name: 'Figma', email: 'accounts@example.com', color: '#F24E1E', initials: 'FI' },
+      { name: 'Vercel Inc', email: 'payments@example.com', color: '#1a1a1a', initials: 'VC' }
+    ];
+
+    var plans = [
+      { name: 'Free', desc: '500 MB DB · 5 GB bandwidth · 500K edge fn invocations', price: '$0', interval: '/ month', priceId: 'price_SupFree0mo', icon: 'box' },
+      { name: 'Pro', desc: '8 GB DB · 250 GB bandwidth · 2M edge fn invocations', price: '$25', interval: '/ month', priceId: 'price_SupPro25mo', icon: 'star' },
+      { name: 'Team', desc: 'Unlimited DB · 500 GB bandwidth · priority support', price: '$599', interval: '/ month', priceId: 'price_SupTeam599mo', icon: 'users' },
+      { name: 'Enterprise', desc: 'Custom limits · SLA · dedicated support', price: 'Custom', interval: '', priceId: 'price_SupEntCustom', icon: 'building' }
+    ];
+
+    var meters = [
+      { name: 'Database Storage', id: 'mtr_SupDB', event: 'db_storage_gb', unit: 'per GB / mo', defaultPrice: '0.125', priceLabel: 'per GB', agg: 'sum', pill: 'DB Storage' },
+      { name: 'Edge Function Invocations', id: 'mtr_SupEdge', event: 'edge_fn_invocations', unit: 'per 1M calls', defaultPrice: '', priceLabel: '', agg: '', pill: 'Edge Fns' },
+      { name: 'Realtime Connections', id: 'mtr_SupRT', event: 'realtime_connections', unit: 'per connection', defaultPrice: '', priceLabel: '', agg: '', pill: 'Realtime' }
+    ];
+
+    var state = { step: 1, customer: null, period: 'monthly', plan: 1, meters: [0] };
+
+    function openModal() {
+      state = { step: 1, customer: null, period: 'monthly', plan: 1, meters: [0] };
+      document.getElementById('modalOverlay').classList.add('open');
+      renderStep();
+    }
+
+    function closeModal() {
+      document.getElementById('modalOverlay').classList.remove('open');
+    }
+
+    function nextStep() {
+      if (state.step === 1 && state.customer === null) return;
+      if (state.step < 3) {
+        state.step++;
+        renderStep();
+      } else {
+        createSubscription();
+      }
+    }
+
+    function prevStep() {
+      if (state.step > 1) {
+        state.step--;
+        renderStep();
+      }
+    }
+
+    function renderStep() {
+      var s1 = document.getElementById('step1indicator');
+      var s2 = document.getElementById('step2indicator');
+      var s3 = document.getElementById('step3indicator');
+      var l1 = document.getElementById('line1');
+      var l2 = document.getElementById('line2');
+      var footer = document.getElementById('modalFooter');
+
+      s1.className = 'modal-step ' + (state.step === 1 ? 'active' : 'completed');
+      s2.className = 'modal-step ' + (state.step === 2 ? 'active' : (state.step > 2 ? 'completed' : ''));
+      s3.className = 'modal-step ' + (state.step === 3 ? 'active' : '');
+      l1.className = 'step-line' + (state.step > 1 ? ' completed' : '');
+      l2.className = 'step-line' + (state.step > 2 ? ' completed' : '');
+
+      var body = document.getElementById('modalBody');
+      var btnNext = document.getElementById('btnNext');
+
+      if (state.step === 1) {
+        footer.style.display = '';
+        var html = '<div class="customer-list">';
+        customers.forEach(function(c, i) {
+          html += '<div class="customer-option' + (state.customer === i ? ' selected' : '') + '" onclick="selectCustomer(' + i + ')">' +
+            '<div class="customer-option-avatar" style="background:' + c.color + '">' + c.initials + '</div>' +
+            '<div class="customer-option-info"><div class="customer-option-name">' + c.name + '</div>' +
+            '<div class="customer-option-email">' + c.email + '</div></div>' +
+            '<div class="customer-option-check">' + (state.customer === i ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>' : '') + '</div></div>';
+        });
+        html += '</div>';
+
+        html += '<div class="section-label">Billing period</div>';
+        html += '<div class="billing-period-toggle">' +
+          '<div class="period-option' + (state.period === 'monthly' ? ' selected' : '') + '" onclick="selectPeriod(\'monthly\')">' +
+          '<div class="period-option-title">Monthly' + (state.period === 'monthly' ? ' <span class="customer-option-check" style="display:inline-flex;width:20px;height:20px;border-radius:50%;border:none;background:#635bff;vertical-align:middle;float:right"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>' : '') + '</div>' +
+          '<div class="period-option-sub">Billed every month</div></div>' +
+          '<div class="period-option' + (state.period === 'annual' ? ' selected' : '') + '" onclick="selectPeriod(\'annual\')">' +
+          '<div class="period-option-title">Annual' + (state.period === 'annual' ? ' <span class="customer-option-check" style="display:inline-flex;width:20px;height:20px;border-radius:50%;border:none;background:#635bff;vertical-align:middle;float:right"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>' : '') + '</div>' +
+          '<div class="period-option-sub">Billed once a year</div></div></div>';
+
+        html += '<div class="section-label">Start date</div>';
+        html += '<div style="font-size:13px;color:#596171;padding:4px 0">Subscription starts</div>';
+        html += '<div style="padding:4px 0"><input type="text" value="Immediately" readonly style="padding:8px 12px;border:1px solid #d8dee4;border-radius:6px;font-size:13px;font-family:inherit;color:#353a44;width:200px"></div>';
+
+        body.innerHTML = html;
+        btnNext.textContent = 'Next >';
+        document.querySelector('.btn-back') && document.querySelector('.btn-back').remove();
+        footer.innerHTML = '<button class="btn-cancel" onclick="closeModal()">Cancel</button><button class="btn-next" id="btnNext" onclick="nextStep()">Next ></button>';
+      } else if (state.step === 2) {
+        footer.style.display = '';
+        var html = '<div class="catalog-info">' +
+          '<div class="catalog-info-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0A2.704 2.704 0 003 15.546" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><path d="M5 12V7a2 2 0 012-2h10a2 2 0 012 2v5" stroke="#fff" stroke-width="1.5"/></svg></div>' +
+          '<div class="catalog-info-text"><div class="catalog-info-title">Using catalog from Supabase Inc</div>' +
+          '<div class="catalog-info-sub">Plans, prices, and billing meters are defined in the Supabase Inc direct account and shared with this account.</div></div></div>';
+
+        html += '<div class="section-label" style="margin-top:0">Select plan</div>';
+        html += '<div class="plan-list">';
+        var planIcons = {
+          box: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>',
+          star: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
+          users: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+          building: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01M16 6h.01M12 6h.01M8 10h.01M16 10h.01M12 10h.01M8 14h.01M16 14h.01M12 14h.01"/></svg>'
+        };
+        plans.forEach(function(p, i) {
+          html += '<div class="plan-option' + (state.plan === i ? ' selected' : '') + '" onclick="selectPlan(' + i + ')">' +
+            '<div class="plan-option-radio"></div>' +
+            '<div class="plan-option-icon">' + planIcons[p.icon] + '</div>' +
+            '<div class="plan-option-info"><div class="plan-option-name">' + p.name + '</div>' +
+            '<div class="plan-option-desc">' + p.desc + '</div></div>' +
+            '<div class="plan-option-price"><div class="plan-option-amount">' + p.price + '</div>' +
+            (p.interval ? '<div class="plan-option-interval">' + p.interval + '</div>' : '') + '</div></div>';
+        });
+        html += '</div>';
+
+        html += '<div style="border-top:1px solid #e5e7eb;margin:20px 0"></div>';
+        html += '<div class="section-label" style="margin-top:0">Add usage meters <span style="font-weight:400;color:#9ca3af">(optional)</span></div>';
+        html += '<div class="meter-list">';
+        var meterIcons = [
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>',
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>',
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>'
+        ];
+        meters.forEach(function(m, i) {
+          var sel = state.meters.indexOf(i) >= 0;
+          html += '<div class="meter-option' + (sel ? ' selected' : '') + '" onclick="toggleMeter(' + i + ')">' +
+            '<div class="meter-option-check">' + (sel ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>' : '') + '</div>' +
+            '<div class="meter-option-icon">' + meterIcons[i] + '</div>' +
+            '<div class="meter-option-info"><div class="meter-option-name">' + m.name + '</div>' +
+            '<div class="meter-option-meta">' + m.id + ' · event: ' + m.event + '</div></div>' +
+            '<div class="meter-option-unit">' + m.unit + '</div></div>';
+          if (sel && m.defaultPrice) {
+            html += '<div class="meter-price-input"><span>$</span> <input type="text" value="' + m.defaultPrice + '"> <span>' + m.priceLabel + ' — aggregation: ' + m.agg + '</span></div>';
+          }
+        });
+        html += '</div>';
+
+        body.innerHTML = html;
+        footer.innerHTML = '<button class="btn-back" onclick="prevStep()">Back</button><button class="btn-cancel" onclick="closeModal()">Cancel</button><button class="btn-next" id="btnNext" onclick="nextStep()">Next ></button>';
+      } else if (state.step === 3) {
+        footer.style.display = '';
+        var c = customers[state.customer];
+        var p = plans[state.plan];
+        var html = '<div class="review-card">' +
+          '<div class="review-card-header">Subscription summary</div>' +
+          '<div class="review-row"><span class="review-label">Customer</span><span class="review-value">' + c.name + ' (' + c.email + ')</span></div>' +
+          '<div class="review-row"><span class="review-label">Billing period</span><span class="review-value">' + (state.period === 'monthly' ? 'Monthly' : 'Annual') + '</span></div>' +
+          '<div class="review-row"><span class="review-label">Start date</span><span class="review-value">Immediately</span></div>' +
+          '<div class="review-row"><span class="review-label">Plan</span><span class="review-value">' + p.name + '</span></div>' +
+          '<div class="review-row"><span class="review-label">Base price</span><span class="review-value">' + p.price + (p.interval ? ' ' + p.interval : '') + '</span></div>';
+
+        if (state.meters.length > 0) {
+          html += '<div class="review-section-label">Usage meters</div>';
+          state.meters.forEach(function(mi) {
+            html += '<div class="review-row"><span class="review-label">' + meters[mi].name + '</span><span class="review-value">Usage billed ' + meters[mi].priceLabel.replace('per ', 'per ') + '</span></div>';
+          });
+        }
+        html += '</div>';
+
+        html += '<div class="review-callout-green">' +
+          '<div class="catalog-info-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0A2.704 2.704 0 003 15.546" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><path d="M5 12V7a2 2 0 012-2h10a2 2 0 012 2v5" stroke="#fff" stroke-width="1.5"/></svg></div>' +
+          '<div class="review-callout-green-text"><div class="review-callout-green-title">Catalog sourced from Supabase Inc</div>' +
+          '<div class="review-callout-green-sub">Products, prices, and meters belong to the Supabase Inc direct account. Usage events must be reported to that account via the Billing Meter API.</div></div></div>';
+
+        html += '<div class="review-callout-yellow">' +
+          '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>' +
+          'Invoices are generated at the end of each billing period. Usage is tallied from events reported during the period.</div>';
+
+        body.innerHTML = html;
+        footer.innerHTML = '<button class="btn-back" onclick="prevStep()">Back</button><button class="btn-cancel" onclick="closeModal()">Cancel</button><button class="btn-next" id="btnNext" onclick="nextStep()">Create subscription</button>';
+      }
+    }
+
+    function selectCustomer(i) { state.customer = i; renderStep(); }
+    function selectPeriod(p) { state.period = p; renderStep(); }
+    function selectPlan(i) { state.plan = i; renderStep(); }
+    function toggleMeter(i) {
+      var idx = state.meters.indexOf(i);
+      if (idx >= 0) state.meters.splice(idx, 1);
+      else state.meters.push(i);
+      renderStep();
+    }
+
+    function createSubscription() {
+      var c = customers[state.customer];
+      var p = plans[state.plan];
+      var meterPills = '';
+      if (state.meters.length === 0) {
+        meterPills = '<span style="color:#9ca3af;font-size:12px">None</span>';
+      } else {
+        state.meters.forEach(function(mi) {
+          meterPills += '<span class="meter-pill">' + meters[mi].pill + '</span>';
+        });
+      }
+
+      var today = new Date();
+      var monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      var created = monthNames[today.getMonth()] + ' ' + today.getDate() + ', ' + today.getFullYear();
+      var periodStart = monthNames[today.getMonth()] + ' ' + today.getDate();
+      var nextMonth = new Date(today); nextMonth.setMonth(nextMonth.getMonth() + 1);
+      var periodEnd = monthNames[nextMonth.getMonth()] + ' ' + nextMonth.getDate();
+      var interval = state.period === 'monthly' ? 'Monthly' : 'Annual';
+      var priceDisplay = p.price === 'Custom' ? 'Custom' : p.price + '.00/mo';
+      var mrr = p.price === 'Custom' ? 'Custom' : p.price + '.00';
+
+      var tr = document.createElement('tr');
+      tr.innerHTML = '<td><div class="customer-cell-name">' + c.name + '</div><div class="customer-cell-email">' + c.email + '</div></td>' +
+        '<td><span class="badge active">Active</span></td>' +
+        '<td><div class="plan-name">' + p.name + '</div><div class="plan-id">' + p.priceId + '</div></td>' +
+        '<td><div class="billing-amount">' + interval + '</div><div class="billing-interval">' + priceDisplay + '</div></td>' +
+        '<td>' + meterPills + '</td>' +
+        '<td>' + periodStart + ' – ' + periodEnd + '</td>' +
+        '<td><div class="mrr-main">' + mrr + '</div><div class="mrr-sub">+ usage</div></td>' +
+        '<td>' + created + '</td>';
+
+      // Show success screen
+      var body = document.getElementById('modalBody');
+      var footer = document.getElementById('modalFooter');
+      footer.style.display = 'none';
+
+      body.innerHTML = '<div class="success-screen">' +
+        '<div class="success-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>' +
+        '<div class="success-title">Subscription created</div>' +
+        '<div class="success-sub">A subscription has been created for <strong>' + c.name + '</strong> using the <strong>' + p.name + '</strong> plan from Supabase Inc.</div>' +
+        '<div class="success-summary">' +
+        '<div class="success-row"><span class="review-label">Customer</span><span class="review-value">' + c.name + '</span></div>' +
+        '<div class="success-row"><span class="review-label">Plan</span><span class="review-value">' + p.name + '</span></div>' +
+        '<div class="success-row"><span class="review-label">Price</span><span class="review-value">' + (p.price === 'Custom' ? 'Custom' : p.price + ' / month') + '</span></div>' +
+        '<div class="success-row"><span class="review-label">Billing period</span><span class="review-value">' + interval + '</span></div>' +
+        '<div class="success-row"><span class="review-label">Usage meters</span><span class="review-value">' + (state.meters.length > 0 ? state.meters.map(function(mi){ return meters[mi].name; }).join(', ') : 'None') + '</span></div>' +
+        '<div class="success-row"><span class="review-label">Status</span><span class="review-value status-active">Active</span></div>' +
+        '</div>' +
+        '<div class="success-footer"><button class="btn-done" onclick="finishCreate()">Done</button></div>' +
+        '</div>';
+
+      document.getElementById('subsTableBody').appendChild(tr);
+      window._newRow = tr;
+    }
+
+    function finishCreate() {
+      closeModal();
+    }
+  </script>
+</body>
+</html>
